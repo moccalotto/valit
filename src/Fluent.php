@@ -141,13 +141,33 @@ class Fluent
     }
 
     /**
-     * Alias of success
+     * Alias of success.
      *
      * @return bool
      */
     public function valid()
     {
         return $this->success();
+    }
+
+    /**
+     * Alias of hasErrors.
+     *
+     * @return bool
+     */
+    public function invalid()
+    {
+        return $this->hasErrors();
+    }
+
+    /**
+     * Return true if there are errors.
+     *
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        return $this->failures > 0;
     }
 
     /**
@@ -190,7 +210,7 @@ class Fluent
         $messages = [];
 
         foreach ($this->renderedResults() as $message => $success) {
-            if (!$success) {
+            if (! $success) {
                 $messages[] = $message;
             }
         }
