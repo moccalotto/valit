@@ -45,7 +45,7 @@ class BasicCheckProvider
      */
     public function checkEquals($value, $against)
     {
-        return new Result($value === $against, '{name} must equal {0}', [$against]);
+        return new Result($value == $against, '{name} must equal {0}', [$against]);
     }
 
     /**

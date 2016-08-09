@@ -225,7 +225,7 @@ class NumberCheckProvider
     public function checkOdd($value)
     {
         $success = is_numeric($value)
-            && (float) $value === (int) $value
+            && (float) $value == (int) $value
             && ($value & 1) === 1;
 
         return new Result($success, '{name} must be an odd integer');
@@ -241,7 +241,7 @@ class NumberCheckProvider
     public function checkEven($value)
     {
         $success = is_numeric($value)
-            && (float) $value === (int) $value
+            && (float) $value == (int) $value
             && ($value & 1) === 0;
 
         return new Result($success, '{name} must be an even integer');
@@ -289,11 +289,11 @@ class NumberCheckProvider
     {
         $this->assertNumeric($against);
 
-        if (intval($against) !== floatval($against)) {
+        if (intval($against) != floatval($against)) {
             throw new InvalidArgumentException('$against must be a finite natural number');
         }
 
-        $success = ((float) $value === (int) $value)
+        $success = ((float) $value == (int) $value)
             &&  $this->gcd($value, $against) === 1;
 
         return new Result($success, '{name} must be prime relative to {0}', [$against]);
@@ -313,7 +313,7 @@ class NumberCheckProvider
     {
         $this->assertNumeric($against);
 
-        if ($against === 0.0 || ! is_finite($against)) {
+        if ($against == 0.0 || ! is_finite($against)) {
             throw new InvalidArgumentException('$against must be a finite, non-zero number');
         }
 
