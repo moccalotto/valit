@@ -1,18 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace spec\Moccalotto\Valit;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ManagerSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Manager');
     }
 
-    function it_loads_core_providers()
+    public function it_loads_core_providers()
     {
         $this->beConstructedThrough('instance');
 
@@ -20,7 +28,7 @@ class ManagerSpec extends ObjectBehavior
         $this->hasCheck('decimalString')->shouldBe(true);
     }
 
-    function it_can_execute_checks()
+    public function it_can_execute_checks()
     {
         $this->beConstructedThrough('instance');
 

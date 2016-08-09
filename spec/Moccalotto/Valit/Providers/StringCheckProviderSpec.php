@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace spec\Moccalotto\Valit\Providers;
 
 use Exception;
@@ -216,7 +225,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
         $this->shouldThrow('InvalidArgumentException')->during('checkStartsWith', ['', null]);
         $this->shouldThrow('InvalidArgumentException')->during('checkStartsWith', ['', []]);
-        $this->shouldThrow('InvalidArgumentException')->during('checkStartsWith', ['', (object)[]]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkStartsWith', ['', (object) []]);
         $this->shouldThrow('InvalidArgumentException')->during('checkStartsWith', ['', curl_init()]);
 
         $this->checkStartsWith(null, '')->success()->shouldBe(false);
@@ -243,7 +252,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
         $this->shouldThrow('InvalidArgumentException')->during('checkEndsWith', ['', null]);
         $this->shouldThrow('InvalidArgumentException')->during('checkEndsWith', ['', []]);
-        $this->shouldThrow('InvalidArgumentException')->during('checkEndsWith', ['', (object)[]]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkEndsWith', ['', (object) []]);
         $this->shouldThrow('InvalidArgumentException')->during('checkEndsWith', ['', curl_init()]);
 
         $this->checkEndsWith(null, '')->success()->shouldBe(false);
@@ -271,7 +280,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
         $this->shouldThrow('InvalidArgumentException')->during('checkContainsString', ['', null]);
         $this->shouldThrow('InvalidArgumentException')->during('checkContainsString', ['', []]);
-        $this->shouldThrow('InvalidArgumentException')->during('checkContainsString', ['', (object)[]]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkContainsString', ['', (object) []]);
         $this->shouldThrow('InvalidArgumentException')->during('checkContainsString', ['', curl_init()]);
 
         $this->checkEndsWith(null, '')->success()->shouldBe(false);

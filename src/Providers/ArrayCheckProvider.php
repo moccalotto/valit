@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace Moccalotto\Valit\Providers;
 
 use ArrayAccess;
@@ -11,7 +20,7 @@ class ArrayCheckProvider
     use ProvideViaReflection;
 
     /**
-     * Check that $value can be accessed as an array
+     * Check that $value can be accessed as an array.
      *
      * @Check(["hasArrayAccess", "arrayAccessible"])
      *
@@ -28,7 +37,7 @@ class ArrayCheckProvider
     }
 
     /**
-     * Check that $value is an associative array - i.e. that it contains no integer-keys
+     * Check that $value is an associative array - i.e. that it contains no integer-keys.
      *
      * @Check(["isAssociative", "associative", "isAssociativeArray", "associativeArray"])
      *
@@ -40,7 +49,7 @@ class ArrayCheckProvider
     {
         $message = '{name} must be an associative array';
 
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             return new Result(false, $message);
         }
 
@@ -59,7 +68,7 @@ class ArrayCheckProvider
     }
 
     /**
-     * Check that $value is a conventional array - i.e. that it contains only integer-keys
+     * Check that $value is a conventional array - i.e. that it contains only integer-keys.
      *
      * @Check(["hasNumericIndex", "isConventionalArray", "conventionalArray", "isNotAssociative", "notAssociative"])
      *
@@ -71,7 +80,7 @@ class ArrayCheckProvider
     {
         $message = '{name} must be a conventional array';
 
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             return new Result(false, $message);
         }
 
@@ -81,7 +90,7 @@ class ArrayCheckProvider
         }
 
         foreach ($value as $k => $v) {
-            if (!is_integer($k)) {
+            if (! is_integer($k)) {
                 return new Result(false, $message);
             }
         }
@@ -90,7 +99,7 @@ class ArrayCheckProvider
     }
 
     /**
-     * Check that $value is a non-empty array
+     * Check that $value is a non-empty array.
      *
      * @Check(["isNotEmptyArray", "notEmptyArray"])
      *

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace Moccalotto\Valit\Providers;
 
 use InvalidArgumentException;
@@ -118,7 +127,7 @@ class StringCheckProvider
      */
     public function checkMatchesRegex($value, $pattern)
     {
-        if (!$this->checkStringable($pattern)->success()) {
+        if (! $this->checkStringable($pattern)->success()) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -149,7 +158,7 @@ class StringCheckProvider
     }
 
     /**
-     * Check if $value starts with a given string
+     * Check if $value starts with a given string.
      *
      * @Check(["startsWith", "beginsWith"])
      *
@@ -160,7 +169,7 @@ class StringCheckProvider
      */
     public function checkStartsWith($value, $startsWith)
     {
-        if (!$this->checkStringable($startsWith)->success()) {
+        if (! $this->checkStringable($startsWith)->success()) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -171,7 +180,7 @@ class StringCheckProvider
     }
 
     /**
-     * Check if $value ends with a given string
+     * Check if $value ends with a given string.
      *
      * @Check("endsWith")
      *
@@ -182,7 +191,7 @@ class StringCheckProvider
      */
     public function checkEndsWith($value, $endsWith)
     {
-        if (!$this->checkStringable($endsWith)->success()) {
+        if (! $this->checkStringable($endsWith)->success()) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -193,7 +202,7 @@ class StringCheckProvider
     }
 
     /**
-     * Check if $value contains a given string
+     * Check if $value contains a given string.
      *
      * @Check(["containsString", "containsTheString"])
      *
@@ -204,7 +213,7 @@ class StringCheckProvider
      */
     public function checkContainsString($value, $contains)
     {
-        if (!$this->checkStringable($contains)->success()) {
+        if (! $this->checkStringable($contains)->success()) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 

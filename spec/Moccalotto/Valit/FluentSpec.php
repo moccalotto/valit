@@ -1,20 +1,28 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace spec\Moccalotto\Valit;
 
-use Prophecy\Argument;
-use PhpSpec\ObjectBehavior;
 use Moccalotto\Valit\Manager;
+use PhpSpec\ObjectBehavior;
 
 class FluentSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->shouldHaveType('Moccalotto\Valit\Fluent');
     }
 
-    function it_can_execute_fluent_checks()
+    public function it_can_execute_fluent_checks()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->shouldHaveType('Moccalotto\Valit\Fluent');
@@ -24,7 +32,7 @@ class FluentSpec extends ObjectBehavior
         $this->success()->shouldBe(false);
     }
 
-    function it_can_return_results()
+    public function it_can_return_results()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->shouldHaveType('Moccalotto\Valit\Fluent');
@@ -33,14 +41,14 @@ class FluentSpec extends ObjectBehavior
         $this->results()->shouldHaveCount(2);
     }
 
-    function it_can_be_constructed_to_throw_exceptions_on_failures()
+    public function it_can_be_constructed_to_throw_exceptions_on_failures()
     {
         $this->beConstructedWith(Manager::instance(), 42, true);
         $this->shouldThrow('Moccalotto\Valit\ValidationException')
             ->during('isNegative', []);
     }
 
-    function it_can_be_modified_to_throw_exceptions_on_failures()
+    public function it_can_be_modified_to_throw_exceptions_on_failures()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->isNegative();

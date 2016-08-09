@@ -1,22 +1,31 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace spec\Moccalotto\Valit\Providers;
 
 use PhpSpec\ObjectBehavior;
 
 class JsonCheckProviderSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\JsonCheckProvider');
     }
 
-    function it_provides_checks()
+    public function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
     }
 
-    function it_checks_isJson()
+    public function it_checks_isJson()
     {
         $this->checkIsJson('')->shouldHaveType('Moccalotto\Valit\Result');
 

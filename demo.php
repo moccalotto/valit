@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Hayttp package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 use Moccalotto\Valit\Facades\Check;
 
 require 'vendor/autoload.php';

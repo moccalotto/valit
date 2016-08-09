@@ -1,24 +1,32 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace spec\Moccalotto\Valit\Providers;
 
 use ArrayObject;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class BasicCheckProviderSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\BasicCheckProvider');
     }
 
-    function it_provides_checks()
+    public function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
     }
 
-    function it_checks_identical_to()
+    public function it_checks_identical_to()
     {
         $this->checkIdenticalTo(null, null)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -27,7 +35,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('isSameAs');
         $this->provides()->shouldHaveKey('sameAs');
 
-        $obj_1a = (object)['foo' => 'bar'];
+        $obj_1a = (object) ['foo' => 'bar'];
         $obj_1b = clone $obj_1a;
 
         $this->checkIdenticalTo(1, 1)->success()->shouldBe(true);
@@ -49,14 +57,14 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIdenticalTo(curl_init(), curl_init())->success()->shouldBe(false);
     }
 
-    function it_checks_equals()
+    public function it_checks_equals()
     {
         $this->checkEquals(null, null)->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('is');
         $this->provides()->shouldHaveKey('equals');
 
-        $obj_1a = (object)['foo' => 'bar'];
+        $obj_1a = (object) ['foo' => 'bar'];
         $obj_1b = clone $obj_1a;
 
         $this->checkEquals(1, 1)->success()->shouldBe(true);
@@ -78,7 +86,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkEquals(curl_init(), curl_init())->success()->shouldBe(false);
     }
 
-    function it_checks_isTruthy()
+    public function it_checks_isTruthy()
     {
         $this->checkIsTruthy(null)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -93,7 +101,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsTruthy(0.1)->success()->shouldBe(true);
         $this->checkIsTruthy('00')->success()->shouldBe(true);
         $this->checkIsTruthy(curl_init())->success()->shouldBe(true);
-        $this->checkIsTruthy((object)[])->success()->shouldBe(true);
+        $this->checkIsTruthy((object) [])->success()->shouldBe(true);
 
         $this->checkIsTruthy(false)->success()->shouldBe(false);
         $this->checkIsTruthy(null)->success()->shouldBe(false);
@@ -104,7 +112,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsTruthy(0.0)->success()->shouldBe(false);
     }
 
-    function it_checks_isFalsy()
+    public function it_checks_isFalsy()
     {
         $this->checkIsFalsy(null)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -127,11 +135,10 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsFalsy(0.1)->success()->shouldBe(false);
         $this->checkIsFalsy('00')->success()->shouldBe(false);
         $this->checkIsFalsy(curl_init())->success()->shouldBe(false);
-        $this->checkIsFalsy((object)[])->success()->shouldBe(false);
-
+        $this->checkIsFalsy((object) [])->success()->shouldBe(false);
     }
 
-    function it_checks_isArray()
+    public function it_checks_isArray()
     {
         $this->checkArray([])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -146,9 +153,8 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkArray(null)->success()->shouldBe(false);
         $this->checkArray('array')->success()->shouldBe(false);
         $this->checkArray(curl_init())->success()->shouldBe(false);
-        $this->checkArray((object) [] )->success()->shouldBe(false);
+        $this->checkArray((object) [])->success()->shouldBe(false);
         $this->checkArray('ArrayObject')->success()->shouldBe(false);
         $this->checkArray(new ArrayObject([]))->success()->shouldBe(false);
     }
-
 }

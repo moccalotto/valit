@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace Moccalotto\Valit\Providers;
 
-use SimpleXmlElement;
-use InvalidArgumentException;
-use Moccalotto\Valit\Result;
 use Moccalotto\Exemel\Xml as XmlInspector;
+use Moccalotto\Valit\Result;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
+use SimpleXmlElement;
 
 class XmlCheckProvider
 {
@@ -14,18 +22,19 @@ class XmlCheckProvider
 
     protected function canParse($xmlString)
     {
-        if (!is_string($xmlString)) {
+        if (! is_string($xmlString)) {
             return false;
         }
 
         $prev = libxml_use_internal_errors(true);
         $xml = @simplexml_load_string($xmlString);
         libxml_use_internal_errors($prev);
+
         return $xml instanceof SimpleXmlElement;
     }
 
     /**
-     * Check if $value is a string containing valid xml
+     * Check if $value is a string containing valid xml.
      *
      * @Check(["isValidXml", "validXml"])
      *
@@ -61,7 +70,7 @@ class XmlCheckProvider
         if ($value instanceof SimpleXmlElement) {
             $valueXmlInspector = new XmlInspector($value);
         } elseif (is_string($value)) {
-            if (!$this->canParse($value)) {
+            if (! $this->canParse($value)) {
                 return new Result(false, $msg, $context);
             }
             $valueXmlInspector = new XmlInspector(new SimpleXmlElement($value));
@@ -117,7 +126,7 @@ class XmlCheckProvider
     }
 
     /**
-     * Check that $value matches $against, ignoring differences in case and whitespace
+     * Check that $value matches $against, ignoring differences in case and whitespace.
      *
      * @param mixed $value
      * @param string|SimpleXmlElement $against

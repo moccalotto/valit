@@ -1,24 +1,32 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace spec\Moccalotto\Valit\Providers;
 
 use ArrayObject;
-use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 
 class ArrayCheckProviderSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\ArrayCheckProvider');
     }
 
-    function it_provides_checks()
+    public function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
     }
 
-    function it_checks_arrayAccess()
+    public function it_checks_arrayAccess()
     {
         $this->checkArrayAccess([])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -33,11 +41,11 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkArrayAccess(null)->success()->shouldBe(false);
         $this->checkArrayAccess('array')->success()->shouldBe(false);
         $this->checkArrayAccess(curl_init())->success()->shouldBe(false);
-        $this->checkArrayAccess((object) [] )->success()->shouldBe(false);
+        $this->checkArrayAccess((object) [])->success()->shouldBe(false);
         $this->checkArrayAccess('ArrayObject')->success()->shouldBe(false);
     }
 
-    function it_checks_associativeArray()
+    public function it_checks_associativeArray()
     {
         $this->checkAssociative([])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -53,7 +61,6 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkAssociative(['0.0' => '0.0'])->success()->shouldBe(true);
         $this->checkAssociative(['a' => 'a', 'b' => 'b'])->success()->shouldBe(true);
 
-
         $this->checkAssociative([])->success()->shouldBe(false);
         $this->checkAssociative([1 => '1b'])->success()->shouldBe(false);
         $this->checkAssociative(['a' => 'a', '1' => '1'])->success()->shouldBe(false);
@@ -63,11 +70,11 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkAssociative(null)->success()->shouldBe(false);
         $this->checkAssociative('array')->success()->shouldBe(false);
         $this->checkAssociative(curl_init())->success()->shouldBe(false);
-        $this->checkAssociative((object) [] )->success()->shouldBe(false);
+        $this->checkAssociative((object) [])->success()->shouldBe(false);
         $this->checkAssociative('ArrayObject')->success()->shouldBe(false);
     }
 
-    function it_checks_numericArray()
+    public function it_checks_numericArray()
     {
         $this->checkNumericIndex([])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -91,11 +98,11 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkNumericIndex(null)->success()->shouldBe(false);
         $this->checkNumericIndex('array')->success()->shouldBe(false);
         $this->checkNumericIndex(curl_init())->success()->shouldBe(false);
-        $this->checkNumericIndex((object) [] )->success()->shouldBe(false);
+        $this->checkNumericIndex((object) [])->success()->shouldBe(false);
         $this->checkNumericIndex('ArrayObject')->success()->shouldBe(false);
     }
 
-    function it_checks_notEmptyArray()
+    public function it_checks_notEmptyArray()
     {
         $this->checkNotEmpty([])->shouldHaveType('Moccalotto\Valit\Result');
 

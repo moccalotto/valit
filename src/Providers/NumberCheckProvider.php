@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace Moccalotto\Valit\Providers;
 
 use InvalidArgumentException;
@@ -19,7 +28,7 @@ class NumberCheckProvider
      */
     protected function assertNumeric($value)
     {
-        if (!is_numeric($value)) {
+        if (! is_numeric($value)) {
             throw new InvalidArgumentException('Check argument must be numeric');
         }
     }
@@ -39,7 +48,7 @@ class NumberCheckProvider
             (int) max($a, $b),
         ];
 
-        while ($b != 0) {
+        while ($b !== 0) {
             $temp = $a;
             $a = $b;
             $b = $temp % $b;
@@ -193,11 +202,11 @@ class NumberCheckProvider
         $this->assertNumeric($against);
         $this->assertNumeric($epsilon);
 
-        if (!is_finite($epsilon)) {
+        if (! is_finite($epsilon)) {
             throw new InvalidArgumentException('Epsilon must be a real number');
         }
 
-        $testable = is_numeric($value) && !is_nan($value);
+        $testable = is_numeric($value) && ! is_nan($value);
         $success = $testable ? abs(abs($value) - abs($against)) <= $epsilon : false;
 
         return new Result($success, '{name} must equal {0:float} with a margin of error of {1:float}', [
@@ -216,7 +225,7 @@ class NumberCheckProvider
     public function checkOdd($value)
     {
         $success = is_numeric($value)
-            && (float) $value == (int) $value
+            && (float) $value === (int) $value
             && ($value & 1) === 1;
 
         return new Result($success, '{name} must be an odd integer');
@@ -232,7 +241,7 @@ class NumberCheckProvider
     public function checkEven($value)
     {
         $success = is_numeric($value)
-            && (float) $value == (int) $value
+            && (float) $value === (int) $value
             && ($value & 1) === 0;
 
         return new Result($success, '{name} must be an even integer');
@@ -267,7 +276,7 @@ class NumberCheckProvider
     }
 
     /**
-     * Check if $value is prime relative to $against
+     * Check if $value is prime relative to $against.
      *
      * @Check(["isPrimeRelativeTo", "primeRelativeTo", "isRelativePrime", "relativePrime", "isCoprimeTo", "coprimeTo"])
      *
@@ -280,18 +289,18 @@ class NumberCheckProvider
     {
         $this->assertNumeric($against);
 
-        if (intval($against) != floatval($against)) {
+        if (intval($against) !== floatval($against)) {
             throw new InvalidArgumentException('$against must be a finite natural number');
         }
 
-        $success = ( (float) $value == (int) $value )
+        $success = ((float) $value === (int) $value)
             &&  $this->gcd($value, $against) === 1;
 
         return new Result($success, '{name} must be prime relative to {0}', [$against]);
     }
 
     /**
-     * Check if $value is prime relative to $against
+     * Check if $value is prime relative to $against.
      *
      * @Check(["isDivisibleBy", "divisibleBy", "dividesBy"])
      *
@@ -304,13 +313,13 @@ class NumberCheckProvider
     {
         $this->assertNumeric($against);
 
-        if ($against == 0.0 || !is_finite($against)) {
+        if ($against === 0.0 || ! is_finite($against)) {
             throw new InvalidArgumentException('$against must be a finite, non-zero number');
         }
 
         $success = is_numeric($value)
             && is_finite($value)
-            && fmod($value, $against) == 0.0;
+            && fmod($value, $against) === 0.0;
 
         return new Result($success, '{name} must be divisible by {0}', [$against]);
     }

@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace spec\Moccalotto\Valit\Providers;
 
-use Exception;
 use ArrayObject;
+use Exception;
 use InfiniteIterator;
 use PhpSpec\ObjectBehavior;
 
@@ -212,8 +221,8 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->shouldThrow('InvalidArgumentException')->during('checkHasMethod', ['Iterator', null]);
         $this->shouldThrow('InvalidArgumentException')->during('checkHasMethod', ['Iterator', 1]);
         $this->shouldThrow('InvalidArgumentException')->during('checkHasMethod', ['Iterator', 1.0]);
-        $this->shouldThrow('InvalidArgumentException')->during('checkHasMethod', ['Iterator', [] ]);
-        $this->shouldThrow('InvalidArgumentException')->during('checkHasMethod', ['Iterator', (object) [] ]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkHasMethod', ['Iterator', []]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkHasMethod', ['Iterator', (object) []]);
         $this->shouldThrow('InvalidArgumentException')->during('checkHasMethod', ['Iterator', curl_init()]);
     }
 
@@ -250,8 +259,8 @@ PHP
         $this->checkHasProperty('FooCheckClass', 'proStat')->success()->shouldBe(true);
         $this->checkHasProperty('FooCheckClass', 'pubStat')->success()->shouldBe(true);
         $this->checkHasProperty(new Exception(), 'message')->success()->shouldBe(true);
-        $this->checkHasProperty((object)['a' => 1, 'b' => 2], 'a')->success()->shouldBe(true);
-        $this->checkHasProperty((object)['a' => 1, 'b' => 2], 'b')->success()->shouldBe(true);
+        $this->checkHasProperty((object) ['a' => 1, 'b' => 2], 'a')->success()->shouldBe(true);
+        $this->checkHasProperty((object) ['a' => 1, 'b' => 2], 'b')->success()->shouldBe(true);
 
         $this->checkHasProperty($this, 'provides')->success()->shouldBe(false);
         $this->checkHasProperty('FooCheckClass', 'foo')->success()->shouldBe(false);
@@ -260,8 +269,8 @@ PHP
         $this->shouldThrow('InvalidArgumentException')->during('checkHasProperty', ['Iterator', null]);
         $this->shouldThrow('InvalidArgumentException')->during('checkHasProperty', ['Iterator', 1]);
         $this->shouldThrow('InvalidArgumentException')->during('checkHasProperty', ['Iterator', 1.0]);
-        $this->shouldThrow('InvalidArgumentException')->during('checkHasProperty', ['Iterator', [] ]);
-        $this->shouldThrow('InvalidArgumentException')->during('checkHasProperty', ['Iterator', (object) [] ]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkHasProperty', ['Iterator', []]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkHasProperty', ['Iterator', (object) []]);
         $this->shouldThrow('InvalidArgumentException')->during('checkHasProperty', ['Iterator', curl_init()]);
     }
 }

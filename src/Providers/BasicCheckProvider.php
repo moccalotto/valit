@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace Moccalotto\Valit\Providers;
 
 use Moccalotto\Valit\Result;
@@ -10,7 +19,7 @@ class BasicCheckProvider
     use ProvideViaReflection;
 
     /**
-     * Check that $value is equals $against
+     * Check that $value is equals $against.
      *
      * @Check(["isIdenticalTo", "identicalTo", "sameAs", "isSameAs"])
      *
@@ -25,7 +34,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is equals $against
+     * Check that $value is equals $against.
      *
      * @Check(["is", "equals"])
      *
@@ -36,11 +45,11 @@ class BasicCheckProvider
      */
     public function checkEquals($value, $against)
     {
-        return new Result($value == $against, '{name} must equal {0}', [$against]);
+        return new Result($value === $against, '{name} must equal {0}', [$against]);
     }
 
     /**
-     * Check that $value is truthy
+     * Check that $value is truthy.
      *
      * @Check(["isTruthy", "truthy"])
      *
@@ -50,11 +59,11 @@ class BasicCheckProvider
      */
     public function checkIsTruthy($value)
     {
-        return new Result(!!$value, '{name} must be truthy');
+        return new Result(! ! $value, '{name} must be truthy');
     }
 
     /**
-     * Check that $value is falsy
+     * Check that $value is falsy.
      *
      * @Check(["isFalsy", "falsy"])
      *
@@ -64,11 +73,11 @@ class BasicCheckProvider
      */
     public function checkIsFalsy($value)
     {
-        return new Result(!$value, '{name} must be falsy');
+        return new Result(! $value, '{name} must be falsy');
     }
 
     /**
-     * Check that $value is identical to true
+     * Check that $value is identical to true.
      *
      * @Check(["isTrue", "true"])
      *
@@ -82,7 +91,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is identical to false
+     * Check that $value is identical to false.
      *
      * @Check(["isTrue", "true"])
      *
@@ -96,7 +105,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is identical to false
+     * Check that $value is identical to false.
      *
      * @Check(["hasType", "isType"])
      *
@@ -115,7 +124,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is scalar
+     * Check that $value is scalar.
      *
      * @Check(["isScalar", "scalar"])
      *
@@ -131,7 +140,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is a boolean
+     * Check that $value is a boolean.
      *
      * @Check(["isBool", "isBoolean"])
      *
@@ -144,7 +153,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is an array
+     * Check that $value is an array.
      *
      * @Check("isArray")
      *
@@ -157,7 +166,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is a float
+     * Check that $value is a float.
      *
      * @Check(["isFloat", "isDouble"])
      *
@@ -170,7 +179,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is a float
+     * Check that $value is a float.
      *
      * @Check(["isInt", "isInteger"])
      *
@@ -183,7 +192,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is a float
+     * Check that $value is a float.
      *
      * @Check("isString")
      *
@@ -196,7 +205,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is a float
+     * Check that $value is a float.
      *
      * @Check("isObject")
      *
@@ -209,7 +218,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is null
+     * Check that $value is null.
      *
      * @Check("isNull")
      *
@@ -222,7 +231,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is null
+     * Check that $value is null.
      *
      * @Check(["isNotNull", "notNull"])
      *
@@ -232,13 +241,13 @@ class BasicCheckProvider
     public function checkNotNull($value)
     {
         return new Result(
-            !is_null($value),
+            ! is_null($value),
             '{name} must not be null'
         );
     }
 
     /**
-     * Check that $value is a resource
+     * Check that $value is a resource.
      *
      * @Check("isResource")
      *
@@ -251,7 +260,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is a resource of the given type
+     * Check that $value is a resource of the given type.
      *
      * @Check(["isResourceOfType", "resourceType"])
      *
@@ -273,7 +282,7 @@ class BasicCheckProvider
     }
 
     /**
-     * Check that $value is callable
+     * Check that $value is callable.
      *
      * @Check("isCallable")
      *

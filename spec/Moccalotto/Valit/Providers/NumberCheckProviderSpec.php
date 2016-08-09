@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace spec\Moccalotto\Valit\Providers;
 
 use PhpSpec\ObjectBehavior;
@@ -330,12 +339,11 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkDivisibleBy(INF, 1)->success()->shouldBe(false);
         $this->checkDivisibleBy(NAN, 1)->success()->shouldBe(false);
 
-
         $this->shouldThrow('InvalidArgumentException')->during('checkDivisibleBy', [1, 0]);
         $this->shouldThrow('InvalidArgumentException')->during('checkDivisibleBy', [1, NAN]);
         $this->shouldThrow('InvalidArgumentException')->during('checkDivisibleBy', [1, INF]);
         $this->shouldThrow('InvalidArgumentException')->during('checkDivisibleBy', [1, []]);
-        $this->shouldThrow('InvalidArgumentException')->during('checkDivisibleBy', [1, (object)[]]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkDivisibleBy', [1, (object) []]);
         $this->shouldThrow('InvalidArgumentException')->during('checkDivisibleBy', [1, curl_init()]);
     }
 }

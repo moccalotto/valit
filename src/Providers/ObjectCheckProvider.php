@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace Moccalotto\Valit\Providers;
 
-use ReflectionClass;
 use InvalidArgumentException;
 use Moccalotto\Valit\Result;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
+use ReflectionClass;
 
 class ObjectCheckProvider
 {
@@ -88,7 +97,7 @@ class ObjectCheckProvider
      */
     public function checkInstanceOf($value, $fqcn)
     {
-        if (!is_string($fqcn)) {
+        if (! is_string($fqcn)) {
             throw new InvalidArgumentException('$fqcn must be a string');
         }
 
@@ -108,7 +117,7 @@ class ObjectCheckProvider
      */
     public function checkImplements($value, $fqcn)
     {
-        if (!(is_string($fqcn) && interface_exists($fqcn))) {
+        if (! (is_string($fqcn) && interface_exists($fqcn))) {
             if (is_scalar($fqcn)) {
                 throw new InvalidArgumentException(sprintf(
                     '$fqcn "%s" is not valid. It must be a string and a valid interface fqcn',
@@ -142,7 +151,7 @@ class ObjectCheckProvider
      */
     public function checkHasMethod($value, $methodName)
     {
-        if (!is_string($methodName)) {
+        if (! is_string($methodName)) {
             throw new InvalidArgumentException('$methodName must be a string and an identifier');
         }
 
@@ -163,7 +172,7 @@ class ObjectCheckProvider
      */
     public function checkHasProperty($value, $property)
     {
-        if (!is_string($property)) {
+        if (! is_string($property)) {
             throw new InvalidArgumentException('$property must be a string and an identifier');
         }
 
@@ -188,7 +197,7 @@ class ObjectCheckProvider
 
         if ($partialSuccess) {
             $traits = (new ReflectionClass($value))->getTraitNames();
-            $success = in_array($traitName, $traits);
+            $success = in_array($traitName, $traits, true);
         } else {
             $success = false;
         }

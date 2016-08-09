@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace Moccalotto\Valit;
 
 use Moccalotto\Valit\Contracts\CheckManager;
@@ -34,7 +43,7 @@ class Manager implements CheckManager
      */
     public static function instance()
     {
-        if (!static::$instance) {
+        if (! static::$instance) {
             static::$instance = new static();
         }
 

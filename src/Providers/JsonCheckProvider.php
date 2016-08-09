@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ */
+
 namespace Moccalotto\Valit\Providers;
 
 use Moccalotto\Valit\Result;
@@ -10,7 +19,7 @@ class JsonCheckProvider
     use ProvideViaReflection;
 
     /**
-     * Check that $value is valid json
+     * Check that $value is valid json.
      *
      * @Check(["isValidJson", "validJson", "isJson"])
      *
