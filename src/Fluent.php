@@ -141,6 +141,16 @@ class Fluent
     }
 
     /**
+     * Alias of success
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+        return $this->success();
+    }
+
+    /**
      * Get the results.
      *
      * @return Result[]
@@ -168,6 +178,24 @@ class Fluent
         }
 
         return $output;
+    }
+
+    /**
+     * Return an array of rendered error messages.
+     *
+     * @return string[]
+     */
+    public function errorMessages()
+    {
+        $messages = [];
+
+        foreach ($this->renderedResults() as $message => $success) {
+            if (!$success) {
+                $messages[] = $message;
+            }
+        }
+
+        return $messages;
     }
 
     /**
