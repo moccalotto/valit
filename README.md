@@ -1,6 +1,6 @@
 # Valit
 
-[![Build Status](https://travis-ci.org/moccalotto/validation.svg)](https://travis-ci.org/moccalotto/validation)
+[![Build Status](https://travis-ci.org/moccalotto/valit.svg)](https://travis-ci.org/moccalotto/valit)
 
 Validate variables using a fluent syntax.
 
