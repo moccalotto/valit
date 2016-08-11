@@ -12,9 +12,10 @@
 namespace Moccalotto\Valit\Providers;
 
 use Moccalotto\Valit\Result;
+use Moccalotto\Valit\Contracts\CheckProvider;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
 
-class FileSystemCheckProvider
+class FileSystemCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
 

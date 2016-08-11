@@ -13,9 +13,10 @@ namespace Moccalotto\Valit\Providers;
 
 use InvalidArgumentException;
 use Moccalotto\Valit\Result;
+use Moccalotto\Valit\Contracts\CheckProvider;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
 
-class StringCheckProvider
+class StringCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
 
