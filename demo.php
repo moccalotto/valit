@@ -153,6 +153,10 @@ try {
 | info about all tests, you can use the Check facade in
 | combination with the `orThrowException` method.
 |
+| The thrown `ValidationException` will contain a list of
+| all the error messages. These can be accessed via the
+| `errorMessages` method like so:
+|
  */
 
 $age = '42.3';
