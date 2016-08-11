@@ -15,7 +15,7 @@ use ArrayAccess;
 use Moccalotto\Valit\Result;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
 
-class ArrayCheckProvider
+class ArrayCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
 
@@ -58,8 +58,8 @@ class ArrayCheckProvider
             return new Result(false, $message);
         }
 
-        foreach ($value as $k => $v) {
-            if (is_integer($k)) {
+        foreach (array_keys($value) as $key) {
+            if (is_integer($key)) {
                 return new Result(false, $message);
             }
         }
