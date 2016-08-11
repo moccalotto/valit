@@ -145,21 +145,34 @@ The `ValidationException` will contain a list of all the error messages,
 that can be accessed via the `getErrorMessages` method like so:
 
 ```php
-$x = '42.3';
+/*
+|----------------------------------------------------------
+| Ensuring all checks
+|----------------------------------------------------------
+|
+| If you want to assert that all checks pass, and you want
+| info about all tests, you can use the Check facade in
+| combination with the `orThrowException` method.
+|
+ */
+
+$age = '42.3';
 
 try {
-    Check::that($x)
+    Check::that($age)
         ->as('age')
-        ->isDigits()            // Fail
+        ->isNaturalNumber()     // Fail
         ->isGreaterThan(18)     // Success
-        ->isLowerThan(100)      // Success
+        ->isLowerThan(30)       // Fail
         ->orThrowException();
-
 } catch (ValidationException $e) {
-    $errors = $e->getErrorMessages();
+    print_r($e->errorMessages());
+    /*
+        Array
+        (
+            [0] => age must be a natural number
+            [1] => age must be less than 30
+        )
+     */
 }
-
-/* [
- 'age should only contain decimals, but is: string:"42.3"'
-] */
 ```
