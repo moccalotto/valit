@@ -11,12 +11,13 @@
 
 namespace Moccalotto\Valit\Providers;
 
-use InvalidArgumentException;
-use Moccalotto\Valit\Result;
-use Moccalotto\Valit\Traits\ProvideViaReflection;
 use ReflectionClass;
+use Moccalotto\Valit\Result;
+use InvalidArgumentException;
+use Moccalotto\Valit\Contracts\CheckProvider;
+use Moccalotto\Valit\Traits\ProvideViaReflection;
 
-class ObjectCheckProvider
+class ObjectCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
 
@@ -126,17 +127,15 @@ class ObjectCheckProvider
             }
             throw new InvalidArgumentException('$fqcn must be a string and a valid interface fqcn');
         }
-        $partialSuccess = is_object($value)
-            || is_scalar($value) && class_exists($value);
+
+        $finalSuccess = $partialSuccess = is_object($value) || (is_scalar($value) && class_exists($value));
 
         if ($partialSuccess) {
             $refClass = new ReflectionClass($value);
-            $success = $refClass->implementsInterface($fqcn);
-        } else {
-            $success = false;
+            $finalSuccess = $refClass->implementsInterface($fqcn);
         }
 
-        return new Result($success, '{name} must be an object or class fqcn that implements the interface {0}');
+        return new Result($finalSuccess, '{name} must be an object or class fqcn that implements the interface {0}');
     }
 
     /**
@@ -191,17 +190,15 @@ class ObjectCheckProvider
      *
      * @return Result
      */
-    public function checkHasTrait($success, $traitName)
+    public function checkHasTrait($value, $traitName)
     {
-        $partialSuccess = (is_object($value) || class_exists($value));
+        $finalSuccess = $partialSuccess = (is_object($value) || class_exists($value));
 
         if ($partialSuccess) {
             $traits = (new ReflectionClass($value))->getTraitNames();
-            $success = in_array($traitName, $traits, true);
-        } else {
-            $success = false;
+            $finalSuccess = in_array($traitName, $traits, true);
         }
 
-        return new Result($success, '{name} must use a trait called {0}', [$traitName]);
+        return new Result($finalSuccess, '{name} must use a trait called {0}', [$traitName]);
     }
 }
