@@ -10,18 +10,135 @@
  */
 
 use Moccalotto\Valit\Facades\Check;
+use Moccalotto\Valit\Facades\Ensure;
+use Moccalotto\Valit\ValidationException;
 
 require 'vendor/autoload.php';
 
-$results = Check::that(87)
-    ->as('myNumber')
-    ->isNumeric()
-    ->isPositive()
-    ->isDivisibleBy(29)
-    ->isPrimeRelativeTo(20)
-    ->isArray()
-    ->isString()
-    ->isObject()
-    ->renderedResults();
+/*
+|----------------------------------------------------------
+| Teaser
+|----------------------------------------------------------
+*/
 
-print_r($results);
+$age = 42;
+
+Ensure::that($age)
+    ->isNumeric()
+    ->isGreaterThanOrEqual(18)
+    ->isLowerThanOrEqual(75);
+
+
+/*
+|----------------------------------------------------------
+| Validity
+|----------------------------------------------------------
+|
+| You can determine if a variable passes all your criteria
+| by using the `valid` method.
+|
+| Conversely you can use the `invalid` method to check if
+| one or more checks did not pass.
+|
+*/
+
+$x = 42; // the variable to validate
+
+$valid = Check::that($x)
+    ->isInt()                   // Success
+    ->isGreaterThanOrEqual(42)  // Success
+    ->isLessThan(100)           // Success
+    ->valid();                  // true
+
+var_dump($valid);  // bool(true)
+
+
+
+/*
+|----------------------------------------------------------
+| Error Messages
+|----------------------------------------------------------
+|
+| If you want to know precisely which checks failed, you
+| can use the `errorMessages` method.
+|
+*/
+
+$x = 42; // the variable to validate
+
+$errors = Check::that($x)
+    ->isNumeric()       // Success
+    ->isFloat()         // Fail
+    ->isCloseTo(40)     // Fail
+    ->errorMessages();
+
+print_r($errors);
+
+/*
+Array
+(
+    [0] => value must have the type "double"
+    [1] => value must equal 40 with a margin of error of 1.0e-5
+)
+ */
+
+
+
+/*
+|----------------------------------------------------------
+| Aliases
+|----------------------------------------------------------
+|
+| If you display the error messages to the end user,
+| you can tell them exactly which variable failed the
+| validation by giving the value an alias. This is done
+| via the `as` method. If you prefer, you can use the
+| `alias` method, which does exactly the same.
+|
+*/
+
+$email = 'foo@example.com';
+
+$errors = Check::that($email)
+    ->as('Your Email Address')
+    ->isEmail()             // Success
+    ->endsWith('.co.uk')    // Fail
+    ->errorMessages();
+
+print_r($errors);
+
+/*
+Array
+(
+    [0] => Your Email Address must end with the string ".co.uk"
+)
+
+// Notice it says "Your Email Address" rather than "value".
+*/
+
+/*
+|----------------------------------------------------------
+| Ensuring
+|----------------------------------------------------------
+|
+| If you want to assert that all checks must pass, you can
+| use the `Moccalotto\Valit\Ensure` facade.
+| If a single check fails, we throw a
+| `Moccalotto\Valit\ValidationException` that contains the
+| error message for that check.
+ */
+
+$email = 'Doctor.Hansen@Example.com';
+
+try {
+    Ensure::that($x)
+        ->as('Email')
+        ->isEmail()             // Success
+        ->isLowercase()         // Throws ValidationException
+        ->endsWith('.co.uk');   // Not run
+} catch (ValidationException $e) {
+    var_dump($e->getMessage());
+    /*
+        string(42) "Email must be a syntax-valid email address"
+     */
+}
