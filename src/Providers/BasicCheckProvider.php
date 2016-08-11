@@ -293,7 +293,7 @@ class BasicCheckProvider implements CheckProvider
     public function checkCallable($value)
     {
         return new Result(
-            is_callable($callable),
+            is_callable($value),
             '{name} must be callable'
         );
     }
