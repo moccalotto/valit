@@ -59,8 +59,6 @@ trait ProvideViaReflection
     {
         $reflector = new ReflectionClass($this);
 
-        $methods = $reflector->getMethods(ReflectionMethod::IS_PUBLIC);
-
         $provides = [];
 
         foreach ($reflector->getMethods() as $method) {
