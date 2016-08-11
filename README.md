@@ -4,34 +4,50 @@
 
 Validate variables using a fluent syntax.
 
-Easily assert that variables have pass certain critera.
-
-Re-use the same validators for many variables.
-
 ## Installation
 
 To add this package as a local, per-project dependency to your project, simply add a dependency on
- `moccalotto/validation` to your project's `composer.json` file like so:
+ `moccalotto/valit` to your project's `composer.json` file like so:
 
 ```json
 {
     "require": {
-        "moccalotto/validation": "~0.3"
+        "moccalotto/valit": "~0.5"
     }
 }
 ```
 
-Alternatively simply call
+Alternatively execute the following command in your shell.
+
 ```bash
-composer require moccalotto/validation
+composer require moccalotto/valit
 ```
 
+## Usage
 
-## Checkers
+```php
+Ensure::that($age)
+    ->isNumeric()
+    ->isGreaterThanOrEqual(18)
+    ->isLowerThanOrEqual(75);
+```
 
-The `Check` class is the base of the validation package.
-A checker checks a variable against a set of rules and keeps an
-internal record of all the checks and failures.
+### Facades
+
+The `Check` and `Ensure` classes are the a so-called facade classes.
+In short they make it easier for you to use the Valit library.
+
+```php
+use Moccalotto\Valit\Facades\Check;
+use Moccalotto\Valit\Facades\Ensure;
+```
+
+The `Ensure` class allows you to make checks with fluent API,
+throwing an exception as soon as a check doesn't pass.
+
+The `Check` class allows you to make checks that do not throw exceptions.
+This means all checks are processed and that you can get a pretty rendered
+list of errors.
 
 ### Validity
 You can determine if a variable passes all your criteria by using the
@@ -40,22 +56,38 @@ You can determine if a variable passes all your criteria by using the
 Conversely you can use the `invalid` method to check if one or more
 checks did not pass.
 
+```php
+$x = 42; // the variable to validate
+
+$valid = Check::that($x)
+    ->isInt()                   // Success
+    ->isGreaterThanOrEqual(42)  // Success
+    ->isLessThan(100)           // Success
+    ->valid();                  // true
+```
+
 ### Error Messages
 If you want to know precisely which checks failed,
+you can use the `errorMessages` method.
 
 ```php
 $x = 42; // the variable to validate
 
 $errors = Check::that($x)
-    ->isNumeric()       // Success.
-    ->isFloat()         // Fail. X is int
-    ->floatEquals(40)   // Fail. X is not 40
-    ->errorMessages()
+    ->isNumeric()       // Success
+    ->isFloat()         // Fail
+    ->isCloseTo(40)     // Fail
+    ->errorMessages();
 
-/* [
-'value should have type double, but has type integer',
-'value should equal 40 with 5 decimals. But difference is 2',
-] */
+print_r($errors);
+
+/*
+Array
+(
+    [0] => value must have the type "double"
+    [1] => value must equal 40 with a margin of error of 1.0e-5
+)
+ */
 ```
 
 ### Aliases
@@ -65,15 +97,69 @@ value an alias. This is done via the `as` method. If you prefer, you can
 use the `alias` method, which does exactly the same.
 
 ```php
-$x = 'foo@example.com';
+$email = 'foo@example.com';
 
-$errors = Check::that($x)
-    ->as('Email')           // We could have used alias('email') instead
+$errors = Check::that($email)
+    ->as('Your Email Address')
     ->isEmail()             // Success
     ->endsWith('.co.uk')    // Fail
-    ->errorMessages()
+    ->errorMessages();
 
 /* [
-'Email must end with .co.uk, but it is string:"foo@example.com"',
+Array
+(
+    [0] => Your Email Address must end with the string ".co.uk"
+)
+*/
+
+// Notice it says "Your Email Address" rather than "value".
+```
+
+### Ensuring
+If you want to assert that all checks must pass, you can
+use the `Moccalotto\Valit\Ensure` facade.
+
+If a single check fails, we throw a
+`Moccalotto\Valit\ValidationException` that contains the
+error message for that check.
+
+
+```php
+$email = 'Doctor.Hansen@Example.com';
+
+try {
+    Ensure::that($x)
+        ->as('Email')
+        ->isEmail()             // Success
+        ->isLowercase()         // Throws ValidationException
+        ->endsWith('.co.uk');   // Not run
+} catch (ValidationException $e) {
+    var_dump($e->getMessage());
+    /*
+        string(42) "Email must be a syntax-valid email address"
+     */
+}
+```
+
+The `ValidationException` will contain a list of all the error messages,
+that can be accessed via the `getErrorMessages` method like so:
+
+```php
+$x = '42.3';
+
+try {
+    Check::that($x)
+        ->as('age')
+        ->isDigits()            // Fail
+        ->isGreaterThan(18)     // Success
+        ->isLowerThan(100)      // Success
+        ->orThrowException();
+
+} catch (ValidationException $e) {
+    $errors = $e->getErrorMessages();
+}
+
+/* [
+ 'age should only contain decimals, but is: string:"42.3"'
 ] */
 ```
