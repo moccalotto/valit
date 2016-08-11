@@ -105,7 +105,7 @@ $errors = Check::that($email)
     ->endsWith('.co.uk')    // Fail
     ->errorMessages();
 
-/* [
+/*
 Array
 (
     [0] => Your Email Address must end with the string ".co.uk"
