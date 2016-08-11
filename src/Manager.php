@@ -12,6 +12,7 @@
 namespace Moccalotto\Valit;
 
 use Moccalotto\Valit\Contracts\CheckManager;
+use Moccalotto\Valit\Contracts\CheckProvider;
 
 class Manager implements CheckManager
 {
@@ -69,6 +70,11 @@ class Manager implements CheckManager
     {
         $provider = new $providerClass($this);
 
+        $this->addProvider($provider);
+    }
+
+    public function addProvider(CheckProvider $provider)
+    {
         $this->checks += $provider->provides();
     }
 
