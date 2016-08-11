@@ -1,8 +1,16 @@
 {
     "name": "moccalotto/valit",
-    "type:": "library",
+    "type": "library",
     "description": "validate method arguments, http requests and input-data at runtime using self-documenting code",
     "keywords": ["validation", "verification", "data guard"],
+    "homepage": "https://moccalotto.github.io/docs/valit",
+    "authors": [
+        {
+            "name": "Kim Ravn Hansen",
+            "email": "moccalotto@gmail.com",
+            "homepage": "https://moccalotto.github.io"
+        }
+    ],
     "require": {
         "php": ">=5.5.0",
         "moccalotto/exemel": "^0.4.0"
