@@ -198,7 +198,7 @@ class StringCheckProvider
         $success = is_scalar($value)
             && ($endsWith === '' || substr($value, -strlen($endsWith)) === $endsWith);
 
-        return new Result($success, '{name} must end with the string "{0}"', [$endsWith]);
+        return new Result($success, '{name} must end with the string {0}', [$endsWith]);
     }
 
     /**
