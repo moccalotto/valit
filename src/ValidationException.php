@@ -18,20 +18,7 @@ use UnexpectedValueException;
  */
 class ValidationException extends UnexpectedValueException
 {
-    /**
-     * @var Result[]
-     */
-    protected $results;
-
-    /**
-     * @var string
-     */
-    protected $varName;
-
-    /**
-     * @var mixed
-     */
-    protected $value;
+    use Traits\ContainsResults;
 
     /**
      * Constructor.
@@ -46,23 +33,5 @@ class ValidationException extends UnexpectedValueException
         $this->results = $results;
 
         parent::__construct($message);
-    }
-
-    /**
-     * Get all check results.
-     */
-    public function getResults()
-    {
-        return $this->results;
-    }
-
-    public function getVarName()
-    {
-        return $this->varName;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
     }
 }

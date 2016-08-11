@@ -126,6 +126,7 @@ Array
 | If a single check fails, we throw a
 | `Moccalotto\Valit\ValidationException` that contains the
 | error message for that check.
+|
  */
 
 $email = 'Doctor.Hansen@Example.com';
@@ -140,5 +141,36 @@ try {
     var_dump($e->getMessage());
     /*
         string(42) "Email must be a syntax-valid email address"
+     */
+}
+
+/*
+|----------------------------------------------------------
+| Ensuring all checks
+|----------------------------------------------------------
+|
+| If you want to assert that all checks pass, and you want
+| info about all tests, you can use the Check facade in
+| combination with the `orThrowException` method.
+|
+ */
+
+$age = '42.3';
+
+try {
+    Check::that($age)
+        ->as('age')
+        ->isNaturalNumber()     // Fail
+        ->isGreaterThan(18)     // Success
+        ->isLowerThan(30)       // Fail
+        ->orThrowException();
+} catch (ValidationException $e) {
+    print_r($e->errorMessages());
+    /*
+        Array
+        (
+            [0] => age must be a natural number
+            [1] => age must be less than 30
+        )
      */
 }
