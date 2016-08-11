@@ -11,12 +11,13 @@
 
 namespace Moccalotto\Valit\Providers;
 
-use Moccalotto\Exemel\Xml as XmlInspector;
-use Moccalotto\Valit\Result;
-use Moccalotto\Valit\Traits\ProvideViaReflection;
 use SimpleXmlElement;
+use Moccalotto\Valit\Result;
+use Moccalotto\Exemel\Xml as XmlInspector;
+use Moccalotto\Valit\Contracts\CheckProvider;
+use Moccalotto\Valit\Traits\ProvideViaReflection;
 
-class XmlCheckProvider
+class XmlCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
 
@@ -64,23 +65,32 @@ class XmlCheckProvider
      */
     public function checkMatchesXmlAdvanced($value, $against, $skipWhite, $ignoreCase)
     {
-        $msg = '{name} must match the given XML document';
+        $message = '{name} must match the given XML document';
         $context = compact('against', 'skipWhite', 'ignoreCase');
+
+        $valueXmlInspector = null;
 
         if ($value instanceof SimpleXmlElement) {
             $valueXmlInspector = new XmlInspector($value);
-        } elseif (is_string($value)) {
-            if (! $this->canParse($value)) {
-                return new Result(false, $msg, $context);
-            }
-            $valueXmlInspector = new XmlInspector(new SimpleXmlElement($value));
-        } else {
-            $valueXmlInspector = false;
+
+            $success = $valueXmlInspector->sameAs($against, $skipWhite, $ignoreCase);
+
+            return new Result($success, $message, $context);
         }
 
-        $success = $valueXmlInspector && $valueXmlInspector->sameAs($against, $skipWhite, $ignoreCase);
+        if (!is_string($value)) {
+            return new Result(false, $message, $context);
+        }
 
-        return new Result($success, $msg, $context);
+        if (! $this->canParse($value)) {
+            return new Result(false, $message, $context);
+        }
+
+        $valueXmlInspector = new XmlInspector(new SimpleXmlElement($value));
+
+        $success = $valueXmlInspector->sameAs($against, $skipWhite, $ignoreCase);
+
+        return new Result($success, $message, $context);
     }
 
     /**
