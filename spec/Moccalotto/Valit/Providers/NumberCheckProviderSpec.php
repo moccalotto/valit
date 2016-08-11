@@ -86,6 +86,39 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkRealNumber(curl_init())->success()->shouldBe(false);
     }
 
+    public function it_checks_natural()
+    {
+        $this->checkNaturalNumber(0)->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('isRealNumber');
+        $this->provides()->shouldHaveKey('realNumber');
+
+        $this->checkNaturalNumber(0)->success()->shouldBe(true);
+        $this->checkNaturalNumber(1)->success()->shouldBe(true);
+        $this->checkNaturalNumber('0')->success()->shouldBe(true);
+        $this->checkNaturalNumber('1')->success()->shouldBe(true);
+        $this->checkNaturalNumber('-0')->success()->shouldBe(true);
+        $this->checkNaturalNumber('-10')->success()->shouldBe(true);
+        $this->checkNaturalNumber(PHP_INT_MAX)->success()->shouldBe(true);
+        $this->checkNaturalNumber((float) PHP_INT_MAX)->success()->shouldBe(true);
+
+        $this->checkNaturalNumber(3.14)->success()->shouldBe(false);
+        $this->checkNaturalNumber('3.14')->success()->shouldBe(false);
+        $this->checkNaturalNumber('-3.14')->success()->shouldBe(false);
+        $this->checkNaturalNumber(INF)->success()->shouldBe(false);
+        $this->checkNaturalNumber(NAN)->success()->shouldBe(false);
+        $this->checkNaturalNumber('')->success()->shouldBe(false);
+        $this->checkNaturalNumber('aff')->success()->shouldBe(false);
+        $this->checkNaturalNumber('22e')->success()->shouldBe(false);
+        $this->checkNaturalNumber('0x22e')->success()->shouldBe(false);
+        $this->checkNaturalNumber('1.3.4')->success()->shouldBe(false);
+        $this->checkNaturalNumber('NaN')->success()->shouldBe(false);
+
+        $this->checkNaturalNumber([])->success()->shouldBe(false);
+        $this->checkNaturalNumber((object) [])->success()->shouldBe(false);
+        $this->checkNaturalNumber(curl_init())->success()->shouldBe(false);
+    }
+
     public function it_checks_gt()
     {
         $this->checkGreaterThan(0, 0)->shouldHaveType('Moccalotto\Valit\Result');

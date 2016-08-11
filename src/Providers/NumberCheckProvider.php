@@ -13,9 +13,10 @@ namespace Moccalotto\Valit\Providers;
 
 use InvalidArgumentException;
 use Moccalotto\Valit\Result;
+use Moccalotto\Valit\Contracts\CheckProvider;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
 
-class NumberCheckProvider
+class NumberCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
 
@@ -101,6 +102,24 @@ class NumberCheckProvider
         $success = $this->numeric($value) && is_finite(floatval($value));
 
         return new Result($success, '{name} must be a real number');
+    }
+
+    /**
+     * Check that $value is a natural number.
+     *
+     * @Check(["isNaturalNumber", "naturalNumber", "isWholeNumber", "wholeNumber"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkNaturalNumber($value)
+    {
+        $success = $this->numeric($value)
+            && is_finite($value)
+            && (ceil($value) === floor($value));
+
+        return new Result($success, '{name} must be a natural number');
     }
 
     /**
