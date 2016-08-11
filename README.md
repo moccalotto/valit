@@ -141,22 +141,16 @@ try {
 }
 ```
 
-```php
-/*
-|----------------------------------------------------------
-| Ensuring all checks
-|----------------------------------------------------------
-|
-| If you want to assert that all checks pass, and you want
-| info about all tests, you can use the Check facade in
-| combination with the `orThrowException` method.
-|
-| The thrown `ValidationException` will contain a list of
-| all the error messages. These can be accessed via the
-| `errorMessages` method like so:
-|
- */
+### Ensuring all checks
+If you want to assert that all checks pass, and you want
+info about all tests, you can use the Check facade in
+combination with the `orThrowException` method.
 
+The thrown `ValidationException` will contain a list of
+all the error messages. These can be accessed via the
+`errorMessages` method like so:
+
+```php
 $age = '42.3';
 
 try {
