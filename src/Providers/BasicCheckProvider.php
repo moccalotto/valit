@@ -12,9 +12,10 @@
 namespace Moccalotto\Valit\Providers;
 
 use Moccalotto\Valit\Result;
+use Moccalotto\Valit\Contracts\CheckProvider;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
 
-class BasicCheckProvider
+class BasicCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
 
@@ -254,7 +255,7 @@ class BasicCheckProvider
      * @param mixed $value
      * @return Result
      */
-    public function checkResource()
+    public function checkResource($value)
     {
         return $this->checkHasType($value, 'resource');
     }
