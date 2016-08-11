@@ -144,7 +144,7 @@ class NumberCheckProvider
     /**
      * Check if $value < $against.
      *
-     * @Check(["lessThan", "isLessThan", "lt"])
+     * @Check(["lessThan", "isLessThan", "lowerThan", "isLowerThan", "lt"])
      *
      * @param mixed   $value
      * @param numeric $against
@@ -165,7 +165,7 @@ class NumberCheckProvider
     /**
      * Check if $value <= $against.
      *
-     * @Check(["lessThanOrEqual", "isLessThanOrEqual", "lte"])
+     * @Check(["lessThanOrEqual", "isLessThanOrEqual", "lowerThanOrEqual", "isLowerThanOrEqual", "lte"])
      *
      * @param mixed   $value
      * @param numeric $against

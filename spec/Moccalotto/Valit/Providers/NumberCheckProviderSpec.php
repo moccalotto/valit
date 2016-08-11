@@ -110,7 +110,9 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
         $this->provides()->shouldHaveKey('lt');
         $this->provides()->shouldHaveKey('lessThan');
+        $this->provides()->shouldHaveKey('lowerThan');
         $this->provides()->shouldHaveKey('isLessThan');
+        $this->provides()->shouldHaveKey('isLowerThan');
 
         $this->checkLessThan(1, 0)->success()->shouldBe(false);
         $this->checkLessThan(0, -1)->success()->shouldBe(false);
@@ -148,7 +150,9 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
         $this->provides()->shouldHaveKey('lte');
         $this->provides()->shouldHaveKey('lessThanOrEqual');
+        $this->provides()->shouldHaveKey('lowerThanOrEqual');
         $this->provides()->shouldHaveKey('isLessThanOrEqual');
+        $this->provides()->shouldHaveKey('isLowerThanOrEqual');
 
         $this->checkLessThanOrEqual(0, 0)->success()->shouldBe(true);
         $this->checkLessThanOrEqual(0, -0)->success()->shouldBe(true);
