@@ -20,6 +20,7 @@ class FluentSpec extends ObjectBehavior
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->shouldHaveType('Moccalotto\Valit\Fluent');
+        $this->shouldHaveType('Moccalotto\Valit\Contracts\FluentCheckInterface');
     }
 
     public function it_can_execute_fluent_checks()

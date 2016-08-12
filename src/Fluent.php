@@ -13,8 +13,9 @@ namespace Moccalotto\Valit;
 
 use BadMethodCallException;
 use Moccalotto\Valit\Contracts\CheckManager;
+use Moccalotto\Valit\Contracts\FluentCheckInterface;
 
-class Fluent
+class Fluent implements FluentCheckInterface
 {
     use Traits\ContainsResults;
 
