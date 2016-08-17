@@ -128,7 +128,7 @@ class DateCheckProvider implements CheckProvider
         return new Result($success, '{name} must be a datetime at noon');
     }
 
-    public function checkSameDayAs($value, $against)
+    public function checkSameDateAs($value, $against)
     {
         $againstDate = $this->dt($against)->format('Y-m-d');
 
@@ -141,8 +141,16 @@ class DateCheckProvider implements CheckProvider
     public function checkWeekdaySameAs($value, $against)
     {
         $success = $this->canParse($value)
-            && $this->dt($value)->format('N') == $this->dt($against)->format('N');
+            && $this->dt($value)->format('N') === $this->dt($against)->format('N');
 
         return new Result($success, '{name} must be a on a {0:raw}', [$this->dt($against)->format('l')]);
+    }
+
+    public function checkBirthday($value, $against)
+    {
+        $success = $this->canParse($value)
+            && $this->dt($against)->format('md') === $this->dt($value)->format('md');
+
+        return new Result($success, '{name} must be on the {0:raw}', [$this->dt($against)->format('F dS')]);;
     }
 }
