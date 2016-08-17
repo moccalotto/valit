@@ -20,7 +20,7 @@ class BasicCheckProvider implements CheckProvider
     use ProvideViaReflection;
 
     /**
-     * Check that $value is equals $against.
+     * Check that $value === $against.
      *
      * @Check(["isIdenticalTo", "identicalTo", "sameAs", "isSameAs"])
      *
@@ -35,7 +35,7 @@ class BasicCheckProvider implements CheckProvider
     }
 
     /**
-     * Check that $value is equals $against.
+     * Check that $value == $against (loose comparison).
      *
      * @Check(["is", "equals"])
      *

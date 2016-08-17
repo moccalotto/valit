@@ -11,6 +11,7 @@
 
 namespace Moccalotto\Valit;
 
+use SplObjectStorage;
 use Moccalotto\Valit\Contracts\CheckManager;
 use Moccalotto\Valit\Contracts\CheckProvider;
 
@@ -73,6 +74,36 @@ class Manager implements CheckManager
         $this->addProvider($provider);
     }
 
+    /**
+     * Get all checks.
+     *
+     * @return array
+     */
+    public function checks()
+    {
+        $closures = new SplObjectStorage();
+        $checks = [];
+
+        foreach ($this->checks as $alias => $closure) {
+            if (! $closures->contains($closure)) {
+                $check = new CheckMetaInfo($closure);
+                $checks[] = $check;
+                $closures->attach($closure, $check);
+            }
+
+            $check = $closures[$closure];
+
+            $check->addAlias($alias);
+        }
+
+        return $checks;
+    }
+
+    /**
+     * Add the checks from a provider to the manager.
+     *
+     * @param CheckProvider $provider
+     */
     public function addProvider(CheckProvider $provider)
     {
         $this->checks += $provider->provides();
