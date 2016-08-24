@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
  * @package Valit
@@ -13,11 +13,17 @@ namespace Moccalotto\Valit\Providers;
 
 use DateTime;
 use Exception;
-use Moccalotto\Valit\Result;
 use InvalidArgumentException;
 use Moccalotto\Valit\Contracts\CheckProvider;
+use Moccalotto\Valit\Result;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
 
+/**
+ * Check that dates for validity.
+ *
+ * Check that date strings are parsable into DateTimes with expected results.
+ * Check that dates-times are within certain ranges.
+ */
 class DateCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
@@ -25,15 +31,18 @@ class DateCheckProvider implements CheckProvider
     /**
      * Is the candidate value can be treated as a date.
      *
-     * @param string|DateTime $candidate
+     * @param string|DateTime $candidate Candidate date.
+     * @param string $format The format to use. @see http://php.net/manual/en/class.datetime.php
      *
      * @return bool
      */
-    protected function canParse($candidate)
+    protected function canParse($candidate, $format)
     {
         try {
-            $this->dt($candidate);
+            $this->dt($candidate, $format);
         } catch (Exception $e) {
+            error_log($e);
+
             return false;
         }
 
@@ -41,15 +50,19 @@ class DateCheckProvider implements CheckProvider
     }
 
     /**
-     * Convert the candidate value into a carbon date object.
+     * Convert the candidate value into a DateTime object.
      *
-     * @param mixed $candidate
+     * @param string|int|DateTime $candidate
      * @param string $format
      *
      * @return DateTime
      */
-    protected function dt($candidate, $format = null)
+    protected function dt($candidate, $format)
     {
+        if (empty($format) || !is_string($format)) {
+            throw new InvalidArgumentException('Format must be a non-empty string');
+        }
+
         if ($candidate instanceof DateTime) {
             return $candidate;
         }
@@ -58,29 +71,43 @@ class DateCheckProvider implements CheckProvider
             return DateTime::createFromFormat('U', $candidate);
         }
 
-        if ($format && is_string($candidate)) {
-            return DateTime::createFromFormat($format, $candidate);
+        if (is_string($candidate)) {
+            /**
+             * Use the given format to parse the DateTime (createFromFormat)
+             * otherwise try and infer the format (via the constructor).
+             * @var DateTime
+             */
+            $dt = DateTime::createFromFormat($format, $candidate)
+                ?: new DateTime($candidate);
+
+            if ($dt->format($format) === $candidate) {
+                return $dt;
+            };
+
+            throw new InvalidArgumentException(sprintf(
+                'Candidate could be parsed as a datetime via the format "%s"',
+                $format
+            ));
         }
 
-        if (is_string($candidate)) {
-            return new DateTime($candidate);
-        }
+        throw new InvalidArgumentException('Candidate must be an int, a string or a DateTime');
     }
 
     /**
      * Check if $value is a string containing valid xml.
      *
-     * @Check(["isValidXml", "validXml"])
+     * @Check(["isParsableDate", "parsableDate", "isDateString", "dateString"])
      *
      * @param mixed $value
+     * @param string $format
      *
      * @return Result
      */
-    public function checksDateParsable($value)
+    public function checksDateParsable($value, $format)
     {
         return new Result(
-            $this->canParse($value),
-            '{name} must be a canParse as a date'
+            $this->canParse($value, $format),
+            '{name} must be a parsable date'
         );
     }
 
@@ -151,6 +178,6 @@ class DateCheckProvider implements CheckProvider
         $success = $this->canParse($value)
             && $this->dt($against)->format('md') === $this->dt($value)->format('md');
 
-        return new Result($success, '{name} must be on the {0:raw}', [$this->dt($against)->format('F dS')]);;
+        return new Result($success, '{name} must be on the {0:raw}', [$this->dt($against)->format('F dS')]);
     }
 }
