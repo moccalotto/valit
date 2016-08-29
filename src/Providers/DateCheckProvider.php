@@ -32,17 +32,15 @@ class DateCheckProvider implements CheckProvider
      * Is the candidate value can be treated as a date.
      *
      * @param string|DateTime $candidate Candidate date.
-     * @param string $format The format to use. @see http://php.net/manual/en/class.datetime.php
+     * @param string|null $format The format to use. @see http://php.net/manual/en/class.datetime.php
      *
      * @return bool
      */
-    protected function canParse($candidate, $format)
+    protected function canParse($candidate, $format = null)
     {
         try {
             $this->dt($candidate, $format);
         } catch (Exception $e) {
-            error_log($e);
-
             return false;
         }
 
@@ -53,16 +51,15 @@ class DateCheckProvider implements CheckProvider
      * Convert the candidate value into a DateTime object.
      *
      * @param string|int|DateTime $candidate
-     * @param string $format
+     * @param string|null $format
      *
      * @return DateTime
+     *
+     * @throws InvalidArgumentException If $candidate is not string, int or DateTime, or if it could not be parsed.
+     *
      */
-    protected function dt($candidate, $format)
+    protected function dt($candidate, $format = null)
     {
-        if (empty($format) || !is_string($format)) {
-            throw new InvalidArgumentException('Format must be a non-empty string');
-        }
-
         if ($candidate instanceof DateTime) {
             return $candidate;
         }
@@ -71,26 +68,38 @@ class DateCheckProvider implements CheckProvider
             return DateTime::createFromFormat('U', $candidate);
         }
 
-        if (is_string($candidate)) {
+        if (!is_string($candidate)) {
+            throw new InvalidArgumentException('Candidate must be an int, a string or a DateTime');
+        }
+
+        if ($candidate === '') {
+            throw new InvalidArgumentException('Candidate cannot be an empty string');
+        }
+
+        try {
             /**
              * Use the given format to parse the DateTime (createFromFormat)
              * otherwise try and infer the format (via the constructor).
              * @var DateTime
              */
-            $dt = DateTime::createFromFormat($format, $candidate)
-                ?: new DateTime($candidate);
+            $dt = DateTime::createFromFormat((string) $format, $candidate) ?: new DateTime($candidate);
+        } catch (Exception $e) {
+            // new DateTime can throw Exception - we only want to throw InvalidArgumentException
+            // so we catch it.
+            throw new InvalidArgumentException(sprintf(
+                'Candidate could be parsed as a datetime via the format "%s"',
+                $format
+            ), 0, $e);
+        }
 
-            if ($dt->format($format) === $candidate) {
-                return $dt;
-            };
-
+        if ($format && $dt->format($format) !== $candidate) {
             throw new InvalidArgumentException(sprintf(
                 'Candidate could be parsed as a datetime via the format "%s"',
                 $format
             ));
         }
 
-        throw new InvalidArgumentException('Candidate must be an int, a string or a DateTime');
+        return $dt;
     }
 
     /**
@@ -111,10 +120,22 @@ class DateCheckProvider implements CheckProvider
         );
     }
 
+    /**
+     * Check if $value is a date after $against
+     *
+     * @Check(["isDateAfter", "occursAfter", "dateAfter", "laterThan", "isLaterThan"])
+     *
+     * @param mixed $value
+     * @param DateTime $against
+     *
+     * @return Result
+     */
     public function checkDateAfter($value, $against)
     {
-        $success = $this->canParse($value)
-            && $this->dt($value) > $this->dt($against);
+        if (!$against instanceof DateTime) {
+            throw new InvalidArgumentException('$against must be a DateTime object');
+        }
+        $success = $this->canParse($value) && $this->dt($value) > $against;
 
         return new Result($success, '{name} must be a date after {0:raw}', [$against]);
     }
@@ -123,6 +144,8 @@ class DateCheckProvider implements CheckProvider
     {
         $success = $this->canParse($value)
             && $this->dt($value) > $this->dt($against);
+
+        $success = $this->canParse($value);
 
         return new Result($success, '{name} must be a date before {0:raw}', [$against]);
     }
