@@ -94,7 +94,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is identical to false.
      *
-     * @Check(["isTrue", "true"])
+     * @Check(["isFalse", "false"])
      *
      * @param mixed $value
      *
