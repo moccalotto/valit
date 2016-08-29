@@ -138,6 +138,58 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsFalsy((object) [])->success()->shouldBe(false);
     }
 
+    public function it_checks_isTrue()
+    {
+        $this->checkIsTruthy(null)->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('true');
+        $this->provides()->shouldHaveKey('isTrue');
+
+        $this->checkIsTrue(true)->success()->shouldBe(true);
+
+        $this->checkIsTrue(0)->success()->shouldBe(false);
+        $this->checkIsTrue(1)->success()->shouldBe(false);
+        $this->checkIsTrue(2)->success()->shouldBe(false);
+        $this->checkIsTrue('')->success()->shouldBe(false);
+        $this->checkIsTrue([])->success()->shouldBe(false);
+        $this->checkIsTrue('0')->success()->shouldBe(false);
+        $this->checkIsTrue('1')->success()->shouldBe(false);
+        $this->checkIsTrue(0.0)->success()->shouldBe(false);
+        $this->checkIsTrue(0.1)->success()->shouldBe(false);
+        $this->checkIsTrue([0])->success()->shouldBe(false);
+        $this->checkIsTrue('00')->success()->shouldBe(false);
+        $this->checkIsTrue(null)->success()->shouldBe(false);
+        $this->checkIsTrue(false)->success()->shouldBe(false);
+        $this->checkIsTrue((object) [])->success()->shouldBe(false);
+        $this->checkIsTrue(curl_init())->success()->shouldBe(false);
+    }
+
+    public function it_checks_isFalse()
+    {
+        $this->checkIsTruthy(null)->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('false');
+        $this->provides()->shouldHaveKey('isFalse');
+
+        $this->checkIsFalse(false)->success()->shouldBe(true);
+
+        $this->checkIsFalse(0)->success()->shouldBe(false);
+        $this->checkIsFalse(1)->success()->shouldBe(false);
+        $this->checkIsFalse(2)->success()->shouldBe(false);
+        $this->checkIsFalse('')->success()->shouldBe(false);
+        $this->checkIsFalse([])->success()->shouldBe(false);
+        $this->checkIsFalse('0')->success()->shouldBe(false);
+        $this->checkIsFalse('1')->success()->shouldBe(false);
+        $this->checkIsFalse(0.0)->success()->shouldBe(false);
+        $this->checkIsFalse(0.1)->success()->shouldBe(false);
+        $this->checkIsFalse([0])->success()->shouldBe(false);
+        $this->checkIsFalse('00')->success()->shouldBe(false);
+        $this->checkIsFalse(null)->success()->shouldBe(false);
+        $this->checkIsFalse(true)->success()->shouldBe(false);
+        $this->checkIsFalse((object) [])->success()->shouldBe(false);
+        $this->checkIsFalse(curl_init())->success()->shouldBe(false);
+    }
+
     public function it_checks_isArray()
     {
         $this->checkArray([])->shouldHaveType('Moccalotto\Valit\Result');
