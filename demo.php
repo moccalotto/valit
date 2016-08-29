@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Hayttp package.
+ * This file is part of the Valit package.
  *
  * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
