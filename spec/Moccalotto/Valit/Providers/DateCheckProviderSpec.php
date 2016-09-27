@@ -109,6 +109,8 @@ class DateCheckProviderSpec extends ObjectBehavior
 
         $this->checkInThePast('1999-12-31 23:59:59')->success()->shouldBe(true);
         $this->checkInThePast($now->modify('-1 seconds'))->success()->shouldBe(true);
+        $this->checkInThePast(new DateTime('1999-12-31 23:59:59'))->success()->shouldBe(true);
+        $this->checkInThePast(new DateTimeImmutable('1999-12-31 23:59:59'))->success()->shouldBe(true);
 
         $this->checkInThePast($now)->success()->shouldBe(false);
         $this->checkInThePast($now->modify('+1 seconds'))->success()->shouldBe(false);
@@ -116,8 +118,8 @@ class DateCheckProviderSpec extends ObjectBehavior
 
     public function it_checks_inTheFuture()
     {
-        $this->provides()->shouldHaveKey('dateInThePast');
-        $this->provides()->shouldHaveKey('isDateInThePast');
+        $this->provides()->shouldHaveKey('dateInTheFuture');
+        $this->provides()->shouldHaveKey('isDateInTheFuture');
 
         // Override the current time to make testing easier.
         $now = new DateTimeImmutable('2000-01-01 00:00:00');
@@ -127,9 +129,30 @@ class DateCheckProviderSpec extends ObjectBehavior
 
         $this->checkInTheFuture($now->modify('+1 seconds'))->success()->shouldBe(true);
         $this->checkInTheFuture('2000-01-01 00:00:00.00001')->success()->shouldBe(true);
+        $this->checkInTheFuture(new DateTime('2000-01-01 00:00:00.00001'))->success()->shouldBe(true);
+        $this->checkInTheFuture(new DateTimeImmutable('2000-01-01 00:00:00.00001'))->success()->shouldBe(true);
 
         $this->checkInTheFuture($now)->success()->shouldBe(false);
         $this->checkInTheFuture('1999-12-31 23:59:59')->success()->shouldBe(false);
         $this->checkInTheFuture($now->modify('-1 seconds'))->success()->shouldBe(false);
+    }
+
+    public function it_checks_atMidnight()
+    {
+        $this->provides()->shouldHaveKey('dateTimeAtMidnight');
+        $this->provides()->shouldHaveKey('isDateTimeAtMidnight');
+        $this->provides()->shouldHaveKey('dateOnly');
+        $this->provides()->shouldHaveKey('isDateOnly');
+
+        $this->checkAtMidnight(null)->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->checkAtMidnight('1987-01-01')->success()->shouldBe(true);
+        $this->checkAtMidnight('1987-01-01 00:00:00')->success()->shouldBe(true);
+        $this->checkAtMidnight(new DateTime('1987-01-01'))->success()->shouldBe(true);
+        $this->checkAtMidnight(new DateTimeImmutable('1987-01-01'))->success()->shouldBe(true);
+
+        $this->checkAtMidnight('foo')->success()->shouldBe(false);
+        $this->checkAtMidnight('1987-01-01 00:00:01')->success()->shouldBe(false);
+        $this->checkAtMidnight('1987-01-01 00:00:00.000001')->success()->shouldBe(false);
     }
 }
