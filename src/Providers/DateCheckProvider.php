@@ -13,6 +13,7 @@ namespace Moccalotto\Valit\Providers;
 
 use DateTime;
 use Exception;
+use DateTimeInterface;
 use InvalidArgumentException;
 use Moccalotto\Valit\Contracts\CheckProvider;
 use Moccalotto\Valit\Result;
@@ -29,9 +30,36 @@ class DateCheckProvider implements CheckProvider
     use ProvideViaReflection;
 
     /**
+     * @var DateTimeInterface
+     */
+    protected $now;
+
+
+    /**
+     * In order to facilitate testing, we must be able to lock/override the "now" datetime.
+     *
+     * @param DateTimeInterface $now
+     */
+    public function overrideNow(DateTimeInterface $now)
+    {
+        $this->now = clone $now;
+    }
+
+    /**
+     * Get the current DateTime
+     *
+     * If the DateTime that represents the current time. If it was overridden with the overrideNow() method,
+     * we return that DateTime instead.
+     */
+    protected function now()
+    {
+        return $this->now ? clone $this->now : new DateTime();
+    }
+
+    /**
      * Is the candidate value can be treated as a date.
      *
-     * @param string|DateTime $candidate Candidate date.
+     * @param string|DateTimeInterface $candidate Candidate date.
      * @param string|null $format The format to use. @see http://php.net/manual/en/class.datetime.php
      *
      * @return bool
@@ -50,7 +78,7 @@ class DateCheckProvider implements CheckProvider
     /**
      * Convert the candidate value into a DateTime object.
      *
-     * @param string|int|DateTime $candidate
+     * @param string|int|DateTimeInterface $candidate
      * @param string|null $format
      *
      * @return DateTime
@@ -60,7 +88,7 @@ class DateCheckProvider implements CheckProvider
      */
     protected function dt($candidate, $format = null)
     {
-        if ($candidate instanceof DateTime) {
+        if ($candidate instanceof DateTimeInterface) {
             return $candidate;
         }
 
@@ -103,6 +131,26 @@ class DateCheckProvider implements CheckProvider
     }
 
     /**
+     * Compare two datetimes in a PHP-version agnostic way.
+     *
+     * PHP 5.* does not account for microseconds when comparing two datetimes.
+     * We therefore convert the datetimes into floating floating point timestamps
+     * and compare them as normal floats.
+     *
+     * @param DateTimeInterface $a,
+     * @param DateTimeInterface $b
+     *
+     * @return float The number of seconds between $a and $b.
+     */
+    protected function compare(DateTimeInterface $a, DateTimeInterface $b)
+    {
+        $aFloat = (float) $a->format('U.u');
+        $bFloat = (float) $b->format('U.u');
+
+        return $aFloat - $bFloat;
+    }
+
+    /**
      * Check if $value is a string containing valid xml.
      *
      * @Check(["isParsableDate", "parsableDate", "isDateString", "dateString"])
@@ -112,7 +160,7 @@ class DateCheckProvider implements CheckProvider
      *
      * @return Result
      */
-    public function checksDateParsable($value, $format)
+    public function checkDateParsable($value, $format)
     {
         return new Result(
             $this->canParse($value, $format),
@@ -126,40 +174,64 @@ class DateCheckProvider implements CheckProvider
      * @Check(["isDateAfter", "occursAfter", "dateAfter", "laterThan", "isLaterThan"])
      *
      * @param mixed $value
-     * @param DateTime $against
+     * @param DateTimeInterface $against
      *
      * @return Result
      */
     public function checkDateAfter($value, $against)
     {
-        if (!$against instanceof DateTime) {
+        if (!$against instanceof DateTimeInterface) {
             throw new InvalidArgumentException('$against must be a DateTime object');
         }
-        $success = $this->canParse($value) && $this->dt($value) > $against;
+        $success = $this->canParse($value)
+            && $this->compare($this->dt($value), $against) > 0;
 
         return new Result($success, '{name} must be a date after {0:raw}', [$against]);
     }
 
+    /**
+     * Check if $value is a date after $against
+     *
+     * @Check(["isDateBefore", "occursBefore", "dateBefore", "earlierThan", "isEarlierThan"])
+     *
+     * @param mixed $value
+     * @param DateTimeInterface $against
+     *
+     * @return Result
+     */
     public function checkDateBefore($value, $against)
     {
-        $success = $this->canParse($value)
-            && $this->dt($value) > $this->dt($against);
+        if (!$against instanceof DateTimeInterface) {
+            throw new InvalidArgumentException('$against must be a DateTime object');
+        }
 
-        $success = $this->canParse($value);
+        $success = $this->canParse($value)
+            && $this->compare($this->dt($value), $against) < 0;
 
         return new Result($success, '{name} must be a date before {0:raw}', [$against]);
     }
 
+    /**
+     * Check if $value is a date in the past
+     *
+     * @Check(["dateInThePast", "isDateInThePast"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
     public function checkInThePast($value)
     {
-        $success = $this->canParse($value) && $this->dt($value) < new DateTime();
+        $success = $this->canParse($value) &&
+            $this->compare($this->dt($value), $this->now()) < 0;
 
         return new Result($success, '{name} must be a date in the past');
     }
 
     public function checkInTheFuture($value)
     {
-        $success = $this->canParse($value) && $this->dt($value) > new DateTime();
+        $success = $this->canParse($value) &&
+            $this->compare($this->dt($value), $this->now()) > 0;
 
         return new Result($success, '{name} must be a future date');
     }

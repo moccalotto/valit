@@ -14,6 +14,7 @@
 namespace spec\Moccalotto\Valit\Providers;
 
 use DateTime;
+use DateTimeImmutable;
 use PhpSpec\ObjectBehavior;
 
 class DateCheckProviderSpec extends ObjectBehavior
@@ -31,20 +32,26 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('parsableDate');
         $this->provides()->shouldHaveKey('isParsableDate');
 
-        $this->checksDateParsable('1987-01-01', 'Y-m-d')->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkDateParsable('1987-01-01', 'Y-m-d')->shouldHaveType('Moccalotto\Valit\Result');
 
-        $this->checksDateParsable('1987-01-01', 'Y-m-d')->success()->shouldBe(true);
+        $this->checkDateParsable(1, 'U')->success()->shouldBe(true); // tiemstamp
+        $this->checkDateParsable('1987-01-01', 'Y-m-d')->success()->shouldBe(true);
+        $this->checkDateParsable('-2200-01-01', 'Y-m-d')->success()->shouldBe(true);
+        $this->checkDateParsable('536457600.089000', 'U.u')->success()->shouldBe(true);
+        $this->checkDateParsable('1987-01-01 23:55:55', 'Y-m-d H:i:s')->success()->shouldBe(true);
+        $this->checkDateParsable('1987-01-01 23:55:55.000001', 'Y-m-d H:i:s.u')->success()->shouldBe(true);
 
-        $this->checksDateParsable('-2200-01-01', 'Y-m-d')->success()->shouldBe(true);
-        $this->checksDateParsable('536457600.089000', 'U.u')->success()->shouldBe(true);
-        $this->checksDateParsable('1987-01-01 23:55:55', 'Y-m-d H:i:s')->success()->shouldBe(true);
-        $this->checksDateParsable('1987-01-01 23:55:55.000001', 'Y-m-d H:i:s.u')->success()->shouldBe(true);
+        $this->checkDateParsable('0000-00-00', 'Y-m-d')->success()->shouldBe(false);
+        $this->checkDateParsable('1987-13-01', 'Y-m-d')->success()->shouldBe(false);
+        $this->checkDateParsable('1987-01-32', 'Y-m-d')->success()->shouldBe(false);
+        $this->checkDateParsable('21244-01-31', 'Y-m-d')->success()->shouldBe(false);
+        $this->checkDateParsable('1987-01-01 25:55:55', 'Y-m-d H:i:s')->success()->shouldBe(false);
 
-        $this->checksDateParsable('0000-00-00', 'Y-m-d')->success()->shouldBe(false);
-        $this->checksDateParsable('1987-13-01', 'Y-m-d')->success()->shouldBe(false);
-        $this->checksDateParsable('1987-01-32', 'Y-m-d')->success()->shouldBe(false);
-        $this->checksDateParsable('21244-01-31', 'Y-m-d')->success()->shouldBe(false);
-        $this->checksDateParsable('1987-01-01 25:55:55', 'Y-m-d H:i:s')->success()->shouldBe(false);
+        $this->checkDateParsable(1.0, null)->success()->shouldBe(false);
+        $this->checkDateParsable(null, null)->success()->shouldBe(false);
+        $this->checkDateParsable('foo', null)->success()->shouldBe(false);
+        $this->checkDateParsable(curl_init(), null)->success()->shouldBe(false);
+        $this->checkDateParsable((object) [], null)->success()->shouldBe(false);
     }
 
     public function it_checks_dateAfter()
@@ -62,8 +69,67 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkDateAfter('1987-01-02', new DateTime('1987-01-01'))->success()->shouldBe(true);
         $this->checkDateAfter('1987-01-01 00:00:01', new DateTime('1987-01-01 00:00:00'))->success()->shouldBe(true);
         $this->checkDateAfter('1987-01-01 00:00:00.000001', new DateTime('1987-01-01 00:00:00.000000'))->success()->shouldBe(true);
+        $this->checkDateAfter(new DateTime('1987-01-01 00:00:00.000001'), new DateTime('1987-01-01 00:00:00.000000'))->success()->shouldBe(true);
 
         $this->checkDateAfter('1987-01-01', new DateTime('1987-01-01'))->success()->shouldBe(false);
         $this->checkDateAfter('1987-01-01', new DateTime('1987-01-02'))->success()->shouldBe(false);
+    }
+
+    public function it_checks_dateBefore()
+    {
+        $this->provides()->shouldHaveKey('dateBefore');
+        $this->provides()->shouldHaveKey('earlierThan');
+        $this->provides()->shouldHaveKey('isDateBefore');
+        $this->provides()->shouldHaveKey('isEarlierThan');
+        $this->provides()->shouldHaveKey('occursBefore');
+
+        $this->shouldThrow('InvalidArgumentException')->during('checkDateBefore', ['fooDate', 'barDate']);
+
+        $this->checkDateBefore('1987-01-01', new DateTime('1987-01-01'))->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->checkDateBefore('1987-01-01', new DateTime('1987-01-02'))->success()->shouldBe(true);
+        $this->checkDateBefore('1987-01-01 00:00:00', new DateTime('1987-01-01 00:00:01'))->success()->shouldBe(true);
+        $this->checkDateBefore('1987-01-01 00:00:00.000000', new DateTime('1987-01-01 00:00:00.000001'))->success()->shouldBe(true);
+        $this->checkDateBefore(new DateTime('1987-01-01 00:00:00.000000'), new DateTime('1987-01-01 00:00:00.000001'))->success()->shouldBe(true);
+
+        $this->checkDateBefore('1987-01-01', new DateTime('1987-01-01'))->success()->shouldBe(false);
+        $this->checkDateBefore('1987-01-02', new DateTime('1987-01-01'))->success()->shouldBe(false);
+    }
+
+    public function it_checks_inThePast()
+    {
+        $this->provides()->shouldHaveKey('dateInThePast');
+        $this->provides()->shouldHaveKey('isDateInThePast');
+
+        // Override the current time to make testing easier.
+        $now = new DateTimeImmutable('2000-01-01 00:00:00');
+        $this->overrideNow($now);
+
+        $this->checkInThePast($now)->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->checkInThePast('1999-12-31 23:59:59')->success()->shouldBe(true);
+        $this->checkInThePast($now->modify('-1 seconds'))->success()->shouldBe(true);
+
+        $this->checkInThePast($now)->success()->shouldBe(false);
+        $this->checkInThePast($now->modify('+1 seconds'))->success()->shouldBe(false);
+    }
+
+    public function it_checks_inTheFuture()
+    {
+        $this->provides()->shouldHaveKey('dateInThePast');
+        $this->provides()->shouldHaveKey('isDateInThePast');
+
+        // Override the current time to make testing easier.
+        $now = new DateTimeImmutable('2000-01-01 00:00:00');
+        $this->overrideNow($now);
+
+        $this->checkInTheFuture($now)->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->checkInTheFuture($now->modify('+1 seconds'))->success()->shouldBe(true);
+        $this->checkInTheFuture('2000-01-01 00:00:00.00001')->success()->shouldBe(true);
+
+        $this->checkInTheFuture($now)->success()->shouldBe(false);
+        $this->checkInTheFuture('1999-12-31 23:59:59')->success()->shouldBe(false);
+        $this->checkInTheFuture($now->modify('-1 seconds'))->success()->shouldBe(false);
     }
 }
