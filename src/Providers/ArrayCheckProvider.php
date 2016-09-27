@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
  * @package Valit
@@ -113,5 +113,21 @@ class ArrayCheckProvider implements CheckProvider
         $success = is_array($value) && count($value) > 0;
 
         return new Result($success, '{name} must be a non-empty array');
+    }
+
+    /**
+     * Check that $value is an array with unique values.
+     *
+     * @Check(["hasUniqueValues", "uniqueValues"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkUniqueValues($value)
+    {
+        $success = is_array($value) && count($value) == count(array_unique($value));
+
+        return new Result($success, '{name} must be an array with unique values');
     }
 }

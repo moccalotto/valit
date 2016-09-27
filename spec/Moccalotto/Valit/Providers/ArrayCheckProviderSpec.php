@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
  * @package Valit
@@ -115,6 +115,42 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkNotEmpty([null => null])->success()->shouldBe(true);
 
         $this->checkNotEmpty([])->success()->shouldBe(false);
+
+        $this->checkNumericIndex(1)->success()->shouldBe(false);
+        $this->checkNumericIndex(1.0)->success()->shouldBe(false);
+        $this->checkNumericIndex(null)->success()->shouldBe(false);
+        $this->checkNumericIndex('array')->success()->shouldBe(false);
+        $this->checkNumericIndex(curl_init())->success()->shouldBe(false);
+        $this->checkNumericIndex((object) [])->success()->shouldBe(false);
+        $this->checkNumericIndex('ArrayObject')->success()->shouldBe(false);
+    }
+
+    public function it_checks_unqiueValues()
+    {
+        $this->checkUniqueValues([])->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('hasUniqueValues');
+        $this->provides()->shouldHaveKey('uniqueValues');
+
+        $this->checkUniqueValues([])->success()->shouldBe(true);
+        $this->checkUniqueValues([1,2,3])->success()->shouldBe(true);
+        $this->checkUniqueValues(['a', 'b', 'c'])->success()->shouldBe(true);
+        $this->checkUniqueValues(['a', 'b', 'c', 1, 2, 3])->success()->shouldBe(true);
+        $this->checkUniqueValues(['a' => 1, 'b' => 2, 'c' => 3])->success()->shouldBe(true);
+
+        $this->checkUniqueValues([1, 1])->success()->shouldBe(false);
+        $this->checkUniqueValues(['', ''])->success()->shouldBe(false);
+        $this->checkUniqueValues([1, 2, 3, 1])->success()->shouldBe(false);
+        $this->checkUniqueValues(['a', 'b', 'c', 'a'])->success()->shouldBe(false);
+        $this->checkUniqueValues(['a' => 1, 'b' => 1])->success()->shouldBe(false);
+
+        $this->checkUniqueValues(1)->success()->shouldBe(false);
+        $this->checkUniqueValues(1.0)->success()->shouldBe(false);
+        $this->checkUniqueValues(null)->success()->shouldBe(false);
+        $this->checkUniqueValues('array')->success()->shouldBe(false);
+        $this->checkUniqueValues(curl_init())->success()->shouldBe(false);
+        $this->checkUniqueValues((object) [])->success()->shouldBe(false);
+        $this->checkUniqueValues('ArrayObject')->success()->shouldBe(false);
     }
 
     /*
