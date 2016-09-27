@@ -27,11 +27,12 @@ class Manager implements CheckManager
      */
     protected $providers = [
         Providers\XmlCheckProvider::class,
+        Providers\DateCheckProvider::class,
         Providers\JsonCheckProvider::class,
+        Providers\UuidCheckProvider::class,
         Providers\BasicCheckProvider::class,
         Providers\NumberCheckProvider::class,
         Providers\StringCheckProvider::class,
-        Providers\UuidCheckProvider::class,
     ];
 
     /**
