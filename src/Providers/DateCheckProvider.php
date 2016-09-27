@@ -256,14 +256,14 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkAtMidnight($value)
     {
-        $success = $this->canParse($value) && $this->dt($value)->format('H:i:s') === '00:00:00';
+        $success = $this->canParse($value) && $this->dt($value)->format('His.u') == 0;
 
         return new Result($success, '{name} must be a datetime at midnight');
     }
 
     public function checkAtNoon($value)
     {
-        $success = $this->canParse($value) && $this->dt($value)->format('h:i:s') === '12:00:00';
+        $success = $this->canParse($value) && $this->dt($value)->format('His.u') == 120000;
 
         return new Result($success, '{name} must be a datetime at noon');
     }
