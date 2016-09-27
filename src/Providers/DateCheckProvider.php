@@ -228,6 +228,15 @@ class DateCheckProvider implements CheckProvider
         return new Result($success, '{name} must be a date in the past');
     }
 
+    /**
+     * Check if $value is a date in the past
+     *
+     * @Check(["dateInTheFuture", "isDateInTheFuture"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
     public function checkInTheFuture($value)
     {
         $success = $this->canParse($value) &&
@@ -236,9 +245,18 @@ class DateCheckProvider implements CheckProvider
         return new Result($success, '{name} must be a future date');
     }
 
+    /**
+     * Check if $value is a date where the time-component is 00:00:00
+     *
+     * @Check(["dateTimeAtMidnight", "isDateTimeAtMidnight", "isDateOnly", "dateOnly"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
     public function checkAtMidnight($value)
     {
-        $success = $this->canParse($value) && $this->dt($value)->format('h:i:s') === '00:00:00';
+        $success = $this->canParse($value) && $this->dt($value)->format('H:i:s') === '00:00:00';
 
         return new Result($success, '{name} must be a datetime at midnight');
     }
