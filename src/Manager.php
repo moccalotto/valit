@@ -34,6 +34,7 @@ class Manager implements CheckManager
         Providers\NumberCheckProvider::class,
         Providers\StringCheckProvider::class,
         Providers\ArrayCheckProvider::class,
+        Providers\ObjectCheckProvider::class,
     ];
 
     /**
