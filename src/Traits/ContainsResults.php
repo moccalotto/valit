@@ -15,7 +15,7 @@ trait ContainsResults
     /**
      * @var string
      */
-    protected $varName;
+    protected $varName = 'value';
 
     /**
      * @var mixed
