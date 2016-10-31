@@ -106,8 +106,10 @@ class ArrayCheckProviderSpec extends ObjectBehavior
     {
         $this->checkNotEmpty([])->shouldHaveType('Moccalotto\Valit\Result');
 
-        $this->provides()->shouldHaveKey('isNotEmptyArray');
+        $this->provides()->shouldHaveKey('notEmpty');
+        $this->provides()->shouldHaveKey('isNotEmpty');
         $this->provides()->shouldHaveKey('notEmptyArray');
+        $this->provides()->shouldHaveKey('isNotEmptyArray');
 
         $this->checkNotEmpty([0])->success()->shouldBe(true);
         $this->checkNotEmpty([1])->success()->shouldBe(true);
@@ -151,6 +153,23 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkUniqueValues(curl_init())->success()->shouldBe(false);
         $this->checkUniqueValues((object) [])->success()->shouldBe(false);
         $this->checkUniqueValues('ArrayObject')->success()->shouldBe(false);
+    }
+
+    public function it_checks_keyExists()
+    {
+        $this->checkKeyExists([], 1)->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('hasKey');
+        $this->provides()->shouldHaveKey('keyExists');
+
+        $this->checkKeyExists(['a' => 'b'], 'a')->success()->shouldBe(true);
+        $this->checkKeyExists([0], 0)->success()->shouldBe(true);
+        $this->checkKeyExists(new ArrayObject(['a']), 0)->success()->shouldBe(true);
+
+        $this->checkKeyExists(['a' => 'b'], 0)->success()->shouldBe(false);
+        $this->checkKeyExists([], 0)->success()->shouldBe(false);
+        $this->checkKeyExists((object)[0], 0)->success()->shouldBe(false);
+        $this->checkKeyExists("kim", 0)->success()->shouldBe(false);
     }
 
     /*
