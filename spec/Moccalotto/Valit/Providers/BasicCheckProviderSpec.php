@@ -57,6 +57,21 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIdenticalTo(curl_init(), curl_init())->success()->shouldBe(false);
     }
 
+    public function it_checks_isOneOf()
+    {
+        $this->checkIsOneOf('a', [])->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('isOneOf');
+
+        $this->checkIsOneOf(1, [1])->success()->shouldBe(true);
+        $this->checkIsOneOf(1.23, [1.23, 1, 0])->success()->shouldBe(true);
+        $this->checkIsOneOf(null, [false])->success()->shouldBe(true);
+
+        $this->checkIsOneOf(null, [1,2,3])->success()->shouldBe(false);
+        $this->checkIsOneOf(2, [1.23, 1, 0])->success()->shouldBe(false);
+        $this->checkIsOneOf(curl_init(), [curl_init()])->success()->shouldBe(false);
+    }
+
     public function it_checks_equals()
     {
         $this->checkEquals(null, null)->shouldHaveType('Moccalotto\Valit\Result');

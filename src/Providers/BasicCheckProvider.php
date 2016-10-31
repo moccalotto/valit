@@ -11,9 +11,10 @@
 
 namespace Moccalotto\Valit\Providers;
 
-use Moccalotto\Valit\Result;
 use Moccalotto\Valit\Contracts\CheckProvider;
+use Moccalotto\Valit\Result;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
+use UnexpectedValueException;
 
 class BasicCheckProvider implements CheckProvider
 {
@@ -47,6 +48,35 @@ class BasicCheckProvider implements CheckProvider
     public function checkEquals($value, $against)
     {
         return new Result($value == $against, '{name} must equal {0}', [$against]);
+    }
+
+    /**
+     * Check that $value is equal to (==) one of the values in $against.
+     *
+     * @Check("isOneOf")
+     *
+     * @param mixed $value
+     * @param array $against
+     *
+     * @return Result
+     */
+    public function checkIsOneOf($value, $against)
+    {
+        if (! is_array($against)) {
+            throw new UnexpectedValueException('$against must be an array');
+        }
+
+        $msg = sprintf('{name} must match one of %s', implode(', ', array_map(function ($int) {
+            return '{'.$int.'}';
+        }, range(0, count($against) - 1))));
+
+        foreach ($against as $match) {
+            if ($value == $match) {
+                return new Result(true, $msg, $against);
+            }
+        }
+
+        return new Result(false, $msg, $against);
     }
 
     /**
