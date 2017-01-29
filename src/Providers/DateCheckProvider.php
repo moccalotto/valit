@@ -151,7 +151,7 @@ class DateCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a string containing valid xml.
+     * Check if $value is a string containing a parseable date.
      *
      * @Check(["isParsableDate", "parsableDate", "isDateString", "dateString"])
      *
