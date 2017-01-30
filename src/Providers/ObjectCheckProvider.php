@@ -41,7 +41,7 @@ class ObjectCheckProvider implements CheckProvider
     /**
      * Check if is class name.
      *
-     * @Check(["isClassName", "isClass", "className"])
+     * @Check(["isClassName", "isClass", "className", "isOfClass"])
      *
      * @param mixed $value
      *

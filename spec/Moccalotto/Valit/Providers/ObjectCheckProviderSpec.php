@@ -57,6 +57,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
     public function it_checks_className()
     {
         $this->provides()->shouldHaveKey('isClass');
+        $this->provides()->shouldHaveKey('isOfClass');
         $this->provides()->shouldHaveKey('className');
         $this->provides()->shouldHaveKey('isClassName');
 
