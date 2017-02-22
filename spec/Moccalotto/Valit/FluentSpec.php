@@ -56,4 +56,19 @@ class FluentSpec extends ObjectBehavior
         $this->shouldThrow('Moccalotto\Valit\ValidationException')
             ->during('orThrowException', []);
     }
+
+    public function it_can_return_the_initial_value()
+    {
+        $this->beConstructedWith(Manager::instance(), 42, false);
+        $this->value()->shouldBe(42);
+        $this->isNegative()->value()->shouldBe(42);
+    }
+
+    public function it_can_return_the_initial_value_with_a_fallback()
+    {
+        $this->beConstructedWith(Manager::instance(), 42, false);
+        $this->valueOr('foo')->shouldBe(42);
+        $this->isNegative()->valueOr('foo')->shouldBe('foo');
+    }
+
 }
