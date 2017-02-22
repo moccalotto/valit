@@ -288,4 +288,50 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkContainsString((object) [], '')->success()->shouldBe(false);
         $this->checkContainsString(curl_init(), '')->success()->shouldBe(false);
     }
+
+    public function it_checks_shorterThan()
+    {
+        $this->checkShorterThan('', 0)->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('shorterThan');
+        $this->provides()->shouldHaveKey('stringShorterThan');
+
+        $this->checkShorterThan('kkk æøå', 10)->success()->shouldBe(true);
+        $this->checkShorterThan('kkk æøå', 8)->success()->shouldBe(true);
+        $this->checkShorterThan('kkk æøå', 7)->success()->shouldBe(false);
+        $this->checkShorterThan('kkk æøå', 1)->success()->shouldBe(false);
+
+        $this->shouldThrow('InvalidArgumentException')->during('checkShorterThan', ['', null]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkShorterThan', ['', []]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkShorterThan', ['', (object) []]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkShorterThan', ['', curl_init()]);
+
+        $this->checkShorterThan(null, 100)->success()->shouldBe(false);
+        $this->checkShorterThan([], 100)->success()->shouldBe(false);
+        $this->checkShorterThan((object) [], 100)->success()->shouldBe(false);
+        $this->checkShorterThan(curl_init(), 100)->success()->shouldBe(false);
+    }
+
+    public function it_checks_longerThan()
+    {
+        $this->checkLongerThan('', 0)->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('longerThan');
+        $this->provides()->shouldHaveKey('stringLongerThan');
+
+        $this->checkLongerThan('kkk æøå', 1)->success()->shouldBe(true);
+        $this->checkLongerThan('kkk æøå', 6)->success()->shouldBe(true);
+        $this->checkLongerThan('kkk æøå', 7)->success()->shouldBe(false);
+        $this->checkLongerThan('kkk æøå', 10)->success()->shouldBe(false);
+
+        $this->shouldThrow('InvalidArgumentException')->during('checkLongerThan', ['', null]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkLongerThan', ['', []]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkLongerThan', ['', (object) []]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkLongerThan', ['', curl_init()]);
+
+        $this->checkLongerThan(null, 100)->success()->shouldBe(false);
+        $this->checkLongerThan([], 100)->success()->shouldBe(false);
+        $this->checkLongerThan((object) [], 100)->success()->shouldBe(false);
+        $this->checkLongerThan(curl_init(), 100)->success()->shouldBe(false);
+    }
 }
