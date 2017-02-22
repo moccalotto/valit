@@ -283,9 +283,9 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->shouldThrow('InvalidArgumentException')->during('checkContainsString', ['', (object) []]);
         $this->shouldThrow('InvalidArgumentException')->during('checkContainsString', ['', curl_init()]);
 
-        $this->checkEndsWith(null, '')->success()->shouldBe(false);
-        $this->checkEndsWith([], '')->success()->shouldBe(false);
-        $this->checkEndsWith((object) [], '')->success()->shouldBe(false);
-        $this->checkEndsWith(curl_init(), '')->success()->shouldBe(false);
+        $this->checkContainsString(null, '')->success()->shouldBe(false);
+        $this->checkContainsString([], '')->success()->shouldBe(false);
+        $this->checkContainsString((object) [], '')->success()->shouldBe(false);
+        $this->checkContainsString(curl_init(), '')->success()->shouldBe(false);
     }
 }
