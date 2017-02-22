@@ -294,6 +294,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkShorterThan('', 0)->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('shorterThan');
+        $this->provides()->shouldHaveKey('isShorterThan');
         $this->provides()->shouldHaveKey('stringShorterThan');
 
         $this->checkShorterThan('kkk æøå', 10)->success()->shouldBe(true);
@@ -317,6 +318,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkLongerThan('', 0)->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('longerThan');
+        $this->provides()->shouldHaveKey('isLongerThan');
         $this->provides()->shouldHaveKey('stringLongerThan');
 
         $this->checkLongerThan('kkk æøå', 1)->success()->shouldBe(true);

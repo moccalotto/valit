@@ -227,7 +227,7 @@ class StringCheckProvider implements CheckProvider
     /**
      * Check if $value is a string that is shorter than $length
      *
-     * @Check(["shorterThan", "stringShorterThan"])
+     * @Check(["shorterThan", "stringShorterThan", "isShorterThan"])
      *
      * @param mixed $value
      * @param int $length
@@ -248,7 +248,7 @@ class StringCheckProvider implements CheckProvider
     /**
      * Check if $value is a string that is longer than $length
      *
-     * @Check(["longerThan", "stringLongerThan"])
+     * @Check(["longerThan", "stringLongerThan", "isLongerThan"])
      *
      * @param mixed $value
      * @param int $length
