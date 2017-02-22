@@ -109,6 +109,33 @@ class Fluent implements FluentCheckInterface
     }
 
     /**
+     * Get the validated value, but use a fallback if the validation failed.
+     *
+     * @param mixed $valueIfValidationFails
+     *
+     * @return mixed
+     */
+    public function valueOr($valueIfValidationFails)
+    {
+        if ($this->failures === 0) {
+            return $this->value;
+        }
+
+        return $valueIfValidationFails;
+    }
+
+    /**
+     * Get the validated value.
+     *
+     * @return mixed
+     */
+    public function value()
+    {
+        return $this->value;
+    }
+
+
+    /**
      * Alias of hasErrors.
      *
      * @return bool
