@@ -223,4 +223,46 @@ class StringCheckProvider implements CheckProvider
 
         return new Result($success, '{name} must contain the string "{0}"', [$contains]);
     }
+
+    /**
+     * Check if $value is a string that is shorter than $length
+     *
+     * @Check(["shorterThan", "stringShorterThan"])
+     *
+     * @param mixed $value
+     * @param int $length
+     *
+     * @return Result
+     */
+    public function checkShorterThan($value, $length)
+    {
+        if (! is_int($length)) {
+            throw new InvalidArgumentException('Second argument must be an integer');
+        }
+
+        $success = is_scalar($value) &&  mb_strlen($value) < $length;
+
+        return new Result($success, '{name} must be a string that is shorter than {0}', [$length]);
+    }
+
+    /**
+     * Check if $value is a string that is longer than $length
+     *
+     * @Check(["longerThan", "stringLongerThan"])
+     *
+     * @param mixed $value
+     * @param int $length
+     *
+     * @return Result
+     */
+    public function checkLongerThan($value, $length)
+    {
+        if (! is_int($length)) {
+            throw new InvalidArgumentException('Second argument must be an integer');
+        }
+
+        $success = is_scalar($value) &&  mb_strlen($value) > $length;
+
+        return new Result($success, '{name} must be a string that is longer than {0}', [$length]);
+    }
 }
