@@ -156,6 +156,9 @@ class Manager implements CheckManager
      */
     public function hasCheck($checkName)
     {
+        if (!is_string($checkName)) {
+            return false;
+        }
         return isset($this->checks[$checkName]);
     }
 
