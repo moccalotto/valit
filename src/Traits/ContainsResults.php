@@ -52,9 +52,16 @@ trait ContainsResults
         return $this->results;
     }
 
+    /**
+     * Add new result to the internal results list.
+     *
+     * @param Result $results
+     *
+     * @throws ValidationException if we are in throwOnFailure-mode and the result is an error.
+     */
     public function addCustomResult(Result $result)
     {
-        $this->results[] = $result;
+        $this->registerResult($result);
     }
 
     /**
