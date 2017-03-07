@@ -38,6 +38,12 @@ class ManagerSpec extends ObjectBehavior
             ->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->executeCheck('isNumeric', 42, [])->success()->shouldBe(true);
+
+        $this->shouldThrow('UnexpectedValueException')->duringExecuteCheck(
+            'someCheckThatDoesntExist',
+            42,
+            []
+        );
     }
 
     public function it_has_default_global_instance()
