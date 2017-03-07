@@ -52,6 +52,11 @@ trait ContainsResults
         return $this->results;
     }
 
+    public function addCustomResult(Result $result)
+    {
+        $this->results[] = $result;
+    }
+
     /**
      * Add new result to the internal results list.
      *
@@ -81,6 +86,14 @@ trait ContainsResults
             );
         }
     }
+
+    protected function registerManyResults(array $results)
+    {
+        foreach ($results as $result) {
+            $this->registerResult($result);
+        }
+    }
+
 
     /**
      * Get the results as an associative array.
