@@ -130,11 +130,14 @@ class Result
         $replacecments = ['{name}' => $name];
 
         foreach ($context as $key => $value) {
+            $raw = is_scalar($value) || is_callable([$value, '__toString'])
+                ? (string) $value
+                : $this->formatValue($value);
             $replacecments[sprintf('{%s}', $key)] = $this->formatValue($value);
-            $replacecments[sprintf('{%s:raw}', $key)] = (string) $value;
+            $replacecments[sprintf('{%s:raw}', $key)] = $raw;
             $replacecments[sprintf('{%s:type}', $key)] = gettype($value);
-            $replacecments[sprintf('{%s:float}', $key)] = is_scalar($value) ? sprintf('%g', $value) : '[not numeric]';
-            $replacecments[sprintf('{%s:hex}', $key)] = is_scalar($value) ? sprintf('%x', $value) : '[not numeric]';
+            $replacecments[sprintf('{%s:float}', $key)] = is_numeric($value) ? sprintf('%g', $value) : '[not numeric]';
+            $replacecments[sprintf('{%s:hex}', $key)] = ctype_digit($value) ? sprintf('%x', $value) : '[not numeric]';
         }
 
         return strtr($this->message, $replacecments);
