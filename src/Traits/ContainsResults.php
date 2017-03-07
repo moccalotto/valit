@@ -57,11 +57,14 @@ trait ContainsResults
      *
      * @param Result $results
      *
+     * @return $this
+     *
      * @throws ValidationException if we are in throwOnFailure-mode and the result is an error.
      */
     public function addCustomResult(Result $result)
     {
         $this->registerResult($result);
+        return $this;
     }
 
     /**

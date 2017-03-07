@@ -70,22 +70,26 @@ class Fluent implements FluentCheckInterface
      */
     public function __call($methodName, $args)
     {
-        if ($this->manager->hasCheck($methodName)) {
-            $result = $this->manager->executeCheck($methodName, $this->value, $args);
-
-            $this->registerResult($result);
-
-            return $this;
-        }
-
         if ($methodName === 'as') {
             return $this->alias($args[0]);
         }
 
-        throw new BadMethodCallException(sprintf(
-            'Unknown method name "%s"',
-            $methodName
-        ));
+        if (!$this->manager->hasCheck($methodName)) {
+            throw new BadMethodCallException(sprintf(
+                'Unknown method name "%s"',
+                $methodName
+            ));
+        }
+
+        $result = $this->manager->executeCheck($methodName, $this->value, $args);
+
+        if (is_array($result)) {
+            $this->registerManyResults($result);
+        } else {
+            $this->registerResult($result);
+        }
+
+        return $this;
     }
 
     /**
