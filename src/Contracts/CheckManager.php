@@ -50,7 +50,7 @@ interface CheckManager
      *
      * @return bool
      */
-    public function hasCheck($checkName);
+    public function hasCheck(string $checkName);
 
     /**
      * Execute a check.
