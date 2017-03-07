@@ -10,7 +10,7 @@ trait ContainsResults
     /**
      * @var Result[]
      */
-    protected $results;
+    protected $results = [];
 
     /**
      * @var string
