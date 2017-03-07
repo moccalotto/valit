@@ -182,13 +182,15 @@ try {
 $request = [
     'name' => 'Kim Hansen',
     'email' => 'kim@wordwax.com',
+    'someEnum' => 'someVal',
+    'age' => 36,
 ];
 
 $checks = Check::container($request)->against([
     'name' => 'required & isString & shorterThan(100)',
     'email' => 'required & isEmail & shorterThan(255)',
-    'address' => 'isString',
-    'age' => ['min' => 35, 'max' => 42],
+    'address' => 'required & isString',
+    'age' => ['greaterThan' => [35], 'lessThan' => 42, 'isDivisibleBy(2)'],
     'someEnum' => 'required & isOneOf(["someVal", "someOtherVal"])',
 ]);
 

@@ -88,27 +88,30 @@ class ContainerValidator
         $required = false;
 
         if (isset($fieldFilters['required'])) {
-            $required = empty($fieldFilters['required']) ? false : !$fieldFilters['required'][0];
+            $required = empty($fieldFilters['required']) ? true : !$fieldFilters['required'][0];
 
             unset($fieldFilters['required']);
         }
 
         if ($required && !isset($this->container[$field])) {
             return (new Fluent($this->manager, $this->container, $this->throwOnFailure))
-                ->alias('container')
-                ->addCustomResult(new Result(false, 'Field {0} must exist in {name}', [$field]));
+                ->alias($field)
+                ->addCustomResult(new Result(false, '{name} is required'));
         }
 
         if (!isset($this->container[$field])) {
             return (new Fluent($this->manager, $this->container, $this->throwOnFailure))
-                ->alias('container')
-                ->addCustomResult(new Result(true, 'Field {0} is optional in {name}', [$field]));
+                ->alias($field)
+                ->addCustomResult(new Result(true, '{name} is optional'));
         }
 
         $fluent = new Fluent($this->manager, $this->container[$field], $this->throwOnFailure);
+        $fluent->alias($field);
 
         if ($required) {
-            $fluent->addCustomResult(new Result(true, 'Field {0} must exist in {name}', [$field]));
+            $fluent->addCustomResult(new Result(true, '{name} is required'));
+        } else {
+            $fluent->addCustomResult(new Result(true, '{name} is optional'));
         }
 
         foreach ($fieldFilters as $check => $args) {
@@ -120,34 +123,30 @@ class ContainerValidator
 
     protected function normalizeFilters($filters)
     {
-        if (is_array($filters)) {
-            $result = [];
-            foreach ($filters as $check => $args) {
-                if (is_int($check)) {
-                    $check = $args;
-                    $args = [];
-                }
-
-                $result[$check] = $args;
-            }
-
-            return $result;
+        if (!is_array($filters)) {
+            $filters = preg_split('/\s*(?<!&)&(?!&)\s*/u', $filters);
         }
-
-        $result = [];
-
-        $filters = preg_split('/\s*(?<!&)&(?!&)\s*/u', $filters);
-
-        foreach ($filters as $filter) {
-            if (!preg_match('/([a-z0-9]+)\s*(?:\((.*?)\))?$/Aui', $filter, $matches)) {
-                throw new LogicException(sprintf('Invalid filter »%s«', $filter));
+        foreach ($filters as $check => $args) {
+            if (is_int($check)) {
+                $check = $args;
+                $args = [];
             }
 
-            $name = $matches[1];
+            if (!is_array($args)) {
+                $args = [$args];
+            }
 
-            $args = isset($matches[2]) ? json_decode(sprintf('[%s]', $matches[2])) : [];
+            if (!preg_match('/([a-z0-9]+)\s*(?:\((.*?)\))?$/Aui', $check, $matches)) {
+                throw new LogicException(sprintf('Invalid filter »%s«', $check));
+            }
 
-            $result[$name] = $args;
+            $check = $matches[1];
+
+            if (isset($matches[2])) {
+                $args = json_decode(sprintf('[%s]', $matches[2]));
+            }
+
+            $result[$check] = $args;
         }
 
         return $result;
