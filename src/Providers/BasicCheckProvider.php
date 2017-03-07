@@ -53,7 +53,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is equal to (==) one of the values in $against.
      *
-     * @Check("isOneOf")
+     * @Check(["isOneOf", "oneOf"])
      *
      * @param mixed $value
      * @param array $against

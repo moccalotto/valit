@@ -62,6 +62,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsOneOf('a', [])->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('isOneOf');
+        $this->provides()->shouldHaveKey('oneOf');
 
         $this->checkIsOneOf(1, [1])->success()->shouldBe(true);
         $this->checkIsOneOf(1.23, [1.23, 1, 0])->success()->shouldBe(true);
