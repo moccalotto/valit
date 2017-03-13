@@ -187,8 +187,8 @@ $request = [
 ];
 
 $checks = Check::container($request)->against([
-    'name' => 'required & isString & shorterThan(100) & isLowercase',
-    'email' => 'required & isEmail & shorterThan(255)',
+    'name' => 'required & string & shorterThan(100) & lowercase',
+    'email' => 'required & email & shorterThan(255)',
     'address' => 'required & string',
     'age' => ['greaterThan' => [35], 'lowerThan(50)', 'divisibleBy' => 4]
 ]);
