@@ -138,7 +138,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is identical to false.
      *
-     * @Check(["hasType", "isType"])
+     * @Check(["hasType", "isType", "typeof"])
      *
      * @param mixed $value
      * @param string $type
@@ -173,7 +173,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is a boolean.
      *
-     * @Check(["isBool", "isBoolean"])
+     * @Check(["isBool", "isBoolean", "bool", "boolean"])
      *
      * @param mixed $value
      * @return Result
@@ -186,7 +186,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is an array.
      *
-     * @Check("isArray")
+     * @Check(["isArray", "array"])
      *
      * @param mixed $value
      * @return Result
@@ -199,7 +199,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is a float.
      *
-     * @Check(["isFloat", "isDouble"])
+     * @Check(["isFloat", "isDouble", "float", "double"])
      *
      * @param mixed $value
      * @return Result
@@ -212,7 +212,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is a float.
      *
-     * @Check(["isInt", "isInteger"])
+     * @Check(["isInt", "isInteger", "int", "integer"])
      *
      * @param mixed $value
      * @return Result
@@ -225,7 +225,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is a float.
      *
-     * @Check("isString")
+     * @Check(["isString", "string"])
      *
      * @param mixed $value
      * @return Result
@@ -238,7 +238,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is a float.
      *
-     * @Check("isObject")
+     * @Check(["isObject", "object"])
      *
      * @param mixed $value
      * @return Result
@@ -251,7 +251,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is null.
      *
-     * @Check("isNull")
+     * @Check(["isNull", "null"])
      *
      * @param mixed $value
      * @return Result
@@ -280,7 +280,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is a resource.
      *
-     * @Check("isResource")
+     * @Check(["isResource", "resource"])
      *
      * @param mixed $value
      * @return Result
@@ -293,7 +293,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is a resource of the given type.
      *
-     * @Check(["isResourceOfType", "resourceType"])
+     * @Check(["isResourceOfType", "resourceType", "hasResourceType"])
      *
      * @param mixed $value
      * @param string $type
@@ -315,7 +315,7 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is callable.
      *
-     * @Check("isCallable")
+     * @Check(["isCallable", "callable"])
      *
      * @param mixed $value
      * @return Result

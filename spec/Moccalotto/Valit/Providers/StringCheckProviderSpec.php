@@ -81,6 +81,7 @@ class StringCheckProviderSpec extends ObjectBehavior
     {
         $this->checkEmail(0)->shouldHaveType('Moccalotto\Valit\Result');
 
+        $this->provides()->shouldHaveKey('email');
         $this->provides()->shouldHaveKey('isEmail');
         $this->provides()->shouldHaveKey('emailAddress');
         $this->provides()->shouldHaveKey('isEmailAddress');

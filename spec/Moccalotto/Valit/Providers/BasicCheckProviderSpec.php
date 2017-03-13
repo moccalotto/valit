@@ -211,6 +211,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkArray([])->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('isArray');
+        $this->provides()->shouldHaveKey('array');
 
         $this->checkArray([])->success()->shouldBe(true);
         $this->checkArray(['a', 'b'])->success()->shouldBe(true);

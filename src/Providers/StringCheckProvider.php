@@ -55,7 +55,7 @@ class StringCheckProvider implements CheckProvider
     /**
      * Check if $value contains a syntax-valid email address.
      *
-     * @Check(["isEmail", "isEmailAddress", "emailAddress"])
+     * @Check(["isEmail", "email", "isEmailAddress", "emailAddress"])
      *
      * @param mixed $value
      *
