@@ -157,7 +157,7 @@ try {
 | all the error messages. These can be accessed via the
 | `errorMessages` method like so:
 |
- */
+*/
 
 $age = '42.3';
 
@@ -182,16 +182,15 @@ try {
 $request = [
     'name' => 'Kim Hansen',
     'email' => 'kim@wordwax.com',
-    'someEnum' => 'someVal',
-    'age' => 36,
+    'age' => 40,
+    'address' => 42,
 ];
 
 $checks = Check::container($request)->against([
-    'name' => 'required & isString & shorterThan(100)',
+    'name' => 'required & isString & shorterThan(100) & isLowercase',
     'email' => 'required & isEmail & shorterThan(255)',
-    'address' => 'required & isString',
-    'age' => ['greaterThan' => [35], 'lessThan' => 42, 'isDivisibleBy(2)'],
-    'someEnum' => 'required & isOneOf(["someVal", "someOtherVal"])',
+    'address' => 'required & string',
+    'age' => ['greaterThan' => [35], 'lowerThan(50)', 'divisibleBy' => 4]
 ]);
 
-print_r($checks->renderedResults());
+print_r($checks->errors());
