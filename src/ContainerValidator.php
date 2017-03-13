@@ -88,30 +88,28 @@ class ContainerValidator
         $required = false;
 
         if (isset($fieldFilters['required'])) {
-            $required = empty($fieldFilters['required']) ? true : !$fieldFilters['required'][0];
+            $required = empty($fieldFilters['required']) ? false : !$fieldFilters['required'][0];
 
             unset($fieldFilters['required']);
         }
 
         if ($required && !isset($this->container[$field])) {
             return (new Fluent($this->manager, $this->container, $this->throwOnFailure))
-                ->alias($field)
-                ->addCustomResult(new Result(false, '{name} is required'));
+                ->alias('container')
+                ->addCustomResult(new Result(false, 'Field {0} must exist in {name}', [$field]));
         }
 
         if (!isset($this->container[$field])) {
             return (new Fluent($this->manager, $this->container, $this->throwOnFailure))
-                ->alias($field)
-                ->addCustomResult(new Result(true, '{name} is optional'));
+                ->alias('container')
+                ->addCustomResult(new Result(true, 'Field {0} is optional in {name}', [$field]));
         }
 
         $fluent = new Fluent($this->manager, $this->container[$field], $this->throwOnFailure);
-        $fluent->alias($field);
+        $fluent->alias('Field value');
 
         if ($required) {
-            $fluent->addCustomResult(new Result(true, '{name} is required'));
-        } else {
-            $fluent->addCustomResult(new Result(true, '{name} is optional'));
+            $fluent->addCustomResult(new Result(true, 'Field {0} must exist in {name}', [$field]));
         }
 
         foreach ($fieldFilters as $check => $args) {
@@ -124,16 +122,15 @@ class ContainerValidator
     protected function normalizeFilters($filters)
     {
         if (!is_array($filters)) {
-            $filters = preg_split('/\s*(?<!&)&(?!&)\s*/u', $filters);
+            $filters = preg_split('/\s*(?<!&)&(?!&)\s*/u', (string) $filters);
         }
+
+        $result = [];
+
         foreach ($filters as $check => $args) {
             if (is_int($check)) {
                 $check = $args;
                 $args = [];
-            }
-
-            if (!is_array($args)) {
-                $args = [$args];
             }
 
             if (!preg_match('/([a-z0-9]+)\s*(?:\((.*?)\))?$/Aui', $check, $matches)) {
@@ -146,7 +143,7 @@ class ContainerValidator
                 $args = json_decode(sprintf('[%s]', $matches[2]));
             }
 
-            $result[$check] = $args;
+            $result[$check] = (array) $args;
         }
 
         return $result;
