@@ -190,7 +190,11 @@ $checks = Check::container($request)->against([
     'name' => 'required & string & shorterThan(100) & lowercase',
     'email' => 'required & email & shorterThan(255)',
     'address' => 'required & string',
-    'age' => ['greaterThan' => [35], 'lowerThan(50)', 'divisibleBy' => 4]
+    'age' => ['greaterThan' => [35], 'lowerThan(50)', 'divisibleBy' => 4],
+
+    'orderLines' => 'required & convensionalArray',
+    'orderLines/*/productId' =>'required & uuid',
+    'orderLines/*/count' =>'integer & greaterThan(0)',
 ]);
 
 print_r($checks->errors());
