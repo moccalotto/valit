@@ -95,7 +95,7 @@ class ContainerValidator
     /**
      * TODO Refactor.
      */
-    protected function executeFilters($field, array $fieldFilters)
+    protected function executeFilters($fieldNameGlob, array $fieldFilters)
     {
         $required = false;
 
@@ -105,23 +105,23 @@ class ContainerValidator
             unset($fieldFilters['required']);
         }
 
-        if ($required && !isset($this->container[$field])) {
+        if ($required && !isset($this->container[$fieldNameGlob])) {
             return (new Fluent($this->manager, $this->container, $this->throwOnFailure))
                 ->alias('container')
-                ->addCustomResult(new Result(false, 'Field {0} must exist in {name}', [$field]));
+                ->addCustomResult(new Result(false, 'Field {0} must exist in {name}', [$fieldNameGlob]));
         }
 
-        if (!isset($this->container[$field])) {
+        if (!isset($this->container[$fieldNameGlob])) {
             return (new Fluent($this->manager, $this->container, $this->throwOnFailure))
                 ->alias('container')
-                ->addCustomResult(new Result(true, 'Field {0} is optional in {name}', [$field]));
+                ->addCustomResult(new Result(true, 'Field {0} is optional in {name}', [$fieldNameGlob]));
         }
 
-        $fluent = new Fluent($this->manager, $this->container[$field], $this->throwOnFailure);
+        $fluent = new Fluent($this->manager, $this->container[$fieldNameGlob], $this->throwOnFailure);
         $fluent->alias('Field value');
 
         if ($required) {
-            $fluent->addCustomResult(new Result(true, 'Field {0} must exist in {name}', [$field]));
+            $fluent->addCustomResult(new Result(true, 'Field {0} must exist in {name}', [$fieldNameGlob]));
         }
 
         foreach ($fieldFilters as $check => $args) {
