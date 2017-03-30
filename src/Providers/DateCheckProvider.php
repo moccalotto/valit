@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2016
  * @license MIT
@@ -34,7 +33,6 @@ class DateCheckProvider implements CheckProvider
      */
     protected $now;
 
-
     /**
      * In order to facilitate testing, we must be able to lock/override the "now" datetime.
      *
@@ -46,7 +44,7 @@ class DateCheckProvider implements CheckProvider
     }
 
     /**
-     * Get the current DateTime
+     * Get the current DateTime.
      *
      * If the DateTime that represents the current time. If it was overridden with the overrideNow() method,
      * we return that DateTime instead.
@@ -59,8 +57,8 @@ class DateCheckProvider implements CheckProvider
     /**
      * Is the candidate value can be treated as a date.
      *
-     * @param string|DateTimeInterface $candidate Candidate date.
-     * @param string|null $format The format to use. @see http://php.net/manual/en/class.datetime.php
+     * @param string|DateTimeInterface $candidate candidate date
+     * @param string|null              $format    The format to use. @see http://php.net/manual/en/class.datetime.php
      *
      * @return bool
      */
@@ -79,12 +77,11 @@ class DateCheckProvider implements CheckProvider
      * Convert the candidate value into a DateTime object.
      *
      * @param string|int|DateTimeInterface $candidate
-     * @param string|null $format
+     * @param string|null                  $format
      *
      * @return DateTime
      *
-     * @throws InvalidArgumentException If $candidate is not string, int or DateTime, or if it could not be parsed.
-     *
+     * @throws InvalidArgumentException if $candidate is not string, int or DateTime, or if it could not be parsed
      */
     protected function dt($candidate, $format = null)
     {
@@ -108,6 +105,7 @@ class DateCheckProvider implements CheckProvider
             /**
              * Use the given format to parse the DateTime (createFromFormat)
              * otherwise try and infer the format (via the constructor).
+             *
              * @var DateTime
              */
             $dt = DateTime::createFromFormat((string) $format, $candidate) ?: new DateTime($candidate);
@@ -140,7 +138,7 @@ class DateCheckProvider implements CheckProvider
      * @param DateTimeInterface $a,
      * @param DateTimeInterface $b
      *
-     * @return float The number of seconds between $a and $b.
+     * @return float the number of seconds between $a and $b
      */
     protected function compare(DateTimeInterface $a, DateTimeInterface $b)
     {
@@ -155,7 +153,7 @@ class DateCheckProvider implements CheckProvider
      *
      * @Check(["isParsableDate", "parsableDate", "isDateString", "dateString"])
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $format
      *
      * @return Result
@@ -169,11 +167,11 @@ class DateCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a date after $against
+     * Check if $value is a date after $against.
      *
      * @Check(["isDateAfter", "occursAfter", "dateAfter", "laterThan", "isLaterThan"])
      *
-     * @param mixed $value
+     * @param mixed             $value
      * @param DateTimeInterface $against
      *
      * @return Result
@@ -190,11 +188,11 @@ class DateCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a date after $against
+     * Check if $value is a date after $against.
      *
      * @Check(["isDateBefore", "occursBefore", "dateBefore", "earlierThan", "isEarlierThan"])
      *
-     * @param mixed $value
+     * @param mixed             $value
      * @param DateTimeInterface $against
      *
      * @return Result
@@ -212,7 +210,7 @@ class DateCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a date in the past
+     * Check if $value is a date in the past.
      *
      * @Check(["dateInThePast", "isDateInThePast"])
      *
@@ -229,7 +227,7 @@ class DateCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a date in the past
+     * Check if $value is a date in the past.
      *
      * @Check(["dateInTheFuture", "isDateInTheFuture"])
      *
@@ -246,7 +244,7 @@ class DateCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a date where the time-component is 00:00:00
+     * Check if $value is a date where the time-component is 00:00:00.
      *
      * @Check(["dateTimeAtMidnight", "isDateTimeAtMidnight", "isDateOnly", "dateOnly"])
      *

@@ -24,7 +24,7 @@ class Manager implements CheckManager
     protected static $instance;
 
     /**
-     * Default checkers to load when created through create() or instance()
+     * Default checkers to load when created through create() or instance().
      *
      * @var array
      */
@@ -56,7 +56,7 @@ class Manager implements CheckManager
      */
     public static function instance()
     {
-        if (! static::$instance) {
+        if (!static::$instance) {
             static::$instance = static::create();
         }
 
@@ -81,7 +81,7 @@ class Manager implements CheckManager
     /**
      * Constructor.
      *
-     * @param string[] $providers array of provider FQCNs.
+     * @param string[] $providers array of provider FQCNs
      */
     public function __construct(array $providers)
     {
@@ -123,7 +123,7 @@ class Manager implements CheckManager
         $checks = [];
 
         foreach ($this->checks as $alias => $closure) {
-            if (! $closures->contains($closure)) {
+            if (!$closures->contains($closure)) {
                 $check = new CheckMetaInfo($closure);
                 $checks[] = $check;
                 $closures->attach($closure, $check);

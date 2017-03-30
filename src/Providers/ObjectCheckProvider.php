@@ -98,7 +98,7 @@ class ObjectCheckProvider implements CheckProvider
      */
     public function checkInstanceOf($value, $fqcn)
     {
-        if (! is_string($fqcn)) {
+        if (!is_string($fqcn)) {
             throw new InvalidArgumentException('$fqcn must be a string');
         }
 
@@ -118,7 +118,7 @@ class ObjectCheckProvider implements CheckProvider
      */
     public function checkImplements($value, $fqcn)
     {
-        if (! (is_string($fqcn) && interface_exists($fqcn))) {
+        if (!(is_string($fqcn) && interface_exists($fqcn))) {
             if (is_scalar($fqcn)) {
                 throw new InvalidArgumentException(sprintf(
                     '$fqcn "%s" is not valid. It must be a string and a valid interface fqcn',
@@ -150,7 +150,7 @@ class ObjectCheckProvider implements CheckProvider
      */
     public function checkHasMethod($value, $methodName)
     {
-        if (! is_string($methodName)) {
+        if (!is_string($methodName)) {
             throw new InvalidArgumentException('$methodName must be a string and an identifier');
         }
 
@@ -171,7 +171,7 @@ class ObjectCheckProvider implements CheckProvider
      */
     public function checkHasProperty($value, $property)
     {
-        if (! is_string($property)) {
+        if (!is_string($property)) {
             throw new InvalidArgumentException('$property must be a string and an identifier');
         }
 

@@ -23,7 +23,7 @@ class XmlCheckProvider implements CheckProvider
 
     protected function canParse($xmlString)
     {
-        if (! is_string($xmlString)) {
+        if (!is_string($xmlString)) {
             return false;
         }
 
@@ -56,10 +56,10 @@ class XmlCheckProvider implements CheckProvider
      *
      * @Check("matchesXmlAdvanced")
      *
-     * @param string|SimpleXmlElement $value the value
-     * @param string|SimpleXmlElement $against the value to check against
-     * @param bool $skipWhite Ignore whitespace between tags.
-     * @param bool $ignoreCase Ignore case differences in tags.
+     * @param string|SimpleXmlElement $value      the value
+     * @param string|SimpleXmlElement $against    the value to check against
+     * @param bool                    $skipWhite  ignore whitespace between tags
+     * @param bool                    $ignoreCase ignore case differences in tags
      *
      * @return Result
      */
@@ -82,7 +82,7 @@ class XmlCheckProvider implements CheckProvider
             return new Result(false, $message, $context);
         }
 
-        if (! $this->canParse($value)) {
+        if (!$this->canParse($value)) {
             return new Result(false, $message, $context);
         }
 
@@ -96,8 +96,9 @@ class XmlCheckProvider implements CheckProvider
     /**
      * Check that $value matches $against, enforcing whitespace similarity as well.
      *
-     * @param mixed $value
+     * @param mixed                   $value
      * @param string|SimpleXmlElement $against
+     *
      * @return Result
      *
      * @Check("matchesXmlWithWhiteSpace")
@@ -110,8 +111,9 @@ class XmlCheckProvider implements CheckProvider
     /**
      * Check that $value matches $against, enforcing case similarity as well.
      *
-     * @param mixed $value
+     * @param mixed                   $value
      * @param string|SimpleXmlElement $against
+     *
      * @return Result
      *
      * @Check("matchesXmlWithCase")
@@ -124,8 +126,9 @@ class XmlCheckProvider implements CheckProvider
     /**
      * Check that $value matches $against, enforcing whitespace and case similarities as well.
      *
-     * @param mixed $value
+     * @param mixed                   $value
      * @param string|SimpleXmlElement $against
+     *
      * @return Result
      *
      * @Check(["matchesXmlWithWhiteSpaceAndCase", "matchesXmlStrict"])
@@ -138,8 +141,9 @@ class XmlCheckProvider implements CheckProvider
     /**
      * Check that $value matches $against, ignoring differences in case and whitespace.
      *
-     * @param mixed $value
+     * @param mixed                   $value
      * @param string|SimpleXmlElement $against
+     *
      * @return Result
      *
      * @Check("matchesXml")

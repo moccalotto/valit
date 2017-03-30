@@ -2,12 +2,6 @@
 
 namespace Moccalotto\Valit;
 
-use Traversable;
-use ArrayAccess;
-use LogicException;
-use Moccalotto\Valit\Result;
-use Moccalotto\Valit\Manager;
-
 class ContainerValidationResult
 {
     /**
@@ -16,7 +10,7 @@ class ContainerValidationResult
     protected $results;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $results
      */

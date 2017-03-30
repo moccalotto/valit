@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2016
  * @license MIT
@@ -63,7 +62,7 @@ class ArrayCheckProvider implements CheckProvider
     {
         $message = '{name} must be an associative array';
 
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             return new Result(false, $message);
         }
 
@@ -94,7 +93,7 @@ class ArrayCheckProvider implements CheckProvider
     {
         $message = '{name} must be a conventional array';
 
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             return new Result(false, $message);
         }
 
@@ -104,7 +103,7 @@ class ArrayCheckProvider implements CheckProvider
         }
 
         foreach (array_keys($value) as $key) {
-            if (! is_integer($key)) {
+            if (!is_integer($key)) {
                 return new Result(false, $message);
             }
         }
@@ -113,7 +112,7 @@ class ArrayCheckProvider implements CheckProvider
     }
 
     /**
-     * Check that $value is a non-empty array or Countable
+     * Check that $value is a non-empty array or Countable.
      *
      * @Check(["isNotEmptyArray", "notEmptyArray", "isNotEmpty", "notEmpty"])
      *
@@ -145,11 +144,11 @@ class ArrayCheckProvider implements CheckProvider
     }
 
     /**
-     * Check that $value is an array or ArrayAccess that has the given $key
+     * Check that $value is an array or ArrayAccess that has the given $key.
      *
      * @Check(["hasKey", "keyExists"])
      *
-     * @param mixed $value
+     * @param mixed      $value
      * @param string|int $key
      *
      * @return Result

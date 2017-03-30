@@ -3,17 +3,16 @@
 namespace spec\Moccalotto\Valit\Providers;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class UuidCheckProviderSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\UuidCheckProvider');
         $this->shouldHaveType('Moccalotto\Valit\Contracts\CheckProvider');
     }
 
-    function it_checks_uuid()
+    public function it_checks_uuid()
     {
         $this->provides()->shouldHaveKey('isUuid');
         $this->provides()->shouldHaveKey('uuid');
@@ -46,7 +45,7 @@ class UuidCheckProviderSpec extends ObjectBehavior
         $this->checkIsUuid(curl_init())->success()->shouldBe(false);
     }
 
-    function it_checks_uuidVersion()
+    public function it_checks_uuidVersion()
     {
         $this->provides()->shouldHaveKey('isUuidVersion');
         $this->provides()->shouldHaveKey('uuidVersion');

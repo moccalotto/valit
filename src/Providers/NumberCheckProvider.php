@@ -29,7 +29,7 @@ class NumberCheckProvider implements CheckProvider
      */
     protected function assertNumeric($value)
     {
-        if (! is_numeric($value)) {
+        if (!is_numeric($value)) {
             throw new InvalidArgumentException('Check argument must be numeric');
         }
     }
@@ -221,11 +221,11 @@ class NumberCheckProvider implements CheckProvider
         $this->assertNumeric($against);
         $this->assertNumeric($epsilon);
 
-        if (! is_finite($epsilon)) {
+        if (!is_finite($epsilon)) {
             throw new InvalidArgumentException('Epsilon must be a real number');
         }
 
-        $testable = is_numeric($value) && ! is_nan($value);
+        $testable = is_numeric($value) && !is_nan($value);
         $success = $testable ? abs(abs($value) - abs($against)) <= $epsilon : false;
 
         return new Result($success, '{name} must equal {0:float} with a margin of error of {1:float}', [
@@ -300,7 +300,7 @@ class NumberCheckProvider implements CheckProvider
      * @Check(["isPrimeRelativeTo", "primeRelativeTo", "isRelativePrime", "relativePrime", "isCoprimeTo", "coprimeTo"])
      *
      * @param mixed $value
-     * @param int $against
+     * @param int   $against
      *
      * @return Result
      */
@@ -313,7 +313,7 @@ class NumberCheckProvider implements CheckProvider
         }
 
         $success = ((float) $value == (int) $value)
-            &&  $this->gcd($value, $against) === 1;
+            && $this->gcd($value, $against) === 1;
 
         return new Result($success, '{name} must be prime relative to {0}', [$against]);
     }
@@ -324,7 +324,7 @@ class NumberCheckProvider implements CheckProvider
      * @Check(["isDivisibleBy", "divisibleBy", "dividesBy"])
      *
      * @param mixed $value
-     * @param int $against
+     * @param int   $against
      *
      * @return Result
      */
@@ -332,7 +332,7 @@ class NumberCheckProvider implements CheckProvider
     {
         $this->assertNumeric($against);
 
-        if ($against == 0.0 || ! is_finite($against)) {
+        if ($against == 0.0 || !is_finite($against)) {
             throw new InvalidArgumentException('$against must be a finite, non-zero number');
         }
 

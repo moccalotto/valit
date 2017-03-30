@@ -70,5 +70,4 @@ class FluentSpec extends ObjectBehavior
         $this->valueOr('foo')->shouldBe(42);
         $this->isNegative()->valueOr('foo')->shouldBe('foo');
     }
-
 }

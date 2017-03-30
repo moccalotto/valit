@@ -23,7 +23,7 @@ trait ContainsResults
     protected $value;
 
     /**
-     * Getter
+     * Getter.
      *
      * @var string
      */
@@ -33,7 +33,7 @@ trait ContainsResults
     }
 
     /**
-     * Getter
+     * Getter.
      *
      * @var mixed
      */
@@ -59,11 +59,12 @@ trait ContainsResults
      *
      * @return $this
      *
-     * @throws ValidationException if we are in throwOnFailure-mode and the result is an error.
+     * @throws ValidationException if we are in throwOnFailure-mode and the result is an error
      */
     public function addCustomResult(Result $result)
     {
         $this->registerResult($result);
+
         return $this;
     }
 
@@ -72,7 +73,7 @@ trait ContainsResults
      *
      * @param Result $results
      *
-     * @throws ValidationException if we are in throwOnFailure-mode and the result is an error.
+     * @throws ValidationException if we are in throwOnFailure-mode and the result is an error
      */
     protected function registerResult(Result $result)
     {
@@ -104,7 +105,6 @@ trait ContainsResults
         }
     }
 
-
     /**
      * Get the results as an associative array.
      *
@@ -135,7 +135,7 @@ trait ContainsResults
         $messages = [];
 
         foreach ($this->renderedResults() as $message => $success) {
-            if (! $success) {
+            if (!$success) {
                 $messages[] = $message;
             }
         }

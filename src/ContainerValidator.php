@@ -5,8 +5,6 @@ namespace Moccalotto\Valit;
 use Traversable;
 use ArrayAccess;
 use LogicException;
-use Moccalotto\Valit\Result;
-use Moccalotto\Valit\Manager;
 
 class ContainerValidator
 {
@@ -26,11 +24,11 @@ class ContainerValidator
     protected $throwOnFailure;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param Manager $manager
+     * @param Manager           $manager
      * @param ArrayAccess|array $container
-     * @param int $throwOnFailure
+     * @param int               $throwOnFailure
      */
     public function __construct(Manager $manager, $container, $throwOnFailure)
     {

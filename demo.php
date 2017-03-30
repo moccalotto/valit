@@ -28,7 +28,6 @@ Ensure::that($age)
     ->isGreaterThanOrEqual(18)
     ->isLowerThanOrEqual(75);
 
-
 /*
 |----------------------------------------------------------
 | Validity
@@ -51,8 +50,6 @@ $valid = Check::that($x)
     ->valid();                  // true
 
 var_dump($valid);  // bool(true)
-
-
 
 /*
 |----------------------------------------------------------
@@ -81,8 +78,6 @@ Array
     [1] => value must equal 40 with a margin of error of 1.0e-5
 )
  */
-
-
 
 /*
 |----------------------------------------------------------
@@ -193,8 +188,8 @@ $checks = Check::container($request)->against([
     'age' => ['greaterThan' => [35], 'lowerThan(50)', 'divisibleBy' => 4],
 
     'orderLines' => 'required & convensionalArray',
-    'orderLines/*/productId' =>'required & uuid',
-    'orderLines/*/count' =>'integer & greaterThan(0)',
+    'orderLines/*/productId' => 'required & uuid',
+    'orderLines/*/count' => 'integer & greaterThan(0)',
 ]);
 
 print_r($checks->errors());

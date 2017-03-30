@@ -68,7 +68,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsOneOf(1.23, [1.23, 1, 0])->success()->shouldBe(true);
         $this->checkIsOneOf(null, [false])->success()->shouldBe(true);
 
-        $this->checkIsOneOf(null, [1,2,3])->success()->shouldBe(false);
+        $this->checkIsOneOf(null, [1, 2, 3])->success()->shouldBe(false);
         $this->checkIsOneOf(2, [1.23, 1, 0])->success()->shouldBe(false);
         $this->checkIsOneOf(curl_init(), [curl_init()])->success()->shouldBe(false);
     }

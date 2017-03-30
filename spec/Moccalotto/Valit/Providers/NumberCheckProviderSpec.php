@@ -216,11 +216,11 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkFloatEqual(1.0, 0.9, 0.01)->success()->shouldBe(false);
         $this->checkFloatEqual(-1.0, -0.9, 0.01)->success()->shouldBe(false);
 
-        $this->checkFloatEqual(INF,         INF, 0)->success()->shouldBe(false);
-        $this->checkFloatEqual('test',      0, 0.1)->success()->shouldBe(false);
-        $this->checkFloatEqual(null,        0, 0.1)->success()->shouldBe(false);
-        $this->checkFloatEqual([],          0, 0.1)->success()->shouldBe(false);
-        $this->checkFloatEqual((object) [],  0, 0.1)->success()->shouldBe(false);
+        $this->checkFloatEqual(INF, INF, 0)->success()->shouldBe(false);
+        $this->checkFloatEqual('test', 0, 0.1)->success()->shouldBe(false);
+        $this->checkFloatEqual(null, 0, 0.1)->success()->shouldBe(false);
+        $this->checkFloatEqual([], 0, 0.1)->success()->shouldBe(false);
+        $this->checkFloatEqual((object) [], 0, 0.1)->success()->shouldBe(false);
         $this->checkFloatEqual(curl_init(), 0, 0.1)->success()->shouldBe(false);
 
         $this->shouldThrow('InvalidArgumentException')->during('checkFloatEqual', [0, 'a', 0]);
