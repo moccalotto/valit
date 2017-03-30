@@ -56,22 +56,36 @@ class ContainerValidator
 
         $results = [];
 
-        foreach ($containerFilters as $field => $fieldFilters) {
-            $results[$field] = $this->executeFilters(
-                $field,
-                $this->normalizeFilters($fieldFilters)
+        foreach ($containerFilters as $fieldNameGlob => $fieldFilters) {
+            $results[$fieldNameGlob] = $this->executeFilters(
+                $fieldNameGlob,
+                $this->normalizeFieldFilters($fieldFilters)
             );
         }
 
         return new ContainerValidationResult($results);
     }
 
+    /**
+     * Check if we can traverse a given variable.
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
     protected function isTraversable($value)
     {
         return is_array($value)
             || (is_object($value) && ($value instanceof Traversable));
     }
 
+    /**
+     * Check if a given value is array-accessible.
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
     protected function hasArrayAccess($value)
     {
         return is_array($value)
@@ -117,7 +131,22 @@ class ContainerValidator
         return $fluent;
     }
 
-    protected function normalizeFilters($filters)
+    /**
+     * Normalize a set of filters.
+     *
+     * Filters can be given as a string or an array.
+     * When string-encoded, the string contains a number of "function call" expressions,
+     * separated by ampersands.
+     * When array-encoded, each key=>value pair can either be filterName => parameters
+     * or notUsed => filterStringToBeParsed
+     *
+     * We normalize them into well-behaved arrays of filterName => parameters.
+     *
+     * @param string|array $filters
+     *
+     * @return array
+     */
+    protected function normalizeFieldFilters($filters)
     {
         if (!is_array($filters)) {
             $filters = preg_split('/\s*(?<!&)&(?!&)\s*/u', (string) $filters);
