@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2016
  * @license MIT
@@ -135,7 +134,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('uniqueValues');
 
         $this->checkUniqueValues([])->success()->shouldBe(true);
-        $this->checkUniqueValues([1,2,3])->success()->shouldBe(true);
+        $this->checkUniqueValues([1, 2, 3])->success()->shouldBe(true);
         $this->checkUniqueValues(['a', 'b', 'c'])->success()->shouldBe(true);
         $this->checkUniqueValues(['a', 'b', 'c', 1, 2, 3])->success()->shouldBe(true);
         $this->checkUniqueValues(['a' => 1, 'b' => 2, 'c' => 3])->success()->shouldBe(true);
@@ -168,8 +167,8 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
         $this->checkKeyExists(['a' => 'b'], 0)->success()->shouldBe(false);
         $this->checkKeyExists([], 0)->success()->shouldBe(false);
-        $this->checkKeyExists((object)[0], 0)->success()->shouldBe(false);
-        $this->checkKeyExists("kim", 0)->success()->shouldBe(false);
+        $this->checkKeyExists((object) [0], 0)->success()->shouldBe(false);
+        $this->checkKeyExists('kim', 0)->success()->shouldBe(false);
     }
 
     /*

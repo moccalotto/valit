@@ -128,7 +128,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkMatchesRegex($value, $pattern)
     {
-        if (! $this->checkStringable($pattern)->success()) {
+        if (!$this->checkStringable($pattern)->success()) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -163,14 +163,14 @@ class StringCheckProvider implements CheckProvider
      *
      * @Check(["startsWith", "beginsWith"])
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $startsWith
      *
      * @return Result
      */
     public function checkStartsWith($value, $startsWith)
     {
-        if (! $this->checkStringable($startsWith)->success()) {
+        if (!$this->checkStringable($startsWith)->success()) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -185,14 +185,14 @@ class StringCheckProvider implements CheckProvider
      *
      * @Check("endsWith")
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $startsWith
      *
      * @return Result
      */
     public function checkEndsWith($value, $endsWith)
     {
-        if (! $this->checkStringable($endsWith)->success()) {
+        if (!$this->checkStringable($endsWith)->success()) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -207,14 +207,14 @@ class StringCheckProvider implements CheckProvider
      *
      * @Check(["containsString", "containsTheString"])
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $startsWith
      *
      * @return Result
      */
     public function checkContainsString($value, $contains)
     {
-        if (! $this->checkStringable($contains)->success()) {
+        if (!$this->checkStringable($contains)->success()) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -225,43 +225,43 @@ class StringCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a string that is shorter than $length
+     * Check if $value is a string that is shorter than $length.
      *
      * @Check(["shorterThan", "stringShorterThan", "isShorterThan"])
      *
      * @param mixed $value
-     * @param int $length
+     * @param int   $length
      *
      * @return Result
      */
     public function checkShorterThan($value, $length)
     {
-        if (! is_int($length)) {
+        if (!is_int($length)) {
             throw new InvalidArgumentException('Second argument must be an integer');
         }
 
-        $success = is_scalar($value) &&  mb_strlen($value) < $length;
+        $success = is_scalar($value) && mb_strlen($value) < $length;
 
         return new Result($success, '{name} must be a string that is shorter than {0}', [$length]);
     }
 
     /**
-     * Check if $value is a string that is longer than $length
+     * Check if $value is a string that is longer than $length.
      *
      * @Check(["longerThan", "stringLongerThan", "isLongerThan"])
      *
      * @param mixed $value
-     * @param int $length
+     * @param int   $length
      *
      * @return Result
      */
     public function checkLongerThan($value, $length)
     {
-        if (! is_int($length)) {
+        if (!is_int($length)) {
             throw new InvalidArgumentException('Second argument must be an integer');
         }
 
-        $success = is_scalar($value) &&  mb_strlen($value) > $length;
+        $success = is_scalar($value) && mb_strlen($value) > $length;
 
         return new Result($success, '{name} must be a string that is longer than {0}', [$length]);
     }

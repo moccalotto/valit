@@ -21,6 +21,7 @@ trait ProvideViaReflection
     /**
      ]    * Extract all.
      * @param ReflectionMethod $method
+     *
      * @return Iterator
      */
     protected function checksFor(ReflectionMethod $method)
@@ -31,7 +32,7 @@ trait ProvideViaReflection
 
         $doc = $method->getDocComment();
 
-        if (! ($doc && preg_match_all('/@Check\((\[?[a-zA-Z0-9_," ]+\]?)\)/', $doc, $matches))) {
+        if (!($doc && preg_match_all('/@Check\((\[?[a-zA-Z0-9_," ]+\]?)\)/', $doc, $matches))) {
             return;
         }
 

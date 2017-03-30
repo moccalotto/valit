@@ -46,7 +46,7 @@ class CheckMetaInfo implements JsonSerializable
         }
 
         $this->name = $reflector->getName();
-        $parameters = array_map(function($parameter) {
+        $parameters = array_map(function ($parameter) {
             return '$' . $parameter->getName();
         }, array_slice($reflector->getParameters(), 1));
 
@@ -81,7 +81,7 @@ class CheckMetaInfo implements JsonSerializable
      *
      * @param string $alias
      *
-     * @return int The number of aliases registered.
+     * @return int the number of aliases registered
      */
     public function addAlias($alias)
     {

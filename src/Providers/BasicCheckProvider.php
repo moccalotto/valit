@@ -62,12 +62,12 @@ class BasicCheckProvider implements CheckProvider
      */
     public function checkIsOneOf($value, $against)
     {
-        if (! is_array($against)) {
+        if (!is_array($against)) {
             throw new UnexpectedValueException('$against must be an array');
         }
 
         $msg = sprintf('{name} must match one of %s', implode(', ', array_map(function ($int) {
-            return '{'.$int.'}';
+            return '{' . $int . '}';
         }, range(0, count($against) - 1))));
 
         foreach ($against as $match) {
@@ -90,7 +90,7 @@ class BasicCheckProvider implements CheckProvider
      */
     public function checkIsTruthy($value)
     {
-        return new Result(! ! $value, '{name} must be truthy');
+        return new Result((bool) $value, '{name} must be truthy');
     }
 
     /**
@@ -104,7 +104,7 @@ class BasicCheckProvider implements CheckProvider
      */
     public function checkIsFalsy($value)
     {
-        return new Result(! $value, '{name} must be falsy');
+        return new Result(!$value, '{name} must be falsy');
     }
 
     /**
@@ -140,7 +140,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @Check(["hasType", "isType"])
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $type
      *
      * @return Result
@@ -160,6 +160,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check(["isScalar", "scalar"])
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkScalar($value)
@@ -176,6 +177,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check(["isBool", "isBoolean"])
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkBool($value)
@@ -189,6 +191,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check("isArray")
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkArray($value)
@@ -202,6 +205,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check(["isFloat", "isDouble"])
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkFloat($value)
@@ -215,6 +219,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check(["isInt", "isInteger"])
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkInteger($value)
@@ -228,6 +233,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check("isString")
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkString($value)
@@ -241,6 +247,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check("isObject")
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkObject($value)
@@ -254,6 +261,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check("isNull")
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkNull($value)
@@ -267,12 +275,13 @@ class BasicCheckProvider implements CheckProvider
      * @Check(["isNotNull", "notNull"])
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkNotNull($value)
     {
         return new Result(
-            ! is_null($value),
+            !is_null($value),
             '{name} must not be null'
         );
     }
@@ -283,6 +292,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check("isResource")
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkResource($value)
@@ -295,8 +305,9 @@ class BasicCheckProvider implements CheckProvider
      *
      * @Check(["isResourceOfType", "resourceType"])
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $type
+     *
      * @return Result
      */
     public function checkResourceType($value, $type)
@@ -318,6 +329,7 @@ class BasicCheckProvider implements CheckProvider
      * @Check("isCallable")
      *
      * @param mixed $value
+     *
      * @return Result
      */
     public function checkCallable($value)

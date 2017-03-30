@@ -42,9 +42,9 @@ class Fluent implements FluentCheckInterface
     /**
      * Constructor.
      *
-     * @param CheckManager $manager         The manager that contains all our checks
-     * @param mixed        $value           The value we are validating
-     * @param bool         $throwOnFailure  Should we throw an exception as soon as we encounter a failed result
+     * @param CheckManager $manager        The manager that contains all our checks
+     * @param mixed        $value          The value we are validating
+     * @param bool         $throwOnFailure Should we throw an exception as soon as we encounter a failed result
      */
     final public function __construct(CheckManager $manager, $value, $throwOnFailure)
     {
@@ -133,7 +133,6 @@ class Fluent implements FluentCheckInterface
     {
         return $this->value;
     }
-
 
     /**
      * Alias of hasErrors.

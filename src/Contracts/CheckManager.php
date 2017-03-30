@@ -30,7 +30,6 @@ interface CheckManager
      */
     public static function instance();
 
-
     /**
      * Factory method.
      *

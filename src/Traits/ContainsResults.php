@@ -23,7 +23,7 @@ trait ContainsResults
     protected $value;
 
     /**
-     * Getter
+     * Getter.
      *
      * @var string
      */
@@ -33,7 +33,7 @@ trait ContainsResults
     }
 
     /**
-     * Getter
+     * Getter.
      *
      * @var mixed
      */
@@ -57,7 +57,7 @@ trait ContainsResults
      *
      * @param Result $results
      *
-     * @throws ValidationException if we are in throwOnFailure-mode and the result is an error.
+     * @throws ValidationException if we are in throwOnFailure-mode and the result is an error
      */
     protected function registerResult(Result $result)
     {
@@ -112,7 +112,7 @@ trait ContainsResults
         $messages = [];
 
         foreach ($this->renderedResults() as $message => $success) {
-            if (! $success) {
+            if (!$success) {
                 $messages[] = $message;
             }
         }
