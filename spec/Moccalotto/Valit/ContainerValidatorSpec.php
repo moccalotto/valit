@@ -98,5 +98,25 @@ class ContainerValidatorSpec extends ObjectBehavior
 
         $result->shouldHaveType('Moccalotto\Valit\ContainerValidationResult');
         $result->errors()->shouldBe([]);
+        $result->results()->shouldHaveKey('someArray');
+        $result->results()->shouldHaveKey('someAssoc');
+    }
+
+    function it_finds_errors()
+    {
+        $this->beConstructedWith(Manager::instance(), $this->testData, false);
+
+        $result = $this->against([
+            'notFound' => 'required',
+            'some/*/complex/*/filter/glob' => 'required',
+            'someAssoc/*' => 'int',
+        ]);
+
+        $result->errors()->shouldHaveCount(5);
+        $result->errors()->shouldHaveKey('notFound');
+        $result->errors()->shouldHaveKey('some/*/complex/*/filter/glob');
+        $result->errors()->shouldHaveKey('someAssoc/thing1');
+        $result->errors()->shouldHaveKey('someAssoc/thing2');
+        $result->errors()->shouldHaveKey('someAssoc/thing3');
     }
 }
