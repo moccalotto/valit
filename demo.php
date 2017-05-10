@@ -178,18 +178,46 @@ $request = [
     'name' => 'Kim Hansen',
     'email' => 'kim@wordwax.com',
     'age' => 40,
-    'address' => 42,
+    'address' => 'street 42',
+    'orderLines' => [
+        [
+            'productId' => 'dd4fbef0-0ece-4596-ab07-97a2d44aabaG',
+            'count' => 52,
+        ],
+    ],
 ];
 
 $checks = Check::container($request)->against([
-    'name' => 'required & string & shorterThan(100) & lowercase',
+    'name' => 'required & string & shorterThan(100)',
     'email' => 'required & email & shorterThan(255)',
-    'address' => 'required & string',
+    'address' => ['required', 'string'],
     'age' => ['greaterThan' => [35], 'lowerThan(50)', 'divisibleBy' => 4],
 
-    'orderLines' => 'required & convensionalArray',
+    'orderLines' => 'required & conventionalArray',
     'orderLines/*/productId' => 'required & uuid',
     'orderLines/*/count' => 'integer & greaterThan(0)',
 ]);
 
+
 print_r($checks->errors());
+/*
+Array
+(
+    [orderLines/0/productId] => Array
+    (
+        [0] => Field must be a valid UUID
+    )
+
+)
+ */
+
+
+print_r($checks->errorMessagesByPath(['orderLines', 0, 'productId']));
+/*
+    Array
+    (
+        [0] => Field must be a valid UUID
+    )
+ */
+
+

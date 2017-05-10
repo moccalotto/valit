@@ -23,6 +23,21 @@ trait ContainsResults
     protected $value;
 
     /**
+     * @var int
+     */
+    protected $successes = 0;
+
+    /**
+     * @var int
+     */
+    protected $failures = 0;
+
+    /**
+     * @var bool
+     */
+    protected $throwOnFailure;
+
+    /**
      * Getter.
      *
      * @var string

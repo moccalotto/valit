@@ -85,7 +85,7 @@ class Result
     protected function formatValue($value)
     {
         if (is_scalar($value)) {
-            return json_encode($value);
+            return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
 
         if (is_callable($value)) {

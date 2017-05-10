@@ -35,6 +35,7 @@ class ContainerValidator
         $this->manager = $manager;
         $this->throwOnFailure = $throwOnFailure;
         $this->container = $container;
+        $this->flatContainer = static::flatten($container);
 
         if (!$this->hasArrayAccess($container)) {
             throw new LogicException('$container must be an array or an object with ArrayAccess');
@@ -57,13 +58,75 @@ class ContainerValidator
         $results = [];
 
         foreach ($containerFilters as $fieldNameGlob => $fieldFilters) {
-            $results[$fieldNameGlob] = $this->executeFilters(
+            $subResults =  $this->executeFilters(
                 $fieldNameGlob,
                 $this->normalizeFieldFilters($fieldFilters)
             );
+
+            foreach ($subResults as $fieldPath => $fluent) {
+                $results[$fieldPath] = $fluent;
+            }
         }
 
         return new ContainerValidationResult($results);
+    }
+
+    protected static function flatten($value, $keySoFar = '')
+    {
+        if (!is_array($value)) {
+            return [$keySoFar => $value];
+        }
+
+        $result = $keySoFar ? [$keySoFar => $value] : [];
+        foreach ($value as $subKey => $subValue) {
+            $newKey = $keySoFar === '' ? $subKey : "$keySoFar/$subKey";
+
+            $result = array_merge($result, static::flatten($subValue, $newKey));
+        }
+
+        return $result;
+    }
+
+    protected function globToRegex($fieldNameGlob)
+    {
+        $pathElements = explode('/', $fieldNameGlob);
+
+        $pathRegexes = array_map(function ($element) {
+            if ($element === '*') {
+                return '[^/]+';
+            }
+
+            return preg_quote($element, '#');
+        }, $pathElements);
+
+        $innerRegex = implode(
+            preg_quote('/', '#'),
+            $pathRegexes
+        );
+
+        return sprintf('#^%s$#', $innerRegex);
+    }
+
+    /**
+     * Find all the values that match the given field name glob.
+     *
+     * @param string $fieldNameGlob
+     *
+     * @return array
+     */
+    protected function find($fieldNameGlob)
+    {
+        $pathRegex = $this->globToRegex($fieldNameGlob);
+
+        $results = [];
+
+        foreach ($this->flatContainer as $path => $value) {
+            if (preg_match($pathRegex, $path)) {
+                $results[$path] = $value;
+            }
+        }
+
+        return $results;
     }
 
     /**
@@ -92,53 +155,78 @@ class ContainerValidator
             || (is_object($value) && ($value instanceof ArrayAccess));
     }
 
-    /**
-     * TODO Refactor.
-     */
-    protected function executeFilters($fieldNameGlob, array $fieldFilters)
+    protected function checkRequired($filters)
     {
-        $required = false;
-
-        if (isset($fieldFilters['required'])) {
-            $required = empty($fieldFilters['required']) ? false : !$fieldFilters['required'][0];
-
-            unset($fieldFilters['required']);
+        if (!isset($filters['required'])) {
+            return false;
         }
 
-        if ($required && !isset($this->container[$fieldNameGlob])) {
-            return (new Fluent($this->manager, $this->container, $this->throwOnFailure))
-                ->alias('container')
-                ->addCustomResult(new Result(false, 'Field {0} must exist in {name}', [$fieldNameGlob]));
+        if ($filters['required'] === []) {
+            return true;
         }
 
-        if (!isset($this->container[$fieldNameGlob])) {
-            return (new Fluent($this->manager, $this->container, $this->throwOnFailure))
-                ->alias('container')
-                ->addCustomResult(new Result(true, 'Field {0} is optional in {name}', [$fieldNameGlob]));
+        if (isset($filters['required'][0])) {
+            return $filters['required'][0] == true;
         }
 
-        $fluent = new Fluent($this->manager, $this->container[$fieldNameGlob], $this->throwOnFailure);
-        $fluent->alias('Field value');
+        return true;
+    }
 
-        if ($required) {
-            $fluent->addCustomResult(new Result(true, 'Field {0} must exist in {name}', [$fieldNameGlob]));
+    /**
+     * Execute an array of filters on a number of values.
+     *
+     * @param string $fieldNameGlob A field name glob (such as "address" or "order.*.id")
+     * @param array $filters a normalized array of filters.
+     *
+     * @return array
+     */
+    protected function executeFilters($fieldNameGlob, array $filters)
+    {
+        $fieldFluent = new Fluent($this->manager, $this->container, $this->throwOnFailure);
+        $fieldFluent->alias('Field');
+
+        $results = [$fieldNameGlob => $fieldFluent];
+
+        $values = $this->find($fieldNameGlob);
+
+        $required = $this->checkRequired($filters);
+
+        unset($filters['required']);
+
+        if (empty($values)) {
+            $message = $required ? '{name} is required' : '{name} is optional';
+            $fieldFluent->addCustomResult(new Result(!$required, $message));
+
+            return $results;
         }
 
-        foreach ($fieldFilters as $check => $args) {
-            $fluent->__call($check, $args);
+        $results = [];
+
+        foreach ($values as $fieldPath => $value) {
+            $fluent = new Fluent($this->manager, $value, $this->throwOnFailure);
+            $fluent->alias('Field');
+
+            if ($required) {
+                $fluent->addCustomResult(new Result(true, '{name} is required'));
+            }
+
+            foreach ($filters as $check => $args) {
+                $fluent->__call($check, $args);
+            }
+
+            $results[$fieldPath] = $fluent;
         }
 
-        return $fluent;
+        return $results;
     }
 
     /**
      * Normalize a set of filters.
      *
      * Filters can be given as a string or an array.
-     * When string-encoded, the string contains a number of "function call" expressions,
-     * separated by ampersands.
-     * When array-encoded, each key=>value pair can either be filterName => parameters
-     * or notUsed => filterStringToBeParsed
+     * When string-encoded, the string contains a number of filter expressions separated by ampersands.
+     * When associative array, each key=>value pair can either be filterName => parameters
+     * When numeric array, each entry contains a single filter expression.
      *
      * We normalize them into well-behaved arrays of filterName => parameters.
      *
@@ -149,12 +237,14 @@ class ContainerValidator
     protected function normalizeFieldFilters($filters)
     {
         if (!is_array($filters)) {
+            // turn a filter string into an array of single filter expressions.
             $filters = preg_split('/\s*(?<!&)&(?!&)\s*/u', (string) $filters);
         }
 
         $result = [];
 
         foreach ($filters as $check => $args) {
+            // we handle numeric arrays differently from assoc arrays.
             if (is_int($check)) {
                 $check = $args;
                 $args = [];

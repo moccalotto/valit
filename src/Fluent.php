@@ -25,21 +25,6 @@ class Fluent implements FluentCheckInterface
     protected $manager;
 
     /**
-     * @var bool
-     */
-    protected $throwOnFailure;
-
-    /**
-     * @var int
-     */
-    protected $successes = 0;
-
-    /**
-     * @var int
-     */
-    protected $failures = 0;
-
-    /**
      * Constructor.
      *
      * @param CheckManager $manager        The manager that contains all our checks
