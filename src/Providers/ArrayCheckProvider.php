@@ -108,7 +108,7 @@ class ArrayCheckProvider implements CheckProvider
             }
         }
 
-        return new Result(true, '{name} must be an associative array');
+        return new Result(true, '{name} must be an conventional array');
     }
 
     /**
