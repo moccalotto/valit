@@ -1,11 +1,11 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
  * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
  */
 

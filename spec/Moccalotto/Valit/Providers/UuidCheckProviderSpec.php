@@ -1,18 +1,28 @@
 <?php
 
+/**
+ * This file is part of the Valit package.
+ *
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2017
+ * @license MIT
+ *
+ * @codingStandardsIgnoreFile
+ */
+
 namespace spec\Moccalotto\Valit\Providers;
 
 use PhpSpec\ObjectBehavior;
 
 class UuidCheckProviderSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\UuidCheckProvider');
         $this->shouldHaveType('Moccalotto\Valit\Contracts\CheckProvider');
     }
 
-    public function it_checks_uuid()
+    function it_checks_uuid()
     {
         $this->provides()->shouldHaveKey('isUuid');
         $this->provides()->shouldHaveKey('uuid');
@@ -45,7 +55,7 @@ class UuidCheckProviderSpec extends ObjectBehavior
         $this->checkIsUuid(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_uuidVersion()
+    function it_checks_uuidVersion()
     {
         $this->provides()->shouldHaveKey('isUuidVersion');
         $this->provides()->shouldHaveKey('uuidVersion');

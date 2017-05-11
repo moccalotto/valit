@@ -4,7 +4,7 @@
  * This file is part of the Valit package.
  *
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
  *
  * @codingStandardsIgnoreFile
@@ -18,13 +18,13 @@ use PhpSpec\ObjectBehavior;
 
 class DateCheckProviderSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\DateCheckProvider');
         $this->shouldHaveType('Moccalotto\Valit\Contracts\CheckProvider');
     }
 
-    public function it_checks_parsableDate()
+    function it_checks_parsableDate()
     {
         $this->provides()->shouldHaveKey('dateString');
         $this->provides()->shouldHaveKey('isDateString');
@@ -53,7 +53,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkDateParsable((object) [], null)->success()->shouldBe(false);
     }
 
-    public function it_checks_dateAfter()
+    function it_checks_dateAfter()
     {
         $this->provides()->shouldHaveKey('dateAfter');
         $this->provides()->shouldHaveKey('laterThan');
@@ -74,7 +74,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkDateAfter('1987-01-01', new DateTime('1987-01-02'))->success()->shouldBe(false);
     }
 
-    public function it_checks_dateBefore()
+    function it_checks_dateBefore()
     {
         $this->provides()->shouldHaveKey('dateBefore');
         $this->provides()->shouldHaveKey('earlierThan');
@@ -95,7 +95,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkDateBefore('1987-01-02', new DateTime('1987-01-01'))->success()->shouldBe(false);
     }
 
-    public function it_checks_inThePast()
+    function it_checks_inThePast()
     {
         $this->provides()->shouldHaveKey('dateInThePast');
         $this->provides()->shouldHaveKey('isDateInThePast');
@@ -115,7 +115,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkInThePast($now->modify('+1 seconds'))->success()->shouldBe(false);
     }
 
-    public function it_checks_inTheFuture()
+    function it_checks_inTheFuture()
     {
         $this->provides()->shouldHaveKey('dateInTheFuture');
         $this->provides()->shouldHaveKey('isDateInTheFuture');
@@ -136,7 +136,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkInTheFuture($now->modify('-1 seconds'))->success()->shouldBe(false);
     }
 
-    public function it_checks_atMidnight()
+    function it_checks_atMidnight()
     {
         $this->provides()->shouldHaveKey('dateTimeAtMidnight');
         $this->provides()->shouldHaveKey('isDateTimeAtMidnight');

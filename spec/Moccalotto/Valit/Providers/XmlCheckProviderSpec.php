@@ -1,12 +1,13 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
+ *
+ * @codingStandardsIgnoreFile
  */
 
 namespace spec\Moccalotto\Valit\Providers;
@@ -51,12 +52,12 @@ XML;
 </scoot>
 NOT_XML;
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\XmlCheckProvider');
     }
 
-    public function it_checks_xmlString()
+    function it_checks_xmlString()
     {
         $this->checkXmlString($this->xmlBase)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -70,7 +71,7 @@ NOT_XML;
         $this->checkXmlString($this->xmlInvalid)->success()->shouldBe(false);
     }
 
-    public function it_checks_matchesXmlAdvanced()
+    function it_checks_matchesXmlAdvanced()
     {
         $this->checkMatchesXmlAdvanced('', '', true, true)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -93,7 +94,7 @@ NOT_XML;
         $this->provides()->shouldHaveKey('matchesXmlAdvanced');
     }
 
-    public function it_checks_matchesXml()
+    function it_checks_matchesXml()
     {
         $this->checkMatchesXml('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -105,7 +106,7 @@ NOT_XML;
         )->success()->shouldBe(true);
     }
 
-    public function it_checks_MatchesXmlWithWhiteSpace()
+    function it_checks_MatchesXmlWithWhiteSpace()
     {
         $this->checkMatchesXmlWithWhiteSpace('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -122,7 +123,7 @@ NOT_XML;
         )->success()->shouldBe(false);
     }
 
-    public function it_checks_MatchesXmlWithCase()
+    function it_checks_MatchesXmlWithCase()
     {
         $this->checkMatchesXmlWithCase('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -139,7 +140,7 @@ NOT_XML;
         )->success()->shouldBe(false);
     }
 
-    public function it_checks_MatchesXmlStrict()
+    function it_checks_MatchesXmlStrict()
     {
         $this->checkMatchesXmlStrict('', '')->shouldHaveType('Moccalotto\Valit\Result');
 

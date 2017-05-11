@@ -1,11 +1,23 @@
 <?php
 
+/**
+ * This file is part of the Valit package.
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2017
+ * @license MIT
+ */
+
 namespace Moccalotto\Valit;
 
 use Traversable;
 use ArrayAccess;
 use LogicException;
 
+/**
+ * Validate a container (variable with array access).
+ */
 class ContainerValidator
 {
     /**

@@ -4,8 +4,10 @@
  * This file is part of the Valit package.
  *
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
+ *
+ * @codingStandardsIgnoreFile
  */
 
 namespace spec\Moccalotto\Valit\Providers;
@@ -15,17 +17,17 @@ use PhpSpec\ObjectBehavior;
 
 class ArrayCheckProviderSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\ArrayCheckProvider');
     }
 
-    public function it_provides_checks()
+    function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
     }
 
-    public function it_checks_arrayAccess()
+    function it_checks_arrayAccess()
     {
         $this->checkArrayAccess([])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -44,7 +46,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkArrayAccess('ArrayObject')->success()->shouldBe(false);
     }
 
-    public function it_checks_associativeArray()
+    function it_checks_associativeArray()
     {
         $this->checkAssociative([])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -73,7 +75,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkAssociative('ArrayObject')->success()->shouldBe(false);
     }
 
-    public function it_checks_numericArray()
+    function it_checks_numericArray()
     {
         $this->checkNumericIndex([])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -101,7 +103,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkNumericIndex('ArrayObject')->success()->shouldBe(false);
     }
 
-    public function it_checks_notEmptyArray()
+    function it_checks_notEmptyArray()
     {
         $this->checkNotEmpty([])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -126,7 +128,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkNumericIndex('ArrayObject')->success()->shouldBe(false);
     }
 
-    public function it_checks_unqiueValues()
+    function it_checks_unqiueValues()
     {
         $this->checkUniqueValues([])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -154,7 +156,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkUniqueValues('ArrayObject')->success()->shouldBe(false);
     }
 
-    public function it_checks_keyExists()
+    function it_checks_keyExists()
     {
         $this->checkKeyExists([], 1)->shouldHaveType('Moccalotto\Valit\Result');
 

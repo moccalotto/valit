@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * This file is part of the Valit package.
+ *
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2017
+ * @license MIT
+ *
+ * @codingStandardsIgnoreFile
+ */
+
 namespace spec\Moccalotto\Valit;
 
 use PhpSpec\ObjectBehavior;

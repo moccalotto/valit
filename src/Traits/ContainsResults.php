@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * This file is part of the Valit package.
+ *
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2016
+ * @license MIT
+ *
+ * @codingStandardsIgnoreFile
+ */
+
 namespace Moccalotto\Valit\Traits;
 
 use Moccalotto\Valit\Result;

@@ -1,12 +1,13 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
+ *
+ * @codingStandardsIgnoreFile
  */
 
 namespace spec\Moccalotto\Valit\Providers;
@@ -16,17 +17,17 @@ use PhpSpec\ObjectBehavior;
 
 class StringCheckProviderSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\StringCheckProvider');
     }
 
-    public function it_provides_checks()
+    function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
     }
 
-    public function it_checks_decimalString()
+    function it_checks_decimalString()
     {
         $this->checkDecimalString('0')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -52,7 +53,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkDecimalString(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_hexString()
+    function it_checks_hexString()
     {
         $this->checkHexString(0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -77,7 +78,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkHexString(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_emailAddress()
+    function it_checks_emailAddress()
     {
         $this->checkEmail(0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -105,7 +106,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkEmail(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_uppercase()
+    function it_checks_uppercase()
     {
         $this->checkUppercase('')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -132,7 +133,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkUppercase(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_lowercase()
+    function it_checks_lowercase()
     {
         $this->checkLowercase('')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -159,7 +160,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkLowercase(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_matchesRegex()
+    function it_checks_matchesRegex()
     {
         $this->checkMatchesRegex('', '//')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -182,7 +183,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkMatchesRegex(curl_init(), '//')->success()->shouldBe(false);
     }
 
-    public function it_checks_stringable()
+    function it_checks_stringable()
     {
         $this->checkStringable('')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -207,7 +208,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkStringable(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_startsWith()
+    function it_checks_startsWith()
     {
         $this->checkStartsWith('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -235,7 +236,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkStartsWith(curl_init(), '')->success()->shouldBe(false);
     }
 
-    public function it_checks_endsWith()
+    function it_checks_endsWith()
     {
         $this->checkEndsWith('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -262,7 +263,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkEndsWith(curl_init(), '')->success()->shouldBe(false);
     }
 
-    public function it_checks_containsString()
+    function it_checks_containsString()
     {
         $this->checkContainsString('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -290,7 +291,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkContainsString(curl_init(), '')->success()->shouldBe(false);
     }
 
-    public function it_checks_shorterThan()
+    function it_checks_shorterThan()
     {
         $this->checkShorterThan('', 0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -314,7 +315,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkShorterThan(curl_init(), 100)->success()->shouldBe(false);
     }
 
-    public function it_checks_longerThan()
+    function it_checks_longerThan()
     {
         $this->checkLongerThan('', 0)->shouldHaveType('Moccalotto\Valit\Result');
 
