@@ -12,6 +12,7 @@
 namespace Moccalotto\Valit\Providers;
 
 use SimpleXmlElement;
+use BadMethodCallException;
 use Moccalotto\Valit\Result;
 use Moccalotto\Exemel\Xml as XmlInspector;
 use Moccalotto\Valit\Contracts\CheckProvider;
@@ -65,6 +66,10 @@ class XmlCheckProvider implements CheckProvider
      */
     public function checkMatchesXmlAdvanced($value, $against, $skipWhite, $ignoreCase)
     {
+        if (defined('HHVM_VERSION')) {
+            throw new BadMethodCallException('XML validation is not implemented in HHVM');
+        }
+
         $message = '{name} must match the given XML document';
         $context = compact('against', 'skipWhite', 'ignoreCase');
 
