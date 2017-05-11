@@ -118,5 +118,7 @@ class ContainerValidatorSpec extends ObjectBehavior
         $result->errors()->shouldHaveKey('someAssoc/thing1');
         $result->errors()->shouldHaveKey('someAssoc/thing2');
         $result->errors()->shouldHaveKey('someAssoc/thing3');
+        $result->results()['notFound'][0]->shouldHaveType('Moccalotto\Valit\Result');
+        $result->results()['notFound'][0]->success()->shouldBe(false);
     }
 }
