@@ -1,5 +1,23 @@
-#!/usr/bin/env  php
+#!/usr/bin/env php
 <?php
+
+/**
+ * This file is part of the Valit package.
+ *
+ * Generate a json-encoded array containing all the checks supported by the default
+ * Valit Manager.
+ *
+ * Each entry contains
+ *  - name: string
+ *  - description: string
+ *  - aliases: string[]
+ *  - paramlist: string[]
+ *
+ * @package Valit
+ * @author Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2017
+ * @license MIT
+ */
 
 require __DIR__ . '/../vendor/autoload.php';
 
