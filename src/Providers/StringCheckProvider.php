@@ -265,4 +265,25 @@ class StringCheckProvider implements CheckProvider
 
         return new Result($success, '{name} must be a string that is longer than {0}', [$length]);
     }
+
+    /**
+     * Check if $value is a string that has the length $length.
+     *
+     * @Check(["hasLength", "length"])
+     *
+     * @param mixed $value
+     * @param int   $length
+     *
+     * @return Result
+     */
+    public function checkLength($value, $length)
+    {
+        if (!is_int($length)) {
+            throw new InvalidArgumentException('Second argument must be an integer');
+        }
+
+        $success = is_scalar($value) && mb_strlen($value) === $length;
+
+        return new Result($success, '{name} must be a string that has the length {0}', [$length]);
+    }
 }
