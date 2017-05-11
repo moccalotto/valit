@@ -4,7 +4,7 @@
  * This file is part of the Valit package.
  *
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
  */
 
@@ -108,7 +108,7 @@ class ArrayCheckProvider implements CheckProvider
             }
         }
 
-        return new Result(true, '{name} must be an associative array');
+        return new Result(true, '{name} must be an conventional array');
     }
 
     /**

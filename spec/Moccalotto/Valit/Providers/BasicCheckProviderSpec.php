@@ -1,13 +1,15 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
+ *
+ * @codingStandardsIgnoreFile
  */
+
 
 namespace spec\Moccalotto\Valit\Providers;
 
@@ -16,17 +18,17 @@ use PhpSpec\ObjectBehavior;
 
 class BasicCheckProviderSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\BasicCheckProvider');
     }
 
-    public function it_provides_checks()
+    function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
     }
 
-    public function it_checks_identical_to()
+    function it_checks_identical_to()
     {
         $this->checkIdenticalTo(null, null)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -57,7 +59,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIdenticalTo(curl_init(), curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_isOneOf()
+    function it_checks_isOneOf()
     {
         $this->checkIsOneOf('a', [])->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -73,7 +75,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsOneOf(curl_init(), [curl_init()])->success()->shouldBe(false);
     }
 
-    public function it_checks_equals()
+    function it_checks_equals()
     {
         $this->checkEquals(null, null)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -102,7 +104,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkEquals(curl_init(), curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_isTruthy()
+    function it_checks_isTruthy()
     {
         $this->checkIsTruthy(null)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -128,7 +130,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsTruthy(0.0)->success()->shouldBe(false);
     }
 
-    public function it_checks_isFalsy()
+    function it_checks_isFalsy()
     {
         $this->checkIsFalsy(null)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -154,7 +156,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsFalsy((object) [])->success()->shouldBe(false);
     }
 
-    public function it_checks_isTrue()
+    function it_checks_isTrue()
     {
         $this->checkIsTruthy(null)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -180,7 +182,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsTrue(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_isFalse()
+    function it_checks_isFalse()
     {
         $this->checkIsTruthy(null)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -206,11 +208,12 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsFalse(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_isArray()
+    function it_checks_isArray()
     {
         $this->checkArray([])->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('isArray');
+        $this->provides()->shouldHaveKey('array');
 
         $this->checkArray([])->success()->shouldBe(true);
         $this->checkArray(['a', 'b'])->success()->shouldBe(true);

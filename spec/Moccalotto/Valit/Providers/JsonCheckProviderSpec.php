@@ -1,12 +1,13 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
+ *
+ * @codingStandardsIgnoreFile
  */
 
 namespace spec\Moccalotto\Valit\Providers;
@@ -15,17 +16,17 @@ use PhpSpec\ObjectBehavior;
 
 class JsonCheckProviderSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\JsonCheckProvider');
     }
 
-    public function it_provides_checks()
+    function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
     }
 
-    public function it_checks_isJson()
+    function it_checks_isJson()
     {
         $this->checkIsJson('')->shouldHaveType('Moccalotto\Valit\Result');
 

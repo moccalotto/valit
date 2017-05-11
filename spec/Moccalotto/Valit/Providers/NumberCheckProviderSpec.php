@@ -1,12 +1,13 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
+ *
+ * @codingStandardsIgnoreFile
  */
 
 namespace spec\Moccalotto\Valit\Providers;
@@ -15,17 +16,17 @@ use PhpSpec\ObjectBehavior;
 
 class NumberCheckProviderSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\NumberCheckProvider');
     }
 
-    public function it_provides_checks()
+    function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
     }
 
-    public function it_checks_numeric()
+    function it_checks_numeric()
     {
         $this->checkNumeric(0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -54,7 +55,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkNumeric(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_real()
+    function it_checks_real()
     {
         $this->checkRealNumber(0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -86,7 +87,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkRealNumber(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_natural()
+    function it_checks_natural()
     {
         $this->checkNaturalNumber(0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -119,7 +120,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkNaturalNumber(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_gt()
+    function it_checks_gt()
     {
         $this->checkGreaterThan(0, 0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -137,7 +138,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkGreaterThan(0, 1)->success()->shouldBe(false);
     }
 
-    public function it_checks_lt()
+    function it_checks_lt()
     {
         $this->checkLessThan(0, 0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -158,7 +159,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkLessThan(0.999999, 1.0)->success()->shouldBe(true);
     }
 
-    public function it_checks_gte()
+    function it_checks_gte()
     {
         $this->checkGreaterThanOrEqual(0, 0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -177,7 +178,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkGreaterThanOrEqual(-0, 1)->success()->shouldBe(false);
     }
 
-    public function it_checks_lte()
+    function it_checks_lte()
     {
         $this->checkLessThanOrEqual(0, 0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -198,7 +199,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkLessThanOrEqual(-1, -3)->success()->shouldBe(false);
     }
 
-    public function it_checks_floatEqual()
+    function it_checks_floatEqual()
     {
         $this->checkFloatEqual(0, 0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -231,7 +232,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->shouldThrow('InvalidArgumentException')->during('checkFloatEqual', [0, 0, INF]);
     }
 
-    public function it_checks_odd()
+    function it_checks_odd()
     {
         $this->checkOdd(0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -252,7 +253,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkOdd(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_even()
+    function it_checks_even()
     {
         $this->checkEven(0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -273,7 +274,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkEven(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_positive()
+    function it_checks_positive()
     {
         $this->checkPositive(0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -296,7 +297,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkPositive(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_negative()
+    function it_checks_negative()
     {
         $this->checkNegative(0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -319,7 +320,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->checkNegative(curl_init())->success()->shouldBe(false);
     }
 
-    public function it_checks_primeRelativeTo()
+    function it_checks_primeRelativeTo()
     {
         $this->checkPrimeRelativeTo(0, 0)->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -350,7 +351,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
         $this->shouldThrow('InvalidArgumentException')->during('checkPrimeRelativeTo', [1, curl_init()]);
     }
 
-    public function it_checks_divisibleBy()
+    function it_checks_divisibleBy()
     {
         $this->checkDivisibleBy(1, 1)->shouldHaveType('Moccalotto\Valit\Result');
 

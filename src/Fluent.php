@@ -1,11 +1,11 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
  * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
  */
 
@@ -23,21 +23,6 @@ class Fluent implements FluentCheckInterface
      * @var CheckManager
      */
     protected $manager;
-
-    /**
-     * @var bool
-     */
-    protected $throwOnFailure;
-
-    /**
-     * @var int
-     */
-    protected $successes = 0;
-
-    /**
-     * @var int
-     */
-    protected $failures = 0;
 
     /**
      * Constructor.
@@ -70,22 +55,26 @@ class Fluent implements FluentCheckInterface
      */
     public function __call($methodName, $args)
     {
-        if ($this->manager->hasCheck($methodName)) {
-            $result = $this->manager->executeCheck($methodName, $this->value, $args);
-
-            $this->registerResult($result);
-
-            return $this;
-        }
-
         if ($methodName === 'as') {
             return $this->alias($args[0]);
         }
 
-        throw new BadMethodCallException(sprintf(
-            'Unknown method name "%s"',
-            $methodName
-        ));
+        if (!$this->manager->hasCheck($methodName)) {
+            throw new BadMethodCallException(sprintf(
+                'Unknown method name "%s"',
+                $methodName
+            ));
+        }
+
+        $result = $this->manager->executeCheck($methodName, $this->value, $args);
+
+        if (is_array($result)) {
+            $this->registerManyResults($result);
+        } else {
+            $this->registerResult($result);
+        }
+
+        return $this;
     }
 
     /**

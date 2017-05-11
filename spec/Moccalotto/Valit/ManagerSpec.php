@@ -1,12 +1,13 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
+ *
+ * @codingStandardsIgnoreFile
  */
 
 namespace spec\Moccalotto\Valit;
@@ -15,14 +16,14 @@ use PhpSpec\ObjectBehavior;
 
 class ManagerSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->beConstructedWith([]);
         $this->shouldHaveType('Moccalotto\Valit\Manager');
         $this->shouldHaveType('Moccalotto\Valit\Contracts\CheckManager');
     }
 
-    public function it_loads_core_providers()
+    function it_loads_core_providers()
     {
         $this->beConstructedThrough('create');
 
@@ -30,7 +31,7 @@ class ManagerSpec extends ObjectBehavior
         $this->hasCheck('decimalString')->shouldBe(true);
     }
 
-    public function it_can_execute_checks()
+    function it_can_execute_checks()
     {
         $this->beConstructedThrough('create');
 
@@ -46,7 +47,7 @@ class ManagerSpec extends ObjectBehavior
         );
     }
 
-    public function it_has_default_global_instance()
+    function it_has_default_global_instance()
     {
         $this->beConstructedThrough('instance');
 
@@ -58,7 +59,7 @@ class ManagerSpec extends ObjectBehavior
     /**
      * Must be last because of use of setAsGlobal().
      */
-    public function it_can_override_global()
+    function it_can_override_global()
     {
         $this->beConstructedThrough('create');
 

@@ -1,12 +1,13 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
+ *
+ * @codingStandardsIgnoreFile
  */
 
 namespace spec\Moccalotto\Valit\Providers;
@@ -18,17 +19,17 @@ use PhpSpec\ObjectBehavior;
 
 class ObjectCheckProviderSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Moccalotto\Valit\Providers\ObjectCheckProvider');
     }
 
-    public function it_provides_checks()
+    function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
     }
 
-    public function it_checks_objectOrClass()
+    function it_checks_objectOrClass()
     {
         $this->provides()->shouldHaveKey('objectOrClass');
         $this->provides()->shouldHaveKey('isObjectOrClass');
@@ -54,7 +55,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->checkObjectOrClass('Moccalotto\Valit\Contracts\CheckManager')->success()->shouldBe(false);
     }
 
-    public function it_checks_className()
+    function it_checks_className()
     {
         $this->provides()->shouldHaveKey('isClass');
         $this->provides()->shouldHaveKey('isOfClass');
@@ -78,7 +79,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->checkClassName(NonExisting::class)->success()->shouldBe(false);
     }
 
-    public function it_checks_interfaceName()
+    function it_checks_interfaceName()
     {
         $this->provides()->shouldHaveKey('isInterface');
         $this->provides()->shouldHaveKey('interfaceName');
@@ -106,7 +107,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->checkInterfaceName('Moccalotto\Valit\Traits\ProvideViaReflection')->success()->shouldBe(false);
     }
 
-    public function it_checks_traitsName()
+    function it_checks_traitsName()
     {
         $this->provides()->shouldHaveKey('isTrait');
         $this->provides()->shouldHaveKey('traitName');
@@ -136,7 +137,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->checkTraitName('Moccalotto\Valit\Contracts\CheckManager')->success()->shouldBe(false);
     }
 
-    public function it_checks_instanceof()
+    function it_checks_instanceof()
     {
         $this->checkInstanceOf(null, '')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -169,7 +170,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->shouldThrow('InvalidArgumentException')->during('checkInstanceOf', [null, (object) []]);
     }
 
-    public function it_checks_implementing()
+    function it_checks_implementing()
     {
         $this->checkImplements(null, 'Iterator')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -202,7 +203,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->shouldThrow('InvalidArgumentException')->during('checkImplements', [null, 'StdClass']);
     }
 
-    public function it_checks_hasMethod()
+    function it_checks_hasMethod()
     {
         $this->checkHasMethod(null, '')->shouldHaveType('Moccalotto\Valit\Result');
 
@@ -227,7 +228,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->shouldThrow('InvalidArgumentException')->during('checkHasMethod', ['Iterator', curl_init()]);
     }
 
-    public function it_checks_hasProperty()
+    function it_checks_hasProperty()
     {
         $this->checkHasMethod(null, '')->shouldHaveType('Moccalotto\Valit\Result');
 

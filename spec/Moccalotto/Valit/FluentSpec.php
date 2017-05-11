@@ -1,12 +1,13 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
+ *
+ * @codingStandardsIgnoreFile
  */
 
 namespace spec\Moccalotto\Valit;
@@ -16,14 +17,14 @@ use PhpSpec\ObjectBehavior;
 
 class FluentSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->shouldHaveType('Moccalotto\Valit\Fluent');
         $this->shouldHaveType('Moccalotto\Valit\Contracts\FluentCheckInterface');
     }
 
-    public function it_can_execute_fluent_checks()
+    function it_can_execute_fluent_checks()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->shouldHaveType('Moccalotto\Valit\Fluent');
@@ -33,7 +34,7 @@ class FluentSpec extends ObjectBehavior
         $this->success()->shouldBe(false);
     }
 
-    public function it_can_return_results()
+    function it_can_return_results()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->shouldHaveType('Moccalotto\Valit\Fluent');
@@ -42,14 +43,14 @@ class FluentSpec extends ObjectBehavior
         $this->results()->shouldHaveCount(2);
     }
 
-    public function it_can_be_constructed_to_throw_exceptions_on_failures()
+    function it_can_be_constructed_to_throw_exceptions_on_failures()
     {
         $this->beConstructedWith(Manager::instance(), 42, true);
         $this->shouldThrow('Moccalotto\Valit\ValidationException')
             ->during('isNegative', []);
     }
 
-    public function it_can_be_modified_to_throw_exceptions_on_failures()
+    function it_can_be_modified_to_throw_exceptions_on_failures()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->isNegative();
@@ -57,14 +58,14 @@ class FluentSpec extends ObjectBehavior
             ->during('orThrowException', []);
     }
 
-    public function it_can_return_the_initial_value()
+    function it_can_return_the_initial_value()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->value()->shouldBe(42);
         $this->isNegative()->value()->shouldBe(42);
     }
 
-    public function it_can_return_the_initial_value_with_a_fallback()
+    function it_can_return_the_initial_value_with_a_fallback()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->valueOr('foo')->shouldBe(42);
