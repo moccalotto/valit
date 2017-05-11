@@ -48,7 +48,7 @@ class ContainerValidatorSpec extends ObjectBehavior
     function it_handles_empty_filters(Manager $fakeManager)
     {
         $this->beConstructedWith($fakeManager, $this->testData, true);
-        $result = $this->against([]);
+        $result = $this->passes([]);
 
         $result->shouldHaveType('Moccalotto\Valit\ContainerValidationResult');
         $result->results()->shouldBe([]);
@@ -57,7 +57,7 @@ class ContainerValidatorSpec extends ObjectBehavior
     function it_handles_simple_string_filters()
     {
         $this->beConstructedWith(Manager::instance(), $this->testData, true);
-        $result = $this->against([
+        $result = $this->passes([
             'someString' => 'required & string',
             'someInt' => 'required & integer & greaterThan(40) & lowerThan(43)',
             'someFloat' => 'required & greaterThan(19) & lowerThan(20)',
@@ -70,7 +70,7 @@ class ContainerValidatorSpec extends ObjectBehavior
     function it_handles_simple_array_filters()
     {
         $this->beConstructedWith(Manager::instance(), $this->testData, true);
-        $result = $this->against([
+        $result = $this->passes([
             'someString'    => ['required', 'string'],
             'someInt'       => ['required', 'integer', 'greaterThan(40)', 'lowerThan(43)'],
             'someFloat'     => ['required', 'greaterThan(19)', 'lowerThan(20)'],
@@ -83,7 +83,7 @@ class ContainerValidatorSpec extends ObjectBehavior
     function it_handles_simple_assoc_filters()
     {
         $this->beConstructedWith(Manager::instance(), $this->testData, true);
-        $result = $this->against([
+        $result = $this->passes([
             'someString'    => ['required', 'string'],
             'someInt'       => ['required', 'integer', 'greaterThan' => 40, 'lowerThan' => 43],
             'someFloat'     => ['required', 'float', 'greaterThan' => [19], 'lowerThan' => [20]],
@@ -96,7 +96,7 @@ class ContainerValidatorSpec extends ObjectBehavior
     function it_handles_nested_filters()
     {
         $this->beConstructedWith(Manager::instance(), $this->testData, true);
-        $result = $this->against([
+        $result = $this->passes([
             'someArray' => 'required & array & hasNumericIndex',
             'someArray/*/key' => 'required & string',
             'someArray/*/value' => 'required & int & divisibleBy(2)',
@@ -116,7 +116,7 @@ class ContainerValidatorSpec extends ObjectBehavior
     {
         $this->beConstructedWith(Manager::instance(), $this->testData, false);
 
-        $result = $this->against([
+        $result = $this->passes([
             'notFound' => 'required',
             'some/*/complex/*/filter/glob' => 'required',
             'someAssoc/*' => 'int',

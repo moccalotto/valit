@@ -171,3 +171,85 @@ try {
      */
 }
 ```
+
+
+### Checking arrays and containers
+
+You can easily test an enture array, for instance posted fields or a json response,
+in a structured and well defined way like the example below:
+
+```php
+$checks = Check::container($input)->passes([
+    'name'      => 'required & string & shorterThan(100)',
+    'email'     => 'required & email & shorterThan(255)',
+    'address'   => ['required', 'string'],
+    'age'       => ['greaterThanOrEqual' => [18], 'lowerThan(70)'],
+
+    'orderLines'                => 'required & conventionalArray',
+    'orderLines/*'              => 'required & associative',
+    'orderLines/*/productId'    => 'required & uuid',
+    'orderLines/*/count'        => 'required & integer & greaterThan(0)',
+    'orderLines/*/comments'     => 'string & shorterThan(1024)',
+]);
+
+if ($checks->hasErrors()) {
+    print_r($checks->errors());
+    /*
+        Array
+        (
+            [age] => Array
+                (
+                    [0] => Field must be less than 70
+                )
+
+            [orderLines/1] => Array
+                (
+                    [0] => Field must be an associative array
+                )
+
+            [orderLines/0/productId] => Array
+                (
+                    [0] => Field must be a valid UUID
+                )
+
+        )
+     */
+}
+```
+
+As you can see, check for nested data via the `/` character.
+
+You can get the error messages for a single field like so:
+
+```php
+// get the errors associated with the top level field 'age'.
+$errors = $checks->errorMessagesByPath('age');
+
+// get the errors for the productId of the first orderLine.
+$errors = $checks->errorMessagesByPath('orderLines/0/productId');
+
+// get the error associated with the second orderLine
+$errors = $checks->errorMessagesByPath('orderLines/1');
+```
+
+### Arrays assertions
+
+As with single variable tests, you can assert that an array must pass
+a set of filters via the `Ensure` facade like so:
+
+```php
+// Throw an exception if $responseData does not adhere to all the criteria:
+Ensure::container($responseData)->passes([
+    'statusCode' => 'required & integer & greaterThanOrEqual(0) & lowerThanOrEqual(1000)',
+    'message' => 'required & string',
+    'payload' => 'required & isArray',
+    'payload/paymentAddress/name' => 'required & string & shorterThan(100)',
+    'payload/paymentAddress/email' => 'required & email & shorterThan(255)',
+    'payload/paymentAddress/address' => 'required & string & shorterThan(255)',
+    'payload/paymentAddress/country' => 'required & string & isUpperCase & hasLength(2)'
+    'payload/billingAddress/name' => 'required & string & shorterThan(100)',
+    'payload/billingAddress/email' => 'required & email & shorterThan(255)',
+    'payload/billingAddress/address' => 'required & string & shorterThan(255)',
+    'payload/billingAddress/country' => 'required & string & isUpperCase & hasLength(2)'
+]);
+```

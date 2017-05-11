@@ -61,7 +61,7 @@ class ContainerValidator
      *
      * @return ContainerValidationResult
      */
-    public function against($containerFilters)
+    public function passes($containerFilters)
     {
         if (!$this->isTraversable($containerFilters)) {
             throw new LogicException('$validation must be an array or a Traversable object');

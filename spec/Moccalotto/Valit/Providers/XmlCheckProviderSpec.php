@@ -59,6 +59,10 @@ NOT_XML;
 
     function it_checks_xmlString()
     {
+        if (defined('HHVM_VERSION')) {
+            return;
+        }
+
         $this->checkXmlString($this->xmlBase)->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('isValidXml');
@@ -73,6 +77,10 @@ NOT_XML;
 
     function it_checks_matchesXmlAdvanced()
     {
+        if (defined('HHVM_VERSION')) {
+            return;
+        }
+
         $this->checkMatchesXmlAdvanced('', '', true, true)->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('matchesXmlAdvanced');
@@ -96,6 +104,10 @@ NOT_XML;
 
     function it_checks_matchesXml()
     {
+        if (defined('HHVM_VERSION')) {
+            return;
+        }
+
         $this->checkMatchesXml('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('matchesXml');
@@ -108,6 +120,10 @@ NOT_XML;
 
     function it_checks_MatchesXmlWithWhiteSpace()
     {
+        if (defined('HHVM_VERSION')) {
+            return;
+        }
+
         $this->checkMatchesXmlWithWhiteSpace('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('matchesXmlWithWhiteSpace');
@@ -125,6 +141,10 @@ NOT_XML;
 
     function it_checks_MatchesXmlWithCase()
     {
+        if (defined('HHVM_VERSION')) {
+            return;
+        }
+
         $this->checkMatchesXmlWithCase('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('matchesXmlWithCase');
@@ -142,6 +162,10 @@ NOT_XML;
 
     function it_checks_MatchesXmlStrict()
     {
+        if (defined('HHVM_VERSION')) {
+            return;
+        }
+
         $this->checkMatchesXmlStrict('', '')->shouldHaveType('Moccalotto\Valit\Result');
 
         $this->provides()->shouldHaveKey('matchesXmlStrict');

@@ -22,7 +22,7 @@ class Check
         return new Fluent(Manager::instance(), $value, false);
     }
 
-    public static function container($value)
+    public static function passes($value)
     {
         return new ContainerValidator(Manager::instance(), $value, false);
     }

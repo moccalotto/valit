@@ -20,4 +20,9 @@ class Ensure
     {
         return new Fluent(Manager::instance(), $value, true);
     }
+
+    public static function passes($value)
+    {
+        return new ContainerValidator(Manager::instance(), $value, true);
+    }
 }

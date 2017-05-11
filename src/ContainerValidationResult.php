@@ -32,6 +32,26 @@ class ContainerValidationResult
     }
 
     /**
+     * Did one or more tests fail?
+     *
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        return count($this->errors()) > 0;
+    }
+
+    /**
+     * Did all tests pass?
+     *
+     * @return bool
+     */
+    public function success()
+    {
+        return !$this->hasErrors();
+    }
+
+    /**
      * Return all results.
      *
      * @return array associative array of [ path => [results] ]
