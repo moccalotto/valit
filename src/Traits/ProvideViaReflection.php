@@ -19,7 +19,8 @@ use ReflectionMethod;
 trait ProvideViaReflection
 {
     /**
-     ]    * Extract all.
+     * Get the checks for a given method.
+     *
      * @param ReflectionMethod $method
      *
      * @return Iterator
