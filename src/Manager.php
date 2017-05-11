@@ -154,7 +154,7 @@ class Manager implements CheckManager
      *
      * @return bool
      */
-    public function hasCheck(string $checkName)
+    public function hasCheck($checkName)
     {
         return isset($this->checks[$checkName]);
     }
