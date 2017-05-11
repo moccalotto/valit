@@ -57,6 +57,11 @@ trait ProvideViaReflection
         }
     }
 
+    /**
+     * Return all the checks provided by this checkprovider.
+     *
+     * @return array Associative array of [checkName => checkClosure]
+     */
     public function provides()
     {
         $reflector = new ReflectionClass($this);
