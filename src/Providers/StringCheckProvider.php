@@ -248,7 +248,7 @@ class StringCheckProvider implements CheckProvider
     /**
      * Check if $value is a string that is longer than $length.
      *
-     * @Check(["longerThan", "stringLongerThan", "isLongerThan"])
+     * @Check(["longerThan", "stringLongerThan", "isLongerThan", "isStringLongerThan"])
      *
      * @param mixed $value
      * @param int   $length
