@@ -103,6 +103,31 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkNumericIndex('ArrayObject')->success()->shouldBe(false);
     }
 
+    function it_checks_EmptyArray()
+    {
+        $this->checkEmpty([])->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('notEmpty');
+        $this->provides()->shouldHaveKey('isNotEmpty');
+        $this->provides()->shouldHaveKey('notEmptyArray');
+        $this->provides()->shouldHaveKey('isNotEmptyArray');
+
+        $this->checkEmpty([])->success()->shouldBe(true);
+
+
+        $this->checkEmpty(1)->success()->shouldBe(false);
+        $this->checkEmpty(1.0)->success()->shouldBe(false);
+        $this->checkEmpty([0])->success()->shouldBe(false);
+        $this->checkEmpty([1])->success()->shouldBe(false);
+        $this->checkEmpty(null)->success()->shouldBe(false);
+        $this->checkEmpty([null])->success()->shouldBe(false);
+        $this->checkEmpty('array')->success()->shouldBe(false);
+        $this->checkEmpty(curl_init())->success()->shouldBe(false);
+        $this->checkEmpty((object) [])->success()->shouldBe(false);
+        $this->checkEmpty('ArrayObject')->success()->shouldBe(false);
+        $this->checkEmpty([null => null])->success()->shouldBe(false);
+    }
+
     function it_checks_notEmptyArray()
     {
         $this->checkNotEmpty([])->shouldHaveType('Moccalotto\Valit\Result');
@@ -119,13 +144,13 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
         $this->checkNotEmpty([])->success()->shouldBe(false);
 
-        $this->checkNumericIndex(1)->success()->shouldBe(false);
-        $this->checkNumericIndex(1.0)->success()->shouldBe(false);
-        $this->checkNumericIndex(null)->success()->shouldBe(false);
-        $this->checkNumericIndex('array')->success()->shouldBe(false);
-        $this->checkNumericIndex(curl_init())->success()->shouldBe(false);
-        $this->checkNumericIndex((object) [])->success()->shouldBe(false);
-        $this->checkNumericIndex('ArrayObject')->success()->shouldBe(false);
+        $this->checkNotEmpty(1)->success()->shouldBe(false);
+        $this->checkNotEmpty(1.0)->success()->shouldBe(false);
+        $this->checkNotEmpty(null)->success()->shouldBe(false);
+        $this->checkNotEmpty('array')->success()->shouldBe(false);
+        $this->checkNotEmpty(curl_init())->success()->shouldBe(false);
+        $this->checkNotEmpty((object) [])->success()->shouldBe(false);
+        $this->checkNotEmpty('ArrayObject')->success()->shouldBe(false);
     }
 
     function it_checks_unqiueValues()

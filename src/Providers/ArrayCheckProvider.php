@@ -128,6 +128,22 @@ class ArrayCheckProvider implements CheckProvider
     }
 
     /**
+     * Check that $value is an empty array or Countable.
+     *
+     * @Check(["isEmpty", "isEmptyArray"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkEmpty($value)
+    {
+        $success = $this->isCountable($value) && count($value) === 0;
+
+        return new Result($success, '{name} must be an empty array');
+    }
+
+    /**
      * Check that $value is an array with unique values.
      *
      * @Check(["hasUniqueValues", "uniqueValues"])
