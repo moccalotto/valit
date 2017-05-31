@@ -175,7 +175,7 @@ try {
 
 ### Checking arrays and containers
 
-You can easily test an enture array, for instance posted fields or a json response,
+You can easily test an entire array, for instance posted fields or a json response,
 in a structured and well defined way like the example below:
 
 ```php
