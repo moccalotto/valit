@@ -232,7 +232,7 @@ $errors = $checks->errorMessagesByPath('orderLines/0/productId');
 $errors = $checks->errorMessagesByPath('orderLines/1');
 ```
 
-### Arrays assertions
+### Array assertions
 
 As with single variable tests, you can assert that an array must pass
 a set of filters via the `Ensure` facade like so:
