@@ -29,6 +29,7 @@ class Manager implements CheckManager
      * @var array
      */
     protected static $defaultProviders = [
+        Providers\CustomCheckProvider::class,
         Providers\XmlCheckProvider::class,
         Providers\DateCheckProvider::class,
         Providers\JsonCheckProvider::class,
