@@ -17,13 +17,32 @@ use Moccalotto\Valit\ContainerValidator;
 
 class Check
 {
+    /**
+     * Check that a single variable passes certain criteria.
+     *
+     * @param mixed $value the value to check
+     *
+     * @return Fluent A Fluent object that has been configured to not
+     *                throw any exceptions. You must inspect the Fluent
+     *                object (for instance via the valid() method) to
+     *                find out if all checks passed.
+     */
     public static function that($value)
     {
         return new Fluent(Manager::instance(), $value, false);
     }
 
-    public static function passes($value)
+    /**
+     * Ensure that a container passes certain criteria.
+     *
+     * @param mixed $container the container to check
+     *
+     * @return ContainerValidator a ContainerValidator object that has been
+     *                            configured to throw a ValidationException as soon as a
+     *                            single validation fails
+     */
+    public static function container($container)
     {
-        return new ContainerValidator(Manager::instance(), $value, false);
+        return new ContainerValidator(Manager::instance(), $container, false);
     }
 }
