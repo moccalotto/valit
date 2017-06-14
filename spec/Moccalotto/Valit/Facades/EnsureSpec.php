@@ -13,12 +13,13 @@
 namespace spec\Moccalotto\Valit\Facades;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
-class CheckSpec extends ObjectBehavior
+class EnsureSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Moccalotto\Valit\Facades\Check');
+        $this->shouldHaveType('Moccalotto\Valit\Facades\Ensure');
     }
 
     function it_creates_fluent()
