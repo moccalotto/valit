@@ -38,7 +38,7 @@ interface CheckManager
      *
      * @param string[] $additionalCheckProviders
      *
-     * @return @CheckManager
+     * @return CheckManager
      */
     public static function create($additionalCheckProviders = []);
 
