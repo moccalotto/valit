@@ -16,13 +16,31 @@ use Moccalotto\Valit\Manager;
 
 class Ensure
 {
+    /**
+     * Ensure that a single variable passes certain criteria.
+     *
+     * @param mixed $value the value to check
+     *
+     * @return Fluent a Fluent object that has been configured to throw a
+     *                ValidationException as soon as a single validation fails
+     */
     public static function that($value)
     {
         return new Fluent(Manager::instance(), $value, true);
     }
 
-    public static function passes($value)
+    /**
+     * Ensure that a container passes certain criteria.
+     *
+     * @param mixed $container the container to check
+     *
+     * @return ContainerValidator A ContainerValidator object that has been
+     *                            configured to NOT throw ValidationExceptions in case
+     *                            of failed checks. You can inspect the ContainerValidationResult
+     *                            to get information about the failed checks.
+     */
+    public static function container($container)
     {
-        return new ContainerValidator(Manager::instance(), $value, true);
+        return new ContainerValidator(Manager::instance(), $container, true);
     }
 }
