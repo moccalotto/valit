@@ -1,14 +1,12 @@
 <?php
 
-/*
+/**
  * This file is part of the Valit package.
  *
- * @package Valit
- * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
- * @license MIT
+ * @author    Kim Ravn Hansen <moccalotto@gmail.com>
+ * @copyright 2017 Kim Ravn Hansen
+ * @license   MIT
  */
-
 use Moccalotto\Valit\Facades\Check;
 use Moccalotto\Valit\Facades\Ensure;
 use Moccalotto\Valit\ValidationException;
@@ -200,7 +198,6 @@ $checks = Check::container($request)->passes([
     'orderLines/*/count' => 'integer & greaterThan(0)',
 ]);
 
-
 print_r($checks->errors());
 /*
 Array
@@ -225,5 +222,3 @@ print_r($checks->errorMessagesByPath(['orderLines', 0, 'productId']));
         [0] => Field must be a valid UUID
     )
  */
-
-
