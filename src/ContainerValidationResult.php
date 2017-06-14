@@ -90,13 +90,13 @@ class ContainerValidationResult
     /**
      * Get all the error messages for a given path.
      *
-     * @param string[] $path
+     * @param string|array $path
      *
      * @return array an array of rendered error messages
      */
-    public function errorMessagesByPath(array $path)
+    public function errorMessagesByPath($path)
     {
-        $key = implode('/', $path);
+        $key = is_array($path) ? implode('/', $path) : $path;
 
         return isset($this->results[$key])
             ? $this->results[$key]->errorMessages()
