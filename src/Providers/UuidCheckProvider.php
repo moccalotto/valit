@@ -82,4 +82,74 @@ class UuidCheckProvider implements CheckProvider
 
         return new Result($match && $parsedVersion == $version, '{name} must be a version {0} UUID', [$version]);
     }
+
+    /**
+     * Check if $value is a version 1 uuid
+     *
+     * @Check(["uuidV1", "isUuidV1"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkUidV1($value)
+    {
+        return $this->checkUuidVersion($value, 1);
+    }
+
+    /**
+     * Check if $value is a version 2 uuid
+     *
+     * @Check(["uuidV2", "isUuidV2"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkUidV2($value)
+    {
+        return $this->checkUuidVersion($value, 2);
+    }
+
+    /**
+     * Check if $value is a version 3 uuid
+     *
+     * @Check(["uuidV3", "isUuidV3"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkUidV3($value)
+    {
+        return $this->checkUuidVersion($value, 3);
+    }
+
+    /**
+     * Check if $value is a version 4 uuid
+     *
+     * @Check(["uuidV4", "isUuidV4"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkUidV4($value)
+    {
+        return $this->checkUuidVersion($value, 4);
+    }
+
+    /**
+     * Check if $value is a version 5 uuid
+     *
+     * @Check(["uuidV5", "isUuidV5"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkUidV5($value)
+    {
+        return $this->checkUuidVersion($value, 5);
+    }
 }
