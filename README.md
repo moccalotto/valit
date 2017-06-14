@@ -175,7 +175,7 @@ try {
 
 ### Checking arrays and containers
 
-You can easily test an enture array, for instance posted fields or a json response,
+You can easily test an entire array, for instance posted fields or a json response,
 in a structured and well defined way like the example below:
 
 ```php
@@ -232,7 +232,7 @@ $errors = $checks->errorMessagesByPath('orderLines/0/productId');
 $errors = $checks->errorMessagesByPath('orderLines/1');
 ```
 
-### Arrays assertions
+### Array assertions
 
 As with single variable tests, you can assert that an array must pass
 a set of filters via the `Ensure` facade like so:
