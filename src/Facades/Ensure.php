@@ -13,6 +13,7 @@ namespace Moccalotto\Valit\Facades;
 
 use Moccalotto\Valit\Fluent;
 use Moccalotto\Valit\Manager;
+use Moccalotto\Valit\ContainerValidator;
 
 class Ensure
 {
