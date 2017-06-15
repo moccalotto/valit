@@ -11,8 +11,11 @@
 
 namespace Moccalotto\Valit\Providers;
 
-use InvalidArgumentException;
 use Moccalotto\Valit\Result;
+use InvalidArgumentException;
+use UnexpectedValueException;
+use Moccalotto\Valit\CustomChecker;
+use Moccalotto\Valit\CustomCallbackChecker;
 use Moccalotto\Valit\Contracts\CheckProvider;
 use Moccalotto\Valit\Traits\ProvideViaReflection;
 
@@ -23,7 +26,7 @@ class CustomCheckProvider implements CheckProvider
     /**
      * Check if $value passes a validation via a callback that returns a boolean.
      *
-     * @Check(["passesCallback", "callback"])
+     * @Check("passesCallback")
      *
      * @param mixed $value
      * @param string $message The message of the result.
@@ -42,8 +45,43 @@ class CustomCheckProvider implements CheckProvider
             throw new InvalidArgumentException('$message must be a string');
         }
 
-        $success = (bool) $callback($value);
+        return $this->checkPassesChecker(
+            $value,
+            new CustomCallbackChecker($message, $callback)
+        );
+    }
 
-        return new Result($success, $message);
+    /**
+     * Chec if $value passes a custom checker
+     *
+     * @Check(["passesCustom", "passesChecker"])
+     *
+     * @param mixed $value
+     * @param CustomChecker $checker
+     *
+     * @return Result
+     *
+     * @throws InvalidArgumentException if $checker is not an instance of CustomChecker
+     * @throws UnexpectedValueException if $checker->check does not return an instance of Result
+     */
+    public function checkPassesChecker($value, $checker)
+    {
+        if (!is_a($checker, CustomChecker::class)) {
+            throw new InvalidArgumentException(sprintf(
+                '$checker must be an instance of %s',
+                CustomChecker::class
+            ));
+        }
+
+        $result = $checker->check($value);
+
+        if (!is_a($result, Result::class)) {
+            throw new UnexpectedValueException(sprintf(
+                'Result of $checker->check() did not return an instnace of %s',
+                Result::class
+            ));
+        }
+
+        return $result;
     }
 }
