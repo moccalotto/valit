@@ -96,6 +96,7 @@ class ContainerValidatorSpec extends ObjectBehavior
     function it_handles_nested_filters()
     {
         $this->beConstructedWith(Manager::instance(), $this->testData, true);
+        dd($this->flatContainer->getWrappedObject());
         $result = $this->passes([
             'someArray' => 'required & array & hasNumericIndex',
             'someArray/*/key' => 'required & string',
