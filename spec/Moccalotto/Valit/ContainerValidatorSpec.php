@@ -112,6 +112,28 @@ class ContainerValidatorSpec extends ObjectBehavior
         $result->results()->shouldHaveKey('someAssoc');
     }
 
+    public function it_handles_object_containers()
+    {
+        $objectData = json_decode(json_encode($this->testData));
+
+        $this->beConstructedWith(Manager::instance(), $objectData, true);
+        $result = $this->passes([
+            'someArray' => 'required & array & hasNumericIndex',
+            'someArray/*' => 'required & object',
+            'someArray/*/key' => 'required & string',
+            'someArray/*/value' => 'required & int & divisibleBy(2)',
+            'someArray/*/notPresent' => 'string',
+
+            'someAssoc' => 'required & object',
+            'someAssoc/*' => 'required & string',
+        ]);
+
+        $result->shouldHaveType('Moccalotto\Valit\ContainerValidationResult');
+        $result->errors()->shouldBe([]);
+        $result->results()->shouldHaveKey('someArray');
+        $result->results()->shouldHaveKey('someAssoc');
+    }
+
     function it_finds_errors()
     {
         $this->beConstructedWith(Manager::instance(), $this->testData, false);
