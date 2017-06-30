@@ -29,6 +29,7 @@ class FlattenedContainer
         $this->container = $this->flatten($innerContainer);
     }
 
+
     protected function isSimpleValue($value)
     {
         return is_scalar($value)
@@ -37,21 +38,25 @@ class FlattenedContainer
             || $value === [];
     }
 
-    protected function flatten($container, $keySoFar = '')
+    /**
+     * Flatten multi dimensional array into associative array with slashes
+     *
+     * @param mixed $value
+     * @param string $keyPrefix
+     */
+    protected function flatten($value, $keyPrefix = '')
     {
-        if ($this->isSimpleValue($container)) {
-            return $container;
+        if ($this->isSimpleValue($value)) {
+            return [$keyPrefix => $value];
         }
 
-        $res = [];
+        $res = $keyPrefix ? [$keyPrefix => $value] : [];
+        foreach ($value as $subKey => $subValue) {
+            $newKey = $keyPrefix === '' ? $subKey : "$keyPrefix/$subKey";
 
-        foreach ($container as $key => $val) {
-            if ($this->isSimpleValue($val)) {
-                $res[$keySoFar . $key] = $val;
-            } else {
-                $res = array_merge($res, $this->flatten($val, $keySoFar . $key . '/'));
-            }
+            $res = array_merge($res, $this->flatten($subValue, $newKey));
         }
+
         return $res;
     }
 
