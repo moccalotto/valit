@@ -104,6 +104,24 @@ class UriCheckProviderSpec extends ObjectBehavior
 
         $this->checkUrl('https://foo.bar')->shouldHaveType('Moccalotto\Valit\Result');
 
+        $this->shouldThrow('InvalidArgumentException')->during(
+            'checkUrl', ['https://foo.bar', null]
+        );
+        $this->shouldThrow('InvalidArgumentException')->during(
+            'checkUrl', ['https://foo.bar', null]
+        );
+        $this->shouldThrow('InvalidArgumentException')->during(
+            'checkUrl', ['https://foo.bar', (object)[]]
+        );
+        $this->shouldThrow('InvalidArgumentException')->during(
+            'checkUrl', ['https://foo.bar', []]
+        );
+
+        $this->checkUrl('http://foo.bar')->success()->shouldBe(true);
+        $this->checkUrl('http://foo.bar', 'http')->success()->shouldBe(true);
+        $this->checkUrl('http://foo.bar', ['http'])->success()->shouldBe(true);
+        $this->checkUrl('http://foo.bar', ['http', 'baz'])->success()->shouldBe(true);
+
         $this->checkUrl('http://foo.bar')->success()->shouldBe(true);
         $this->checkUrl('https://foo.bar')->success()->shouldBe(true);
         $this->checkUrl('https://127.0.0.1')->success()->shouldBe(true);
@@ -115,6 +133,8 @@ class UriCheckProviderSpec extends ObjectBehavior
         $this->checkUrl('ftp://foo.bar')->success()->shouldBe(false);
         $this->checkUrl('http://foo.bar:65536')->success()->shouldBe(false);
         $this->checkUrl('http://foo.bar:xxxxx')->success()->shouldBe(false);
+        $this->checkUrl('http://foo.bar', ['https'])->success()->shouldBe(false);
+        $this->checkUrl('https://foo.bar', ['http'])->success()->shouldBe(false);
 
         $this->checkUrl(1)->success()->shouldBe(false);
         $this->checkUrl('')->success()->shouldBe(false);
