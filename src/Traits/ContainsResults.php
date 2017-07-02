@@ -58,6 +58,21 @@ trait ContainsResults
     }
 
     /**
+     * Set the variable name alias
+     *
+     * @param string $varName
+     *
+     * @return $this
+     */
+    public function alias($varName)
+    {
+        $this->varName = $varName;
+
+        return $this;
+    }
+
+
+    /**
      * Getter.
      *
      * @var mixed
@@ -65,6 +80,62 @@ trait ContainsResults
     public function value()
     {
         return $this->value;
+    }
+
+    /**
+     * Have all checks been completed successfully?
+     *
+     * @return bool
+     */
+    public function success()
+    {
+        return $this->failures === 0;
+    }
+
+    /**
+     * Alias of success.
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+        return $this->success();
+    }
+
+    /**
+     * Alias of hasErrors.
+     *
+     * @return bool
+     */
+    public function invalid()
+    {
+        return $this->hasErrors();
+    }
+
+    /**
+     * Return true if there are errors.
+     *
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        return $this->failures > 0;
+    }
+
+    /**
+     * Get the validated value, but use a fallback if the validation failed.
+     *
+     * @param mixed $valueIfValidationFails
+     *
+     * @return mixed
+     */
+    public function valueOr($valueIfValidationFails)
+    {
+        if ($this->failures === 0) {
+            return $this->value;
+        }
+
+        return $valueIfValidationFails;
     }
 
     /**
@@ -166,5 +237,26 @@ trait ContainsResults
         }
 
         return $messages;
+    }
+
+    /**
+     * Throw exceptions if any failures has occurred or occur later in the execution stream.
+     *
+     * @return $this
+     *
+     * @throws ValidationException if any failures have occurred
+     */
+    public function orThrowException()
+    {
+        if ($this->failures) {
+            throw new ValidationException(
+                sprintf('Failed %d out of %d validation checks', $this->failures, count($this->results)),
+                $this->varName,
+                $this->value,
+                $this->results
+            );
+        }
+
+        return $this;
     }
 }
