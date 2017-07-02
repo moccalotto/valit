@@ -67,9 +67,12 @@ class UriCheckProvider implements CheckProvider
      */
     public function checkUrl($value, $schemes = ['https', 'http'])
     {
-        $schemes = (array) $schemes;
+        $schemes = array_filter(
+            array_filter((array) $schemes, 'is_string'),
+            'strlen'
+        );
 
-        if (empty($schemes) || (array_filter($schemes, 'is_string') !== $schemes)) {
+        if (empty($schemes)) {
             throw new InvalidArgumentException('Second argument must be a non-empty array of strings');
         }
 
