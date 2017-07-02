@@ -21,4 +21,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-echo json_encode(Moccalotto\Valit\Manager::instance()->checks(), JSON_PRETTY_PRINT);
+echo json_encode(
+    Moccalotto\Valit\Manager::instance()->checks(),
+    JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+);
