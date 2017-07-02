@@ -61,12 +61,15 @@ class UriCheckProvider implements CheckProvider
      * @Check(["url", "isUrl"])
      *
      * @param mixed $value
+     * @param string|strings[] $scemes
      *
      * @return Result
      */
     public function checkUrl($value, $schemes = ['https', 'http'])
     {
-        if (!is_array($schemes) || empty($schemes)) {
+        $schemes = (array) $schemes;
+
+        if (empty($schemes) || (array_filter($schemes, 'is_string') !== $schemes)) {
             throw new InvalidArgumentException('Second argument must be a non-empty array of strings');
         }
 
