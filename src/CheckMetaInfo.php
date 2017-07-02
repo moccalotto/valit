@@ -37,6 +37,11 @@ class CheckMetaInfo implements JsonSerializable
      */
     protected $paramlist;
 
+    /**
+     * Constructor
+     *
+     * @param Closure $closure
+     */
     public function __construct(Closure $closure)
     {
         $reflector = new ReflectionFunction($closure);
@@ -55,6 +60,8 @@ class CheckMetaInfo implements JsonSerializable
 
     /**
      * Serialize to json.
+     *
+     * @return array
      */
     public function jsonSerialize()
     {
