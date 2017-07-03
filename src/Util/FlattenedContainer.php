@@ -11,6 +11,8 @@
 
 namespace Moccalotto\Valit\Util;
 
+use Traversable;
+
 /**
  * A Container for data to be validated.
  */
@@ -50,11 +52,11 @@ class FlattenedContainer
      * to the object as public properties, overwriting any properties set by the previous two
      * method calls.
      *
-     * @param object $object
+     * @param mixed $object
      *
      * @return object;
      */
-    protected function expandObject($object)
+    protected function expandedValue($object)
     {
         if (!is_object($object)) {
             return $object;
@@ -65,26 +67,27 @@ class FlattenedContainer
                 && is_callable([$object, $name]);
         };
 
-        $appendData = array_merge(
-            [],
-            $isCallable('jsonSerialize')  ? $object->jsonSerialize()  : [],
-            $isCallable('__debugInfo')    ? $object->__debugInfo()    : [],
-            $isCallable('validationData') ? $object->validationData() : []
-        );
+        $merge = [];
 
-        foreach ($appendData as $key => $value) {
-            if (property_exists($object, $key)) {
-                continue;
-            }
-
-            if (isset($object->$key)) {
-                continue;
-            }
-
-            $object->$key = $value;
+        if ($object instanceof Traversable) {
+            $merge[] = $object->iteratorData = iterator_to_array($object);
         }
 
-        return $object;
+        if ($isCallable('jsonSerialize')) {
+            $merge[] = $object->jsonData = $object->jsonSerialize();
+        }
+
+        if ($isCallable('__debugInfo')) {
+            $merge[] = $object->debugData = $object->__debugInfo();
+        }
+
+        if ($isCallable('validationData')) {
+            $merge[] = $object->validationData = $object->validationData();
+        }
+
+        $merge[] = get_object_vars($object);
+
+        return array_merge(...$merge);
     }
 
     /**
@@ -101,16 +104,14 @@ class FlattenedContainer
             return [$keyPrefix => $value];
         }
 
-        if (is_object($value)) {
-            $value = $this->expandObject(clone $value);
-        }
-
         $res = $keyPrefix ? [$keyPrefix => $value] : [];
-        foreach ($value as $subKey => $subValue) {
+
+        foreach ($this->expandedValue($value) as $subKey => $subValue) {
             $newKey = $keyPrefix === '' ? $subKey : "$keyPrefix/$subKey";
 
             $res = array_merge($res, $this->flatten($subValue, $newKey));
         }
+
 
         return $res;
     }

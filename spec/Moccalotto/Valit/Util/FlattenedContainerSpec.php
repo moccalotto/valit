@@ -56,27 +56,91 @@ class FlattenedContainerSpec extends ObjectBehavior
     function it_expands_objects()
     {
         $this->beConstructedWith(
-            ['object' => new \Moccalotto\Valit\Test\ContainerTestClass()]
+            ['o' => $o = new \Moccalotto\Valit\Test\ContainerTestClass()]
         );
 
-        $container = $this->container;
+        $this->container['o']->shouldHaveType('Moccalotto\Valit\Test\ContainerTestClass');
 
-        $container['object']->validationData_foo->shouldBe('validationData');
-        $container['object']->validationData_baz->shouldBeArray();
-        $container['object']->validationData_baz['thing1']->shouldBe('validationData');
-        $container['object']->validationData_baz['thing2']->shouldBe('validationData');
+        $this->find('o')->shouldBe([
+            'o' => $o,
+        ]);
 
-        $container['object']->__debugInfo_foo->shouldBe('__debugInfo');
-        $container['object']->__debugInfo_baz->shouldBeArray();
-        $container['object']->__debugInfo_baz['thing1']->shouldBe('__debugInfo');
-        $container['object']->__debugInfo_baz['thing2']->shouldBe('__debugInfo');
+        $this->find('o/public')->shouldBe([
+            'o/public' => 'propertyAlreadyExists',
+        ]);
 
-        $container['object']->jsonSerialize_foo->shouldBe('jsonSerialize');
-        $container['object']->jsonSerialize_baz->shouldBeArray();
-        $container['object']->jsonSerialize_baz['thing1']->shouldBe('jsonSerialize');
-        $container['object']->jsonSerialize_baz['thing2']->shouldBe('jsonSerialize');
+        $this->find('o/foo')->shouldBe([
+            'o/foo' => 'validationData',
+        ]);
+        $this->find('o/bar')->shouldBe([
+            'o/bar' => 'validationData',
+        ]);
+        $this->find('o/baz')->shouldBe([
+            'o/baz' => [
+                'thing1' => 'validationData',
+                'thing2' => 'validationData',
+            ]
+        ]);
 
-        $container['object']->priority->shouldBe('validationData');
-        $container['object']->publicExists->shouldBe('propertyAlreadyExists');
+
+        $this->find('o/validationData/foo')->shouldBe([
+            'o/validationData/foo' => 'validationData',
+        ]);
+        $this->find('o/validationData/bar')->shouldBe([
+            'o/validationData/bar' => 'validationData',
+        ]);
+        $this->find('o/validationData/baz')->shouldBe([
+            'o/validationData/baz' => [
+                'thing1' => 'validationData',
+                'thing2' => 'validationData',
+            ]
+        ]);
+        $this->find('o/validationData/public')->shouldBe([
+            'o/validationData/public' => 'validationData',
+        ]);
+        $this->find('o/validationData/protected')->shouldBe([
+            'o/validationData/protected' => 'validationData',
+        ]);
+
+
+
+        $this->find('o/debugData/foo')->shouldBe([
+            'o/debugData/foo' => '__debugInfo',
+        ]);
+        $this->find('o/debugData/bar')->shouldBe([
+            'o/debugData/bar' => '__debugInfo',
+        ]);
+        $this->find('o/debugData/baz')->shouldBe([
+            'o/debugData/baz' => [
+                'thing1' => '__debugInfo',
+                'thing2' => '__debugInfo',
+            ]
+        ]);
+        $this->find('o/debugData/public')->shouldBe([
+            'o/debugData/public' => '__debugInfo',
+        ]);
+        $this->find('o/debugData/protected')->shouldBe([
+            'o/debugData/protected' => '__debugInfo',
+        ]);
+
+
+        $this->find('o/jsonData/foo')->shouldBe([
+            'o/jsonData/foo' => 'jsonSerialize',
+        ]);
+        $this->find('o/jsonData/bar')->shouldBe([
+            'o/jsonData/bar' => 'jsonSerialize',
+        ]);
+        $this->find('o/jsonData/baz')->shouldBe([
+            'o/jsonData/baz' => [
+                'thing1' => 'jsonSerialize',
+                'thing2' => 'jsonSerialize',
+            ]
+        ]);
+        $this->find('o/jsonData/public')->shouldBe([
+            'o/jsonData/public' => 'jsonSerialize',
+        ]);
+        $this->find('o/jsonData/protected')->shouldBe([
+            'o/jsonData/protected' => 'jsonSerialize',
+        ]);
     }
 }

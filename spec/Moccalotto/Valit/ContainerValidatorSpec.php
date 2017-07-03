@@ -116,7 +116,7 @@ class ContainerValidatorSpec extends ObjectBehavior
     {
         $objectData = json_decode(json_encode($this->testData));
 
-        $this->beConstructedWith(Manager::instance(), $objectData, true);
+        $this->beConstructedWith(Manager::instance(), $objectData, false);
         $result = $this->passes([
             'someArray' => 'required & array & hasNumericIndex',
             'someArray/*' => 'required & object',
