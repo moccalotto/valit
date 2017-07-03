@@ -18,8 +18,10 @@ class FlattenedContainer
 {
     /**
      * @var array|object
+     *
+     * @internal
      */
-    protected $container;
+    public $container;
 
     /**
      * Constructor
@@ -28,7 +30,6 @@ class FlattenedContainer
     {
         $this->container = $this->flatten($innerContainer);
     }
-
 
     protected function isSimpleValue($value)
     {
@@ -39,15 +40,69 @@ class FlattenedContainer
     }
 
     /**
+     * Expand the data available on an object.
+     *
+     * If an object has jsonSerialize() method, all the data returned by that method is appended
+     * to the object as public properties.
+     * If an object has a __debugInfo() method, all the data returned by that method is appended
+     * to the object as public properties, overwriting any properties set by jsonSerialize.
+     * If the object has a validationData() method, all data returned by that method is appended
+     * to the object as public properties, overwriting any properties set by the previous two
+     * method calls.
+     *
+     * @param object $object
+     *
+     * @return object;
+     */
+    protected function expandObject($object)
+    {
+        if (!is_object($object)) {
+            return $object;
+        }
+
+        $isCallable = function ($name) use ($object) {
+            return method_exists($object, $name)
+                && is_callable([$object, $name]);
+        };
+
+        $appendData = array_merge(
+            [],
+            $isCallable('jsonSerialize')  ? $object->jsonSerialize()  : [],
+            $isCallable('__debugInfo')    ? $object->__debugInfo()    : [],
+            $isCallable('validationData') ? $object->validationData() : []
+        );
+
+        foreach ($appendData as $key => $value) {
+            if (property_exists($object, $key)) {
+                continue;
+            }
+
+            if (isset($object->$key)) {
+                continue;
+            }
+
+            $object->$key = $value;
+        }
+
+        return $object;
+    }
+
+    /**
      * Flatten multi dimensional array into associative array with slashes
      *
      * @param mixed $value
      * @param string $keyPrefix
+     *
+     * @return array
      */
     protected function flatten($value, $keyPrefix = '')
     {
         if ($this->isSimpleValue($value)) {
             return [$keyPrefix => $value];
+        }
+
+        if (is_object($value)) {
+            $value = $this->expandObject(clone $value);
         }
 
         $res = $keyPrefix ? [$keyPrefix => $value] : [];
@@ -98,6 +153,8 @@ class FlattenedContainer
      * @param string $fieldNameGlob
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function find($fieldNameGlob)
     {
@@ -108,11 +165,13 @@ class FlattenedContainer
         }, ARRAY_FILTER_USE_BOTH);
     }
 
+    /**
+     * Get the debug info for this container.
+     */
     public function __debugInfo()
     {
         return [
             'container' => $this->container
         ];
     }
-
 }

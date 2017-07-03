@@ -23,23 +23,31 @@ class ContainerValidator
 {
     /**
      * @var Manager
+     *
+     * @internal
      */
-    protected $manager;
+    public $manager;
 
     /**
      * @var array|object
+     *
+     * @internal
      */
-    protected $container;
+    public $container;
 
     /**
      * @var FlattenedContainer
+     *
+     * @internal
      */
-    protected $flatContainer;
+    public $flatContainer;
 
     /**
      * @var bool
+     *
+     * @internal
      */
-    protected $throwOnFailure;
+    public $throwOnFailure;
 
     /**
      * Constructor.
