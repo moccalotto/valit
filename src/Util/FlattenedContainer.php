@@ -70,19 +70,27 @@ class FlattenedContainer
         $merge = [];
 
         if ($object instanceof Traversable) {
-            $merge[] = $object->iteratorData = iterator_to_array($object);
+            $iteratorData = $object->iteratorData = iterator_to_array($object);
+            $merge[] = $iteratorData;
+            $merge[] = compact('iteratorData');
         }
 
         if ($isCallable('jsonSerialize')) {
-            $merge[] = $object->jsonData = $object->jsonSerialize();
+            $jsonData = $object->jsonSerialize();
+            $merge[] = $jsonData;
+            $merge[] = compact('jsonData');
         }
 
         if ($isCallable('__debugInfo')) {
-            $merge[] = $object->debugData = $object->__debugInfo();
+            $debugData = $object->__debugInfo();
+            $merge[] = $debugData;
+            $merge[] = compact('debugData');
         }
 
         if ($isCallable('validationData')) {
-            $merge[] = $object->validationData = $object->validationData();
+            $validationData = $object->validationData();
+            $merge[] = $validationData;
+            $merge[] = compact('validationData');
         }
 
         $merge[] = get_object_vars($object);
