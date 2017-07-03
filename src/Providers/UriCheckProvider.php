@@ -84,7 +84,7 @@ class UriCheckProvider implements CheckProvider
 
         $parts = parse_url($value);
 
-        if (!in_array($parts['scheme'] ?? null, $schemes)) {
+        if (!in_array((isset($parts['scheme']) ? $parts['scheme'] : null), $schemes)) {
             return new Result(false, $message);
         }
 
