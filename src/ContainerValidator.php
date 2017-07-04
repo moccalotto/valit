@@ -117,7 +117,7 @@ class ContainerValidator
     protected function executeFilters($fieldNameGlob, $filters)
     {
         $fieldFluent = new Fluent($this->manager, $this->container, $this->throwOnFailure);
-        $fieldFluent->alias('Field');
+        $fieldFluent->alias($fieldNameGlob);
 
         $results = [$fieldNameGlob => $fieldFluent];
 
@@ -134,7 +134,7 @@ class ContainerValidator
 
         foreach ($fieldsToValidate as $fieldPath => $value) {
             $fluent = new Fluent($this->manager, $value, $this->throwOnFailure);
-            $fluent->alias('Field');
+            $fluent->alias($fieldPath);
 
             if ($filters->isValueRequired()) {
                 $fluent->addCustomResult(new Result(true, '{name} is required'));
