@@ -5,7 +5,7 @@
  *
  * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2016
+ * @copyright 2017
  * @license MIT
  */
 
@@ -21,23 +21,23 @@ trait ProvideViaReflection
     /**
      * Get the checks for a given method.
      *
-     * @param ReflectionMethod $method
+     * @param ReflectionMethod $reflectionMethod
      *
      * @return Iterator
      */
-    protected function checksFor(ReflectionMethod $method)
+    protected function checksFor($reflectionMethod)
     {
-        if (strpos($method->getName(), 'check') !== 0) {
+        if (strpos($reflectionMethod->getName(), 'check') !== 0) {
             return;
         }
 
-        $doc = $method->getDocComment();
+        $doc = $reflectionMethod->getDocComment();
 
-        if (!($doc && preg_match_all('/@Check\((\[?[a-zA-Z0-9_," ]+\]?)\)/', $doc, $matches))) {
+        if (!($doc && preg_match_all('/@Check\((\[?[a-zA-Z0-9_," ]+\]?)\)/S', $doc, $matches))) {
             return;
         }
 
-        $closure = $method->getClosure($this);
+        $closure = $reflectionMethod->getClosure($this);
 
         foreach ($matches[1] as $checksString) {
             $jsonResult = json_decode($checksString);
@@ -68,8 +68,8 @@ trait ProvideViaReflection
 
         $provides = [];
 
-        foreach ($reflector->getMethods() as $method) {
-            foreach ($this->checksFor($method) as $checkName => $closure) {
+        foreach ($reflector->getMethods() as $reflectionMethod) {
+            foreach ($this->checksFor($reflectionMethod) as $checkName => $closure) {
                 $provides[$checkName] = $closure;
             }
         }
