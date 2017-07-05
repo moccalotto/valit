@@ -24,7 +24,7 @@ class ContainerValidationResult
     /**
      * Constructor.
      *
-     * @param array $results
+     * @param Fluent[] $results
      */
     public function __construct(array $results)
     {

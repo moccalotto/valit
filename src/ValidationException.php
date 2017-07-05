@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
@@ -32,6 +31,19 @@ class ValidationException extends UnexpectedValueException
         $this->varName = $varName;
         $this->results = $results;
 
-        parent::__construct($message);
+        $value = json_encode($value);
+
+        parent::__construct(implode(PHP_EOL, [
+            'Validation failed.',
+            "Message: $message",
+            "Value {$value} does not pass the following tests",
+            '--------------------',
+            json_encode(
+                $this->errorMessages(),
+                JSON_PRETTY_PRINT
+                | JSON_UNESCAPED_SLASHES
+                | JSON_UNESCAPED_UNICODE
+            ),
+        ]));
     }
 }

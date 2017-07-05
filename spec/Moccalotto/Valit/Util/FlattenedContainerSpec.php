@@ -142,5 +142,25 @@ class FlattenedContainerSpec extends ObjectBehavior
         $this->find('o/jsonData/protected')->shouldBe([
             'o/jsonData/protected' => 'jsonSerialize',
         ]);
+
+
+        $this->find('o/iteratorData/foo')->shouldBe([
+            'o/iteratorData/foo' => 'iterator',
+        ]);
+        $this->find('o/iteratorData/bar')->shouldBe([
+            'o/iteratorData/bar' => 'iterator',
+        ]);
+        $this->find('o/iteratorData/baz')->shouldBe([
+            'o/iteratorData/baz' => [
+                'thing1' => 'iterator',
+                'thing2' => 'iterator',
+            ]
+        ]);
+        $this->find('o/iteratorData/public')->shouldBe([
+            'o/iteratorData/public' => 'iterator',
+        ]);
+        $this->find('o/iteratorData/protected')->shouldBe([
+            'o/iteratorData/protected' => 'iterator',
+        ]);
     }
 }
