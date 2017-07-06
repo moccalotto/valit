@@ -23,7 +23,7 @@ class Ensure
      * @param mixed $value the value to check
      *
      * @return Fluent a Fluent object that has been configured to throw a
-     *                ValidationException as soon as a single validation fails
+     *                InvalidValueException as soon as a single validation fails
      */
     public static function that($value)
     {

@@ -46,7 +46,7 @@ interface FluentCheckInterface
      *
      * @return $this
      *
-     * @throws ValidationException if any failures have occurred
+     * @throws \Moccalotto\Valit\Exceptions\InvalidValueException if any failures have occurred
      */
     public function orThrowException();
 }

@@ -13,7 +13,7 @@
 namespace Moccalotto\Valit\Traits;
 
 use Moccalotto\Valit\Result;
-use Moccalotto\Valit\ValidationException;
+use Moccalotto\Valit\Exceptions\InvalidValueException;
 
 trait ContainsResults
 {
@@ -155,7 +155,7 @@ trait ContainsResults
      *
      * @return $this
      *
-     * @throws ValidationException if we are in throwOnFailure-mode and the result is an error
+     * @throws InvalidValueException if we are in throwOnFailure-mode and the result is an error
      */
     public function addCustomResult(Result $result)
     {
@@ -169,7 +169,7 @@ trait ContainsResults
      *
      * @param Result $results
      *
-     * @throws ValidationException if we are in throwOnFailure-mode and the result is an error
+     * @throws InvalidValueException if we are in throwOnFailure-mode and the result is an error
      */
     protected function registerResult(Result $result)
     {
@@ -185,7 +185,7 @@ trait ContainsResults
         ++$this->failures;
 
         if ($this->throwOnFailure) {
-            throw new ValidationException(
+            throw new InvalidValueException(
                 $result->renderErrorMessage($this->varName, $this->value),
                 $this->varName,
                 $this->value,
@@ -244,12 +244,12 @@ trait ContainsResults
      *
      * @return $this
      *
-     * @throws ValidationException if any failures have occurred
+     * @throws InvalidValueException if any failures have occurred
      */
     public function orThrowException()
     {
         if ($this->failures) {
-            throw new ValidationException(
+            throw new InvalidValueException(
                 sprintf('Failed %d out of %d validation checks', $this->failures, count($this->results)),
                 $this->varName,
                 $this->value,

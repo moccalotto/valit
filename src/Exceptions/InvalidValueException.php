@@ -8,16 +8,17 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit;
+namespace Moccalotto\Valit\Exceptions;
 
 use UnexpectedValueException;
+use Moccalotto\Valit\Traits\ContainsResults;
 
 /**
  * Exception thrown when a value is invalid.
  */
-class ValidationException extends UnexpectedValueException
+class InvalidValueException extends UnexpectedValueException
 {
-    use Traits\ContainsResults;
+    use ContainsResults;
 
     /**
      * Constructor.

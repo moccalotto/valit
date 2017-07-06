@@ -46,7 +46,7 @@ class FluentSpec extends ObjectBehavior
     function it_can_be_constructed_to_throw_exceptions_on_failures()
     {
         $this->beConstructedWith(Manager::instance(), 42, true);
-        $this->shouldThrow('Moccalotto\Valit\ValidationException')
+        $this->shouldThrow('Moccalotto\Valit\Exceptions\InvalidValueException')
             ->during('isNegative', []);
     }
 
@@ -54,7 +54,7 @@ class FluentSpec extends ObjectBehavior
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->isNegative();
-        $this->shouldThrow('Moccalotto\Valit\ValidationException')
+        $this->shouldThrow('Moccalotto\Valit\Exceptions\InvalidValueException')
             ->during('orThrowException', []);
     }
 

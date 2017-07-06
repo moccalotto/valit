@@ -38,7 +38,7 @@ class Check
      * @param mixed $container the container to check
      *
      * @return ContainerValidator a ContainerValidator object that has been
-     *                            configured to throw a ValidationException as soon as a
+     *                            configured to throw a InvalidValueException as soon as a
      *                            single validation fails
      */
     public static function container($container)

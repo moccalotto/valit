@@ -9,7 +9,7 @@
  */
 use Moccalotto\Valit\Facades\Check;
 use Moccalotto\Valit\Facades\Ensure;
-use Moccalotto\Valit\ValidationException;
+use Moccalotto\Valit\Exceptions\InvalidValueException;
 
 require 'vendor/autoload.php';
 
@@ -117,7 +117,7 @@ Array
 | If you want to assert that all checks must pass, you can
 | use the `Moccalotto\Valit\Ensure` facade.
 | If a single check fails, we throw a
-| `Moccalotto\Valit\ValidationException` that contains the
+| `Moccalotto\Valit\Exceptions\InvalidValueException` that contains the
 | error message for that check.
 |
  */
@@ -128,9 +128,9 @@ try {
     Ensure::that($x)
         ->as('Email')
         ->isEmail()             // Success
-        ->isLowercase()         // Throws ValidationException
+        ->isLowercase()         // Throws InvalidValueException
         ->endsWith('.co.uk');   // Not run
-} catch (ValidationException $e) {
+} catch (InvalidValueException $e) {
     var_dump($e->getMessage());
     /*
         string(42) "Email must be a syntax-valid email address"
@@ -146,7 +146,7 @@ try {
 | info about all tests, you can use the Check facade in
 | combination with the `orThrowException` method.
 |
-| The thrown `ValidationException` will contain a list of
+| The thrown `InvalidValueException` will contain a list of
 | all the error messages. These can be accessed via the
 | `errorMessages` method like so:
 |
@@ -161,7 +161,7 @@ try {
         ->isGreaterThan(18)     // Success
         ->isLowerThan(30)       // Fail
         ->orThrowException();
-} catch (ValidationException $e) {
+} catch (InvalidValueException $e) {
     print_r($e->errorMessages());
     /*
         Array
