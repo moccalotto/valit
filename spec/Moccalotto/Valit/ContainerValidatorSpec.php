@@ -73,7 +73,7 @@ class ContainerValidatorSpec extends ObjectBehavior
         $result = $this->passes([
             'someString'    => ['required', 'string'],
             'someInt'       => ['required', 'integer', 'greaterThan(40)', 'lowerThan(43)'],
-            'someFloat'     => ['required', 'greaterThan(19)', 'lowerThan(20)'],
+            'someFloat'     => ['required', 'greaterThan(19)', 'lowerThan(20)', ['lowerThan', 20]],
         ]);
 
         $result->shouldHaveType('Moccalotto\Valit\ContainerValidationResult');

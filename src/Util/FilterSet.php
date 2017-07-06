@@ -81,9 +81,13 @@ class FilterSet
 
         foreach ($filters as $check => $args) {
             // we handle numeric arrays differently from assoc arrays.
-            if (is_int($check)) {
+            if (is_int($check) && is_string($args)) {
                 $check = $args;
                 $args = [];
+            } elseif (is_int($check) && is_array($args)) {
+                $check = array_shift($args);
+            } elseif (is_int($check)) {
+                throw new LogicException(sprintf('Invalid filter at index %d', $check));
             }
 
             if (!preg_match('/([a-z0-9]+)\s*(?:\((.*?)\))?$/Aui', $check, $matches)) {
