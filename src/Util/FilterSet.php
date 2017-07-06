@@ -24,6 +24,11 @@ class FilterSet
     protected $filters;
 
     /**
+     * @var bool
+     */
+    protected $valueRequired = false;
+
+    /**
      * Constructor
      */
     public function __construct($filters)
@@ -33,19 +38,7 @@ class FilterSet
 
     public function isValueRequired()
     {
-        if (!isset($this->filters['required'])) {
-            return false;
-        }
-
-        if ($this->filters['required'] === []) {
-            return true;
-        }
-
-        if (isset($this->filters['required'][0])) {
-            return $this->filters['required'][0] == true;
-        }
-
-        return true;
+        return $this->valueRequired;
     }
 
     /**
@@ -100,10 +93,15 @@ class FilterSet
             $check = $matches[1];
 
             if (isset($matches[2])) {
-                $args = json_decode(sprintf('[%s]', $matches[2]));
+                $args = (array) json_decode(sprintf('[%s]', $matches[2]));
             }
 
-            $result[$check] = (array) $args;
+            if ($check === 'required') {
+                $this->valueRequired = empty($args) || $args[0] == true;
+                continue;
+            }
+
+            $result[] = new Filter($check, (array) $args);
         }
 
         return $result;

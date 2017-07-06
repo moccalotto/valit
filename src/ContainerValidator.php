@@ -140,8 +140,11 @@ class ContainerValidator
                 $fluent->addCustomResult(new Result(true, '{name} is required'));
             }
 
-            foreach ($filters->all() as $check => $args) {
-                $fluent->__call($check, $args);
+            foreach ($filters->all() as $filter) {
+                $fluent->__call(
+                    $filter->name,
+                    $filter->args
+                );
             }
 
             $results[$fieldPath] = $fluent;
