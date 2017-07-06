@@ -32,10 +32,10 @@ class InvalidContainerException extends UnexpectedValueException
     {
         $this->results = $results;
 
-        $this->message = 'Data set did not pass validation';
+        $this->message = $this->getExpandedMessage('Container did not pass validation');
     }
 
-    public function getExpandedMessage()
+    public function getExpandedMessage($prefix)
     {
         $renderedResults = $this->results->renderedResults();
 
@@ -44,15 +44,19 @@ class InvalidContainerException extends UnexpectedValueException
         foreach ($renderedResults as $validationMessages) {
             $errorMessages = array_merge(
                 $errorMessages,
-                array_keys(array_filter($validationMessages))
+                array_keys(array_filter($validationMessages, function ($success) {
+                    return !$success;
+                }))
             );
         }
 
-        return $this->getMessage()
+        return $prefix
             . ': '
             . PHP_EOL
             . '    '
-            . implode(PHP_EOL . '    ', $errorMessages);
+            . implode(PHP_EOL . '    ', $errorMessages)
+            . PHP_EOL
+            . PHP_EOL;
     }
 
     /**
