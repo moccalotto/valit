@@ -253,3 +253,41 @@ Ensure::container($responseData)->passes([
     'payload/billingAddress/country' => 'required & string & isUpperCase & hasLength(2)'
 ]);
 ```
+
+
+### Throwing detailed exceptions
+
+If you use `Check` instead of `Ensure`, and the use the `orThrowException` method,
+you get an exception message that contains all the errors on all the fields.
+
+```php
+Check::container([
+    'a' => 1234,
+    'b' => [
+        'c' => 'g',
+        'd' => 'h',
+    ],
+
+])->passes([
+    'a' => 'required & isString & longerThan(100)',
+    'b' => 'required & isArray',
+    'b/c' => 'required & isInt & greaterThan(10)',
+    'b/d' => 'required & isString',
+    'b/e' => 'required',
+    'c' => 'required & isString & longerThan(100)',
+])->orThrowException();
+
+/* Throws InvalidContainerException.
+    InvalidContainerException::getMessage() would return:
+<<<EOT
+Container did not pass validation:
+   a must have the type "string"
+   a must be a string that is longer than 100
+   b/c must have the type "integer"
+   b/c must be greater than 10
+   b/e is required
+   c is required
+EOT;
+*/
+}
+```
