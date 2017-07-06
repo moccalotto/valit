@@ -11,6 +11,8 @@
 
 namespace Moccalotto\Valit;
 
+use Moccalotto\Valit\Exceptions\InvalidContainerException;
+
 /**
  * Result of validating a container.
  */
@@ -101,5 +103,21 @@ class ContainerValidationResult
         return isset($this->results[$key])
             ? $this->results[$key]->errorMessages()
             : [];
+    }
+
+    /**
+     * Throw an exception if this container has any errors.
+     *
+     * @return $this
+     *
+     * @throws InvalidContainerException if this container validation result contains any errors.
+     */
+    public function orThrowException()
+    {
+        if ($this->hasErrors()) {
+            throw new InvalidContainerException($this);
+        }
+
+        return $this;
     }
 }
