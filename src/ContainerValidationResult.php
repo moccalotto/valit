@@ -33,7 +33,7 @@ class ContainerValidationResult
      *
      * @param Fluent[] $results
      */
-    public function __construct(array $results, string $alias = 'Container')
+    public function __construct(array $results, $alias = 'Container')
     {
         $this->results = $results;
         $this->alias = $alias;
