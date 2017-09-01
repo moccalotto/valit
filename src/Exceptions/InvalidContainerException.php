@@ -32,7 +32,10 @@ class InvalidContainerException extends UnexpectedValueException
     {
         $this->results = $results;
 
-        $this->message = $this->getExpandedMessage('Container did not pass validation');
+        $this->message = $this->getExpandedMessage(sprintf(
+            '%s container did not pass validation',
+            ucfirst($results->alias())
+        ));
     }
 
     public function getExpandedMessage($prefix)

@@ -24,13 +24,19 @@ class ContainerValidationResult
     protected $results;
 
     /**
+     * @var string
+     */
+    protected $alias;
+
+    /**
      * Constructor.
      *
      * @param Fluent[] $results
      */
-    public function __construct(array $results)
+    public function __construct(array $results, string $alias = 'Container')
     {
         $this->results = $results;
+        $this->alias = $alias;
     }
 
     /**
@@ -52,6 +58,12 @@ class ContainerValidationResult
     {
         return !$this->hasErrors();
     }
+
+    public function alias()
+    {
+        return $this->alias;
+    }
+
 
     /**
      * Return all results.

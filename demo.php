@@ -232,7 +232,9 @@ try {
             'd' => 'h',
         ],
 
-    ])->passes([
+    ])
+    ->as('foo')
+    ->passes([
         'a' => 'required & isString & longerThan(100)',
         'b' => 'required & isArray',
         'b/c' => 'required & isInt & greaterThan(10)',

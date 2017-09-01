@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
@@ -12,8 +11,8 @@
 namespace Moccalotto\Valit;
 
 use Traversable;
-use ArrayAccess;
 use LogicException;
+use BadMethodCallException;
 use Moccalotto\Valit\Util\FilterSet;
 
 /**
@@ -50,11 +49,16 @@ class ContainerValidator
     public $throwOnFailure;
 
     /**
+     * @var string
+     */
+    public $alias = 'container';
+
+    /**
      * Constructor.
      *
-     * @param Manager           $manager
-     * @param array|object      $container
-     * @param int               $throwOnFailure
+     * @param Manager      $manager
+     * @param array|object $container
+     * @param int          $throwOnFailure
      */
     public function __construct(Manager $manager, $container, $throwOnFailure)
     {
@@ -80,7 +84,7 @@ class ContainerValidator
         $results = [];
 
         foreach ($containerFilters as $fieldNameGlob => $fieldFilters) {
-            $subResults =  $this->executeFilters(
+            $subResults = $this->executeFilters(
                 $fieldNameGlob,
                 new FilterSet($fieldFilters)
             );
@@ -90,7 +94,7 @@ class ContainerValidator
             }
         }
 
-        return new ContainerValidationResult($results);
+        return new ContainerValidationResult($results, $this->alias);
     }
 
     /**
@@ -110,7 +114,7 @@ class ContainerValidator
      * Execute an array of filters on a number of values.
      *
      * @param string    $fieldNameGlob A field name glob (such as "address" or "order.*.id")
-     * @param FilterSet $filters a normalized array of filters.
+     * @param FilterSet $filters       a normalized array of filters
      *
      * @return array
      */
@@ -151,5 +155,39 @@ class ContainerValidator
         }
 
         return $results;
+    }
+
+    /**
+     * Set the alias of the container.
+     *
+     * @return $this
+     */
+    public function alias($alias)
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    /**
+     * Magic method for setting the alias of the container.
+     *
+     * @param string $methodName
+     * @param array  $args
+     *
+     * @return $this
+     *
+     * @throws BadMethodCallException if the $methodName is invalid
+     */
+    public function __call($methodName, $args)
+    {
+        if ($methodName === 'as') {
+            return call_user_func_array([$this, 'alias'], $args);
+        }
+
+        throw new BadMethodCallException(sprintf(
+            'Unknown method name "%s"',
+            $methodName
+        ));
     }
 }
