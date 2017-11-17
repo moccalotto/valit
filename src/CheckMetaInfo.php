@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
@@ -38,7 +37,7 @@ class CheckMetaInfo implements JsonSerializable
     protected $paramlist;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Closure $closure
      */

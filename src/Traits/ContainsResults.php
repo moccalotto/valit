@@ -58,7 +58,7 @@ trait ContainsResults
     }
 
     /**
-     * Set the variable name alias
+     * Set the variable name alias.
      *
      * @param string $varName
      *
@@ -70,7 +70,6 @@ trait ContainsResults
 
         return $this;
     }
-
 
     /**
      * Getter.

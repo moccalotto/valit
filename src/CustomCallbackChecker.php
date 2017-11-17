@@ -3,7 +3,7 @@
 namespace Moccalotto\Valit;
 
 /**
- * Class for executing custom callbacks
+ * Class for executing custom callbacks.
  */
 class CustomCallbackChecker implements CustomChecker
 {
@@ -23,9 +23,9 @@ class CustomCallbackChecker implements CustomChecker
     protected $context;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param string $message
+     * @param string   $message
      * @param callable $callback
      */
     public function __construct($message, $callback, $context = [])

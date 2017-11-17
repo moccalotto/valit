@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
@@ -64,7 +63,6 @@ class ContainerValidationResult
         return $this->alias;
     }
 
-
     /**
      * Return all results.
      *
@@ -122,7 +120,7 @@ class ContainerValidationResult
      *
      * @return $this
      *
-     * @throws InvalidContainerException if this container validation result contains any errors.
+     * @throws InvalidContainerException if this container validation result contains any errors
      */
     public function orThrowException()
     {

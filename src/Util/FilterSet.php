@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
@@ -14,7 +13,7 @@ namespace Moccalotto\Valit\Util;
 use LogicException;
 
 /**
- * A Container for filters
+ * A Container for filters.
  */
 class FilterSet
 {
@@ -29,7 +28,7 @@ class FilterSet
     protected $valueRequired = false;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct($filters)
     {
@@ -42,7 +41,7 @@ class FilterSet
     }
 
     /**
-     * Get all filters (except the "required" filter)
+     * Get all filters (except the "required" filter).
      *
      * @return array an array of normalized filters
      *
@@ -54,7 +53,6 @@ class FilterSet
             return $key !== 'required';
         }, ARRAY_FILTER_USE_BOTH);
     }
-
 
     /**
      * Normalize a set of filters.

@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
@@ -28,13 +27,13 @@ class CustomCheckProvider implements CheckProvider
      *
      * @Check("passesCallback")
      *
-     * @param mixed $value
-     * @param string $message The message of the result.
-     * @param callable $callback The callback (that returns a bool).
+     * @param mixed    $value
+     * @param string   $message  the message of the result
+     * @param callable $callback the callback (that returns a bool)
      *
      * @return Result
      *
-     * @throws InvalidArgumentException if $message is not a string or $callback is not callable.
+     * @throws InvalidArgumentException if $message is not a string or $callback is not callable
      */
     public function checkPassesCallback($value, $message, $callback)
     {
@@ -52,11 +51,11 @@ class CustomCheckProvider implements CheckProvider
     }
 
     /**
-     * Chec if $value passes a custom checker
+     * Chec if $value passes a custom checker.
      *
      * @Check(["passesCustom", "passesChecker"])
      *
-     * @param mixed $value
+     * @param mixed         $value
      * @param CustomChecker $checker
      *
      * @return Result

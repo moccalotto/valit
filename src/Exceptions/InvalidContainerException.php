@@ -26,7 +26,7 @@ class InvalidContainerException extends UnexpectedValueException
     /**
      * Constructor.
      *
-     * @param ContainerValidationResult  $results
+     * @param ContainerValidationResult $results
      */
     public function __construct(ContainerValidationResult $results)
     {
@@ -63,7 +63,7 @@ class InvalidContainerException extends UnexpectedValueException
     }
 
     /**
-     * Get Results
+     * Get Results.
      *
      * @return ContainerValidationResult
      */

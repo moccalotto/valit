@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
@@ -84,7 +83,7 @@ class UuidCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a version 1 uuid
+     * Check if $value is a version 1 uuid.
      *
      * @Check(["uuidV1", "isUuidV1"])
      *
@@ -98,7 +97,7 @@ class UuidCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a version 2 uuid
+     * Check if $value is a version 2 uuid.
      *
      * @Check(["uuidV2", "isUuidV2"])
      *
@@ -112,7 +111,7 @@ class UuidCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a version 3 uuid
+     * Check if $value is a version 3 uuid.
      *
      * @Check(["uuidV3", "isUuidV3"])
      *
@@ -126,7 +125,7 @@ class UuidCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a version 4 uuid
+     * Check if $value is a version 4 uuid.
      *
      * @Check(["uuidV4", "isUuidV4"])
      *
@@ -140,7 +139,7 @@ class UuidCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a version 5 uuid
+     * Check if $value is a version 5 uuid.
      *
      * @Check(["uuidV5", "isUuidV5"])
      *

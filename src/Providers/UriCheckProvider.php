@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
@@ -38,7 +37,7 @@ class UriCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a valid ipv4 or ipv6 address
+     * Check if $value is a valid ipv4 or ipv6 address.
      *
      * @Check(["isIpAdrress", "ipAddress"])
      *
@@ -56,11 +55,11 @@ class UriCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a complete and absolute web url
+     * Check if $value is a complete and absolute web url.
      *
      * @Check(["url", "isUrl"])
      *
-     * @param mixed $value
+     * @param mixed            $value
      * @param string|strings[] $scemes
      *
      * @return Result

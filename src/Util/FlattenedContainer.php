@@ -3,7 +3,6 @@
 /**
  * This file is part of the Valit package.
  *
- * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
@@ -26,7 +25,7 @@ class FlattenedContainer
     public $container;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct($innerContainer)
     {
@@ -99,9 +98,9 @@ class FlattenedContainer
     }
 
     /**
-     * Flatten multi dimensional array into associative array with slashes
+     * Flatten multi dimensional array into associative array with slashes.
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $keyPrefix
      *
      * @return array
@@ -119,7 +118,6 @@ class FlattenedContainer
 
             $res = array_merge($res, $this->flatten($subValue, $newKey));
         }
-
 
         return $res;
     }
@@ -155,7 +153,6 @@ class FlattenedContainer
         return sprintf('#^%s$#', $innerRegex);
     }
 
-
     /**
      * Find all the values that match the given field name glob.
      *
@@ -180,7 +177,7 @@ class FlattenedContainer
     public function __debugInfo()
     {
         return [
-            'container' => $this->container
+            'container' => $this->container,
         ];
     }
 }
