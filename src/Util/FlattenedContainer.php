@@ -165,10 +165,15 @@ class FlattenedContainer
     public function find($fieldNameGlob)
     {
         $pathRegex = $this->globToRegex($fieldNameGlob);
+        $result = [];
 
-        return array_filter($this->container, function ($val, $path) use ($pathRegex) {
-            return preg_match($pathRegex, $path);
-        }, ARRAY_FILTER_USE_BOTH);
+        foreach ($this->container as $path => $val) {
+            if (preg_match($pathRegex, $path)) {
+                $result[$path] = $val;
+            }
+        }
+
+        return $result;
     }
 
     /**

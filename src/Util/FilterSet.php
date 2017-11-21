@@ -49,9 +49,15 @@ class FilterSet
      */
     public function all()
     {
-        return array_filter($this->filters, function ($val, $key) {
-            return $key !== 'required';
-        }, ARRAY_FILTER_USE_BOTH);
+        $result = [];
+
+        foreach ($this->filters as $key => $val) {
+            if ($key !== 'required') {
+                $result[$key] = $val;
+            }
+        }
+
+        return $result;
     }
 
     /**
