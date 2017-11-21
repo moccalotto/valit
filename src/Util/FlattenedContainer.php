@@ -94,7 +94,7 @@ class FlattenedContainer
 
         $merge[] = get_object_vars($object);
 
-        return array_merge(...$merge);
+        return call_user_func_array('array_merge', $merge);
     }
 
     /**
