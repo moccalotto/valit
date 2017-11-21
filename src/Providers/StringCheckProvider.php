@@ -70,7 +70,7 @@ class StringCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value
+     * Check if $value.
      *
      * @Check(["numericCurrencyCode", "currencyNumber", "isNumericCurrencyCode", "isCurrencyNumber"])
      *
