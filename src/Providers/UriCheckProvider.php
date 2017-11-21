@@ -47,11 +47,14 @@ class UriCheckProvider implements CheckProvider
      */
     public function checkIpAddress($value)
     {
+        $stringable = is_string($value)
+            || is_object($value) && is_callable($value, '__toString');
+
         $log_level = error_reporting(0);
-        $success = @inet_pton($value) !== false;
+        $success = $stringable && @inet_pton((string) $value) !== false;
         error_reporting($log_level);
 
-        return new Result($success, '{name} must be a valid host name');
+        return new Result($success, '{name} must be a valid ip address');
     }
 
     /**
