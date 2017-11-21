@@ -15,6 +15,21 @@ namespace spec\Moccalotto\Valit\Providers;
 use Exception;
 use PhpSpec\ObjectBehavior;
 
+class StringContainer
+{
+    protected $string;
+
+    public function __construct($string)
+    {
+        $this->string = $string;
+    }
+
+    public function __toString()
+    {
+        return $this->string;
+    }
+}
+
 class StringCheckProviderSpec extends ObjectBehavior
 {
     function it_is_initializable()
@@ -25,6 +40,67 @@ class StringCheckProviderSpec extends ObjectBehavior
     function it_provides_checks()
     {
         $this->provides()->shouldBeArray();
+    }
+
+    function it_checks_currencyCode()
+    {
+        $this->checkCurrencyCode('XXX')->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('currencyCode');
+        $this->provides()->shouldHaveKey('isCurrencyCode');
+        $this->provides()->shouldHaveKey('alphaCurrencyCode');
+        $this->provides()->shouldHaveKey('isAlphaCurrencyCode');
+
+        $this->checkCurrencyCode('USD')->success()->shouldBe(true);
+        $this->checkCurrencyCode('DKK')->success()->shouldBe(true);
+        $this->checkCurrencyCode(new StringContainer('DKK'))->success()->shouldBe(true);
+
+        $this->checkDecimalString(1)->success()->shouldBe(false);
+        $this->checkDecimalString(-1)->success()->shouldBe(false);
+        $this->checkDecimalString('-1')->success()->shouldBe(false);
+        $this->checkDecimalString('-12345678')->success()->shouldBe(false);
+
+        $this->checkDecimalString('1a')->success()->shouldBe(false);
+        $this->checkDecimalString('0x1f')->success()->shouldBe(false);
+
+        $this->checkDecimalString(NAN)->success()->shouldBe(false);
+        $this->checkDecimalString(INF)->success()->shouldBe(false);
+        $this->checkDecimalString(null)->success()->shouldBe(false);
+        $this->checkDecimalString([])->success()->shouldBe(false);
+        $this->checkDecimalString((object) [])->success()->shouldBe(false);
+        $this->checkDecimalString(curl_init())->success()->shouldBe(false);
+        $this->checkCurrencyCode(new StringContainer('FOOBAR'))->success()->shouldBe(false);
+    }
+
+    function it_checks_currencyNumber()
+    {
+        $this->checkCurrencyCode('000')->shouldHaveType('Moccalotto\Valit\Result');
+
+        $this->provides()->shouldHaveKey('currencyNumber');
+        $this->provides()->shouldHaveKey('isCurrencyNumber');
+        $this->provides()->shouldHaveKey('numericCurrencyCode');
+        $this->provides()->shouldHaveKey('isNumericCurrencyCode');
+
+        $this->checkCurrencyCode(123)->success()->shouldBe(true);
+        $this->checkCurrencyCode('000')->success()->shouldBe(true);
+        $this->checkCurrencyCode(999)->success()->shouldBe(true);
+        $this->checkCurrencyCode(new StringContainer('000'))->success()->shouldBe(true);
+
+        $this->checkDecimalString(0)->success()->shouldBe(false);
+        $this->checkDecimalString(-1)->success()->shouldBe(false);
+        $this->checkDecimalString('-1')->success()->shouldBe(false);
+        $this->checkDecimalString('-12345678')->success()->shouldBe(false);
+        $this->checkCurrencyCode(new StringContainer('XYZ'))->success()->shouldBe(FALSE);
+
+        $this->checkDecimalString('1a')->success()->shouldBe(false);
+        $this->checkDecimalString('0x1f')->success()->shouldBe(false);
+
+        $this->checkDecimalString(NAN)->success()->shouldBe(false);
+        $this->checkDecimalString(INF)->success()->shouldBe(false);
+        $this->checkDecimalString(null)->success()->shouldBe(false);
+        $this->checkDecimalString([])->success()->shouldBe(false);
+        $this->checkDecimalString((object) [])->success()->shouldBe(false);
+        $this->checkDecimalString(curl_init())->success()->shouldBe(false);
     }
 
     function it_checks_decimalString()

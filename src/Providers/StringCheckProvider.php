@@ -52,6 +52,42 @@ class StringCheckProvider implements CheckProvider
     }
 
     /**
+     * Check if $value is a valid alphabetical currency code string.
+     *
+     * @Check(["currencyCode", "isCurrencyCode", "isAlphaCurrencyCode", "alphaCurrencyCode"])
+     *
+     * @see {https://en.wikipedia.org/wiki/ISO_4217}
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkCurrencyCode($value)
+    {
+        $success = ctype_upper($value) && strlen($value) === 3;
+
+        return new Result($success, '{name} must be an upper case, three letter currency code');
+    }
+
+    /**
+     * Check if $value
+     *
+     * @Check(["numericCurrencyCode", "currencyNumber", "isNumericCurrencyCode", "isCurrencyNumber"])
+     *
+     * @see {https://en.wikipedia.org/wiki/ISO_4217#Currency_numbers}
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkCurrencyNumber($value)
+    {
+        $success = ctype_digit($value) && strlen($value) === 3;
+
+        return new Result($success, '{name} must be an upper case, three letter currency code');
+    }
+
+    /**
      * Check if $value contains a syntax-valid email address.
      *
      * @Check(["isEmail", "email", "isEmailAddress", "emailAddress"])
