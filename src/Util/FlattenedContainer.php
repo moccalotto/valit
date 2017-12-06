@@ -159,8 +159,6 @@ class FlattenedContainer
      * @param string $fieldNameGlob
      *
      * @return array
-     *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function find($fieldNameGlob)
     {
