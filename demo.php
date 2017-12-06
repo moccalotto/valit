@@ -200,20 +200,19 @@ $checks = Check::container($request)->passes([
 
 print_r($checks->errors());
 /*
-Array
-(
-    [age] => Array
-        (
-            [0] => Field must be less than 70
-        )
+    Array
+    (
+        [age] => Array
+            (
+                [0] => Field must be less than 70
+            )
 
-    [orderLines/0/productId] => Array
-        (
-            [0] => Field must be a valid UUID
-        )
-
+        [orderLines/0/productId] => Array
+            (
+                [0] => Field must be a valid UUID
+            )
     )
- */
+*/
 
 print_r($checks->errorMessagesByPath(['orderLines', 0, 'productId']));
 /*
@@ -221,7 +220,7 @@ print_r($checks->errorMessagesByPath(['orderLines', 0, 'productId']));
     (
         [0] => Field must be a valid UUID
     )
- */
+*/
 
 
 try {
