@@ -20,48 +20,78 @@ class FilterSet
     /**
      * @var array
      */
-    protected $filters;
+    protected $filters = [];
 
     /**
      * @var bool
      */
-    protected $valueRequired = false;
+    protected $valueOptional = false;
+
+    /**
+     * @var bool
+     */
+    protected $optionalityDefined = false;
 
     /**
      * Constructor.
      */
     public function __construct($filters)
     {
-        $this->filters = $this->normalize($filters);
-    }
-
-    public function isValueRequired()
-    {
-        return $this->valueRequired;
+        $this->addNormalizedFilters($filters);
     }
 
     /**
-     * Get all filters (except the "required" filter).
+     * Is this value required (i.e. the field is present) ?
+     *
+     * If it is required the field must be
+     * present and the value must pass all
+     * filters.
+     *
+     * @return bool
+     */
+    public function isValueRequired()
+    {
+        return ! $this->valueOptional;
+    }
+
+    /**
+     * Is this value optional (i.e. the field need not be present) ?
+     *
+     * If it is optional, the filters need not pass
+     * if the value is not present.
+     *
+     * @return bool
+     */
+    public function isValueOptional()
+    {
+        return $this->valueOptional;
+    }
+
+    /**
+     * Get all filters (except the "required" and "optional" pseudo-filters).
      *
      * @return array an array of normalized filters
-     *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function all()
     {
         $result = [];
 
         foreach ($this->filters as $key => $val) {
-            if ($key !== 'required') {
-                $result[$key] = $val;
+            if ($key === 'optional') {
+                continue;
             }
+            if ($key === 'required') {
+                continue;
+            }
+
+            $result[$key] = $val;
         }
 
         return $result;
     }
 
     /**
-     * Normalize a set of filters.
+     * Normalize a set of filters and add it to $this->filters
      *
      * Filters can be given as a string or an array.
      * When string-encoded, the string contains a number of filter expressions separated by ampersands.
@@ -72,46 +102,68 @@ class FilterSet
      *
      * @param string|array $filters
      *
-     * @return array
+     * @return void
      */
-    protected function normalize($filters)
+    protected function addNormalizedFilters($filters)
     {
         if (!is_array($filters)) {
             // turn a filter string into an array of single filter expressions.
             $filters = preg_split('/\s*(?<!&)&(?!&)\s*/u', (string) $filters);
         }
 
-        $result = [];
+        foreach ($filters as $filter => $args) {
+            list($filterName, $args) = $this->normalizeFilter($filter, $args);
 
-        foreach ($filters as $check => $args) {
-            // we handle numeric arrays differently from assoc arrays.
-            if (is_int($check) && is_string($args)) {
-                $check = $args;
-                $args = [];
-            } elseif (is_int($check) && is_array($args)) {
-                $check = array_shift($args);
-            } elseif (is_int($check)) {
-                throw new LogicException(sprintf('Invalid filter at index %d', $check));
-            }
+            $this->addFilter($filterName, $args);
+        }
+    }
 
-            if (!preg_match('/([a-z0-9]+)\s*(?:\((.*?)\))?$/Aui', $check, $matches)) {
-                throw new LogicException(sprintf('Invalid filter »%s«', $check));
-            }
-
-            $check = $matches[1];
-
-            if (isset($matches[2])) {
-                $args = (array) json_decode(sprintf('[%s]', $matches[2]));
-            }
-
-            if ($check === 'required') {
-                $this->valueRequired = empty($args) || $args[0] == true;
-                continue;
-            }
-
-            $result[] = new Filter($check, (array) $args);
+    protected function normalizeFilter($filter, $args)
+    {
+        if (is_int($filter) && is_string($args)) {
+            $filter = $args;
+        } elseif (is_int($filter) && is_array($args)) {
+            $filter = array_shift($args);
         }
 
-        return $result;
+        if (! is_string($filter)) {
+            throw new LogicException(sprintf('Invalid filter at index %d', $filter));
+        }
+
+        if (!preg_match('/([a-z0-9]+)\s*(?:\((.*?)\))?$/Aui', $filter, $matches)) {
+            throw new LogicException(sprintf('Invalid filter »%s«', $filter));
+        }
+
+        if (isset($matches[2])) {
+            $args = (array) json_decode(sprintf('[%s]', $matches[2]));
+        }
+
+        return [
+            $matches[1],    // filter name
+            $args           // filter args
+        ];
+    }
+
+    protected function addFilter($filterName, $args)
+    {
+        if (in_array($filterName, ['optional', 'required']) && $this->optionalityDefined) {
+            throw new LogicException('A set of filters cannot be both optional and required!');
+        }
+
+        if ($filterName === 'optional') {
+            $this->valueOptional = empty($args) || $args[0] == true;
+            $this->optionalityDefined = true;
+
+            return;
+        }
+
+        if ($filterName === 'required') {
+            $this->valueOptional = ! (empty($args) || $args[0] == true);
+            $this->optionalityDefined = true;
+
+            return;
+        }
+
+        $this->filters[] = new Filter($filterName, (array) $args);
     }
 }

@@ -37,6 +37,13 @@ class ContainerValidatorSpec extends ObjectBehavior
             'thing2' => 'bar',
             'thing3' => 'baz',
         ],
+        'some' => [
+            'deeply' => [
+                'nested' => [
+                    'entry' => 'hola',
+                ],
+            ],
+        ],
     ];
 
     function it_is_initializable(Manager $fakeManager)
@@ -59,8 +66,8 @@ class ContainerValidatorSpec extends ObjectBehavior
         $this->beConstructedWith(Manager::instance(), $this->testData, true);
         $result = $this->passes([
             'someString' => 'required & string',
-            'someInt' => 'required & integer & greaterThan(40) & lowerThan(43)',
-            'someFloat' => 'required & greaterThan(19) & lowerThan(20)',
+            'someInt' => 'integer & greaterThan(40) & lowerThan(43)',
+            'someFloat' => 'greaterThan(19) & lowerThan(20)',
         ]);
 
         $result->shouldHaveType('Moccalotto\Valit\ContainerValidationResult');
@@ -72,8 +79,8 @@ class ContainerValidatorSpec extends ObjectBehavior
         $this->beConstructedWith(Manager::instance(), $this->testData, true);
         $result = $this->passes([
             'someString'    => ['required', 'string'],
-            'someInt'       => ['required', 'integer', 'greaterThan(40)', 'lowerThan(43)'],
-            'someFloat'     => ['required', 'greaterThan(19)', 'lowerThan(20)', ['lowerThan', 20]],
+            'someInt'       => ['integer', 'greaterThan(40)', 'lowerThan(43)'],
+            'someFloat'     => ['greaterThan(19)', 'lowerThan(20)', ['lowerThan', 20]],
         ]);
 
         $result->shouldHaveType('Moccalotto\Valit\ContainerValidationResult');
@@ -85,8 +92,8 @@ class ContainerValidatorSpec extends ObjectBehavior
         $this->beConstructedWith(Manager::instance(), $this->testData, true);
         $result = $this->passes([
             'someString'    => ['required', 'string'],
-            'someInt'       => ['required', 'integer', 'greaterThan' => 40, 'lowerThan' => 43],
-            'someFloat'     => ['required', 'float', 'greaterThan' => [19], 'lowerThan' => [20]],
+            'someInt'       => ['integer', 'greaterThan' => 40, 'lowerThan' => 43],
+            'someFloat'     => ['greaterThan' => [19], 'lowerThan' => [20]],
         ]);
 
         $result->shouldHaveType('Moccalotto\Valit\ContainerValidationResult');
@@ -97,13 +104,13 @@ class ContainerValidatorSpec extends ObjectBehavior
     {
         $this->beConstructedWith(Manager::instance(), $this->testData, true);
         $result = $this->passes([
-            'someArray' => 'required & array & hasNumericIndex',
-            'someArray/*/key' => 'required & string',
-            'someArray/*/value' => 'required & int & divisibleBy(2)',
-            'someArray/*/notPresent' => 'string',
+            'someArray' => 'array & hasNumericIndex',
+            'someArray/*/key' => 'string',
+            'someArray/*/value' => 'int & divisibleBy(2)',
+            'someArray/*/notPresent' => 'optional & string',
 
-            'someAssoc' => 'required & associativeArray',
-            'someAssoc/*' => 'required & string',
+            'someAssoc' => 'associativeArray',
+            'someAssoc/*' => 'string',
         ]);
 
         $result->shouldHaveType('Moccalotto\Valit\ContainerValidationResult');
@@ -118,14 +125,14 @@ class ContainerValidatorSpec extends ObjectBehavior
 
         $this->beConstructedWith(Manager::instance(), $objectData, false);
         $result = $this->passes([
-            'someArray' => 'required & array & hasNumericIndex',
-            'someArray/*' => 'required & object',
-            'someArray/*/key' => 'required & string',
-            'someArray/*/value' => 'required & int & divisibleBy(2)',
-            'someArray/*/notPresent' => 'string',
+            'someArray' => 'array & hasNumericIndex',
+            'someArray/*' => 'object',
+            'someArray/*/key' => 'string',
+            'someArray/*/value' => 'int & divisibleBy(2)',
+            'someArray/*/notPresent' => 'optional & string',
 
-            'someAssoc' => 'required & object',
-            'someAssoc/*' => 'required & string',
+            'someAssoc' => 'object',
+            'someAssoc/*' => 'string',
         ]);
 
         $result->shouldHaveType('Moccalotto\Valit\ContainerValidationResult');
@@ -141,7 +148,11 @@ class ContainerValidatorSpec extends ObjectBehavior
         $result = $this->passes([
             'notFound' => 'required',
             'some/*/complex/*/filter/glob' => 'required',
-            'someAssoc/*' => 'int',
+            'someAssoc/*' => 'optional & isInt',
+            'some/*/*/*' => 'string & equals("hola")',
+            'some/*/nested/*' => 'required',
+            'some/deeply/nested/*' => 'required & string',
+            'some/deeply/nested/entry' => 'string',
         ]);
 
         $result->errors()->shouldHaveCount(5);

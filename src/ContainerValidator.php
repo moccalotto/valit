@@ -128,8 +128,8 @@ class ContainerValidator
         $fieldsToValidate = $this->flatContainer->find($fieldNameGlob);
 
         if ($fieldsToValidate === []) {
-            $message = $filters->isValueRequired() ? '{name} is required' : '{name} is optional';
-            $fieldFluent->addCustomResult(new Result(!$filters->isValueRequired(), $message));
+            $message = $filters->isValueOptional() ? '{name} is optional' : '{name} must be present';
+            $fieldFluent->addCustomResult(new Result($filters->isValueOptional(), $message));
 
             return $results;
         }
@@ -141,7 +141,7 @@ class ContainerValidator
             $fluent->alias($fieldPath);
 
             if ($filters->isValueRequired()) {
-                $fluent->addCustomResult(new Result(true, '{name} is required'));
+                $fluent->addCustomResult(new Result(true, '{name} must be present'));
             }
 
             foreach ($filters->all() as $filter) {
