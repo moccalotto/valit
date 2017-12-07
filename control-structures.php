@@ -7,28 +7,39 @@
  * @copyright 2017 Kim Ravn Hansen
  * @license   MIT
  */
-use Moccalotto\Valit\Facades\Check;
-use Moccalotto\Valit\Facades\Ensure;
-use Moccalotto\Valit\Exceptions\InvalidValueException;
+use Valit\Facades\Check;
+use Valit\Facades\Ensure;
+use Valit\Exceptions\InvalidValueException;
 
 require 'vendor/autoload.php';
 
 
 Ensure::container($something)->passes([
     Check::oneOf([
-        'headers/x-xsrf-token' => 'required & isHexString & hasLength(42)',
-        'headers/x-csrf-token' => 'required & isHexString & hasLength(42)',
-        'body/auth'            => 'required & isHexString & hasLength(42)',
+        'headers/x-xsrf-token' => 'present & isHexString & hasLength(42)',
+        'headers/x-csrf-token' => 'present & isHexString & hasLength(42)',
+        'body/auth'            => 'present & isHexString & hasLength(42)',
+        Check::that($someOtherVariable)->isTrue(),
     ]),
 
     Check::allOrNone([
-        'headers/last-modified-at' => 'required',
+        'headers/last-modified-at' => 'present',
         'headers/last-modified-at' => 'dateAfter("15 days ago")',
         'headers/last-modified-at' => 'dateBefore("now")',
     ]),
 
+    Check::anyOf([
+    ]),
+
+    Check::notAnyOf([
+        'headers/forwarded'         => 'present',
+        'headers/x-forwarded-for'   => 'present',
+        'headers/x-forwarded-host'  => 'present',
+        'headers/x-forwarded-proto' => 'present',
+    ]),
+
     // alternative syntax:
-    'headers/last-modified-at' => Check::allOrNone('required & dateAfter("15 days ago") & dateBefore("now")')
+    'headers/last-modified-at' => Check::allOrNone('present & dateAfter("15 days ago") & dateBefore("now")')
 ]);
 
 Ensure::oneOf([
@@ -41,14 +52,8 @@ Ensure::oneOf(function ($age, $price) {
     $order->isObject()->hasKey('price');
 }, $age, $order->price);
 
-Ensure::that($number, 'number', $v)->passesOneOf([
-    $v->matches('/^0x[1-9a-f][0-9a-f]*$/'),
-    $v->matches('/^0[1-7][0-7]*$/'),
-    $v->isNumeric()->isGreaterThan(0),
-]);
-
 Ensure::that($number, 'number')->passesOneOf([
-    Value::matches('/^0x[1-9a-f][0-9a-f]*$/'),
-    Value::matches('/^0[1-7][0-7]*$/'),
-    Value::isNumeric()->isGreaterThan(0),
+    Check::value()->matches('/^0x[1-9a-f][0-9a-f]*$/'),
+    Check::value()->matches('/^0[1-7][0-7]*$/'),
+    Check::value()->isNumeric()->isGreaterThan(0),
 ]);
