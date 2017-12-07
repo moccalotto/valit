@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Moccalotto\Valit\Providers;
+namespace spec\Valit\Providers;
 
 use PhpSpec\ObjectBehavior;
 
@@ -18,7 +18,7 @@ class JsonCheckProviderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Moccalotto\Valit\Providers\JsonCheckProvider');
+        $this->shouldHaveType('Valit\Providers\JsonCheckProvider');
     }
 
     function it_provides_checks()
@@ -28,7 +28,7 @@ class JsonCheckProviderSpec extends ObjectBehavior
 
     function it_checks_isJson()
     {
-        $this->checkIsJson('')->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkIsJson('')->shouldHaveType('Valit\Result');
 
         $this->provides()->shouldHaveKey('isJson');
         $this->provides()->shouldHaveKey('validJson');

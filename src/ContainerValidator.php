@@ -8,12 +8,12 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit;
+namespace Valit;
 
 use Traversable;
 use LogicException;
 use BadMethodCallException;
-use Moccalotto\Valit\Util\FilterSet;
+use Valit\Util\FilterSet;
 
 /**
  * Validate a container (variable with array access).

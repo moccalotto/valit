@@ -8,10 +8,10 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Exceptions;
+namespace Valit\Exceptions;
 
 use UnexpectedValueException;
-use Moccalotto\Valit\ContainerValidationResult;
+use Valit\ContainerValidationResult;
 
 /**
  * Exception thrown when a value is invalid.

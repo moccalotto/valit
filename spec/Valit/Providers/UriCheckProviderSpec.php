@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Moccalotto\Valit\Providers;
+namespace spec\Valit\Providers;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -19,7 +19,7 @@ class UriCheckProviderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Moccalotto\Valit\Providers\UriCheckProvider');
+        $this->shouldHaveType('Valit\Providers\UriCheckProvider');
     }
 
     function it_checks_hostname()
@@ -27,7 +27,7 @@ class UriCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('hostname');
         $this->provides()->shouldHaveKey('isHostname');
 
-        $this->checkHostname('foo.bar')->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkHostname('foo.bar')->shouldHaveType('Valit\Result');
 
         $this->checkHostname('foo.bar')->success()->shouldBe(true);
         $this->checkHostname('example.com')->success()->shouldBe(true);
@@ -48,7 +48,7 @@ class UriCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('ipAddress');
         $this->provides()->shouldHaveKey('isIpAdrress');
 
-        $this->checkIpAddress('127.0.0.1')->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkIpAddress('127.0.0.1')->shouldHaveType('Valit\Result');
 
         $this->checkIpAddress('127.0.0.1')->success()->shouldBe(true);
         $this->checkIpAddress('1:2:3:4:5:6:7:8')->success()->shouldBe(true);
@@ -101,7 +101,7 @@ class UriCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('url');
         $this->provides()->shouldHaveKey('isUrl');
 
-        $this->checkUrl('https://foo.bar')->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkUrl('https://foo.bar')->shouldHaveType('Valit\Result');
 
         $this->shouldThrow('InvalidArgumentException')->during(
             'checkUrl', ['https://foo.bar', null]

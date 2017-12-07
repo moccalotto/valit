@@ -1,6 +1,6 @@
 <?php
 
-namespace Moccalotto\Valit;
+namespace Valit;
 
 /**
  * Class for executing custom callbacks.

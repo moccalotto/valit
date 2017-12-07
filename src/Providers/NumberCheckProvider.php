@@ -10,12 +10,12 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace Moccalotto\Valit\Providers;
+namespace Valit\Providers;
 
 use InvalidArgumentException;
-use Moccalotto\Valit\Result;
-use Moccalotto\Valit\Contracts\CheckProvider;
-use Moccalotto\Valit\Traits\ProvideViaReflection;
+use Valit\Result;
+use Valit\Contracts\CheckProvider;
+use Valit\Traits\ProvideViaReflection;
 
 class NumberCheckProvider implements CheckProvider
 {

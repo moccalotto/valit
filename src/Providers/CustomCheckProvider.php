@@ -8,15 +8,15 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Providers;
+namespace Valit\Providers;
 
-use Moccalotto\Valit\Result;
+use Valit\Result;
 use InvalidArgumentException;
 use UnexpectedValueException;
-use Moccalotto\Valit\CustomChecker;
-use Moccalotto\Valit\CustomCallbackChecker;
-use Moccalotto\Valit\Contracts\CheckProvider;
-use Moccalotto\Valit\Traits\ProvideViaReflection;
+use Valit\CustomChecker;
+use Valit\CustomCallbackChecker;
+use Valit\Contracts\CheckProvider;
+use Valit\Traits\ProvideViaReflection;
 
 class CustomCheckProvider implements CheckProvider
 {

@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Traits;
+namespace Valit\Traits;
 
 use Iterator;
 use LogicException;

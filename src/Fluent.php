@@ -8,11 +8,11 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit;
+namespace Valit;
 
 use BadMethodCallException;
-use Moccalotto\Valit\Contracts\CheckManager;
-use Moccalotto\Valit\Contracts\FluentCheckInterface;
+use Valit\Contracts\CheckManager;
+use Valit\Contracts\FluentCheckInterface;
 
 class Fluent implements FluentCheckInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Moccalotto\Valit;
+namespace Valit;
 
 interface CustomChecker
 {

@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Moccalotto\Valit\Providers;
+namespace spec\Valit\Providers;
 
 use PhpSpec\ObjectBehavior;
 
@@ -18,8 +18,8 @@ class UuidCheckProviderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Moccalotto\Valit\Providers\UuidCheckProvider');
-        $this->shouldHaveType('Moccalotto\Valit\Contracts\CheckProvider');
+        $this->shouldHaveType('Valit\Providers\UuidCheckProvider');
+        $this->shouldHaveType('Valit\Contracts\CheckProvider');
     }
 
     function it_checks_uuid()
@@ -27,7 +27,7 @@ class UuidCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('isUuid');
         $this->provides()->shouldHaveKey('uuid');
 
-        $this->checkIsUuid('')->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkIsUuid('')->shouldHaveType('Valit\Result');
 
         $this->checkIsUuid('00000000-0000-1000-8000-000000000000')->success()->shouldBe(true);
         $this->checkIsUuid('00000000-0000-2000-9000-000000000000')->success()->shouldBe(true);
@@ -60,7 +60,7 @@ class UuidCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('isUuidVersion');
         $this->provides()->shouldHaveKey('uuidVersion');
 
-        $this->checkUuidVersion('', 1)->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkUuidVersion('', 1)->shouldHaveType('Valit\Result');
 
         $this->checkUuidVersion('00000000-0000-1000-8000-000000000000', 1)->success()->shouldBe(true);
         $this->checkUuidVersion('00000000-0000-2000-8000-000000000000', 2)->success()->shouldBe(true);

@@ -16,17 +16,21 @@ require 'vendor/autoload.php';
 
 Ensure::container($something)->passes([
     Check::oneOf([
-        'headers/x-xsrf-token' => 'present & isHexString & hasLength(42)',
-        'headers/x-csrf-token' => 'present & isHexString & hasLength(42)',
-        'body/auth'            => 'present & isHexString & hasLength(42)',
-        Check::that($someOtherVariable)->isTrue(),
+        'headers/x-xsrf-token' => 'isHexString & hasLength(42)',
+        'headers/x-csrf-token' => 'isHexString & hasLength(42)',
+        'body/auth'            => 'isHexString & hasLength(42)',
+        Check::that($someOtherVariable)->isTruthy(),
     ]),
 
     Check::allOrNone([
-        'headers/last-modified-at' => 'present',
+        'headers/last-modified-at' => 'required',
         'headers/last-modified-at' => 'dateAfter("15 days ago")',
         'headers/last-modified-at' => 'dateBefore("now")',
     ]),
+    // alternative syntax:
+    'headers/last-modified-at' => Check::allOrNone('present & dateAfter("15 days ago") & dateBefore("now")'),
+
+    'headers/*' => Check::keys('matches("/^[a-z][a-z0-9-]*[a-z0-9]$/")'),
 
     Check::anyOf([
     ]),
@@ -38,8 +42,6 @@ Ensure::container($something)->passes([
         'headers/x-forwarded-proto' => 'present',
     ]),
 
-    // alternative syntax:
-    'headers/last-modified-at' => Check::allOrNone('present & dateAfter("15 days ago") & dateBefore("now")')
 ]);
 
 Ensure::oneOf([

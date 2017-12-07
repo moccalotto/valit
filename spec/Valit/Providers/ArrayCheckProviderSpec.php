@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Moccalotto\Valit\Providers;
+namespace spec\Valit\Providers;
 
 use ArrayObject;
 use PhpSpec\ObjectBehavior;
@@ -19,7 +19,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Moccalotto\Valit\Providers\ArrayCheckProvider');
+        $this->shouldHaveType('Valit\Providers\ArrayCheckProvider');
     }
 
     function it_provides_checks()
@@ -29,7 +29,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_arrayAccess()
     {
-        $this->checkArrayAccess([])->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkArrayAccess([])->shouldHaveType('Valit\Result');
 
         $this->provides()->shouldHaveKey('hasArrayAccess');
         $this->provides()->shouldHaveKey('arrayAccessible');
@@ -48,7 +48,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_associativeArray()
     {
-        $this->checkAssociative([])->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkAssociative([])->shouldHaveType('Valit\Result');
 
         $this->provides()->shouldHaveKey('associative');
         $this->provides()->shouldHaveKey('isAssociative');
@@ -77,7 +77,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_numericArray()
     {
-        $this->checkNumericIndex([])->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkNumericIndex([])->shouldHaveType('Valit\Result');
 
         $this->provides()->shouldHaveKey('hasNumericIndex');
         $this->provides()->shouldHaveKey('isConventionalArray');
@@ -105,7 +105,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_EmptyArray()
     {
-        $this->checkEmpty([])->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkEmpty([])->shouldHaveType('Valit\Result');
 
         $this->provides()->shouldHaveKey('notEmpty');
         $this->provides()->shouldHaveKey('isNotEmpty');
@@ -130,7 +130,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_notEmptyArray()
     {
-        $this->checkNotEmpty([])->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkNotEmpty([])->shouldHaveType('Valit\Result');
 
         $this->provides()->shouldHaveKey('notEmpty');
         $this->provides()->shouldHaveKey('isNotEmpty');
@@ -155,7 +155,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_unqiueValues()
     {
-        $this->checkUniqueValues([])->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkUniqueValues([])->shouldHaveType('Valit\Result');
 
         $this->provides()->shouldHaveKey('hasUniqueValues');
         $this->provides()->shouldHaveKey('uniqueValues');
@@ -183,7 +183,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_keyExists()
     {
-        $this->checkKeyExists([], 1)->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkKeyExists([], 1)->shouldHaveType('Valit\Result');
 
         $this->provides()->shouldHaveKey('hasKey');
         $this->provides()->shouldHaveKey('keyExists');

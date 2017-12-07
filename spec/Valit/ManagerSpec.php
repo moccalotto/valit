@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Moccalotto\Valit;
+namespace spec\Valit;
 
 use PhpSpec\ObjectBehavior;
 
@@ -19,8 +19,8 @@ class ManagerSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith([]);
-        $this->shouldHaveType('Moccalotto\Valit\Manager');
-        $this->shouldHaveType('Moccalotto\Valit\Contracts\CheckManager');
+        $this->shouldHaveType('Valit\Manager');
+        $this->shouldHaveType('Valit\Contracts\CheckManager');
     }
 
     function it_loads_core_providers()
@@ -36,7 +36,7 @@ class ManagerSpec extends ObjectBehavior
         $this->beConstructedThrough('create');
 
         $this->executeCheck('isNumeric', 42, [])
-            ->shouldHaveType('Moccalotto\Valit\Result');
+            ->shouldHaveType('Valit\Result');
 
         $this->executeCheck('isNumeric', 42, [])->success()->shouldBe(true);
 
@@ -51,7 +51,7 @@ class ManagerSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('instance');
 
-        $this->shouldHaveType('Moccalotto\Valit\Contracts\CheckManager');
+        $this->shouldHaveType('Valit\Contracts\CheckManager');
 
         $this->instance()->shouldBe($this->getWrappedObject());
     }

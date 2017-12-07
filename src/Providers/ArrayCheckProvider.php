@@ -8,14 +8,14 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Providers;
+namespace Valit\Providers;
 
 use Countable;
 use ArrayAccess;
 use LogicException;
-use Moccalotto\Valit\Result;
-use Moccalotto\Valit\Contracts\CheckProvider;
-use Moccalotto\Valit\Traits\ProvideViaReflection;
+use Valit\Result;
+use Valit\Contracts\CheckProvider;
+use Valit\Traits\ProvideViaReflection;
 
 class ArrayCheckProvider implements CheckProvider
 {

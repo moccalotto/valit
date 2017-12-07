@@ -8,9 +8,9 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit;
+namespace Valit;
 
-use Moccalotto\Valit\Exceptions\InvalidContainerException;
+use Valit\Exceptions\InvalidContainerException;
 
 /**
  * Result of validating a container.

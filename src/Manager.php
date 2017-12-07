@@ -8,12 +8,12 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit;
+namespace Valit;
 
 use SplObjectStorage;
 use UnexpectedValueException;
-use Moccalotto\Valit\Contracts\CheckManager;
-use Moccalotto\Valit\Contracts\CheckProvider;
+use Valit\Contracts\CheckManager;
+use Valit\Contracts\CheckProvider;
 
 class Manager implements CheckManager
 {

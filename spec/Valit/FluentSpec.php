@@ -10,9 +10,9 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Moccalotto\Valit;
+namespace spec\Valit;
 
-use Moccalotto\Valit\Manager;
+use Valit\Manager;
 use PhpSpec\ObjectBehavior;
 
 class FluentSpec extends ObjectBehavior
@@ -20,33 +20,33 @@ class FluentSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
-        $this->shouldHaveType('Moccalotto\Valit\Fluent');
-        $this->shouldHaveType('Moccalotto\Valit\Contracts\FluentCheckInterface');
+        $this->shouldHaveType('Valit\Fluent');
+        $this->shouldHaveType('Valit\Contracts\FluentCheckInterface');
     }
 
     function it_can_execute_fluent_checks()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
-        $this->shouldHaveType('Moccalotto\Valit\Fluent');
-        $this->isNumeric()->shouldHaveType('Moccalotto\Valit\Fluent');
+        $this->shouldHaveType('Valit\Fluent');
+        $this->isNumeric()->shouldHaveType('Valit\Fluent');
         $this->success()->shouldBe(true);
-        $this->isNegative()->shouldHaveType('Moccalotto\Valit\Fluent');
+        $this->isNegative()->shouldHaveType('Valit\Fluent');
         $this->success()->shouldBe(false);
     }
 
     function it_can_return_results()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
-        $this->shouldHaveType('Moccalotto\Valit\Fluent');
-        $this->isNumeric()->shouldHaveType('Moccalotto\Valit\Fluent');
-        $this->isNegative()->shouldHaveType('Moccalotto\Valit\Fluent');
+        $this->shouldHaveType('Valit\Fluent');
+        $this->isNumeric()->shouldHaveType('Valit\Fluent');
+        $this->isNegative()->shouldHaveType('Valit\Fluent');
         $this->results()->shouldHaveCount(2);
     }
 
     function it_can_be_constructed_to_throw_exceptions_on_failures()
     {
         $this->beConstructedWith(Manager::instance(), 42, true);
-        $this->shouldThrow('Moccalotto\Valit\Exceptions\InvalidValueException')
+        $this->shouldThrow('Valit\Exceptions\InvalidValueException')
             ->during('isNegative', []);
     }
 
@@ -54,7 +54,7 @@ class FluentSpec extends ObjectBehavior
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
         $this->isNegative();
-        $this->shouldThrow('Moccalotto\Valit\Exceptions\InvalidValueException')
+        $this->shouldThrow('Valit\Exceptions\InvalidValueException')
             ->during('orThrowException', []);
     }
 

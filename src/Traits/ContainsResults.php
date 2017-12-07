@@ -10,10 +10,10 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace Moccalotto\Valit\Traits;
+namespace Valit\Traits;
 
-use Moccalotto\Valit\Result;
-use Moccalotto\Valit\Exceptions\InvalidValueException;
+use Valit\Result;
+use Valit\Exceptions\InvalidValueException;
 
 trait ContainsResults
 {

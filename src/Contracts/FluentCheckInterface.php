@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Contracts;
+namespace Valit\Contracts;
 
 interface FluentCheckInterface
 {
@@ -45,7 +45,7 @@ interface FluentCheckInterface
      *
      * @return $this
      *
-     * @throws \Moccalotto\Valit\Exceptions\InvalidValueException if any failures have occurred
+     * @throws \Valit\Exceptions\InvalidValueException if any failures have occurred
      */
     public function orThrowException();
 }

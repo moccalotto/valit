@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Moccalotto\Valit\Facades;
+namespace spec\Valit\Facades;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -19,16 +19,16 @@ class EnsureSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Moccalotto\Valit\Facades\Ensure');
+        $this->shouldHaveType('Valit\Facades\Ensure');
     }
 
     function it_creates_fluent()
     {
-        $this->that(42)->shouldHaveType('Moccalotto\Valit\Fluent');
+        $this->that(42)->shouldHaveType('Valit\Fluent');
     }
 
     function it_creates_container_validator()
     {
-        $this->container([1,2,3])->shouldHaveType('Moccalotto\Valit\ContainerValidator');
+        $this->container([1,2,3])->shouldHaveType('Valit\ContainerValidator');
     }
 }

@@ -8,15 +8,15 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Providers;
+namespace Valit\Providers;
 
 use DateTime;
 use Exception;
 use DateTimeInterface;
 use InvalidArgumentException;
-use Moccalotto\Valit\Contracts\CheckProvider;
-use Moccalotto\Valit\Result;
-use Moccalotto\Valit\Traits\ProvideViaReflection;
+use Valit\Contracts\CheckProvider;
+use Valit\Result;
+use Valit\Traits\ProvideViaReflection;
 
 /**
  * Check that dates for validity.

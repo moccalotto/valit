@@ -8,13 +8,13 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Providers;
+namespace Valit\Providers;
 
 use ReflectionClass;
-use Moccalotto\Valit\Result;
+use Valit\Result;
 use InvalidArgumentException;
-use Moccalotto\Valit\Contracts\CheckProvider;
-use Moccalotto\Valit\Traits\ProvideViaReflection;
+use Valit\Contracts\CheckProvider;
+use Valit\Traits\ProvideViaReflection;
 
 class ObjectCheckProvider implements CheckProvider
 {

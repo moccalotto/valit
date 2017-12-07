@@ -7,9 +7,9 @@
  * @copyright 2017 Kim Ravn Hansen
  * @license   MIT
  */
-use Moccalotto\Valit\Facades\Check;
-use Moccalotto\Valit\Facades\Ensure;
-use Moccalotto\Valit\Exceptions\InvalidValueException;
+use Valit\Facades\Check;
+use Valit\Facades\Ensure;
+use Valit\Exceptions\InvalidValueException;
 
 require 'vendor/autoload.php';
 
@@ -115,9 +115,9 @@ Array
 |----------------------------------------------------------
 |
 | If you want to assert that all checks must pass, you can
-| use the `Moccalotto\Valit\Ensure` facade.
+| use the `Valit\Ensure` facade.
 | If a single check fails, we throw a
-| `Moccalotto\Valit\Exceptions\InvalidValueException` that contains the
+| `Valit\Exceptions\InvalidValueException` that contains the
 | error message for that check.
 |
  */
@@ -182,36 +182,42 @@ $request = [
             'productId' => 'dd4fbef0-0ece-4596-ab07-97a2d44aabaG',
             'count' => 52,
         ],
-        [],
+        [],     // empty arrays are neither associative nor numericly indexed.
     ],
 ];
 
 $checks = Check::container($request)->passes([
-    'name' => 'required & string & shorterThan(100)',
-    'email' => 'required & email & shorterThan(255)',
-    'address' => ['required', 'string'],
-    'age' => ['greaterThan' => [18], 'lowerThan(70)'],
+    'name' => 'string & shorterThan(100)',
+    'email' => 'email & shorterThan(255)',
+    'address' => ['string'],
+    'age' => ['optional', 'greaterThan' => [18], 'lowerThan(70)'],
 
-    'orderLines' => 'required & conventionalArray',
-    'orderLines/*' => 'required & associative',
-    'orderLines/*/productId' => 'required & uuid',
-    'orderLines/*/count' => 'integer & greaterThan(0)',
+    'orderLines' => 'conventionalArray',
+    'orderLines/*' => 'associative',
+    'orderLines/*/productId' => 'uuid',
+    'orderLines/*/count' => 'optional & integer & greaterThan(0)',
 ]);
 
 print_r($checks->errors());
 /*
-    Array
-    (
-        [age] => Array
-            (
-                [0] => Field must be less than 70
-            )
+Array
+(
+    [age] => Array
+        (
+            [0] => age must be less than 70
+        )
 
-        [orderLines/0/productId] => Array
-            (
-                [0] => Field must be a valid UUID
-            )
-    )
+    [orderLines/1] => Array
+        (
+            [0] => orderLines/1 must be an associative array
+        )
+
+    [orderLines/0/productId] => Array
+        (
+            [0] => orderLines/0/productId must be a valid UUID
+        )
+
+)
 */
 
 print_r($checks->errorMessagesByPath(['orderLines', 0, 'productId']));

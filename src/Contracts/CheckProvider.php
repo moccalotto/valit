@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Contracts;
+namespace Valit\Contracts;
 
 interface CheckProvider
 {

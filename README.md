@@ -38,8 +38,8 @@ The `Check` and `Ensure` classes are the a so-called facade classes.
 In short they make it easier for you to use the Valit library.
 
 ```php
-use Moccalotto\Valit\Facades\Check;
-use Moccalotto\Valit\Facades\Ensure;
+use Valit\Facades\Check;
+use Valit\Facades\Ensure;
 ```
 
 The `Ensure` class allows you to make checks with fluent API,
@@ -117,10 +117,10 @@ Array
 
 ### Ensuring
 If you want to assert that all checks must pass, you can
-use the `Moccalotto\Valit\Ensure` facade.
+use the `Valit\Ensure` facade.
 
 If a single check fails, we throw a
-`Moccalotto\Valit\Exceptions\InvalidValueException` that contains the
+`Valit\Exceptions\InvalidValueException` that contains the
 error message for that check.
 
 

@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Moccalotto\Valit\Util;
+namespace spec\Valit\Util;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -21,7 +21,7 @@ class FlattenedContainerSpec extends ObjectBehavior
     {
         $this->beConstructedWith([]);
 
-        $this->shouldHaveType('Moccalotto\Valit\Util\FlattenedContainer');
+        $this->shouldHaveType('Valit\Util\FlattenedContainer');
     }
 
     function it_can_find_data()
@@ -56,10 +56,10 @@ class FlattenedContainerSpec extends ObjectBehavior
     function it_expands_objects()
     {
         $this->beConstructedWith(
-            ['o' => $o = new \Moccalotto\Valit\Test\ContainerTestClass()]
+            ['o' => $o = new \Valit\Test\ContainerTestClass()]
         );
 
-        $this->container['o']->shouldHaveType('Moccalotto\Valit\Test\ContainerTestClass');
+        $this->container['o']->shouldHaveType('Valit\Test\ContainerTestClass');
 
         $this->find('o')->shouldBe([
             'o' => $o,

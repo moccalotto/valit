@@ -1,6 +1,6 @@
 <?php
 
-namespace Moccalotto\Valit\Test;
+namespace Valit\Test;
 
 use ArrayIterator;
 use IteratorAggregate;

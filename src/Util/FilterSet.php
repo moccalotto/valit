@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Util;
+namespace Valit\Util;
 
 use LogicException;
 

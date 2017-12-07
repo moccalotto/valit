@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Contracts;
+namespace Valit\Contracts;
 
 interface CheckManager
 {
@@ -57,7 +57,7 @@ interface CheckManager
      * @param mixed  $value
      * @param array  $args
      *
-     * @return \Moccalotto\Valit\Result
+     * @return \Valit\Result
      */
     public function executeCheck($checkName, $value, array $args);
 }

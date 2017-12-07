@@ -8,11 +8,11 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Providers;
+namespace Valit\Providers;
 
-use Moccalotto\Valit\Contracts\CheckProvider;
-use Moccalotto\Valit\Result;
-use Moccalotto\Valit\Traits\ProvideViaReflection;
+use Valit\Contracts\CheckProvider;
+use Valit\Result;
+use Valit\Traits\ProvideViaReflection;
 use UnexpectedValueException;
 
 class BasicCheckProvider implements CheckProvider

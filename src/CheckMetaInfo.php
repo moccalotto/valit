@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit;
+namespace Valit;
 
 use Closure;
 use JsonSerializable;

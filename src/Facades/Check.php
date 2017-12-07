@@ -8,11 +8,11 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Facades;
+namespace Valit\Facades;
 
-use Moccalotto\Valit\Fluent;
-use Moccalotto\Valit\Manager;
-use Moccalotto\Valit\ContainerValidator;
+use Valit\Fluent;
+use Valit\Manager;
+use Valit\ContainerValidator;
 
 class Check
 {

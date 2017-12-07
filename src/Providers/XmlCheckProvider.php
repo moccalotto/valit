@@ -8,14 +8,14 @@
  * @license MIT
  */
 
-namespace Moccalotto\Valit\Providers;
+namespace Valit\Providers;
 
 use SimpleXmlElement;
 use BadMethodCallException;
-use Moccalotto\Valit\Result;
+use Valit\Result;
 use Moccalotto\Exemel\Xml as XmlInspector;
-use Moccalotto\Valit\Contracts\CheckProvider;
-use Moccalotto\Valit\Traits\ProvideViaReflection;
+use Valit\Contracts\CheckProvider;
+use Valit\Traits\ProvideViaReflection;
 
 class XmlCheckProvider implements CheckProvider
 {

@@ -10,11 +10,11 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Moccalotto\Valit\Providers;
+namespace spec\Valit\Providers;
 
-use Moccalotto\Valit\CustomCallbackChecker;
-use Moccalotto\Valit\CustomChecker;
-use Moccalotto\Valit\Result;
+use Valit\CustomCallbackChecker;
+use Valit\CustomChecker;
+use Valit\Result;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -22,15 +22,15 @@ class CustomCheckProviderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Moccalotto\Valit\Providers\CustomCheckProvider');
-        $this->shouldHaveType('Moccalotto\Valit\Contracts\CheckProvider');
+        $this->shouldHaveType('Valit\Providers\CustomCheckProvider');
+        $this->shouldHaveType('Valit\Contracts\CheckProvider');
     }
 
     function it_checks_passesCallback()
     {
         $this->provides()->shouldHaveKey('passesCallback');
 
-        $this->checkPassesCallback('value', 'message', 'is_bool')->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkPassesCallback('value', 'message', 'is_bool')->shouldHaveType('Valit\Result');
         $this->checkPassesCallback(true, '{value} is a bool', 'is_bool')->message()->shouldBe('{value} is a bool');
 
         $this->checkPassesCallback(true, '{value} is a bool', 'is_bool')->success()->shouldBe(true);
@@ -65,7 +65,7 @@ class CustomCheckProviderSpec extends ObjectBehavior
         $strChecker = new CustomCallbackChecker('message', 'is_string');
         $intChecker = new CustomCallbackChecker('message', 'is_int');
 
-        $this->checkPassesChecker('foo', $strChecker)->shouldHaveType('Moccalotto\Valit\Result');
+        $this->checkPassesChecker('foo', $strChecker)->shouldHaveType('Valit\Result');
         $this->checkPassesChecker('foo', $strChecker)->success()->shouldBe(true);
         $this->checkPassesChecker(true, $strChecker)->success()->shouldBe(false);
 
