@@ -14,8 +14,10 @@ use Traversable;
 use Valit\Fluent;
 use Valit\Result;
 use Valit\Manager;
+use Valit\Template;
 use LogicException;
 use BadMethodCallException;
+use Valit\Assertion\AssertionNormalizer;
 
 /**
  * Validate a container (variable with array access).
@@ -71,24 +73,24 @@ class Validator
     }
 
     /**
-     * Check container against a number of filters.
+     * Check container against a number of assertions.
      *
-     * @param Traversable|array $containerFilters
+     * @param Traversable|array $containerAssertionMap
      *
      * @return ContainerValidationResult
      */
-    public function passes($containerFilters)
+    public function passes($containerAssertionMap)
     {
-        if (!$this->isTraversable($containerFilters)) {
+        if (!$this->isTraversable($containerAssertionMap)) {
             throw new LogicException('$validation must be an array or a Traversable object');
         }
 
         $results = [];
 
-        foreach ($containerFilters as $fieldNameGlob => $fieldFilters) {
-            $subResults = $this->executeFilters(
+        foreach ($containerAssertionMap as $fieldNameGlob => $assertions) {
+            $subResults = $this->executeAssertions(
                 $fieldNameGlob,
-                new FilterSet($fieldFilters)
+                (new AssertionNormalizer($assertions))->assertions
             );
 
             foreach ($subResults as $fieldPath => $fluent) {
@@ -113,14 +115,14 @@ class Validator
     }
 
     /**
-     * Execute an array of filters on a number of values.
+     * Execute an array of assertions on a number of values.
      *
-     * @param string    $fieldNameGlob A field name glob (such as "address" or "order.*.id")
-     * @param FilterSet $filters       a normalized array of filters
+     * @param string       $fieldNameGlob A field name glob (such as "address" or "order.*.id")
+     * @param AssertionBag $assertions    A normalized array of assertions
      *
      * @return array
      */
-    protected function executeFilters($fieldNameGlob, $filters)
+    protected function executeAssertions($fieldNameGlob, $assertions)
     {
         $fieldFluent = new Fluent($this->manager, $this->container, $this->throwOnFailure);
         $fieldFluent->alias($fieldNameGlob);
@@ -130,8 +132,8 @@ class Validator
         $fieldsToValidate = $this->flatContainer->find($fieldNameGlob);
 
         if ($fieldsToValidate === []) {
-            $message = $filters->isValueOptional() ? '{name} is optional' : '{name} must be present';
-            $fieldFluent->addCustomResult(new Result($filters->isValueOptional(), $message));
+            $message = $assertions->isOptional() ? '{name} is optional' : '{name} must be present';
+            $fieldFluent->addCustomResult(new Result($assertions->isOptional(), $message));
 
             return $results;
         }
@@ -142,11 +144,11 @@ class Validator
             $fluent = new Fluent($this->manager, $value, $this->throwOnFailure);
             $fluent->alias($fieldPath);
 
-            if ($filters->isValueRequired()) {
+            if (!$assertions->isOptional()) {
                 $fluent->addCustomResult(new Result(true, '{name} must be present'));
             }
 
-            $filters->template()->executeOnFluent($fluent);
+            Template::fromAssertionBag($assertions)->executeOnFluent($fluent);
 
             $results[$fieldPath] = $fluent;
         }

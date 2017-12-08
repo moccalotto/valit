@@ -1,0 +1,166 @@
+<?php
+
+namespace Valit\Assertion;
+
+use Valit\Template;
+use LogicException;
+
+class AssertionNormalizer
+{
+    /**
+     * @var AssertionBag
+     *
+     * @internal
+     */
+    public $assertions;
+
+    /**
+     * Constructor.
+     *
+     * @param string|array|Template|AssertionBag $assertions
+     */
+    public function __construct($assertions)
+    {
+        $this->normalizeAndSet($assertions);
+    }
+
+    /**
+     * Get all assertions (except the "required" and "optional" pseudo-assertions).
+     *
+     * @return AssertionBag
+     */
+    public function all()
+    {
+        return $this->assertions;
+    }
+
+    /**
+     * Normalize a set of assertions and add it to $this->assertions.
+     *
+     * Assertions can be given as a string, an array, a Template or an AssertionBag.
+     * When string-encoded, the string contains a number of assertion-expressions separated by ampersands.
+     * When associative array, each key=>value pair can either be checkName => parameters
+     * When numeric array, each entry contains a single assertion-expression.
+     *
+     * We normalize them into well-behaved arrays of checkName => parameters.
+     *
+     * @param string|array|Template|AssertionBag $assertions
+     */
+    protected function normalizeAndSet($assertions)
+    {
+        if ($assertions instanceof Template) {
+            $this->assertions = clone $assertions->assertions;
+            return;
+        }
+        if ($assertions instanceof AssertionBag) {
+            $this->assertions = clone $assertions;
+            return;
+        }
+        if (empty($assertions)) {
+            $this->assertions = new AssertionBag();
+            return;
+        }
+
+        if (!is_array($assertions)) {
+            // turn a assertion-expression into an array of single assertion-expressions.
+            $assertions = array_map(
+                function ($str) {
+                    return str_replace('&&', '&', $str);
+                },
+                preg_split('/\s*(?<!&)&(?!&)\s*/u', (string) $assertions)
+            );
+        }
+
+        $this->assertions = new AssertionBag();
+
+        foreach ($assertions as $k => $v) {
+            list($checkName, $args) = $this->parseAssertionExpression($k, $v);
+
+            $this->addAssertion($checkName, $args);
+        }
+    }
+
+    /**
+     * Parse a single assertion-expression.
+     *
+     * @param int|string $key
+     * @param mixed $args
+     *
+     * @return array containing [$checkName, $args]
+     */
+    protected function parseAssertionExpression($key, $args)
+    {
+        if (is_int($key) && is_string($args)) {
+            // Example:
+            // --------
+            // $key: 0
+            // $args: "isGreaterThan(0)"
+            $expr = $args;
+        } elseif (is_int($key) && is_array($args)) {
+            // Example 1:
+            // ----------
+            // $key: 42
+            // $args: ["isGreaterThan" => [0]]
+            //
+            // Example 2:
+            // ----------
+            // $key: 1987
+            // $args: ["isGreaterThan(0)"]
+            $expr = array_shift($args);
+        } else {
+            // Example:
+            // --------
+            // $key:  "isGreaterThan"
+            // $args: [0]
+            $expr = $key;
+        }
+
+        if ($expr === '') {
+            return [null, null];
+        }
+
+        if (!is_string($expr)) {
+            throw new LogicException(sprintf('Invalid assertion at index %d', $key));
+        }
+
+        if (!preg_match('/([a-z0-9]+)\s*(?:\((.*?)\))?$/Aui', $expr, $matches)) {
+            throw new LogicException(sprintf('Invalid expression »%s«', $expr));
+        }
+
+        if (isset($matches[2])) {
+            $args = json_decode(sprintf('[%s]', $matches[2]));
+        }
+
+        return [
+            $matches[1],     // check name
+            (array) $args,   // assertion args
+        ];
+    }
+
+    /**
+     * Add a single assertion to our array of assertions.
+     *
+     * @param string $checkName
+     * @param array  $assertionArgs
+     */
+    public function addAssertion($checkName, $assertionArgs)
+    {
+        if ($checkName === 'optional') {
+            $this->assertions->setFlag('optional', true);
+            return;
+        }
+
+        if ($checkName === 'required') {
+            $this->assertions->setFlag('optional', false);
+            return;
+        }
+        if ($checkName === 'present') {
+            $this->assertions->setFlag('optional', false);
+            return;
+        }
+
+        $this->assertions->add(
+            new Assertion($checkName, $assertionArgs)
+        );
+    }
+}

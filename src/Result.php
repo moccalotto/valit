@@ -1,14 +1,8 @@
 <?php
 
-/**
- * This file is part of the Valit package.
- *
- * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2017
- * @license MIT
- */
-
 namespace Valit;
+
+use LogicException;
 
 /**
  * Valit Result.
@@ -17,18 +11,24 @@ class Result
 {
     /**
      * @var bool
+     *
+     * @internal
      */
-    protected $success;
+    public $success;
 
     /**
      * @var string
+     *
+     * @internal
      */
-    protected $message;
+    public $message;
 
     /**
      * @var array
+     *
+     * @internal
      */
-    protected $context;
+    public $context;
 
     /**
      * Constructor.
@@ -81,7 +81,7 @@ class Result
      *
      * @return string
      */
-    protected function formatValue($value)
+    protected function escape($value)
     {
         if (is_scalar($value)) {
             return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
@@ -100,7 +100,7 @@ class Result
         }
 
         if (is_array($value)) {
-            return sprintf('Array (%d entries', count($value));
+            return sprintf('Array (%d entries)', count($value));
         }
 
         if (is_null($value)) {
@@ -121,24 +121,69 @@ class Result
      *
      * @return string
      */
-    public function renderErrorMessage($name, $value)
+    public function renderMessage($name, $value)
     {
         $context = $this->context;
         $context['value'] = $value;
 
-        $replacecments = ['{name}' => $name];
+        return preg_replace_callback(
+            '/\{([a-z0-9_]+)(?::([a-z0-9_]+))?\}/ui',
+            function ($matches) use ($context, $name) {
+                $all = $matches[0];
+                $key = $matches[1];
+                $fmt = isset($matches[2]) ? $matches[2] : 'normal';
 
-        foreach ($context as $key => $value) {
-            $raw = is_scalar($value) || is_callable([$value, '__toString'])
-                ? (string) $value
-                : $this->formatValue($value);
-            $replacecments[sprintf('{%s}', $key)] = $this->formatValue($value);
-            $replacecments[sprintf('{%s:raw}', $key)] = $raw;
-            $replacecments[sprintf('{%s:type}', $key)] = gettype($value);
-            $replacecments[sprintf('{%s:float}', $key)] = is_numeric($value) ? sprintf('%g', $value) : '[not numeric]';
-            $replacecments[sprintf('{%s:hex}', $key)] = ctype_digit($value) ? sprintf('%x', $value) : '[not numeric]';
+                if ($key === 'name') {
+                    return $name;
+                }
+
+                if (!isset($context[$key])) {
+                    return $all;
+                }
+
+                return $this->format($context[$key], $fmt);
+            },
+            $this->message
+        );
+    }
+
+    /**
+     * Format a given value into a string.
+     *
+     * @param mixed  $value
+     * @param string $format
+     *
+     * @return string
+     *
+     * @throws LogicException if $format is not known
+     */
+    protected function format($value, $format)
+    {
+        if ($format === 'normal') {
+            return $this->escape($value);
         }
 
-        return strtr($this->message, $replacecments);
+        if ($format === 'raw') {
+            return is_scalar($value) || is_callable([$value, '__toString'])
+                ? (string) $value
+                : $this->escape($value);
+        }
+
+        if ($format === 'type') {
+            return gettype($value);
+        }
+
+        if ($format === 'float') {
+            return is_numeric($value)
+                ? sprintf('%g', $value)
+                : '[not numeric]';
+        }
+        if ($format === 'hex') {
+            return is_int($value) || ctype_digit($value)
+                ? sprintf('%x', $value)
+                : '[not integer]';
+        }
+
+        throw new LogicException("Unknown format »{$format}«");
     }
 }

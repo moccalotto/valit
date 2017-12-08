@@ -1,19 +1,13 @@
 <?php
 
+namespace Valit\Assertion;
+
 /**
- * This file is part of the Valit package.
+ * A single assertion.
  *
- * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2017
- * @license MIT
+ * An assertion is the execution of a single check.
  */
-
-namespace Valit\Container;
-
-/**
- * A single filter (i.e. a single check).
- */
-class Filter
+class Assertion
 {
     /**
      * @var string

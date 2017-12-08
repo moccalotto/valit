@@ -22,30 +22,31 @@ class TemplateSpec extends ObjectBehavior
     {
         $this->shouldHaveType('Valit\Template');
 
-        $this->checks->shouldHaveCount(0);
+        $this->assertions->shouldHaveType('Valit\Assertion\AssertionBag');
+        $this->assertions->shouldHaveCount(0);
     }
 
-    function it_can_add_checks()
+    function it_can_add_assertions()
     {
-        $this->addCheck('greaterThanOrEqual', [18])->shouldHaveType('Valit\Template');
+        $this->addAssertion('greaterThanOrEqual', [18])->shouldHaveType('Valit\Template');
 
-        $this->checks->shouldHaveCount(1);
+        $this->assertions->shouldHaveCount(1);
 
-        $this->checks[0]->shouldHaveType('Valit\Container\Filter');
-        $this->checks[0]->name->shouldBe('greaterThanOrEqual');
-        $this->checks[0]->args->shouldBe([18]);
+        $this->assertions->all()[0]->shouldHaveType('Valit\Assertion\Assertion');
+        $this->assertions->all()[0]->name->shouldBe('greaterThanOrEqual');
+        $this->assertions->all()[0]->args->shouldBe([18]);
     }
 
-    function it_can_add_checks_dynamically()
+    function it_can_add_assertions_dynamically()
     {
         $this->greaterThanOrEqual(18)->shouldHaveType('Valit\Template');
 
-        $this->checks[0]->shouldHaveType('Valit\Container\Filter');
-        $this->checks[0]->name->shouldBe('greaterThanOrEqual');
-        $this->checks[0]->args->shouldBe([18]);
+        $this->assertions->all()[0]->shouldHaveType('Valit\Assertion\Assertion');
+        $this->assertions->all()[0]->name->shouldBe('greaterThanOrEqual');
+        $this->assertions->all()[0]->args->shouldBe([18]);
     }
 
-    function it_can_execute_checks_on_a_fluent_instance(FluentCheckInterface $fluent)
+    function it_can_execute_assertions_on_a_fluent_instance(FluentCheckInterface $fluent)
     {
         $fluent->executeCheck('greaterThanOrEqual', [18])
             ->shouldBeCalled()
@@ -60,7 +61,7 @@ class TemplateSpec extends ObjectBehavior
         $this->executeOnFluent($fluent);
     }
 
-    function it_can_execute_checks_on_a_self_created_fluent_interface()
+    function it_can_execute_assertions_on_a_self_created_fluent_interface()
     {
         $fluent = $this->greaterThanOrEqual(18)
             ->isLowerThan(100)

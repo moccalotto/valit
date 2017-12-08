@@ -10,18 +10,19 @@
 
 namespace Valit;
 
-use Valit\Container\Filter;
+use Valit\Assertion\Assertion;
+use Valit\Assertion\AssertionBag;
 use BadMethodCallException;
 use Valit\Contracts\FluentCheckInterface;
 
 class Template
 {
     /**
-     * @var array
+     * @var AssertionBag
      *
      * @internal
      */
-    public $checks = [];
+    public $assertions;
 
     /**
      * Constructor.
@@ -30,11 +31,29 @@ class Template
      */
     public function __construct($throwOnFailure = false)
     {
+        $this->assertions = new AssertionBag();
         $this->throwOnFailure = (bool) $throwOnFailure;
     }
 
     /**
-     * Execute checks by "calling" them.
+     * Factory.
+     *
+     * @param AssertionBag $assertions
+     * @param bool         $throwOnFailure
+     *
+     * @return Template
+     */
+    public static function fromAssertionBag(AssertionBag $assertions, $throwOnFailure = false)
+    {
+        $instance = new static($throwOnFailure);
+
+        $instance->assertions = $assertions;
+
+        return $instance;
+    }
+
+    /**
+     * Add assertions by "calling" them.
      *
      * @param string $methodName
      * @param array  $args
@@ -50,35 +69,37 @@ class Template
             ));
         }
 
-        return $this->addCheck($methodName, $args);
+        return $this->addAssertion($methodName, $args);
     }
 
     /**
-     * Add a check to the template.
+     * Add an assertion to the template.
      *
      * @param string $name
      * @param array  $args
      *
      * @return $this
      */
-    public function addCheck($name, array $args)
+    public function addAssertion($name, array $args)
     {
-        $this->checks[] = new Filter($name, $args);
+        $this->assertions->add(
+            new Assertion($name, $args)
+        );
 
         return $this;
     }
 
     /**
-     * Apply all the stored checks to a Fluent instance.
+     * Apply all the stored assertions to a Fluent instance.
      *
      * @return Fluent
      */
     public function executeOnFluent(FluentCheckInterface $fluent)
     {
-        foreach ($this->checks as $check) {
+        foreach ($this->assertions as $assertion) {
             $fluent->executeCheck(
-                $check->name,
-                $check->args
+                $assertion->name,
+                $assertion->args
             );
         }
 
@@ -86,7 +107,7 @@ class Template
     }
 
     /**
-     * Create a new Fluent, apply all stored checks on it, and return it.
+     * Create a new Fluent, apply all stored assertions on it, and return it.
      *
      * @param mixed             $value   The value to be checked
      * @param string|null       $varName The alias/name of the value

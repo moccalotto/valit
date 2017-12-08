@@ -185,7 +185,7 @@ trait ContainsResults
 
         if ($this->throwOnFailure) {
             throw new InvalidValueException(
-                $result->renderErrorMessage($this->varName, $this->value),
+                $result->renderMessage($this->varName, $this->value),
                 $this->varName,
                 $this->value,
                 $this->results
@@ -212,7 +212,7 @@ trait ContainsResults
         $output = [];
 
         foreach ($this->results as $result) {
-            $key = $result->renderErrorMessage($this->varName, $this->value);
+            $key = $result->renderMessage($this->varName, $this->value);
 
             $output[$key] = $result->success();
         }
@@ -243,7 +243,7 @@ trait ContainsResults
         return array_values(
             array_map(
                 function ($error) {
-                    return $error->renderErrorMessage($this->varName, $this->value);
+                    return $error->renderMessage($this->varName, $this->value);
                 },
                 $this->errors()
             )
