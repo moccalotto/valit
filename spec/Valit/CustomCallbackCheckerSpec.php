@@ -28,7 +28,7 @@ class CustomCallbackCheckerSpec extends ObjectBehavior
     {
         $this->beConstructedWith('message', 'is_string');
 
-        $this->check('testString')->shouldHaveType('Valit\Result');
+        $this->check('testString')->shouldHaveType('Valit\Result\SingleAssertionResult');
         $this->check(false)->success()->shouldBe(false);
         $this->check('testString')->success()->shouldBe(true);
     }

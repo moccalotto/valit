@@ -11,14 +11,14 @@
 namespace Valit\Validators;
 
 use Traversable;
-use Valit\Result;
 use Valit\Manager;
 use LogicException;
 use Valit\Template;
 use BadMethodCallException;
+use Valit\Result\ContainerResultBag;
 use Valit\Container\FlattenedContainer;
 use Valit\Assertion\AssertionNormalizer;
-use Valit\Validators\SingleValueValidator;
+use Valit\Result\SingleAssertionResult;
 
 /**
  * Validate a container (variable with array access).
@@ -31,6 +31,11 @@ class ContainerValidator
      * @internal
      */
     public $manager;
+
+    /**
+     * @var ContainerResultBag
+     */
+    public $results;
 
     /**
      * @var array|object
@@ -78,7 +83,7 @@ class ContainerValidator
      *
      * @param Traversable|array $containerAssertionMap
      *
-     * @return ContainerValidationResult
+     * @return ContainerResultBag
      */
     public function passes($containerAssertionMap)
     {
@@ -86,7 +91,9 @@ class ContainerValidator
             throw new LogicException('$validation must be an array or a Traversable object');
         }
 
-        $results = [];
+        if (!$this->results) {
+            $this->results = new ContainerResultBag([], $this->alias);
+        }
 
         foreach ($containerAssertionMap as $fieldNameGlob => $assertions) {
             $subResults = $this->executeAssertions(
@@ -95,11 +102,11 @@ class ContainerValidator
             );
 
             foreach ($subResults as $fieldPath => $singleValidator) {
-                $results[$fieldPath] = $singleValidator;
+                $this->results->add($fieldPath, $singleValidator);
             }
         }
 
-        return new ValidationResult($results, $this->alias);
+        return $this->results;
     }
 
     /**
@@ -134,7 +141,7 @@ class ContainerValidator
 
         if ($fieldsToValidate === []) {
             $message = $assertions->isOptional() ? '{name} is optional' : '{name} must be present';
-            $fieldValidator->addCustomResult(new Result($assertions->isOptional(), $message));
+            $fieldValidator->addCustomResult(new SingleAssertionResult($assertions->isOptional(), $message));
 
             return $results;
         }
@@ -146,7 +153,7 @@ class ContainerValidator
             $singleValidator->alias($fieldPath);
 
             if (!$assertions->isOptional()) {
-                $singleValidator->addCustomResult(new Result(true, '{name} must be present'));
+                $singleValidator->addCustomResult(new SingleAssertionResult(true, '{name} must be present'));
             }
 
             Template::fromAssertionBag($assertions)->applyToValidator($singleValidator);

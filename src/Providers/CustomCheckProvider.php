@@ -10,7 +10,7 @@
 
 namespace Valit\Providers;
 
-use Valit\Result;
+use Valit\Result\SingleAssertionResult as Result;
 use InvalidArgumentException;
 use UnexpectedValueException;
 use Valit\CustomCallbackChecker;

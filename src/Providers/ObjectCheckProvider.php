@@ -11,7 +11,7 @@
 namespace Valit\Providers;
 
 use ReflectionClass;
-use Valit\Result;
+use Valit\Result\SingleAssertionResult as Result;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;

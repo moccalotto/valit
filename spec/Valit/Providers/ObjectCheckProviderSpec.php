@@ -34,13 +34,13 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('objectOrClass');
         $this->provides()->shouldHaveKey('isObjectOrClass');
 
-        $this->checkObjectOrClass(null)->shouldHaveType('Valit\Result');
+        $this->checkObjectOrClass(null)->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->checkObjectOrClass((object) [])->success()->shouldBe(true);
         $this->checkObjectOrClass(Exception::class)->success()->shouldBe(true);
         $this->checkObjectOrClass(json_decode('{}'))->success()->shouldBe(true);
         $this->checkObjectOrClass('SimpleXmlElement')->success()->shouldBe(true);
-        $this->checkObjectOrClass('Valit\Result')->success()->shouldBe(true);
+        $this->checkObjectOrClass('Valit\Result\SingleAssertionResult')->success()->shouldBe(true);
 
         $this->checkObjectOrClass(1)->success()->shouldBe(false);
         $this->checkObjectOrClass([])->success()->shouldBe(false);
@@ -62,11 +62,11 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('className');
         $this->provides()->shouldHaveKey('isClassName');
 
-        $this->checkClassName(null)->shouldHaveType('Valit\Result');
+        $this->checkClassName(null)->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->checkClassName(Exception::class)->success()->shouldBe(true);
         $this->checkClassName('SimpleXmlElement')->success()->shouldBe(true);
-        $this->checkClassName('Valit\Result')->success()->shouldBe(true);
+        $this->checkClassName('Valit\Result\SingleAssertionResult')->success()->shouldBe(true);
 
         $this->checkClassName(1)->success()->shouldBe(false);
         $this->checkClassName([])->success()->shouldBe(false);
@@ -85,7 +85,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('interfaceName');
         $this->provides()->shouldHaveKey('isInterfaceName');
 
-        $this->checkInterfaceName(null)->shouldHaveType('Valit\Result');
+        $this->checkInterfaceName(null)->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->checkInterfaceName('Iterator')->success()->shouldBe(true);
         $this->checkInterfaceName('Countable')->success()->shouldBe(true);
@@ -103,7 +103,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->checkInterfaceName(json_decode('{}'))->success()->shouldBe(false);
         $this->checkInterfaceName('SimpleXmlElement')->success()->shouldBe(false);
         $this->checkInterfaceName(NonExisting::class)->success()->shouldBe(false);
-        $this->checkInterfaceName('Valit\Result')->success()->shouldBe(false);
+        $this->checkInterfaceName('Valit\Result\SingleAssertionResult')->success()->shouldBe(false);
         $this->checkInterfaceName('Valit\Traits\ProvideViaReflection')->success()->shouldBe(false);
     }
 
@@ -113,7 +113,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('traitName');
         $this->provides()->shouldHaveKey('isTraitName');
 
-        $this->checkTraitName(null)->shouldHaveType('Valit\Result');
+        $this->checkTraitName(null)->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         eval('trait FooBarBazSpecTrait {}');
         $this->checkTraitName('FooBarBazSpecTrait')->success()->shouldBe(true);
@@ -133,13 +133,13 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->checkTraitName(json_decode('{}'))->success()->shouldBe(false);
         $this->checkTraitName('SimpleXmlElement')->success()->shouldBe(false);
         $this->checkTraitName(NonExisting::class)->success()->shouldBe(false);
-        $this->checkTraitName('Valit\Result')->success()->shouldBe(false);
+        $this->checkTraitName('Valit\Result\SingleAssertionResult')->success()->shouldBe(false);
         $this->checkTraitName('Valit\Contracts\CheckManager')->success()->shouldBe(false);
     }
 
     function it_checks_instanceof()
     {
-        $this->checkInstanceOf(null, '')->shouldHaveType('Valit\Result');
+        $this->checkInstanceOf(null, '')->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->provides()->shouldHaveKey('isInstanceOf');
 
@@ -172,7 +172,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
 
     function it_checks_implementing()
     {
-        $this->checkImplements(null, 'Iterator')->shouldHaveType('Valit\Result');
+        $this->checkImplements(null, 'Iterator')->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->provides()->shouldHaveKey('implements');
         $this->provides()->shouldHaveKey('isImplementing');
@@ -205,7 +205,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
 
     function it_checks_hasMethod()
     {
-        $this->checkHasMethod(null, '')->shouldHaveType('Valit\Result');
+        $this->checkHasMethod(null, '')->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->provides()->shouldHaveKey('hasMethod');
 
@@ -230,7 +230,7 @@ class ObjectCheckProviderSpec extends ObjectBehavior
 
     function it_checks_hasProperty()
     {
-        $this->checkHasMethod(null, '')->shouldHaveType('Valit\Result');
+        $this->checkHasMethod(null, '')->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->provides()->shouldHaveKey('hasProperty');
 

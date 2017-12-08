@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Valit;
+namespace spec\Valit\Result;
 
 use PhpSpec\ObjectBehavior;
 
-class ResultSpec extends ObjectBehavior
+class SingleAssertionResultSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
         $this->beConstructedWith(true, 'Foo', ['foo' => 'bar']);
-        $this->shouldHaveType('Valit\Result');
+        $this->shouldHaveType('Valit\Result\SingleAssertionResult');
     }
 
     public function it_has_a_success_status()

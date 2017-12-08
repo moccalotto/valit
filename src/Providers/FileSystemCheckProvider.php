@@ -10,7 +10,7 @@
 
 namespace Valit\Providers;
 
-use Valit\Result;
+use Valit\Result\SingleAssertionResult as Result;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
 

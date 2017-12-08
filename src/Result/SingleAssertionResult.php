@@ -1,13 +1,13 @@
 <?php
 
-namespace Valit;
+namespace Valit\Result;
 
 use LogicException;
 
 /**
  * Valit Result.
  */
-class Result
+class SingleAssertionResult
 {
     /**
      * @var bool

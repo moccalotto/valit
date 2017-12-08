@@ -12,7 +12,7 @@ namespace Valit\Providers;
 
 use SimpleXmlElement;
 use BadMethodCallException;
-use Valit\Result;
+use Valit\Result\SingleAssertionResult as Result;
 use Moccalotto\Exemel\Xml as XmlInspector;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;

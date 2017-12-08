@@ -15,7 +15,7 @@ use Exception;
 use DateTimeInterface;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
-use Valit\Result;
+use Valit\Result\SingleAssertionResult as Result;
 use Valit\Traits\ProvideViaReflection;
 
 /**

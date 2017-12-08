@@ -11,7 +11,7 @@
 namespace Valit\Exceptions;
 
 use UnexpectedValueException;
-use Valit\Container\ValidationResult as ContainerValidationResult;
+use Valit\Result\ContainerResultBag;
 
 /**
  * Exception thrown when a value is invalid.
@@ -19,16 +19,16 @@ use Valit\Container\ValidationResult as ContainerValidationResult;
 class InvalidContainerException extends UnexpectedValueException
 {
     /**
-     * @var ContainerValidationResult
+     * @var ContainerResultBag
      */
     protected $results;
 
     /**
      * Constructor.
      *
-     * @param ContainerValidationResult $results
+     * @param ContainerResultBag $results
      */
-    public function __construct(ContainerValidationResult $results)
+    public function __construct(ContainerResultBag $results)
     {
         $this->results = $results;
 
@@ -65,7 +65,7 @@ class InvalidContainerException extends UnexpectedValueException
     /**
      * Get Results.
      *
-     * @return ContainerValidationResult
+     * @return ContainerResultBag
      */
     public function getResults()
     {

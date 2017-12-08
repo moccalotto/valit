@@ -31,7 +31,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('parsableDate');
         $this->provides()->shouldHaveKey('isParsableDate');
 
-        $this->checkDateParsable('1987-01-01', 'Y-m-d')->shouldHaveType('Valit\Result');
+        $this->checkDateParsable('1987-01-01', 'Y-m-d')->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->checkDateParsable(1, 'U')->success()->shouldBe(true); // tiemstamp
         $this->checkDateParsable('1987-01-01', 'Y-m-d')->success()->shouldBe(true);
@@ -63,7 +63,7 @@ class DateCheckProviderSpec extends ObjectBehavior
 
         $this->shouldThrow('InvalidArgumentException')->during('checkDateAfter', ['fooDate', 'barDate']);
 
-        $this->checkDateAfter('1987-01-01', new DateTime('1987-01-01'))->shouldHaveType('Valit\Result');
+        $this->checkDateAfter('1987-01-01', new DateTime('1987-01-01'))->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->checkDateAfter('1987-01-02', new DateTime('1987-01-01'))->success()->shouldBe(true);
         $this->checkDateAfter('1987-01-01 00:00:01', new DateTime('1987-01-01 00:00:00'))->success()->shouldBe(true);
@@ -84,7 +84,7 @@ class DateCheckProviderSpec extends ObjectBehavior
 
         $this->shouldThrow('InvalidArgumentException')->during('checkDateBefore', ['fooDate', 'barDate']);
 
-        $this->checkDateBefore('1987-01-01', new DateTime('1987-01-01'))->shouldHaveType('Valit\Result');
+        $this->checkDateBefore('1987-01-01', new DateTime('1987-01-01'))->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->checkDateBefore('1987-01-01', new DateTime('1987-01-02'))->success()->shouldBe(true);
         $this->checkDateBefore('1987-01-01 00:00:00', new DateTime('1987-01-01 00:00:01'))->success()->shouldBe(true);
@@ -104,7 +104,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $now = new DateTimeImmutable('2000-01-01 00:00:00');
         $this->overrideNow($now);
 
-        $this->checkInThePast($now)->shouldHaveType('Valit\Result');
+        $this->checkInThePast($now)->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->checkInThePast('1999-12-31 23:59:59')->success()->shouldBe(true);
         $this->checkInThePast($now->modify('-1 seconds'))->success()->shouldBe(true);
@@ -124,7 +124,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $now = new DateTimeImmutable('2000-01-01 00:00:00');
         $this->overrideNow($now);
 
-        $this->checkInTheFuture($now)->shouldHaveType('Valit\Result');
+        $this->checkInTheFuture($now)->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->checkInTheFuture($now->modify('+1 seconds'))->success()->shouldBe(true);
         $this->checkInTheFuture('2000-01-01 00:00:00.00001')->success()->shouldBe(true);
@@ -143,7 +143,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('dateOnly');
         $this->provides()->shouldHaveKey('isDateOnly');
 
-        $this->checkAtMidnight(null)->shouldHaveType('Valit\Result');
+        $this->checkAtMidnight(null)->shouldHaveType('Valit\Result\SingleAssertionResult');
 
         $this->checkAtMidnight('1987-01-01')->success()->shouldBe(true);
         $this->checkAtMidnight('1987-01-01 00:00:00')->success()->shouldBe(true);

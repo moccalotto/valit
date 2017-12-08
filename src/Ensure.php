@@ -35,7 +35,7 @@ class Ensure
      *
      * @return ContainerValidator A ContainerValidator object that has been
      *                            configured to NOT throw ValidationExceptions in case
-     *                            of failed checks. You can inspect the ContainerValidationResult
+     *                            of failed checks. You can inspect the ContainerResultBag
      *                            to get information about the failed checks
      */
     public static function container($container)

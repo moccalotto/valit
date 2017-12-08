@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Valit\Container;
+namespace Valit\Result;
 
 use Valit\Validators\SingleValueValidator;
 use Valit\Exceptions\InvalidContainerException;
@@ -16,7 +16,7 @@ use Valit\Exceptions\InvalidContainerException;
 /**
  * Result of validating a container.
  */
-class ValidationResult
+class ContainerResultBag
 {
     /**
      * @var SingleValueValidator[]
@@ -37,6 +37,21 @@ class ValidationResult
     {
         $this->results = $results;
         $this->alias = $alias;
+    }
+
+    /**
+     * Add a result.
+     *
+     * @param string               $path            The path to the variable that passed/failed the tests
+     * @param SingleValueValidator $singleValidator The validator that performed the assertions on the variable
+     *
+     * @return $this
+     */
+    public function add($path, SingleValueValidator $singleValidator)
+    {
+        $this->results[$path] = $singleValidator;
+
+        return $this;
     }
 
     /**

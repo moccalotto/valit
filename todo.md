@@ -1,15 +1,9 @@
-Validators
-----------
-
-Valit\Validators\SingleValueValidator
-Valit\Validators\ContainerValidator
-
-
 Results
 -------
 
-Valit\Results\SingleValueResultBag
-Valit\Results\ContainerResultBag
+Valit\Result\SingleAssertionResult => Valit\Result\AssertionResult
+
+Consider adding a Valut\Result\SingleValueResultBag
 
 Misc
 ----

@@ -10,7 +10,7 @@
 
 namespace Valit\Providers;
 
-use Valit\Result;
+use Valit\Result\SingleAssertionResult;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
 
@@ -25,13 +25,13 @@ class JsonCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return Result
+     * @return SingleAssertionResult
      */
     public function checkIsJson($value)
     {
         $json = is_string($value) ? json_decode($value, true) : false;
 
         // real json must be object or array - scalar values are not allowed according to the specs
-        return new Result(is_array($json), '{name} must be valid json');
+        return new SingleAssertionResult(is_array($json), '{name} must be valid json');
     }
 }

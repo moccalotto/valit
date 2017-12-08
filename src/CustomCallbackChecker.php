@@ -3,6 +3,7 @@
 namespace Valit;
 
 use Valit\Contracts\CustomChecker;
+use Valit\Result\SingleAssertionResult as Result;
 
 /**
  * Class for executing custom callbacks.

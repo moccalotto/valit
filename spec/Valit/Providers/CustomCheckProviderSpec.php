@@ -12,11 +12,11 @@
 
 namespace spec\Valit\Providers;
 
+use Prophecy\Argument;
+use PhpSpec\ObjectBehavior;
 use Valit\CustomCallbackChecker;
 use Valit\Contracts\CustomChecker;
-use Valit\Result;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Valit\Result\SingleAssertionResult;
 
 class CustomCheckProviderSpec extends ObjectBehavior
 {
@@ -30,7 +30,7 @@ class CustomCheckProviderSpec extends ObjectBehavior
     {
         $this->provides()->shouldHaveKey('passesCallback');
 
-        $this->checkPassesCallback('value', 'message', 'is_bool')->shouldHaveType('Valit\Result');
+        $this->checkPassesCallback('value', 'message', 'is_bool')->shouldHaveType('Valit\Result\SingleAssertionResult');
         $this->checkPassesCallback(true, '{value} is a bool', 'is_bool')->message()->shouldBe('{value} is a bool');
 
         $this->checkPassesCallback(true, '{value} is a bool', 'is_bool')->success()->shouldBe(true);
@@ -54,7 +54,7 @@ class CustomCheckProviderSpec extends ObjectBehavior
         ]);
     }
 
-    function it_checks_passesChecker(CustomChecker $mockChecker, Result $mockResult)
+    function it_checks_passesChecker(CustomChecker $mockChecker, SingleAssertionResult $mockResult)
     {
         $this->provides()->shouldHaveKey('passesCustom');
         $this->provides()->shouldHaveKey('passesChecker');
@@ -65,7 +65,7 @@ class CustomCheckProviderSpec extends ObjectBehavior
         $strChecker = new CustomCallbackChecker('message', 'is_string');
         $intChecker = new CustomCallbackChecker('message', 'is_int');
 
-        $this->checkPassesChecker('foo', $strChecker)->shouldHaveType('Valit\Result');
+        $this->checkPassesChecker('foo', $strChecker)->shouldHaveType('Valit\Result\SingleAssertionResult');
         $this->checkPassesChecker('foo', $strChecker)->success()->shouldBe(true);
         $this->checkPassesChecker(true, $strChecker)->success()->shouldBe(false);
 

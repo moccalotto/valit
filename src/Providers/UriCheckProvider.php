@@ -11,9 +11,9 @@
 namespace Valit\Providers;
 
 use InvalidArgumentException;
-use Valit\Result;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
+use Valit\Result\SingleAssertionResult as Result;
 
 class UriCheckProvider implements CheckProvider
 {

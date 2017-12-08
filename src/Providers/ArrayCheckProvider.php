@@ -13,7 +13,7 @@ namespace Valit\Providers;
 use Countable;
 use ArrayAccess;
 use LogicException;
-use Valit\Result;
+use Valit\Result\SingleAssertionResult as Result;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
 
