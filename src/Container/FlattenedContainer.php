@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Valit\Util;
+namespace Valit\Container;
 
 use Traversable;
 
@@ -32,6 +32,14 @@ class FlattenedContainer
         $this->container = $this->flatten($innerContainer);
     }
 
+    /**
+     * Is the given variable a "simple" value.
+     *
+     * Ints, floats, bools, strings, NULL, resources and empty arrays
+     * are considered simple values.
+     *
+     * @return bool
+     */
     protected function isSimpleValue($value)
     {
         return is_scalar($value)

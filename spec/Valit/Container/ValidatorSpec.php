@@ -16,7 +16,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Valit\Manager;
 
-class ContainerValidatorSpec extends ObjectBehavior
+class ValidatorSpec extends ObjectBehavior
 {
     protected $testData = [
         'someString' => 'foo',
@@ -49,7 +49,7 @@ class ContainerValidatorSpec extends ObjectBehavior
     function it_is_initializable(Manager $fakeManager)
     {
         $this->beConstructedWith($fakeManager, $this->testData, true);
-        $this->shouldHaveType('Valit\ContainerValidator');
+        $this->shouldHaveType('Valit\Container\Validator');
     }
 
     function it_handles_empty_filters(Manager $fakeManager)
@@ -57,7 +57,7 @@ class ContainerValidatorSpec extends ObjectBehavior
         $this->beConstructedWith($fakeManager, $this->testData, true);
         $result = $this->passes([]);
 
-        $result->shouldHaveType('Valit\ContainerValidationResult');
+        $result->shouldHaveType('Valit\Container\ValidationResult');
         $result->results()->shouldBe([]);
     }
 
@@ -70,7 +70,7 @@ class ContainerValidatorSpec extends ObjectBehavior
             'someFloat' => 'greaterThan(19) & lowerThan(20)',
         ]);
 
-        $result->shouldHaveType('Valit\ContainerValidationResult');
+        $result->shouldHaveType('Valit\Container\ValidationResult');
         $result->errors()->shouldBe([]);
     }
 
@@ -83,7 +83,7 @@ class ContainerValidatorSpec extends ObjectBehavior
             'someFloat'     => ['greaterThan(19)', 'lowerThan(20)', ['lowerThan', 20]],
         ]);
 
-        $result->shouldHaveType('Valit\ContainerValidationResult');
+        $result->shouldHaveType('Valit\Container\ValidationResult');
         $result->errors()->shouldBe([]);
     }
 
@@ -96,7 +96,7 @@ class ContainerValidatorSpec extends ObjectBehavior
             'someFloat'     => ['greaterThan' => [19], 'lowerThan' => [20]],
         ]);
 
-        $result->shouldHaveType('Valit\ContainerValidationResult');
+        $result->shouldHaveType('Valit\Container\ValidationResult');
         $result->errors()->shouldBe([]);
     }
 
@@ -113,7 +113,7 @@ class ContainerValidatorSpec extends ObjectBehavior
             'someAssoc/*' => 'string',
         ]);
 
-        $result->shouldHaveType('Valit\ContainerValidationResult');
+        $result->shouldHaveType('Valit\Container\ValidationResult');
         $result->errors()->shouldBe([]);
         $result->results()->shouldHaveKey('someArray');
         $result->results()->shouldHaveKey('someAssoc');
@@ -135,7 +135,7 @@ class ContainerValidatorSpec extends ObjectBehavior
             'someAssoc/*' => 'string',
         ]);
 
-        $result->shouldHaveType('Valit\ContainerValidationResult');
+        $result->shouldHaveType('Valit\Container\ValidationResult');
         $result->errors()->shouldBe([]);
         $result->results()->shouldHaveKey('someArray');
         $result->results()->shouldHaveKey('someAssoc');

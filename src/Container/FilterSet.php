@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Valit\Util;
+namespace Valit\Container;
 
 use LogicException;
 

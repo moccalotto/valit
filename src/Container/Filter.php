@@ -8,10 +8,10 @@
  * @license MIT
  */
 
-namespace Valit\Util;
+namespace Valit\Container;
 
 /**
- * A Container for filters.
+ * A single filter (i.e. a single check).
  */
 class Filter
 {

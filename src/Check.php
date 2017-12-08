@@ -10,6 +10,8 @@
 
 namespace Valit;
 
+use Valit\Container\Validator as ContainerValidator;
+
 class Check
 {
     /**

@@ -14,11 +14,11 @@ namespace spec\Valit;
 
 use PhpSpec\ObjectBehavior;
 
-class EnsureSpec extends ObjectBehavior
+class CheckSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Valit\Ensure');
+        $this->shouldHaveType('Valit\Check');
     }
 
     function it_creates_fluent()
@@ -28,6 +28,6 @@ class EnsureSpec extends ObjectBehavior
 
     function it_creates_container_validator()
     {
-        $this->container([1,2,3])->shouldHaveType('Valit\ContainerValidator');
+        $this->container([1,2,3])->shouldHaveType('Valit\Container\Validator');
     }
 }

@@ -8,17 +8,19 @@
  * @license MIT
  */
 
-namespace Valit;
+namespace Valit\Container;
 
 use Traversable;
+use Valit\Fluent;
+use Valit\Result;
+use Valit\Manager;
 use LogicException;
 use BadMethodCallException;
-use Valit\Util\FilterSet;
 
 /**
  * Validate a container (variable with array access).
  */
-class ContainerValidator
+class Validator
 {
     /**
      * @var Manager
@@ -65,7 +67,7 @@ class ContainerValidator
         $this->manager = $manager;
         $this->throwOnFailure = $throwOnFailure;
         $this->container = $container;
-        $this->flatContainer = new Util\FlattenedContainer($container);
+        $this->flatContainer = new FlattenedContainer($container);
     }
 
     /**
@@ -94,7 +96,7 @@ class ContainerValidator
             }
         }
 
-        return new ContainerValidationResult($results, $this->alias);
+        return new ValidationResult($results, $this->alias);
     }
 
     /**

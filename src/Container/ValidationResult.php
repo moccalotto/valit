@@ -8,14 +8,14 @@
  * @license MIT
  */
 
-namespace Valit;
+namespace Valit\Container;
 
 use Valit\Exceptions\InvalidContainerException;
 
 /**
  * Result of validating a container.
  */
-class ContainerValidationResult
+class ValidationResult
 {
     /**
      * @var Fluent[]
