@@ -58,7 +58,20 @@ class Fluent implements FluentCheckInterface
             ));
         }
 
-        $result = $this->manager->executeCheck($methodName, $this->value, $args);
+        return $this->executeCheck($methodName, $args);
+    }
+
+    /**
+     * Execute a check.
+     *
+     * @param string $checkName
+     * @param array  $args
+     *
+     * @return $this
+     */
+    public function executeCheck($checkName, array $args)
+    {
+        $result = $this->manager->executeCheck($checkName, $this->value, $args);
 
         if (is_array($result)) {
             $this->registerManyResults($result);

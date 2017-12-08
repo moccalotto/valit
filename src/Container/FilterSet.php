@@ -10,6 +10,7 @@
 
 namespace Valit\Container;
 
+use Valit\Template;
 use LogicException;
 
 /**
@@ -18,22 +19,23 @@ use LogicException;
 class FilterSet
 {
     /**
-     * @var array
+     * @var Filter[]
      */
     protected $filters = [];
 
     /**
      * @var bool
      */
-    protected $valueOptional = false;
-
-    /**
-     * @var bool
-     */
-    protected $optionalityDefined = false;
+    protected $valueOptional = null;
 
     /**
      * Constructor.
+     *
+     * @param mixed $filters Set of filters.
+     *
+     * Filters can be an array such as ['required', 'isGreaterThan(100)']
+     * It can also be a string (or stringable object) such as
+     * 'required & isGreaterThan(100)'
      */
     public function __construct($filters)
     {
@@ -51,7 +53,7 @@ class FilterSet
      */
     public function isValueRequired()
     {
-        return ! $this->valueOptional;
+        return $this->valueOptional = true || $this->valueOptional === null;
     }
 
     /**
@@ -74,52 +76,66 @@ class FilterSet
      */
     public function all()
     {
-        $result = [];
-
-        foreach ($this->filters as $key => $val) {
-            if ($key === 'optional') {
-                continue;
-            }
-            if ($key === 'required') {
-                continue;
-            }
-
-            $result[$key] = $val;
-        }
-
-        return $result;
+        return $this->filters;
     }
 
     /**
-     * Normalize a set of filters and add it to $this->filters
+     * Turn this FilterSet into a Template.
+     */
+    public function template()
+    {
+        $template = new Template();
+
+        foreach ($this->filters as $filter) {
+            $template->addCheck($filter->name, $filter->args);
+        }
+
+        return $template;
+    }
+
+    /**
+     * Normalize a set of filters and add it to $this->filters.
      *
      * Filters can be given as a string or an array.
      * When string-encoded, the string contains a number of filter expressions separated by ampersands.
-     * When associative array, each key=>value pair can either be filterName => parameters
+     * When associative array, each key=>value pair can either be checkName => parameters
      * When numeric array, each entry contains a single filter expression.
      *
-     * We normalize them into well-behaved arrays of filterName => parameters.
+     * We normalize them into well-behaved arrays of checkName => parameters.
      *
-     * @param string|array $filters
-     *
-     * @return void
+     * @param string|array|Template $value
      */
-    protected function addNormalizedFilters($filters)
+    protected function addNormalizedFilters($value)
     {
-        if (!is_array($filters)) {
-            // turn a filter string into an array of single filter expressions.
-            $filters = preg_split('/\s*(?<!&)&(?!&)\s*/u', (string) $filters);
+        if ($value instanceof Template) {
+            $this->filters = $value->checks;
+            return;
         }
 
-        foreach ($filters as $key => $args) {
-            list($filterName, $args) = $this->normalizeFilter($key, $args);
+        if (!is_array($value)) {
+            // turn a filter string into an array of single filter expressions.
+            $value = array_map(
+                function ($str) {
+                    return str_replace('&&', '&', $str);
+                },
+                preg_split('/\s*(?<!&)&(?!&)\s*/u', (string) $value)
+            );
+        }
 
-            $this->addFilter($filterName, $args);
+        foreach ($value as $k => $v) {
+            list($checkName, $args) = $this->normalizeFilter($k, $v);
+
+            $this->addCheck($checkName, $args);
         }
     }
 
     /**
      * Normalize a single filter string.
+     *
+     * @param int|string $key
+     * @param mixed $args
+     *
+     * @return array containing [$checkName, $args]
      */
     protected function normalizeFilter($key, $args)
     {
@@ -132,7 +148,7 @@ class FilterSet
             // Example 1:
             // $key: 42
             // $args: ["isGreaterThan" => [0]]
-            //
+
             // Example 2:
             // $key: 1987
             // $args: ["isGreaterThan(0)"]
@@ -144,7 +160,7 @@ class FilterSet
             $filter = $key;
         }
 
-        if (! is_string($filter)) {
+        if (!is_string($filter)) {
             throw new LogicException(sprintf('Invalid filter at index %d', $key));
         }
 
@@ -158,36 +174,35 @@ class FilterSet
 
         return [
             $matches[1],    // filter name
-            (array) $args   // filter args
+            (array) $args,   // filter args
         ];
     }
 
     /**
      * Add a single filter to our array of filters.
      *
-     * @param string $filterName
+     * @param string $checkName
      * @param array  $args
      */
-    protected function addFilter($filterName, $args)
+    public function addCheck($checkName, $args)
     {
-        if (in_array($filterName, ['optional', 'required']) && $this->optionalityDefined) {
-            throw new LogicException('A set of filters cannot be both optional and required!');
+        if (in_array($checkName, ['optional', 'required']) && $this->valueOptional !== null) {
+            throw new LogicException(sprintf(
+                'The value has already been marked as »%s«',
+                $this->valueOptional ? 'optional' : 'required'
+            ));
         }
 
-        if ($filterName === 'optional') {
+        if ($checkName === 'optional') {
             $this->valueOptional = empty($args) || $args[0] == true;
-            $this->optionalityDefined = true;
-
             return;
         }
 
-        if ($filterName === 'required') {
-            $this->valueOptional = ! (empty($args) || $args[0] == true);
-            $this->optionalityDefined = true;
-
+        if ($checkName === 'required') {
+            $this->valueOptional = !(empty($args) || $args[0] == true);
             return;
         }
 
-        $this->filters[] = new Filter($filterName, $args);
+        $this->filters[] = new Filter($checkName, $args);
     }
 }

@@ -11,7 +11,7 @@
 namespace Valit\Exceptions;
 
 use UnexpectedValueException;
-use Valit\ContainerValidationResult;
+use Valit\Container\ValidationResult as ContainerValidationResult;
 
 /**
  * Exception thrown when a value is invalid.

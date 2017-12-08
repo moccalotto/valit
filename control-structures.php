@@ -13,13 +13,15 @@ use Valit\Exceptions\InvalidValueException;
 
 require 'vendor/autoload.php';
 
-
 Ensure::container($something)->passes([
-    Check::oneOf([
-        'headers/x-xsrf-token' => 'isHexString & hasLength(42)',
-        'headers/x-csrf-token' => 'isHexString & hasLength(42)',
-        'body/auth'            => 'isHexString & hasLength(42)',
-        Check::that($someOtherVariable)->isTruthy(),
+    // We must either allow unauthenticated access
+    // or we must have some kind of authentication token
+    Check::anyOf([
+        Check::that($allowUnauthenticatedAccess)->isTrue(),
+        Check::oneOf([
+            'headers/x-auth-token'    => 'isHexString & hasLength(42)',
+            'body/authToken'          => Check::value()->isHexString()->hasLength(42),
+        ]),
     ]),
 
     Check::allOrNone([
@@ -27,32 +29,20 @@ Ensure::container($something)->passes([
         'headers/last-modified-at' => 'dateAfter("15 days ago")',
         'headers/last-modified-at' => 'dateBefore("now")',
     ]),
-    // alternative syntax:
-    'headers/last-modified-at' => Check::allOrNone('required & dateAfter("15 days ago") & dateBefore("now")'),
-
-    'headers/*' => Check::keys('matches("/^[a-z][a-z0-9-]*[a-z0-9]$/")'),
-
-    Check::anyOf([
-    ]),
 
     Check::notAnyOf([
         'headers/forwarded'         => 'required',
         'headers/x-forwarded-for'   => 'required',
         'headers/x-forwarded-host'  => 'required',
         'headers/x-forwarded-proto' => 'required',
+        Check::oneOf(['foo' => 'bar'])
     ]),
-
 ]);
 
 Ensure::oneOf([
     Check::that($age)->isGreaterThanOrEqual(18),
     Check::that($order->price)->equals(0),
 ]);
-
-Ensure::oneOf(function ($age, $price) {
-    $age->isGreaterThan(17);
-    $order->isObject()->hasKey('price');
-}, $age, $order->price);
 
 Ensure::that($number, 'number')->passesOneOf([
     Check::value()->matches('/^0x[1-9a-f][0-9a-f]*$/'),

@@ -146,12 +146,7 @@ class Validator
                 $fluent->addCustomResult(new Result(true, '{name} must be present'));
             }
 
-            foreach ($filters->all() as $filter) {
-                $fluent->__call(
-                    $filter->name,
-                    $filter->args
-                );
-            }
+            $filters->template()->executeOnFluent($fluent);
 
             $results[$fieldPath] = $fluent;
         }
@@ -161,6 +156,8 @@ class Validator
 
     /**
      * Set the alias of the container.
+     *
+     * @param string $alias
      *
      * @return $this
      */

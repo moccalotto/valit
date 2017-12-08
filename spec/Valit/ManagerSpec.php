@@ -57,7 +57,7 @@ class ManagerSpec extends ObjectBehavior
     }
 
     /**
-     * Must be last because of use of setAsGlobal().
+     * Must be last because of use of setGlobal().
      */
     function it_can_override_global()
     {
@@ -65,7 +65,7 @@ class ManagerSpec extends ObjectBehavior
 
         $this->instance()->shouldNotBe($this->getWrappedObject());
 
-        $this->setAsGlobal();
+        $this->setGlobal();
 
         $this->instance()->shouldBe($this->getWrappedObject());
     }

@@ -95,10 +95,14 @@ class Manager implements CheckManager
      * Set this manager instance as the global one.
      *
      * Whenever you call Manager::instance(), the global instance is returned.
+     *
+     * @return $this
      */
-    public function setAsGlobal()
+    public function setGlobal()
     {
         static::$instance = $this;
+
+        return $this;
     }
 
     /**

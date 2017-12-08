@@ -48,4 +48,14 @@ interface FluentCheckInterface
      * @throws \Valit\Exceptions\InvalidValueException if any failures have occurred
      */
     public function orThrowException();
+
+    /**
+     * Execute a check.
+     *
+     * @param string $checkName
+     * @param array  $args
+     *
+     * @return $this
+     */
+    public function executeCheck($checkName, array $args);
 }

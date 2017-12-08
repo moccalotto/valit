@@ -42,4 +42,14 @@ class Check
     {
         return new ContainerValidator(Manager::instance(), $container, false);
     }
+
+    /**
+     * Create a check template.
+     *
+     * @return Template
+     */
+    public static function value()
+    {
+        return new Template();
+    }
 }
