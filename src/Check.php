@@ -10,7 +10,8 @@
 
 namespace Valit;
 
-use Valit\Container\Validator as ContainerValidator;
+use Valit\Validators\ContainerValidator;
+use Valit\Validators\SingleValueValidator;
 
 class Check
 {
@@ -19,14 +20,14 @@ class Check
      *
      * @param mixed $value the value to check
      *
-     * @return Fluent A Fluent object that has been configured to not
-     *                throw any exceptions. You must inspect the Fluent
-     *                object (for instance via the valid() method) to
-     *                find out if all checks passed.
+     * @return SingleValueValidator A instance that has been configured to not
+     *                              throw any exceptions. You must inspect the SingleValueValidator
+     *                              object (for instance via the valid() method) to
+     *                              find out if all checks passed
      */
     public static function that($value)
     {
-        return new Fluent(Manager::instance(), $value, false);
+        return new SingleValueValidator(Manager::instance(), $value, false);
     }
 
     /**

@@ -10,36 +10,35 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Valit;
+namespace spec\Valit\Validators;
 
 use Valit\Manager;
 use PhpSpec\ObjectBehavior;
 
-class FluentSpec extends ObjectBehavior
+class SingleValueValidatorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
-        $this->shouldHaveType('Valit\Fluent');
-        $this->shouldHaveType('Valit\Contracts\FluentCheckInterface');
+        $this->shouldHaveType('Valit\Validators\SingleValueValidator');
     }
 
     function it_can_execute_fluent_checks()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
-        $this->shouldHaveType('Valit\Fluent');
-        $this->isNumeric()->shouldHaveType('Valit\Fluent');
+        $this->shouldHaveType('Valit\Validators\SingleValueValidator');
+        $this->isNumeric()->shouldHaveType('Valit\Validators\SingleValueValidator');
         $this->success()->shouldBe(true);
-        $this->isNegative()->shouldHaveType('Valit\Fluent');
+        $this->isNegative()->shouldHaveType('Valit\Validators\SingleValueValidator');
         $this->success()->shouldBe(false);
     }
 
     function it_can_return_results()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
-        $this->shouldHaveType('Valit\Fluent');
-        $this->isNumeric()->shouldHaveType('Valit\Fluent');
-        $this->isNegative()->shouldHaveType('Valit\Fluent');
+        $this->shouldHaveType('Valit\Validators\SingleValueValidator');
+        $this->isNumeric()->shouldHaveType('Valit\Validators\SingleValueValidator');
+        $this->isNegative()->shouldHaveType('Valit\Validators\SingleValueValidator');
         $this->results()->shouldHaveCount(2);
     }
 

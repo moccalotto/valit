@@ -14,7 +14,7 @@ namespace spec\Valit;
 
 use Valit\Manager;
 use PhpSpec\ObjectBehavior;
-use Valit\Contracts\FluentCheckInterface;
+use Valit\Validators\SingleValueValidator;
 
 class TemplateSpec extends ObjectBehavior
 {
@@ -46,30 +46,30 @@ class TemplateSpec extends ObjectBehavior
         $this->assertions->all()[0]->args->shouldBe([18]);
     }
 
-    function it_can_execute_assertions_on_a_fluent_instance(FluentCheckInterface $fluent)
+    function it_can_execute_assertions_on_a_fluent_instance(SingleValueValidator $validator)
     {
-        $fluent->executeCheck('greaterThanOrEqual', [18])
+        $validator->executeCheck('greaterThanOrEqual', [18])
             ->shouldBeCalled()
-            ->willReturn($fluent->getWrappedObject());
+            ->willReturn($validator->getWrappedObject());
 
-        $fluent->executeCheck('isLowerThan', [100])
+        $validator->executeCheck('isLowerThan', [100])
             ->shouldBeCalled()
-            ->willReturn($fluent->getWrappedObject());
+            ->willReturn($validator->getWrappedObject());
 
         $this->greaterThanOrEqual(18);
         $this->isLowerThan(100);
-        $this->executeOnFluent($fluent);
+        $this->applyToValidator($validator);
     }
 
     function it_can_execute_assertions_on_a_self_created_fluent_interface()
     {
-        $fluent = $this->greaterThanOrEqual(18)
+        $validator = $this->greaterThanOrEqual(18)
             ->isLowerThan(100)
             ->whereValueIs(0);
 
-        $fluent->shouldHaveType('Valit\Fluent');
+        $validator->shouldHaveType('Valit\Validators\SingleValueValidator');
 
-        $fluent->success()->shouldBe(false);
+        $validator->success()->shouldBe(false);
 
         $this->whereValueIs(18)->errors()->shouldHaveCount(0);
         $this->whereValueIs(100)->errors()->shouldHaveCount(1);

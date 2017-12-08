@@ -1,17 +1,15 @@
-Filters
--------
+Validators
+----------
 
-Opret en CheckBag klasse
-FilterSet => CheckNormalizer, som kan lave et array om til en CheckBag
-En Template indeholder en CheckBag
+Valit\Validators\SingleValueValidator
+Valit\Validators\ContainerValidator
 
 
 Results
 -------
 
-Container\ValidationResult  => Valit\Results\ResultBag (indeholder paths til de forskellige variable)
-Valit\Result                => Valit\Results\SingleValidationResult
-
+Valit\Results\SingleValueResultBag
+Valit\Results\ContainerResultBag
 
 Misc
 ----

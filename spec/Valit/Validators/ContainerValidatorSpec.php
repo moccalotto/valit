@@ -10,13 +10,13 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Valit;
+namespace spec\Valit\Validator;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Valit\Manager;
 
-class ValidatorSpec extends ObjectBehavior
+class ContainerValidatorSpec extends ObjectBehavior
 {
     protected $testData = [
         'someString' => 'foo',
@@ -49,7 +49,7 @@ class ValidatorSpec extends ObjectBehavior
     function it_is_initializable(Manager $fakeManager)
     {
         $this->beConstructedWith($fakeManager, $this->testData, true);
-        $this->shouldHaveType('Valit\Container\Validator');
+        $this->shouldHaveType('Valit\Validators\ContainerValidator');
     }
 
     function it_handles_empty_filters(Manager $fakeManager)

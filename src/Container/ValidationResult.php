@@ -10,6 +10,7 @@
 
 namespace Valit\Container;
 
+use Valit\Validators\SingleValueValidator;
 use Valit\Exceptions\InvalidContainerException;
 
 /**
@@ -18,7 +19,7 @@ use Valit\Exceptions\InvalidContainerException;
 class ValidationResult
 {
     /**
-     * @var Fluent[]
+     * @var SingleValueValidator[]
      */
     protected $results;
 
@@ -30,7 +31,7 @@ class ValidationResult
     /**
      * Constructor.
      *
-     * @param Fluent[] $results
+     * @param SingleValueValidator[] $results
      */
     public function __construct(array $results, $alias = 'Container')
     {
@@ -75,8 +76,8 @@ class ValidationResult
      */
     public function results()
     {
-        return array_map(function ($fluent) {
-            return $fluent->results();
+        return array_map(function ($singleValidator) {
+            return $singleValidator->results();
         }, $this->results);
     }
 
@@ -87,8 +88,8 @@ class ValidationResult
      */
     public function errors()
     {
-        return array_filter(array_map(function ($fluent) {
-            return $fluent->errorMessages();
+        return array_filter(array_map(function ($singleValidator) {
+            return $singleValidator->errorMessages();
         }, $this->results));
     }
 
@@ -99,8 +100,8 @@ class ValidationResult
      */
     public function renderedResults()
     {
-        return array_map(function ($fluent) {
-            return $fluent->renderedResults();
+        return array_map(function ($singleValidator) {
+            return $singleValidator->renderedResults();
         }, $this->results);
     }
 

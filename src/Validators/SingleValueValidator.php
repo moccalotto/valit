@@ -8,15 +8,15 @@
  * @license MIT
  */
 
-namespace Valit;
+namespace Valit\Validators;
 
 use BadMethodCallException;
 use Valit\Contracts\CheckManager;
-use Valit\Contracts\FluentCheckInterface;
+use Valit\Traits\ContainsResults;
 
-class Fluent implements FluentCheckInterface
+class SingleValueValidator
 {
-    use Traits\ContainsResults;
+    use ContainsResults;
 
     /**
      * @var CheckManager
@@ -30,7 +30,7 @@ class Fluent implements FluentCheckInterface
      * @param mixed        $value          The value we are validating
      * @param bool         $throwOnFailure Should we throw an exception as soon as we encounter a failed result
      */
-    final public function __construct(CheckManager $manager, $value, $throwOnFailure)
+    public function __construct(CheckManager $manager, $value, $throwOnFailure)
     {
         $this->manager = $manager;
         $this->value = $value;

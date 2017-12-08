@@ -21,13 +21,13 @@ class CheckSpec extends ObjectBehavior
         $this->shouldHaveType('Valit\Check');
     }
 
-    function it_creates_fluent()
+    function it_creates_single_value_validator()
     {
-        $this->that(42)->shouldHaveType('Valit\Fluent');
+        $this->that(42)->shouldHaveType('Valit\Validators\SingleValueValidator');
     }
 
     function it_creates_container_validator()
     {
-        $this->container([1,2,3])->shouldHaveType('Valit\Container\Validator');
+        $this->container([1,2,3])->shouldHaveType('Valit\Validators\ContainerValidator');
     }
 }

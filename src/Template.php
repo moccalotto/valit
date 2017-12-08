@@ -10,10 +10,10 @@
 
 namespace Valit;
 
+use BadMethodCallException;
 use Valit\Assertion\Assertion;
 use Valit\Assertion\AssertionBag;
-use BadMethodCallException;
-use Valit\Contracts\FluentCheckInterface;
+use Valit\Validators\SingleValueValidator;
 
 class Template
 {
@@ -90,24 +90,24 @@ class Template
     }
 
     /**
-     * Apply all the stored assertions to a Fluent instance.
+     * Apply all the stored assertions to a SingleValueValidator instance.
      *
-     * @return Fluent
+     * @return SingleValueValidator
      */
-    public function executeOnFluent(FluentCheckInterface $fluent)
+    public function applyToValidator(SingleValueValidator $validator)
     {
         foreach ($this->assertions as $assertion) {
-            $fluent->executeCheck(
+            $validator->executeCheck(
                 $assertion->name,
                 $assertion->args
             );
         }
 
-        return $fluent;
+        return $validator;
     }
 
     /**
-     * Create a new Fluent, apply all stored assertions on it, and return it.
+     * Create a new SingleValueValidator, apply all stored assertions on it, and return it.
      *
      * @param mixed             $value   The value to be checked
      * @param string|null       $varName The alias/name of the value
@@ -115,7 +115,7 @@ class Template
      *                                   If none given, the default
      *                                   manager will be used
      *
-     * @return Fluent
+     * @return SingleValueValidator
      */
     public function whereValueIs($value, $varName = null, CheckManager $manager = null)
     {
@@ -123,12 +123,12 @@ class Template
             $manager = Manager::instance();
         }
 
-        $fluent = new FLuent($manager, $value, $this->throwOnFailure);
+        $validator = new SingleValueValidator($manager, $value, $this->throwOnFailure);
 
         if ($varName) {
-            $fluent->alias((string) $this->varName);
+            $validator->alias((string) $this->varName);
         }
 
-        return $this->executeOnFluent($fluent);
+        return $this->applyToValidator($validator);
     }
 }

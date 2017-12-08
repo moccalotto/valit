@@ -8,21 +8,22 @@
  * @license MIT
  */
 
-namespace Valit\Container;
+namespace Valit\Validators;
 
 use Traversable;
-use Valit\Fluent;
 use Valit\Result;
 use Valit\Manager;
-use Valit\Template;
 use LogicException;
+use Valit\Template;
 use BadMethodCallException;
+use Valit\Container\FlattenedContainer;
 use Valit\Assertion\AssertionNormalizer;
+use Valit\Validators\SingleValueValidator;
 
 /**
  * Validate a container (variable with array access).
  */
-class Validator
+class ContainerValidator
 {
     /**
      * @var Manager
@@ -93,8 +94,8 @@ class Validator
                 (new AssertionNormalizer($assertions))->assertions
             );
 
-            foreach ($subResults as $fieldPath => $fluent) {
-                $results[$fieldPath] = $fluent;
+            foreach ($subResults as $fieldPath => $singleValidator) {
+                $results[$fieldPath] = $singleValidator;
             }
         }
 
@@ -124,16 +125,16 @@ class Validator
      */
     protected function executeAssertions($fieldNameGlob, $assertions)
     {
-        $fieldFluent = new Fluent($this->manager, $this->container, $this->throwOnFailure);
-        $fieldFluent->alias($fieldNameGlob);
+        $fieldValidator = new SingleValueValidator($this->manager, $this->container, $this->throwOnFailure);
+        $fieldValidator->alias($fieldNameGlob);
 
-        $results = [$fieldNameGlob => $fieldFluent];
+        $results = [$fieldNameGlob => $fieldValidator];
 
         $fieldsToValidate = $this->flatContainer->find($fieldNameGlob);
 
         if ($fieldsToValidate === []) {
             $message = $assertions->isOptional() ? '{name} is optional' : '{name} must be present';
-            $fieldFluent->addCustomResult(new Result($assertions->isOptional(), $message));
+            $fieldValidator->addCustomResult(new Result($assertions->isOptional(), $message));
 
             return $results;
         }
@@ -141,16 +142,16 @@ class Validator
         $results = [];
 
         foreach ($fieldsToValidate as $fieldPath => $value) {
-            $fluent = new Fluent($this->manager, $value, $this->throwOnFailure);
-            $fluent->alias($fieldPath);
+            $singleValidator = new SingleValueValidator($this->manager, $value, $this->throwOnFailure);
+            $singleValidator->alias($fieldPath);
 
             if (!$assertions->isOptional()) {
-                $fluent->addCustomResult(new Result(true, '{name} must be present'));
+                $singleValidator->addCustomResult(new Result(true, '{name} must be present'));
             }
 
-            Template::fromAssertionBag($assertions)->executeOnFluent($fluent);
+            Template::fromAssertionBag($assertions)->applyToValidator($singleValidator);
 
-            $results[$fieldPath] = $fluent;
+            $results[$fieldPath] = $singleValidator;
         }
 
         return $results;

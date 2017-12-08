@@ -10,7 +10,8 @@
 
 namespace Valit;
 
-use Valit\Container\Validator as ContainerValidator;
+use Valit\Validators\ContainerValidator;
+use Valit\Validators\SingleValueValidator;
 
 class Ensure
 {
@@ -19,12 +20,12 @@ class Ensure
      *
      * @param mixed $value the value to check
      *
-     * @return Fluent a Fluent object that has been configured to throw a
-     *                InvalidValueException as soon as a single validation fails
+     * @return SingleValueValidator instance that has been configured to throw a
+     *                              InvalidValueException as soon as a single validation fails
      */
     public static function that($value)
     {
-        return new Fluent(Manager::instance(), $value, true);
+        return new SingleValueValidator(Manager::instance(), $value, true);
     }
 
     /**
@@ -35,7 +36,7 @@ class Ensure
      * @return ContainerValidator A ContainerValidator object that has been
      *                            configured to NOT throw ValidationExceptions in case
      *                            of failed checks. You can inspect the ContainerValidationResult
-     *                            to get information about the failed checks.
+     *                            to get information about the failed checks
      */
     public static function container($container)
     {
