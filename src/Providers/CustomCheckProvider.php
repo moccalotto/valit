@@ -13,8 +13,8 @@ namespace Valit\Providers;
 use Valit\Result;
 use InvalidArgumentException;
 use UnexpectedValueException;
-use Valit\CustomChecker;
 use Valit\CustomCallbackChecker;
+use Valit\Contracts\CustomChecker;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
 

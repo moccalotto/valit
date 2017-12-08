@@ -7,8 +7,8 @@
  * @copyright 2017 Kim Ravn Hansen
  * @license   MIT
  */
-use Valit\Facades\Check;
-use Valit\Facades\Ensure;
+use Valit\Check;
+use Valit\Ensure;
 use Valit\Exceptions\InvalidValueException;
 
 require 'vendor/autoload.php';

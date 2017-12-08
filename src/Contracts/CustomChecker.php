@@ -1,6 +1,6 @@
 <?php
 
-namespace Valit;
+namespace Valit\Contracts;
 
 interface CustomChecker
 {

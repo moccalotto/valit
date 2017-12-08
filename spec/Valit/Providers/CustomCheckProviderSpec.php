@@ -13,7 +13,7 @@
 namespace spec\Valit\Providers;
 
 use Valit\CustomCallbackChecker;
-use Valit\CustomChecker;
+use Valit\Contracts\CustomChecker;
 use Valit\Result;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

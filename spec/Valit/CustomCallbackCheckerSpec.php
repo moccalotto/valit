@@ -20,7 +20,7 @@ class CustomCallbackCheckerSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith('message', 'is_string');
-        $this->shouldHaveType('Valit\CustomChecker');
+        $this->shouldHaveType('Valit\Contracts\CustomChecker');
         $this->shouldHaveType('Valit\CustomCallbackChecker');
     }
 

@@ -7,8 +7,8 @@
  * @copyright 2017 Kim Ravn Hansen
  * @license   MIT
  */
-use Valit\Facades\Check;
-use Valit\Facades\Ensure;
+use Valit\Check;
+use Valit\Ensure;
 use Valit\Exceptions\InvalidValueException;
 
 require 'vendor/autoload.php';
@@ -28,7 +28,7 @@ Ensure::container($something)->passes([
         'headers/last-modified-at' => 'dateBefore("now")',
     ]),
     // alternative syntax:
-    'headers/last-modified-at' => Check::allOrNone('present & dateAfter("15 days ago") & dateBefore("now")'),
+    'headers/last-modified-at' => Check::allOrNone('required & dateAfter("15 days ago") & dateBefore("now")'),
 
     'headers/*' => Check::keys('matches("/^[a-z][a-z0-9-]*[a-z0-9]$/")'),
 
@@ -36,10 +36,10 @@ Ensure::container($something)->passes([
     ]),
 
     Check::notAnyOf([
-        'headers/forwarded'         => 'present',
-        'headers/x-forwarded-for'   => 'present',
-        'headers/x-forwarded-host'  => 'present',
-        'headers/x-forwarded-proto' => 'present',
+        'headers/forwarded'         => 'required',
+        'headers/x-forwarded-for'   => 'required',
+        'headers/x-forwarded-host'  => 'required',
+        'headers/x-forwarded-proto' => 'required',
     ]),
 
 ]);

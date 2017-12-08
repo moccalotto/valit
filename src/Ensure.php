@@ -8,11 +8,7 @@
  * @license MIT
  */
 
-namespace Valit\Facades;
-
-use Valit\Fluent;
-use Valit\Manager;
-use Valit\ContainerValidator;
+namespace Valit;
 
 class Ensure
 {

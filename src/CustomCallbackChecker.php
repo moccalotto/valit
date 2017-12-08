@@ -2,6 +2,8 @@
 
 namespace Valit;
 
+use Valit\Contracts\CustomChecker;
+
 /**
  * Class for executing custom callbacks.
  */

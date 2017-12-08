@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Valit\Facades;
+namespace spec\Valit;
 
 use PhpSpec\ObjectBehavior;
 
@@ -18,7 +18,7 @@ class CheckSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Valit\Facades\Check');
+        $this->shouldHaveType('Valit\Check');
     }
 
     function it_creates_fluent()

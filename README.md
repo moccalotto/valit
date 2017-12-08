@@ -38,8 +38,8 @@ The `Check` and `Ensure` classes are the a so-called facade classes.
 In short they make it easier for you to use the Valit library.
 
 ```php
-use Valit\Facades\Check;
-use Valit\Facades\Ensure;
+use Valit\heck;
+use Valit\\Ensure;
 ```
 
 The `Ensure` class allows you to make checks with fluent API,

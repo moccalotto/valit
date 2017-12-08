@@ -10,16 +10,15 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Valit\Facades;
+namespace spec\Valit;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class EnsureSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Valit\Facades\Ensure');
+        $this->shouldHaveType('Valit\Ensure');
     }
 
     function it_creates_fluent()
