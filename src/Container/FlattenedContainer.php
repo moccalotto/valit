@@ -181,14 +181,4 @@ class FlattenedContainer
 
         return $result;
     }
-
-    /**
-     * Get the debug info for this container.
-     */
-    public function __debugInfo()
-    {
-        return [
-            'container' => $this->container,
-        ];
-    }
 }
