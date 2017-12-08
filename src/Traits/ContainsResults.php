@@ -221,21 +221,33 @@ trait ContainsResults
     }
 
     /**
+     * Get all error-results.
+     *
+     * @return Result[]
+     */
+    public function errors()
+    {
+        return array_filter($this->results, function ($result) {
+            return ! $result->success();
+        });
+    }
+
+
+    /**
      * Return an array of rendered error messages.
      *
      * @return string[]
      */
     public function errorMessages()
     {
-        $messages = [];
-
-        foreach ($this->renderedResults() as $message => $success) {
-            if (!$success) {
-                $messages[] = $message;
-            }
-        }
-
-        return $messages;
+        return array_values(
+            array_map(
+                function ($error) {
+                    return $error->renderErrorMessage($this->varName, $this->value);
+                },
+                $this->errors()
+            )
+        );
     }
 
     /**
