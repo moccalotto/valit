@@ -71,4 +71,24 @@ class FluentSpec extends ObjectBehavior
         $this->valueOr('foo')->shouldBe(42);
         $this->isNegative()->valueOr('foo')->shouldBe('foo');
     }
+
+    function it_can_return_all_errors()
+    {
+        $this->beConstructedWith(Manager::instance(), 42, false);
+        $errors = $this->isNumeric()->isNegative()->errors();
+
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    function it_can_return_rendered_error_messages()
+    {
+        $this->beConstructedWith(Manager::instance(), 42, false);
+        $errorMessages = $this->isNumeric()->isNegative()->errorMessages();
+
+        $errorMessages->shouldBeArray();
+        $errorMessages->shouldHaveCount(1);
+
+        $errorMessages[0]->shouldContain('less than 0');
+    }
 }
