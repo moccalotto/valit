@@ -18,23 +18,31 @@ class CheckMetaInfo implements JsonSerializable
 {
     /**
      * @var string
+     *
+     * @internal
      */
-    protected $name;
+    public $name;
 
     /**
      * @var string
+     *
+     * @internal
      */
-    protected $description;
+    public $description;
 
     /**
      * @var string[]
+     *
+     * @internal
      */
-    protected $aliases;
+    public $aliases;
 
     /**
      * @var string
+     *
+     * @internal
      */
-    protected $paramlist;
+    public $paramlist;
 
     /**
      * Constructor.
@@ -55,31 +63,6 @@ class CheckMetaInfo implements JsonSerializable
         }, array_slice($reflector->getParameters(), 1));
 
         $this->paramlist = implode(', ', $parameters);
-    }
-
-    /**
-     * Serialize to json.
-     *
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return [
-            'name' => $this->name,
-            'description' => $this->description,
-            'aliases' => $this->aliases,
-            'paramlist' => $this->paramlist,
-        ];
-    }
-
-    /**
-     * Helper for var_dump, print_r, and company.
-     *
-     * @return array
-     */
-    public function __debugInfo()
-    {
-        return $this->jsonSerialize();
     }
 
     /**
