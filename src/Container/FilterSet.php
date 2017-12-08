@@ -111,23 +111,41 @@ class FilterSet
             $filters = preg_split('/\s*(?<!&)&(?!&)\s*/u', (string) $filters);
         }
 
-        foreach ($filters as $filter => $args) {
-            list($filterName, $args) = $this->normalizeFilter($filter, $args);
+        foreach ($filters as $key => $args) {
+            list($filterName, $args) = $this->normalizeFilter($key, $args);
 
             $this->addFilter($filterName, $args);
         }
     }
 
-    protected function normalizeFilter($filter, $args)
+    /**
+     * Normalize a single filter string.
+     */
+    protected function normalizeFilter($key, $args)
     {
-        if (is_int($filter) && is_string($args)) {
+        if (is_int($key) && is_string($args)) {
+            // Example:
+            // $key: 0
+            // $args: "isGreaterThan(0)"
             $filter = $args;
-        } elseif (is_int($filter) && is_array($args)) {
+        } elseif (is_int($key) && is_array($args)) {
+            // Example 1:
+            // $key: 42
+            // $args: ["isGreaterThan" => [0]]
+            //
+            // Example 2:
+            // $key: 1987
+            // $args: ["isGreaterThan(0)"]
             $filter = array_shift($args);
+        } else {
+            // Example:
+            // $key:  "isGreaterThan"
+            // $args: [0]
+            $filter = $key;
         }
 
         if (! is_string($filter)) {
-            throw new LogicException(sprintf('Invalid filter at index %d', $filter));
+            throw new LogicException(sprintf('Invalid filter at index %d', $key));
         }
 
         if (!preg_match('/([a-z0-9]+)\s*(?:\((.*?)\))?$/Aui', $filter, $matches)) {
@@ -135,15 +153,21 @@ class FilterSet
         }
 
         if (isset($matches[2])) {
-            $args = (array) json_decode(sprintf('[%s]', $matches[2]));
+            $args = json_decode(sprintf('[%s]', $matches[2]));
         }
 
         return [
             $matches[1],    // filter name
-            $args           // filter args
+            (array) $args   // filter args
         ];
     }
 
+    /**
+     * Add a single filter to our array of filters.
+     *
+     * @param string $filterName
+     * @param array  $args
+     */
     protected function addFilter($filterName, $args)
     {
         if (in_array($filterName, ['optional', 'required']) && $this->optionalityDefined) {
@@ -164,6 +188,6 @@ class FilterSet
             return;
         }
 
-        $this->filters[] = new Filter($filterName, (array) $args);
+        $this->filters[] = new Filter($filterName, $args);
     }
 }
