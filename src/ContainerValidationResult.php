@@ -58,6 +58,11 @@ class ContainerValidationResult
         return !$this->hasErrors();
     }
 
+    /**
+     * Get the alias (pretty name) of the container variable.
+     *
+     * @return string
+     */
     public function alias()
     {
         return $this->alias;
