@@ -21,13 +21,12 @@ class ContainerResultBag
     /**
      * @var ValueValidator[]
      */
-    protected $results;
+    public $results;
 
     /**
      * @var string
      */
     public $varName = 'Container';
-
 
     /**
      * Constructor.
@@ -65,7 +64,13 @@ class ContainerResultBag
      */
     public function add($path, ValueValidator $valueValidator)
     {
-        $this->results[$path] = $valueValidator;
+        if (isset($this->results[$path])) {
+            foreach ($valueValidator->results() as $result) {
+                $this->results[$path]->add($result);
+            }
+        } else {
+            $this->results[$path] = $valueValidator;
+        }
 
         return $this;
     }
