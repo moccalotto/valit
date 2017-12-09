@@ -10,62 +10,191 @@
 
 namespace Valit\Providers;
 
-use Valit\Result\AssertionResult as Result;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
+use Valit\Result\AssertionResult as Result;
 
 class FileSystemCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
 
-    public function checkFileExists($value)
+    protected function canString($value)
     {
-        return new Result(is_file($value), '{name} must be the complete name of an existing file');
-    }
-
-    public function checkDirExists($value)
-    {
-        return new Result(is_dir($value), '{name} must be the complete name of an existing file');
-    }
-
-    public function checkFileReadable($value)
-    {
-        return new Result(
-            is_file($value) && is_readable($value),
-            '{name} must be the complete name of an existing file'
-        );
-    }
-
-    public function checkDirReadable($value)
-    {
-        return new Result(
-            is_dir($value) && is_readable($value),
-            '{name} must be the complete name of an existing file'
-        );
+        return is_scalar($value)
+            || is_object($value) && method_exists($value, '__toString');
     }
 
     /**
-     * @Check(['isWriteableFile', 'writeableFile', 'isWritableFile', 'writableFile'])
+     * Check if $value is an existing file.
+     *
+     * @Check(["fileExists", "isFile"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
      */
-    public function checkFileWriteable($value)
+    public function checkFileExists($value)
     {
-        return new Result(
-            is_file($value) && is_writable($value)
-        );
+        $success = $this->canString($value)
+            && is_file((string) $value);
+
+        return new Result($success, '{name} must be the name of an existing file');
     }
 
+    /**
+     * Check if $value is an existing directory.
+     *
+     * @Check(["dirExists", "directoryExists", "isDir", "isDirectory"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkDirExists($value)
+    {
+        $success = $this->canString($value)
+            && is_dir((string) $value);
+
+        return new Result($success, '{name} must be the name of an existing directory');
+    }
+
+    /**
+     * Check if $value is exists on the filesystem and is writable.
+     *
+     * @Check(["writable", "isWritable"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkIsWritable($value)
+    {
+        $success = $this->canString($value)
+            && is_writable((string) $value);
+
+        return new Result($success, '{name} must be a writable path');
+    }
+
+    /**
+     * Check if $value is exists on the filesystem and is readable.
+     *
+     * @Check(["readable", "isReadable"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkIsReadable($value)
+    {
+        $success = $this->canString($value)
+            && is_readable((string) $value);
+
+        return new Result($success, '{name} must be a readable path');
+    }
+
+    /**
+     * Check if $value is a readable file.
+     *
+     * @Check(["readableFile", "isReadableFile"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkFileReadable($value)
+    {
+        $success = $this->canString($value)
+            && is_file((string) $value)
+            && is_readable((string) $value);
+
+        return new Result($success, '{name} must be the name of an readable file');
+    }
+
+    /**
+     * Check if $value is a readable directory.
+     *
+     * @Check(["readableDir", "isReadableDir", "readableDirectory", "isReadableDirectory"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkDirReadable($value)
+    {
+        $success = $this->canString($value)
+            && is_dir((string) $value)
+            && is_readable((string) $value);
+
+        return new Result($success, '{name} must be the name of a readable directory');
+    }
+
+    /**
+     * Check if $value is a writable file.
+     *
+     * @Check(["writableFile", "isWritableFile"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkFileWritable($value)
+    {
+        $success = $this->canString($value)
+            && is_file((string) $value)
+            && is_writable((string) $value);
+
+        return new Result($success, '{name} must be the name of a writable file');
+    }
+
+    /**
+     * Check if $value is a writable directory.
+     *
+     * @Check(["isWritableDir", "writableDir"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
     public function checkDirWritable($value)
     {
-        return new Result(
-            is_dir($value) && is_writable($value)
-        );
+        $success = $this->canString($value)
+            && is_dir((string) $value)
+            && is_writable((string) $value);
+
+        return new Result($success, '{name} must be the name of writable directory');
     }
 
+    /**
+     * Check if $value is an executable filesystem path.
+     *
+     * @Check(["isExecutable", "executable"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
     public function checkExecutable($value)
     {
-        return new Result(
-            is_executable($value),
-            '{name} must be executable for you'
-        );
+        $success = $this->canString($value)
+            && is_executable((string) $value);
+
+        return new Result($success, '{name} must be an executable file path');
+    }
+
+    /**
+     * Check if $value is a filesystem link.
+     *
+     * @Check(["isLink", "link"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkLink($value)
+    {
+        $success = $this->canString($value)
+            && is_link((string) $value);
+
+        return new Result($success, '{name} must be a filesystem link');
     }
 }
