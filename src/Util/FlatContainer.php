@@ -8,14 +8,14 @@
  * @license MIT
  */
 
-namespace Valit\Container;
+namespace Valit\Util;
 
 use Traversable;
 
 /**
  * A Container for data to be validated.
  */
-class FlattenedContainer
+class FlatContainer
 {
     /**
      * @var array|object

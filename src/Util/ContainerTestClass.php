@@ -1,6 +1,6 @@
 <?php
 
-namespace Valit\Test;
+namespace Valit\Util;
 
 use ArrayIterator;
 use IteratorAggregate;

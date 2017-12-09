@@ -15,10 +15,10 @@ use Valit\Manager;
 use LogicException;
 use Valit\Template;
 use BadMethodCallException;
-use Valit\Result\ContainerResultBag;
-use Valit\Container\FlattenedContainer;
-use Valit\Assertion\AssertionNormalizer;
+use Valit\Util\FlatContainer;
 use Valit\Result\AssertionResult;
+use Valit\Result\ContainerResultBag;
+use Valit\Assertion\AssertionNormalizer;
 
 /**
  * Validate a container (variable with array access).
@@ -45,7 +45,7 @@ class ContainerValidator
     public $container;
 
     /**
-     * @var FlattenedContainer
+     * @var FlatContainer
      *
      * @internal
      */
@@ -75,7 +75,7 @@ class ContainerValidator
         $this->manager = $manager;
         $this->throwOnFailure = $throwOnFailure;
         $this->container = $container;
-        $this->flatContainer = new FlattenedContainer($container);
+        $this->flatContainer = new FlatContainer($container);
     }
 
     /**

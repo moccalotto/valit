@@ -15,13 +15,13 @@ namespace spec\Valit\Util;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class FlattenedContainerSpec extends ObjectBehavior
+class FlatContainerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith([]);
 
-        $this->shouldHaveType('Valit\Util\FlattenedContainer');
+        $this->shouldHaveType('Valit\Util\FlatContainer');
     }
 
     function it_can_find_data()
@@ -56,10 +56,10 @@ class FlattenedContainerSpec extends ObjectBehavior
     function it_expands_objects()
     {
         $this->beConstructedWith(
-            ['o' => $o = new \Valit\Test\ContainerTestClass()]
+            ['o' => $o = new \Valit\Util\ContainerTestClass()]
         );
 
-        $this->container['o']->shouldHaveType('Valit\Test\ContainerTestClass');
+        $this->container['o']->shouldHaveType('Valit\Util\ContainerTestClass');
 
         $this->find('o')->shouldBe([
             'o' => $o,
