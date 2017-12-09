@@ -11,6 +11,7 @@
 namespace Valit;
 
 use SplObjectStorage;
+use Valit\Util\CheckInfo;
 use UnexpectedValueException;
 use Valit\Contracts\CheckManager;
 use Valit\Contracts\CheckProvider;
@@ -129,7 +130,7 @@ class Manager implements CheckManager
 
         foreach ($this->checks as $alias => $closure) {
             if (!$closures->contains($closure)) {
-                $check = new CheckMetaInfo($closure);
+                $check = new CheckInfo($closure);
                 $checks[] = $check;
                 $closures->attach($closure, $check);
             }

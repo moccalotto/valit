@@ -8,13 +8,12 @@
  * @license MIT
  */
 
-namespace Valit;
+namespace Valit\Util;
 
 use Closure;
-use JsonSerializable;
 use ReflectionFunction;
 
-class CheckMetaInfo implements JsonSerializable
+class CheckInfo
 {
     /**
      * @var string
