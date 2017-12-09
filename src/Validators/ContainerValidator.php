@@ -33,11 +33,6 @@ class ContainerValidator
     public $manager;
 
     /**
-     * @var ContainerResultBag
-     */
-    public $results;
-
-    /**
      * @var array|object
      *
      * @internal
@@ -59,9 +54,9 @@ class ContainerValidator
     public $throwOnFailure;
 
     /**
-     * @var string
+     * @var ContainerResultBag
      */
-    public $alias = 'container';
+    public $results;
 
     /**
      * Constructor.
@@ -76,6 +71,7 @@ class ContainerValidator
         $this->throwOnFailure = $throwOnFailure;
         $this->container = $container;
         $this->flatContainer = new FlatContainer($container);
+        $this->results = new ContainerResultBag([]);
     }
 
     /**
@@ -91,19 +87,9 @@ class ContainerValidator
             throw new LogicException('$validation must be an array or a Traversable object');
         }
 
-        if (!$this->results) {
-            $this->results = new ContainerResultBag([], $this->alias);
-        }
-
         foreach ($containerAssertionMap as $fieldNameGlob => $assertions) {
-            $subResults = $this->executeAssertions(
-                $fieldNameGlob,
-                (new AssertionNormalizer($assertions))->assertions
-            );
-
-            foreach ($subResults as $fieldPath => $singleValidator) {
-                $this->results->add($fieldPath, $singleValidator);
-            }
+            $normalizedAssertions = AssertionNormalizer::normalize($assertions);
+            $this->executeAndAdd($fieldNameGlob, $normalizedAssertions);
         }
 
         return $this->results;
@@ -130,38 +116,33 @@ class ContainerValidator
      *
      * @return array
      */
-    protected function executeAssertions($fieldNameGlob, $assertions)
+    protected function executeAndAdd($fieldNameGlob, $assertions)
     {
-        $fieldValidator = new ValueValidator($this->manager, $this->container, $this->throwOnFailure);
-        $fieldValidator->alias($fieldNameGlob);
-
-        $results = [$fieldNameGlob => $fieldValidator];
-
         $fieldsToValidate = $this->flatContainer->find($fieldNameGlob);
 
         if ($fieldsToValidate === []) {
             $message = $assertions->isOptional() ? '{name} is optional' : '{name} must be present';
-            $fieldValidator->addCustomResult(new AssertionResult($assertions->isOptional(), $message));
+            $valueValidator = new ValueValidator($this->manager, $this->container, $this->throwOnFailure);
+            $valueValidator->alias($fieldNameGlob);
+            $valueValidator->addCustomResult(new AssertionResult($assertions->isOptional(), $message));
 
-            return $results;
+            $this->results->add($fieldNameGlob, $valueValidator);
+
+            return;
         }
-
-        $results = [];
 
         foreach ($fieldsToValidate as $fieldPath => $value) {
-            $singleValidator = new ValueValidator($this->manager, $value, $this->throwOnFailure);
-            $singleValidator->alias($fieldPath);
+            $valueValidator = new ValueValidator($this->manager, $value, $this->throwOnFailure);
+            $valueValidator->alias($fieldPath);
 
             if (!$assertions->isOptional()) {
-                $singleValidator->addCustomResult(new AssertionResult(true, '{name} must be present'));
+                $valueValidator->addCustomResult(new AssertionResult(true, '{name} must be present'));
             }
 
-            Template::fromAssertionBag($assertions)->applyToValidator($singleValidator);
+            Template::fromAssertionBag($assertions)->applyToValidator($valueValidator);
 
-            $results[$fieldPath] = $singleValidator;
+            $this->results->add($fieldPath, $valueValidator);
         }
-
-        return $results;
     }
 
     /**
@@ -173,7 +154,7 @@ class ContainerValidator
      */
     public function alias($alias)
     {
-        $this->alias = $alias;
+        $this->results->alias($alias);
 
         return $this;
     }

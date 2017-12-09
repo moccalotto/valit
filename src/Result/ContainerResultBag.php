@@ -26,30 +26,46 @@ class ContainerResultBag
     /**
      * @var string
      */
-    protected $alias;
+    public $varName = 'Container';
+
 
     /**
      * Constructor.
      *
      * @param ValueValidator[] $results
+     * @param string $varName
      */
-    public function __construct(array $results, $alias = 'Container')
+    public function __construct(array $results, $varName = 'Container')
     {
         $this->results = $results;
-        $this->alias = $alias;
+        $this->varName = $varName;
+    }
+
+    /**
+     * Set the variable name alias.
+     *
+     * @param string $varName
+     *
+     * @return $this
+     */
+    public function alias($varName)
+    {
+        $this->varName = $varName;
+
+        return $this;
     }
 
     /**
      * Add a result.
      *
-     * @param string               $path            The path to the variable that passed/failed the tests
-     * @param ValueValidator $singleValidator The validator that performed the assertions on the variable
+     * @param string         $path           The path to the variable that passed/failed the tests
+     * @param ValueValidator $valueValidator The validator that performed the assertions on the variable
      *
      * @return $this
      */
-    public function add($path, ValueValidator $singleValidator)
+    public function add($path, ValueValidator $valueValidator)
     {
-        $this->results[$path] = $singleValidator;
+        $this->results[$path] = $valueValidator;
 
         return $this;
     }
@@ -72,16 +88,6 @@ class ContainerResultBag
     public function success()
     {
         return !$this->hasErrors();
-    }
-
-    /**
-     * Get the alias (pretty name) of the container variable.
-     *
-     * @return string
-     */
-    public function alias()
-    {
-        return $this->alias;
     }
 
     /**

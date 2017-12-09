@@ -44,8 +44,13 @@ Ensure::oneOf([
     Check::that($order->price)->equals(0),
 ]);
 
-Ensure::that($number, 'number')->passesOneOf([
+Ensure::that($number)->passesOneOf([
     Check::value()->matches('/^0x[1-9a-f][0-9a-f]*$/'),
     Check::value()->matches('/^0[1-7][0-7]*$/'),
     Check::value()->isNumeric()->isGreaterThan(0),
+]);
+
+Ensure::that($number)->passesOneOf([
+    'isNaturalNumber & gte(0) & lte(255)',
+    'isHex & hasLength(2)',
 ]);

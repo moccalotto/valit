@@ -25,6 +25,18 @@ class AssertionNormalizer
     }
 
     /**
+     * Return a normalized version of $assertions
+     *
+     * @param string|array|Template|AssertionBag $assertions
+     *
+     * @return AssertionBag
+     */
+    public static function normalize($assertions)
+    {
+        return (new static($assertions))->assertions;
+    }
+
+    /**
      * Get all assertions (except the "required" and "optional" pseudo-assertions).
      *
      * @return AssertionBag
@@ -50,14 +62,17 @@ class AssertionNormalizer
     {
         if ($assertions instanceof Template) {
             $this->assertions = clone $assertions->assertions;
+
             return;
         }
         if ($assertions instanceof AssertionBag) {
             $this->assertions = clone $assertions;
+
             return;
         }
         if (empty($assertions)) {
             $this->assertions = new AssertionBag();
+
             return;
         }
 
@@ -74,9 +89,7 @@ class AssertionNormalizer
         $this->assertions = new AssertionBag();
 
         foreach ($assertions as $k => $v) {
-            list($checkName, $args) = $this->parseAssertionExpression($k, $v);
-
-            $this->addAssertion($checkName, $args);
+            $this->parseAndAdd($k, $v);
         }
     }
 
@@ -84,11 +97,11 @@ class AssertionNormalizer
      * Parse a single assertion-expression.
      *
      * @param int|string $key
-     * @param mixed $args
+     * @param mixed      $args
      *
      * @return array containing [$checkName, $args]
      */
-    protected function parseAssertionExpression($key, $args)
+    protected function parseAndAdd($key, $args)
     {
         if (is_int($key) && is_string($args)) {
             // Example:
@@ -101,7 +114,7 @@ class AssertionNormalizer
             // ----------
             // $key: 42
             // $args: ["isGreaterThan" => [0]]
-            //
+
             // Example 2:
             // ----------
             // $key: 1987
@@ -131,10 +144,10 @@ class AssertionNormalizer
             $args = json_decode(sprintf('[%s]', $matches[2]));
         }
 
-        return [
+        $this->addSingleAssertion(
             $matches[1],     // check name
-            (array) $args,   // assertion args
-        ];
+            (array) $args    // assertion args
+        );
     }
 
     /**
@@ -143,19 +156,22 @@ class AssertionNormalizer
      * @param string $checkName
      * @param array  $assertionArgs
      */
-    public function addAssertion($checkName, $assertionArgs)
+    public function addSingleAssertion($checkName, $assertionArgs)
     {
         if ($checkName === 'optional') {
             $this->assertions->setFlag('optional', true);
+
             return;
         }
 
         if ($checkName === 'required') {
             $this->assertions->setFlag('optional', false);
+
             return;
         }
         if ($checkName === 'present') {
             $this->assertions->setFlag('optional', false);
+
             return;
         }
 

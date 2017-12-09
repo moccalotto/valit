@@ -34,7 +34,7 @@ class InvalidContainerException extends UnexpectedValueException
 
         $this->message = $this->getExpandedMessage(sprintf(
             '%s container did not pass validation',
-            ucfirst($results->alias())
+            ucfirst($results->varName)
         ));
     }
 
