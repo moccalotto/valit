@@ -52,8 +52,8 @@ class CheckInfo
     {
         $reflector = new ReflectionFunction($closure);
 
-        if (preg_match('/^\s*\*\s*(.+?)\s*$/m', $reflector->getDocComment(), $matches)) {
-            $this->description = $matches[1];
+        if (preg_match_all('/\s*\*\s+([^@*]+)\s*/mus', $reflector->getDocComment(), $matches)) {
+            $this->description = trim(implode(PHP_EOL, array_map('trim', $matches[1])));
         }
 
         $this->name = $reflector->getName();
