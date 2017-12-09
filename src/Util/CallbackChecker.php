@@ -1,6 +1,6 @@
 <?php
 
-namespace Valit;
+namespace Valit\Util;
 
 use Valit\Contracts\CustomChecker;
 use Valit\Result\AssertionResult as Result;
@@ -8,7 +8,7 @@ use Valit\Result\AssertionResult as Result;
 /**
  * Class for executing custom callbacks.
  */
-class CustomCallbackChecker implements CustomChecker
+class CallbackChecker implements CustomChecker
 {
     /**
      * @var string

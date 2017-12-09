@@ -14,7 +14,7 @@ namespace spec\Valit\Providers;
 
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
-use Valit\CustomCallbackChecker;
+use Valit\Util\CallbackChecker;
 use Valit\Contracts\CustomChecker;
 use Valit\Result\AssertionResult;
 
@@ -62,8 +62,8 @@ class CustomCheckProviderSpec extends ObjectBehavior
         $mockChecker->check(null)->willReturn($mockResult);
         $this->checkPassesChecker(null, $mockChecker)->shouldBe($mockResult);
 
-        $strChecker = new CustomCallbackChecker('message', 'is_string');
-        $intChecker = new CustomCallbackChecker('message', 'is_int');
+        $strChecker = new CallbackChecker('message', 'is_string');
+        $intChecker = new CallbackChecker('message', 'is_int');
 
         $this->checkPassesChecker('foo', $strChecker)->shouldHaveType('Valit\Result\AssertionResult');
         $this->checkPassesChecker('foo', $strChecker)->success()->shouldBe(true);

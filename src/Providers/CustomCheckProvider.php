@@ -13,7 +13,7 @@ namespace Valit\Providers;
 use Valit\Result\AssertionResult as Result;
 use InvalidArgumentException;
 use UnexpectedValueException;
-use Valit\CustomCallbackChecker;
+use Valit\Util\CallbackChecker;
 use Valit\Contracts\CustomChecker;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
@@ -46,7 +46,7 @@ class CustomCheckProvider implements CheckProvider
 
         return $this->checkPassesChecker(
             $value,
-            new CustomCallbackChecker($message, $callback)
+            new CallbackChecker($message, $callback)
         );
     }
 

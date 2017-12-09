@@ -10,18 +10,18 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Valit;
+namespace spec\Valit\Util;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class CustomCallbackCheckerSpec extends ObjectBehavior
+class CallbackCheckerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith('message', 'is_string');
         $this->shouldHaveType('Valit\Contracts\CustomChecker');
-        $this->shouldHaveType('Valit\CustomCallbackChecker');
+        $this->shouldHaveType('Valit\Util\CallbackChecker');
     }
 
     function it_executes_callbacks()
