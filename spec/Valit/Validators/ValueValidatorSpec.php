@@ -15,30 +15,30 @@ namespace spec\Valit\Validators;
 use Valit\Manager;
 use PhpSpec\ObjectBehavior;
 
-class SingleValueValidatorSpec extends ObjectBehavior
+class ValueValidatorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
-        $this->shouldHaveType('Valit\Validators\SingleValueValidator');
+        $this->shouldHaveType('Valit\Validators\ValueValidator');
     }
 
     function it_can_execute_fluent_checks()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
-        $this->shouldHaveType('Valit\Validators\SingleValueValidator');
-        $this->isNumeric()->shouldHaveType('Valit\Validators\SingleValueValidator');
+        $this->shouldHaveType('Valit\Validators\ValueValidator');
+        $this->isNumeric()->shouldHaveType('Valit\Validators\ValueValidator');
         $this->success()->shouldBe(true);
-        $this->isNegative()->shouldHaveType('Valit\Validators\SingleValueValidator');
+        $this->isNegative()->shouldHaveType('Valit\Validators\ValueValidator');
         $this->success()->shouldBe(false);
     }
 
     function it_can_return_results()
     {
         $this->beConstructedWith(Manager::instance(), 42, false);
-        $this->shouldHaveType('Valit\Validators\SingleValueValidator');
-        $this->isNumeric()->shouldHaveType('Valit\Validators\SingleValueValidator');
-        $this->isNegative()->shouldHaveType('Valit\Validators\SingleValueValidator');
+        $this->shouldHaveType('Valit\Validators\ValueValidator');
+        $this->isNumeric()->shouldHaveType('Valit\Validators\ValueValidator');
+        $this->isNegative()->shouldHaveType('Valit\Validators\ValueValidator');
         $this->results()->shouldHaveCount(2);
     }
 

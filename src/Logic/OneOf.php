@@ -5,7 +5,7 @@ namespace Valit\Logic;
 use Valit\Manager;
 use LogicException;
 use Valit\Contracts\CheckManager;
-use Valit\Validators\SingleValueValidator;
+use Valit\Validators\ValueValidator;
 
 class OneOf
 {

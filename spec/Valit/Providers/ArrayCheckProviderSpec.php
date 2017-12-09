@@ -29,7 +29,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_arrayAccess()
     {
-        $this->checkArrayAccess([])->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkArrayAccess([])->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('hasArrayAccess');
         $this->provides()->shouldHaveKey('arrayAccessible');
@@ -48,7 +48,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_associativeArray()
     {
-        $this->checkAssociative([])->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkAssociative([])->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('associative');
         $this->provides()->shouldHaveKey('isAssociative');
@@ -77,7 +77,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_numericArray()
     {
-        $this->checkNumericIndex([])->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkNumericIndex([])->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('hasNumericIndex');
         $this->provides()->shouldHaveKey('isConventionalArray');
@@ -105,7 +105,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_EmptyArray()
     {
-        $this->checkEmpty([])->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkEmpty([])->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('notEmpty');
         $this->provides()->shouldHaveKey('isNotEmpty');
@@ -130,7 +130,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_notEmptyArray()
     {
-        $this->checkNotEmpty([])->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkNotEmpty([])->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('notEmpty');
         $this->provides()->shouldHaveKey('isNotEmpty');
@@ -155,7 +155,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_unqiueValues()
     {
-        $this->checkUniqueValues([])->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkUniqueValues([])->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('hasUniqueValues');
         $this->provides()->shouldHaveKey('uniqueValues');
@@ -183,7 +183,7 @@ class ArrayCheckProviderSpec extends ObjectBehavior
 
     function it_checks_keyExists()
     {
-        $this->checkKeyExists([], 1)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkKeyExists([], 1)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('hasKey');
         $this->provides()->shouldHaveKey('keyExists');

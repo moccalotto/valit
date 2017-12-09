@@ -13,7 +13,7 @@
 namespace Valit\Providers;
 
 use InvalidArgumentException;
-use Valit\Result\SingleAssertionResult as Result;
+use Valit\Result\AssertionResult as Result;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
 

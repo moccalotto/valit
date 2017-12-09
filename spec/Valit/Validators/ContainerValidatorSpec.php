@@ -161,7 +161,7 @@ class ContainerValidatorSpec extends ObjectBehavior
         $result->errors()->shouldHaveKey('someAssoc/thing1');
         $result->errors()->shouldHaveKey('someAssoc/thing2');
         $result->errors()->shouldHaveKey('someAssoc/thing3');
-        $result->results()['notFound'][0]->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $result->results()['notFound'][0]->shouldHaveType('Valit\Result\AssertionResult');
         $result->results()['notFound'][0]->success()->shouldBe(false);
     }
 }

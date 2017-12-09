@@ -7,7 +7,7 @@ interface CustomChecker
     /**
      * @param mixed $value
      *
-     * @return \Valit\Result\SingleAssertionResult
+     * @return \Valit\Result\AssertionResult
      */
     public function check($value);
 }

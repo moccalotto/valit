@@ -44,7 +44,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_currencyCode()
     {
-        $this->checkCurrencyCode('XXX')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkCurrencyCode('XXX')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('currencyCode');
         $this->provides()->shouldHaveKey('isCurrencyCode');
@@ -74,7 +74,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_currencyNumber()
     {
-        $this->checkCurrencyCode('000')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkCurrencyCode('000')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('currencyNumber');
         $this->provides()->shouldHaveKey('isCurrencyNumber');
@@ -105,7 +105,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_decimalString()
     {
-        $this->checkDecimalString('0')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkDecimalString('0')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('decimalString');
         $this->provides()->shouldHaveKey('isDecimalString');
@@ -131,7 +131,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_hexString()
     {
-        $this->checkHexString(0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkHexString(0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isHex');
         $this->provides()->shouldHaveKey('hexString');
@@ -156,7 +156,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_emailAddress()
     {
-        $this->checkEmail(0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkEmail(0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('email');
         $this->provides()->shouldHaveKey('isEmail');
@@ -184,7 +184,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_uppercase()
     {
-        $this->checkUppercase('')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkUppercase('')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('uppercase');
         $this->provides()->shouldHaveKey('isUppercase');
@@ -211,7 +211,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_lowercase()
     {
-        $this->checkLowercase('')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkLowercase('')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('lowercase');
         $this->provides()->shouldHaveKey('isLowercase');
@@ -238,7 +238,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_matchesRegex()
     {
-        $this->checkMatchesRegex('', '//')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkMatchesRegex('', '//')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('matches');
         $this->provides()->shouldHaveKey('matchesRegex');
@@ -261,7 +261,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_stringable()
     {
-        $this->checkStringable('')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkStringable('')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('stringable');
         $this->provides()->shouldHaveKey('isStringable');
@@ -286,7 +286,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_startsWith()
     {
-        $this->checkStartsWith('', '')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkStartsWith('', '')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('startsWith');
         $this->provides()->shouldHaveKey('beginsWith');
@@ -314,7 +314,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_endsWith()
     {
-        $this->checkEndsWith('', '')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkEndsWith('', '')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('endsWith');
 
@@ -341,7 +341,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_containsString()
     {
-        $this->checkContainsString('', '')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkContainsString('', '')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('containsString');
         $this->provides()->shouldHaveKey('containsTheString');
@@ -369,7 +369,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_shorterThan()
     {
-        $this->checkShorterThan('', 0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkShorterThan('', 0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('shorterThan');
         $this->provides()->shouldHaveKey('isShorterThan');
@@ -393,7 +393,7 @@ class StringCheckProviderSpec extends ObjectBehavior
 
     function it_checks_longerThan()
     {
-        $this->checkLongerThan('', 0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkLongerThan('', 0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('longerThan');
         $this->provides()->shouldHaveKey('isLongerThan');

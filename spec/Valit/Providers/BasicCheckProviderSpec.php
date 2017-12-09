@@ -30,7 +30,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
 
     function it_checks_identical_to()
     {
-        $this->checkIdenticalTo(null, null)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkIdenticalTo(null, null)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isIdenticalTo');
         $this->provides()->shouldHaveKey('identicalTo');
@@ -61,7 +61,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
 
     function it_checks_isOneOf()
     {
-        $this->checkIsOneOf('a', [])->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkIsOneOf('a', [])->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isOneOf');
         $this->provides()->shouldHaveKey('oneOf');
@@ -77,7 +77,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
 
     function it_checks_equals()
     {
-        $this->checkEquals(null, null)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkEquals(null, null)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('is');
         $this->provides()->shouldHaveKey('equals');
@@ -106,7 +106,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
 
     function it_checks_isTruthy()
     {
-        $this->checkIsTruthy(null)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkIsTruthy(null)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('truthy');
         $this->provides()->shouldHaveKey('isTruthy');
@@ -132,7 +132,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
 
     function it_checks_isFalsy()
     {
-        $this->checkIsFalsy(null)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkIsFalsy(null)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('falsy');
         $this->provides()->shouldHaveKey('isFalsy');
@@ -158,7 +158,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
 
     function it_checks_isTrue()
     {
-        $this->checkIsTruthy(null)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkIsTruthy(null)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('true');
         $this->provides()->shouldHaveKey('isTrue');
@@ -184,7 +184,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
 
     function it_checks_isFalse()
     {
-        $this->checkIsTruthy(null)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkIsTruthy(null)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('false');
         $this->provides()->shouldHaveKey('isFalse');
@@ -210,7 +210,7 @@ class BasicCheckProviderSpec extends ObjectBehavior
 
     function it_checks_isArray()
     {
-        $this->checkArray([])->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkArray([])->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isArray');
         $this->provides()->shouldHaveKey('array');

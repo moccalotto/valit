@@ -7,7 +7,7 @@ use LogicException;
 /**
  * Valit Result.
  */
-class SingleAssertionResult
+class AssertionResult
 {
     /**
      * @var bool

@@ -23,7 +23,7 @@ class EnsureSpec extends ObjectBehavior
 
     function it_creates_single_value_validator()
     {
-        $this->that(42)->shouldHaveType('Valit\Validators\SingleValueValidator');
+        $this->that(42)->shouldHaveType('Valit\Validators\ValueValidator');
     }
 
     function it_creates_container_validator()

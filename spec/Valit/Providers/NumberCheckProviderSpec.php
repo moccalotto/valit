@@ -28,7 +28,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_numeric()
     {
-        $this->checkNumeric(0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkNumeric(0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('numeric');
         $this->provides()->shouldHaveKey('isNumeric');
@@ -57,7 +57,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_real()
     {
-        $this->checkRealNumber(0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkRealNumber(0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isRealNumber');
         $this->provides()->shouldHaveKey('realNumber');
@@ -89,7 +89,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_natural()
     {
-        $this->checkNaturalNumber(0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkNaturalNumber(0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isRealNumber');
         $this->provides()->shouldHaveKey('realNumber');
@@ -122,7 +122,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_gt()
     {
-        $this->checkGreaterThan(0, 0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkGreaterThan(0, 0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('gt');
         $this->provides()->shouldHaveKey('greaterThan');
@@ -140,7 +140,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_lt()
     {
-        $this->checkLessThan(0, 0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkLessThan(0, 0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('lt');
         $this->provides()->shouldHaveKey('lessThan');
@@ -161,7 +161,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_gte()
     {
-        $this->checkGreaterThanOrEqual(0, 0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkGreaterThanOrEqual(0, 0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('gte');
         $this->provides()->shouldHaveKey('greaterThanOrEqual');
@@ -180,7 +180,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_lte()
     {
-        $this->checkLessThanOrEqual(0, 0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkLessThanOrEqual(0, 0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('lte');
         $this->provides()->shouldHaveKey('lessThanOrEqual');
@@ -201,7 +201,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_floatEqual()
     {
-        $this->checkFloatEqual(0, 0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkFloatEqual(0, 0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('closeTo');
         $this->provides()->shouldHaveKey('isCloseTo');
@@ -234,7 +234,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_odd()
     {
-        $this->checkOdd(0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkOdd(0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isOdd');
         $this->provides()->shouldHaveKey('odd');
@@ -255,7 +255,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_even()
     {
-        $this->checkEven(0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkEven(0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isEven');
         $this->provides()->shouldHaveKey('even');
@@ -276,7 +276,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_positive()
     {
-        $this->checkPositive(0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkPositive(0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isPositive');
         $this->provides()->shouldHaveKey('positive');
@@ -299,7 +299,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_negative()
     {
-        $this->checkNegative(0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkNegative(0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isNegative');
         $this->provides()->shouldHaveKey('negative');
@@ -322,7 +322,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_primeRelativeTo()
     {
-        $this->checkPrimeRelativeTo(0, 0)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkPrimeRelativeTo(0, 0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('coprimeTo');
         $this->provides()->shouldHaveKey('isCoprimeTo');
@@ -353,7 +353,7 @@ class NumberCheckProviderSpec extends ObjectBehavior
 
     function it_checks_divisibleBy()
     {
-        $this->checkDivisibleBy(1, 1)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkDivisibleBy(1, 1)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isDivisibleBy');
         $this->provides()->shouldHaveKey('divisibleBy');

@@ -27,7 +27,7 @@ class UuidCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('isUuid');
         $this->provides()->shouldHaveKey('uuid');
 
-        $this->checkIsUuid('')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkIsUuid('')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->checkIsUuid('00000000-0000-1000-8000-000000000000')->success()->shouldBe(true);
         $this->checkIsUuid('00000000-0000-2000-9000-000000000000')->success()->shouldBe(true);
@@ -60,7 +60,7 @@ class UuidCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('isUuidVersion');
         $this->provides()->shouldHaveKey('uuidVersion');
 
-        $this->checkUuidVersion('', 1)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkUuidVersion('', 1)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->checkUuidVersion('00000000-0000-1000-8000-000000000000', 1)->success()->shouldBe(true);
         $this->checkUuidVersion('00000000-0000-2000-8000-000000000000', 2)->success()->shouldBe(true);

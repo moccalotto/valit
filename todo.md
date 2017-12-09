@@ -1,8 +1,6 @@
 Results
 -------
 
-Valit\Result\SingleAssertionResult => Valit\Result\AssertionResult
-
 Consider adding a Valut\Result\SingleValueResultBag
 
 Misc

@@ -63,7 +63,7 @@ NOT_XML;
             return;
         }
 
-        $this->checkXmlString($this->xmlBase)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkXmlString($this->xmlBase)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isValidXml');
         $this->provides()->shouldHaveKey('validXml');
@@ -81,7 +81,7 @@ NOT_XML;
             return;
         }
 
-        $this->checkMatchesXmlAdvanced('', '', true, true)->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkMatchesXmlAdvanced('', '', true, true)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('matchesXmlAdvanced');
 
@@ -108,7 +108,7 @@ NOT_XML;
             return;
         }
 
-        $this->checkMatchesXml('', '')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkMatchesXml('', '')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('matchesXml');
 
@@ -124,7 +124,7 @@ NOT_XML;
             return;
         }
 
-        $this->checkMatchesXmlWithWhiteSpace('', '')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkMatchesXmlWithWhiteSpace('', '')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('matchesXmlWithWhiteSpace');
 
@@ -145,7 +145,7 @@ NOT_XML;
             return;
         }
 
-        $this->checkMatchesXmlWithCase('', '')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkMatchesXmlWithCase('', '')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('matchesXmlWithCase');
 
@@ -166,7 +166,7 @@ NOT_XML;
             return;
         }
 
-        $this->checkMatchesXmlStrict('', '')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkMatchesXmlStrict('', '')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('matchesXmlStrict');
 

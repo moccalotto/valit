@@ -13,7 +13,7 @@
 namespace Valit\Traits;
 
 use Valit\Exceptions\InvalidValueException;
-use Valit\Result\SingleAssertionResult as Result;
+use Valit\Result\AssertionResult as Result;
 
 trait ContainsResults
 {

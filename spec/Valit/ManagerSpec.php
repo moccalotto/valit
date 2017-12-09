@@ -36,7 +36,7 @@ class ManagerSpec extends ObjectBehavior
         $this->beConstructedThrough('create');
 
         $this->executeCheck('isNumeric', 42, [])
-            ->shouldHaveType('Valit\Result\SingleAssertionResult');
+            ->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->executeCheck('isNumeric', 42, [])->success()->shouldBe(true);
 

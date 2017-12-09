@@ -57,7 +57,7 @@ interface CheckManager
      * @param mixed  $value
      * @param array  $args
      *
-     * @return \Valit\Result\SingleAssertionResult
+     * @return \Valit\Result\AssertionResult
      */
     public function executeCheck($checkName, $value, array $args);
 }

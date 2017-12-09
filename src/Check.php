@@ -11,7 +11,7 @@
 namespace Valit;
 
 use Valit\Validators\ContainerValidator;
-use Valit\Validators\SingleValueValidator;
+use Valit\Validators\ValueValidator;
 
 class Check
 {
@@ -20,14 +20,14 @@ class Check
      *
      * @param mixed $value the value to check
      *
-     * @return SingleValueValidator A instance that has been configured to not
-     *                              throw any exceptions. You must inspect the SingleValueValidator
+     * @return ValueValidator A instance that has been configured to not
+     *                              throw any exceptions. You must inspect the ValueValidator
      *                              object (for instance via the valid() method) to
      *                              find out if all checks passed
      */
     public static function that($value)
     {
-        return new SingleValueValidator(Manager::instance(), $value, false);
+        return new ValueValidator(Manager::instance(), $value, false);
     }
 
     /**

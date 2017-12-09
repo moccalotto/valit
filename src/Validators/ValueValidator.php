@@ -14,7 +14,7 @@ use BadMethodCallException;
 use Valit\Contracts\CheckManager;
 use Valit\Traits\ContainsResults;
 
-class SingleValueValidator
+class ValueValidator
 {
     use ContainsResults;
 

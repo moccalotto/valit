@@ -11,7 +11,7 @@
 namespace Valit\Providers;
 
 use Valit\Contracts\CheckProvider;
-use Valit\Result\SingleAssertionResult;
+use Valit\Result\AssertionResult;
 use Valit\Traits\ProvideViaReflection;
 use UnexpectedValueException;
 
@@ -27,11 +27,11 @@ class BasicCheckProvider implements CheckProvider
      * @param mixed $value
      * @param mixed $against
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkIdenticalTo($value, $against)
     {
-        return new SingleAssertionResult($value === $against, '{name} must be identical to {0}', [$against]);
+        return new AssertionResult($value === $against, '{name} must be identical to {0}', [$against]);
     }
 
     /**
@@ -42,11 +42,11 @@ class BasicCheckProvider implements CheckProvider
      * @param mixed $value
      * @param mixed $against
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkEquals($value, $against)
     {
-        return new SingleAssertionResult($value == $against, '{name} must equal {0}', [$against]);
+        return new AssertionResult($value == $against, '{name} must equal {0}', [$against]);
     }
 
     /**
@@ -57,7 +57,7 @@ class BasicCheckProvider implements CheckProvider
      * @param mixed $value
      * @param array $against
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkIsOneOf($value, $against)
     {
@@ -71,11 +71,11 @@ class BasicCheckProvider implements CheckProvider
 
         foreach ($against as $match) {
             if ($value == $match) {
-                return new SingleAssertionResult(true, $msg, $against);
+                return new AssertionResult(true, $msg, $against);
             }
         }
 
-        return new SingleAssertionResult(false, $msg, $against);
+        return new AssertionResult(false, $msg, $against);
     }
 
     /**
@@ -85,11 +85,11 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkIsTruthy($value)
     {
-        return new SingleAssertionResult((bool) $value, '{name} must be truthy');
+        return new AssertionResult((bool) $value, '{name} must be truthy');
     }
 
     /**
@@ -99,11 +99,11 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkIsFalsy($value)
     {
-        return new SingleAssertionResult(!$value, '{name} must be falsy');
+        return new AssertionResult(!$value, '{name} must be falsy');
     }
 
     /**
@@ -113,7 +113,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkIsTrue($value)
     {
@@ -127,7 +127,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkIsFalse($value)
     {
@@ -142,11 +142,11 @@ class BasicCheckProvider implements CheckProvider
      * @param mixed  $value
      * @param string $type
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkHasType($value, $type)
     {
-        return new SingleAssertionResult(
+        return new AssertionResult(
             strtolower(gettype($value)) === strtolower($type),
             '{name} must have the type {0}',
             [$type]
@@ -160,11 +160,11 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkScalar($value)
     {
-        return new SingleAssertionResult(
+        return new AssertionResult(
             is_scalar($value),
             '{name} must be a scalar'
         );
@@ -177,7 +177,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkBool($value)
     {
@@ -191,7 +191,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkArray($value)
     {
@@ -205,7 +205,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkFloat($value)
     {
@@ -219,7 +219,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkInteger($value)
     {
@@ -233,7 +233,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkString($value)
     {
@@ -247,7 +247,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkObject($value)
     {
@@ -261,7 +261,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkNull($value)
     {
@@ -275,11 +275,11 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkNotNull($value)
     {
-        return new SingleAssertionResult(
+        return new AssertionResult(
             !is_null($value),
             '{name} must not be null'
         );
@@ -292,7 +292,7 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkResource($value)
     {
@@ -307,7 +307,7 @@ class BasicCheckProvider implements CheckProvider
      * @param mixed  $value
      * @param string $type
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkResourceType($value, $type)
     {
@@ -315,7 +315,7 @@ class BasicCheckProvider implements CheckProvider
 
         $success = $partialSuccess && (strcasecmp(get_resource_type($value), $type) === 0);
 
-        return new SingleAssertionResult(
+        return new AssertionResult(
             $success,
             '{name} must be a resource of type {0}',
             [$type]
@@ -329,11 +329,11 @@ class BasicCheckProvider implements CheckProvider
      *
      * @param mixed $value
      *
-     * @return SingleAssertionResult
+     * @return AssertionResult
      */
     public function checkCallable($value)
     {
-        return new SingleAssertionResult(
+        return new AssertionResult(
             is_callable($value),
             '{name} must be callable'
         );

@@ -18,7 +18,7 @@ use BadMethodCallException;
 use Valit\Result\ContainerResultBag;
 use Valit\Container\FlattenedContainer;
 use Valit\Assertion\AssertionNormalizer;
-use Valit\Result\SingleAssertionResult;
+use Valit\Result\AssertionResult;
 
 /**
  * Validate a container (variable with array access).
@@ -132,7 +132,7 @@ class ContainerValidator
      */
     protected function executeAssertions($fieldNameGlob, $assertions)
     {
-        $fieldValidator = new SingleValueValidator($this->manager, $this->container, $this->throwOnFailure);
+        $fieldValidator = new ValueValidator($this->manager, $this->container, $this->throwOnFailure);
         $fieldValidator->alias($fieldNameGlob);
 
         $results = [$fieldNameGlob => $fieldValidator];
@@ -141,7 +141,7 @@ class ContainerValidator
 
         if ($fieldsToValidate === []) {
             $message = $assertions->isOptional() ? '{name} is optional' : '{name} must be present';
-            $fieldValidator->addCustomResult(new SingleAssertionResult($assertions->isOptional(), $message));
+            $fieldValidator->addCustomResult(new AssertionResult($assertions->isOptional(), $message));
 
             return $results;
         }
@@ -149,11 +149,11 @@ class ContainerValidator
         $results = [];
 
         foreach ($fieldsToValidate as $fieldPath => $value) {
-            $singleValidator = new SingleValueValidator($this->manager, $value, $this->throwOnFailure);
+            $singleValidator = new ValueValidator($this->manager, $value, $this->throwOnFailure);
             $singleValidator->alias($fieldPath);
 
             if (!$assertions->isOptional()) {
-                $singleValidator->addCustomResult(new SingleAssertionResult(true, '{name} must be present'));
+                $singleValidator->addCustomResult(new AssertionResult(true, '{name} must be present'));
             }
 
             Template::fromAssertionBag($assertions)->applyToValidator($singleValidator);

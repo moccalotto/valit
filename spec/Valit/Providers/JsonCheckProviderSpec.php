@@ -28,7 +28,7 @@ class JsonCheckProviderSpec extends ObjectBehavior
 
     function it_checks_isJson()
     {
-        $this->checkIsJson('')->shouldHaveType('Valit\Result\SingleAssertionResult');
+        $this->checkIsJson('')->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('isJson');
         $this->provides()->shouldHaveKey('validJson');

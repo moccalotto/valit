@@ -11,7 +11,7 @@
 namespace Valit;
 
 use Valit\Validators\ContainerValidator;
-use Valit\Validators\SingleValueValidator;
+use Valit\Validators\ValueValidator;
 
 class Ensure
 {
@@ -20,12 +20,12 @@ class Ensure
      *
      * @param mixed $value the value to check
      *
-     * @return SingleValueValidator instance that has been configured to throw a
+     * @return ValueValidator instance that has been configured to throw a
      *                              InvalidValueException as soon as a single validation fails
      */
     public static function that($value)
     {
-        return new SingleValueValidator(Manager::instance(), $value, true);
+        return new ValueValidator(Manager::instance(), $value, true);
     }
 
     /**

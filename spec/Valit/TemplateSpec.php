@@ -14,7 +14,7 @@ namespace spec\Valit;
 
 use Valit\Manager;
 use PhpSpec\ObjectBehavior;
-use Valit\Validators\SingleValueValidator;
+use Valit\Validators\ValueValidator;
 
 class TemplateSpec extends ObjectBehavior
 {
@@ -46,7 +46,7 @@ class TemplateSpec extends ObjectBehavior
         $this->assertions->all()[0]->args->shouldBe([18]);
     }
 
-    function it_can_execute_assertions_on_a_fluent_instance(SingleValueValidator $validator)
+    function it_can_execute_assertions_on_a_fluent_instance(ValueValidator $validator)
     {
         $validator->executeCheck('greaterThanOrEqual', [18])
             ->shouldBeCalled()
@@ -67,7 +67,7 @@ class TemplateSpec extends ObjectBehavior
             ->isLowerThan(100)
             ->whereValueIs(0);
 
-        $validator->shouldHaveType('Valit\Validators\SingleValueValidator');
+        $validator->shouldHaveType('Valit\Validators\ValueValidator');
 
         $validator->success()->shouldBe(false);
 
