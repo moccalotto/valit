@@ -10,6 +10,7 @@
 
 namespace Valit\Exceptions;
 
+use BadMethodCallException;
 use UnexpectedValueException;
 use Valit\Result\ContainerResultBag;
 
