@@ -221,7 +221,7 @@ class StringCheckProvider implements CheckProvider
      * @Check("endsWith")
      *
      * @param mixed  $value
-     * @param string $startsWith
+     * @param string $endsWith
      *
      * @return Result
      */
@@ -243,7 +243,7 @@ class StringCheckProvider implements CheckProvider
      * @Check(["containsString", "containsTheString"])
      *
      * @param mixed  $value
-     * @param string $startsWith
+     * @param string $contains
      *
      * @return Result
      */
