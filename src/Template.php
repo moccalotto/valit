@@ -12,6 +12,7 @@ namespace Valit;
 
 use BadMethodCallException;
 use Valit\Assertion\Assertion;
+use Valit\Contracts\CheckManager;
 use Valit\Assertion\AssertionBag;
 use Valit\Validators\ValueValidator;
 
@@ -128,7 +129,7 @@ class Template
         $validator = new ValueValidator($manager, $value, $this->throwOnFailure);
 
         if ($varName) {
-            $validator->alias((string) $this->varName);
+            $validator->alias((string) $varName);
         }
 
         return $this->applyToValidator($validator);
