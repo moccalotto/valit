@@ -226,10 +226,9 @@ trait ContainsResults
     public function errors()
     {
         return array_filter($this->results, function ($result) {
-            return ! $result->success();
+            return !$result->success();
         });
     }
-
 
     /**
      * Return an array of rendered error messages.
