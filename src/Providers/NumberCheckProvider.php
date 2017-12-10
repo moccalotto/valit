@@ -38,8 +38,8 @@ class NumberCheckProvider implements CheckProvider
     /**
      * Find the greatest common divisor between two numbers.
      *
-     * @param numeric $a
-     * @param numeric $b
+     * @param int $a
+     * @param int $b
      *
      * @return int
      */
