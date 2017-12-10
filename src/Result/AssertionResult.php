@@ -3,6 +3,7 @@
 namespace Valit\Result;
 
 use LogicException;
+use RuntimeException;
 
 /**
  * Valit Result.
