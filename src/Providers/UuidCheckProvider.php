@@ -22,7 +22,7 @@ class UuidCheckProvider implements CheckProvider
     /**
      * @param mixed $value
      *
-     * @return Result
+     * @return bool
      */
     protected function parseUuid($value, &$version = null, &$variant = null)
     {
