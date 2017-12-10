@@ -10,7 +10,7 @@
 
 namespace Valit\Providers;
 
-use SimpleXmlElement;
+use SimpleXMLElement;
 use BadMethodCallException;
 use Valit\Result\AssertionResult as Result;
 use Moccalotto\Exemel\Xml as XmlInspector;
@@ -31,7 +31,7 @@ class XmlCheckProvider implements CheckProvider
         $xml = @simplexml_load_string($xmlString);
         libxml_use_internal_errors($prev);
 
-        return $xml instanceof SimpleXmlElement;
+        return $xml instanceof SimpleXMLElement;
     }
 
     /**
@@ -56,8 +56,8 @@ class XmlCheckProvider implements CheckProvider
      *
      * @Check("matchesXmlAdvanced")
      *
-     * @param string|SimpleXmlElement $value      the value
-     * @param string|SimpleXmlElement $against    the value to check against
+     * @param string|SimpleXMLElement $value      the value
+     * @param string|SimpleXMLElement $against    the value to check against
      * @param bool                    $skipWhite  ignore whitespace between tags
      * @param bool                    $ignoreCase ignore case differences in tags
      *
@@ -74,7 +74,7 @@ class XmlCheckProvider implements CheckProvider
 
         $valueXmlInspector = null;
 
-        if ($value instanceof SimpleXmlElement) {
+        if ($value instanceof SimpleXMLElement) {
             $valueXmlInspector = new XmlInspector($value);
 
             $success = $valueXmlInspector->sameAs($against, $skipWhite, $ignoreCase);
@@ -90,7 +90,7 @@ class XmlCheckProvider implements CheckProvider
             return new Result(false, $message, $context);
         }
 
-        $valueXmlInspector = new XmlInspector(new SimpleXmlElement($value));
+        $valueXmlInspector = new XmlInspector(new SimpleXMLElement($value));
 
         $success = $valueXmlInspector->sameAs($against, $skipWhite, $ignoreCase);
 
@@ -101,7 +101,7 @@ class XmlCheckProvider implements CheckProvider
      * Check that $value matches $against, enforcing whitespace similarity as well.
      *
      * @param mixed                   $value
-     * @param string|SimpleXmlElement $against
+     * @param string|SimpleXMLElement $against
      *
      * @return Result
      *
@@ -116,7 +116,7 @@ class XmlCheckProvider implements CheckProvider
      * Check that $value matches $against, enforcing case similarity as well.
      *
      * @param mixed                   $value
-     * @param string|SimpleXmlElement $against
+     * @param string|SimpleXMLElement $against
      *
      * @return Result
      *
@@ -131,7 +131,7 @@ class XmlCheckProvider implements CheckProvider
      * Check that $value matches $against, enforcing whitespace and case similarities as well.
      *
      * @param mixed                   $value
-     * @param string|SimpleXmlElement $against
+     * @param string|SimpleXMLElement $against
      *
      * @return Result
      *
@@ -146,7 +146,7 @@ class XmlCheckProvider implements CheckProvider
      * Check that $value matches $against, ignoring differences in case and whitespace.
      *
      * @param mixed                   $value
-     * @param string|SimpleXmlElement $against
+     * @param string|SimpleXMLElement $against
      *
      * @return Result
      *
