@@ -6,8 +6,6 @@
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
  * @copyright 2017
  * @license MIT
- *
- * @codingStandardsIgnoreFile
  */
 
 namespace Valit\Traits;
