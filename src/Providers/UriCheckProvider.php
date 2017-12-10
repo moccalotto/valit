@@ -62,8 +62,8 @@ class UriCheckProvider implements CheckProvider
      *
      * @Check(["url", "isUrl"])
      *
-     * @param mixed            $value
-     * @param string|strings[] $scemes
+     * @param mixed           $value
+     * @param string|string[] $schemes
      *
      * @return Result
      */
