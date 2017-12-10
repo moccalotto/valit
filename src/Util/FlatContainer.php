@@ -77,7 +77,7 @@ class FlatContainer
         $merge = [];
 
         if ($object instanceof Traversable) {
-            $iteratorData = $object->iteratorData = iterator_to_array($object);
+            $iteratorData = iterator_to_array($object);
             $merge[] = $iteratorData;
             $merge[] = compact('iteratorData');
         }
