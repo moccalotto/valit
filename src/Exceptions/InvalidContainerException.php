@@ -92,6 +92,6 @@ class InvalidContainerException extends UnexpectedValueException
             ));
         }
 
-        return $this->results->{$method}(...$args);
+        return call_user_func_array([$this->results, $method], $args);
     }
 }
