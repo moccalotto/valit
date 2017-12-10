@@ -180,22 +180,6 @@ trait ContainsResults
     }
 
     /**
-     * Add an array of results.
-     *
-     * @param AssertionResult[] $results
-     *
-     * @return $this
-     */
-    public function addAssertionResults(array $results)
-    {
-        foreach ($results as $result) {
-            $this->addAssertionResult($result);
-        }
-
-        return $this;
-    }
-
-    /**
      * Get the results as an associative array.
      *
      * The result is formarted as [message1 => success1, message2 => success2, ...]
