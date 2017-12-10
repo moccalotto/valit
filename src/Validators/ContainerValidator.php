@@ -16,6 +16,7 @@ use LogicException;
 use Valit\Template;
 use BadMethodCallException;
 use Valit\Util\FlatContainer;
+use Valit\Result\AssertionResultBag;
 use Valit\Result\AssertionResult;
 use Valit\Result\ContainerResultBag;
 use Valit\Assertion\AssertionNormalizer;
@@ -122,11 +123,10 @@ class ContainerValidator
 
         if ($fieldsToValidate === []) {
             $message = $assertions->isOptional() ? '{name} is optional' : '{name} must be present';
-            $valueValidator = new ValueValidator($this->manager, $this->container, $this->throwOnFailure);
-            $valueValidator->alias($fieldNameGlob);
-            $valueValidator->addCustomResult(new AssertionResult($assertions->isOptional(), $message));
+            $assertionResultBag = new AssertionResultBag($this->container, $fieldNameGlob, $this->throwOnFailure);
+            $assertionResultBag->addAssertionResult(new AssertionResult($assertions->isOptional(), $message));
 
-            $this->results->add($fieldNameGlob, $valueValidator);
+            $this->results->add($fieldNameGlob, $assertionResultBag);
 
             return;
         }
@@ -136,7 +136,7 @@ class ContainerValidator
             $valueValidator->alias($fieldPath);
 
             if (!$assertions->isOptional()) {
-                $valueValidator->addCustomResult(new AssertionResult(true, '{name} must be present'));
+                $valueValidator->addAssertionResult(new AssertionResult(true, '{name} must be present'));
             }
 
             Template::fromAssertionBag($assertions)->applyToValidator($valueValidator);

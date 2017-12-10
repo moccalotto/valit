@@ -154,21 +154,7 @@ trait ContainsResults
      *
      * @throws InvalidValueException if we are in throwOnFailure-mode and the result is an error
      */
-    public function addCustomResult(Result $result)
-    {
-        $this->registerResult($result);
-
-        return $this;
-    }
-
-    /**
-     * Add new result to the internal results list.
-     *
-     * @param Result $results
-     *
-     * @throws InvalidValueException if we are in throwOnFailure-mode and the result is an error
-     */
-    protected function registerResult(Result $result)
+    public function addAssertionResult(Result $result)
     {
         $this->results[] = $result;
 
@@ -189,13 +175,24 @@ trait ContainsResults
                 $this->results
             );
         }
+
+        return $this;
     }
 
-    protected function registerManyResults(array $results)
+    /**
+     * Add an array of results.
+     *
+     * @param AssertionResult[] $results
+     *
+     * @return $this
+     */
+    public function addAssertionResults(array $results)
     {
         foreach ($results as $result) {
-            $this->registerResult($result);
+            $this->addAssertionResult($result);
         }
+
+        return $this;
     }
 
     /**

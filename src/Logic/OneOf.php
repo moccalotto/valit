@@ -4,6 +4,7 @@ namespace Valit\Logic;
 
 use Valit\Manager;
 use LogicException;
+use Valit\Result\AssertionResultBag;
 use Valit\Validators\ValueValidator;
 use Valit\Result\ContainerResultBag;
 use Valit\Validators\ContainerValidator;
@@ -109,8 +110,8 @@ class OneOf
                 $scenarios[$scenarioNo] = $this->executeContainerValidation($key, $value);
             } elseif (is_a($value, Template::class)) {
                 $scenarios[$scenarioNo] = $this->executeTemplate($value);
-            } elseif (is_a($value, ValueValidator::class)) {
-                $scenarios[$scenarioNo] = $this->executeValidator($value);
+            } elseif (is_a($value, AssertionResultBag::class)) {
+                $scenarios[$scenarioNo] = $this->addAssertionResultBag($value);
             } elseif (is_string($value)) {
                 $scenarios[$scenarioNo] = $this->executeString($value);
             } else {
@@ -135,7 +136,7 @@ class OneOf
         );
     }
 
-    protected function executeValidator($validator)
+    protected function addAssertionResultBag($validator)
     {
         return new ContainerResultBag([$validator]);
     }
@@ -151,13 +152,13 @@ class OneOf
 
     protected function executeTemplate($template)
     {
-        $results = $template->whereValueIs(
+        $resultBag = $template->whereValueIs(
             $this->value,
             null,
             $this->manager
         );
 
-        return $this->executeValidator($results);
+        return $this->addAssertionResultBag($resultBag);
     }
 
     protected function executeContainerValidation($fieldNameGlob, $assertions)

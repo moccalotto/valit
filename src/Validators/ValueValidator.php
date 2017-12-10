@@ -11,17 +11,20 @@
 namespace Valit\Validators;
 
 use BadMethodCallException;
+use Valit\Result\AssertionResultBag;
 use Valit\Contracts\CheckManager;
-use Valit\Traits\ContainsResults;
 
-class ValueValidator
+class ValueValidator extends AssertionResultBag
 {
-    use ContainsResults;
-
     /**
      * @var CheckManager
      */
     protected $manager;
+
+    /**
+     * @var AssertionResultBag
+     */
+    protected $results;
 
     /**
      * Constructor.
@@ -34,6 +37,7 @@ class ValueValidator
     {
         $this->manager = $manager;
         $this->value = $value;
+        $this->varName = 'value';
         $this->throwOnFailure = (bool) $throwOnFailure;
     }
 
@@ -74,9 +78,9 @@ class ValueValidator
         $result = $this->manager->executeCheck($checkName, $this->value, $args);
 
         if (is_array($result)) {
-            $this->registerManyResults($result);
+            $this->addAssertionResults($result);
         } else {
-            $this->registerResult($result);
+            $this->addAssertionResult($result);
         }
 
         return $this;

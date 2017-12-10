@@ -10,7 +10,6 @@
 
 namespace Valit\Result;
 
-use Valit\Validators\ValueValidator;
 use Valit\Exceptions\InvalidContainerException;
 
 /**
@@ -19,7 +18,7 @@ use Valit\Exceptions\InvalidContainerException;
 class ContainerResultBag
 {
     /**
-     * @var ValueValidator[]
+     * @var AssertionResultBag[]
      */
     public $results;
 
@@ -31,7 +30,7 @@ class ContainerResultBag
     /**
      * Constructor.
      *
-     * @param ValueValidator[] $results
+     * @param AssertionResultBag[] $results
      * @param string $varName
      */
     public function __construct(array $results, $varName = 'Container')
@@ -58,11 +57,11 @@ class ContainerResultBag
      * Add a result.
      *
      * @param string         $path           The path to the variable that passed/failed the tests
-     * @param ValueValidator $valueValidator The validator that performed the assertions on the variable
+     * @param AssertionResultBag $valueValidator The validator that performed the assertions on the variable
      *
      * @return $this
      */
-    public function add($path, ValueValidator $valueValidator)
+    public function add($path, AssertionResultBag $valueValidator)
     {
         if (isset($this->results[$path])) {
             foreach ($valueValidator->results() as $result) {

@@ -2,7 +2,6 @@
 
 use Valit\Check;
 use Valit\Ensure;
-use Valit\Exceptions\InvalidValueException;
 
 require 'vendor/autoload.php';
 
