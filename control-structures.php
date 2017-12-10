@@ -1,12 +1,5 @@
 <?php
 
-/**
- * This file is part of the Valit package.
- *
- * @author    Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2017 Kim Ravn Hansen
- * @license   MIT
- */
 use Valit\Check;
 use Valit\Ensure;
 use Valit\Exceptions\InvalidValueException;
