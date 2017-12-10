@@ -79,7 +79,7 @@ class DateCheckProvider implements CheckProvider
      * @param string|int|DateTimeInterface $candidate
      * @param string|null                  $format
      *
-     * @return DateTime
+     * @return DateTimeInterface
      *
      * @throws InvalidArgumentException if $candidate is not string, int or DateTime, or if it could not be parsed
      */
