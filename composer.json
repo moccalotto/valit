@@ -14,8 +14,7 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "moccalotto/exemel": "^0.4.0",
-        "phpstan/phpstan": "^0.9.1"
+        "moccalotto/exemel": "^0.4.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^1.11",
