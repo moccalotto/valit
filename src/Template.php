@@ -25,6 +25,11 @@ class Template
     public $assertions;
 
     /**
+     * @var bool
+     */
+    public $throwOnFailure;
+
+    /**
      * Constructor.
      *
      * @param bool $throwOnFailure Should we throw an exception as soon as we encounter a failed check
@@ -63,10 +68,7 @@ class Template
     public function __call($methodName, $args)
     {
         if ($methodName === 'as') {
-            throw new BadMethodCallException(sprintf(
-                'You cannot set the variable alias on a template',
-                $methodName
-            ));
+            throw new BadMethodCallException('You cannot set the variable alias on a template');
         }
 
         return $this->addAssertion($methodName, $args);
