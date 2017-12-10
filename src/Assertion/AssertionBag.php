@@ -117,6 +117,17 @@ class AssertionBag implements IteratorAggregate, Countable
     }
 
     /**
+     * Are the assertions in this bag optional?
+     *
+     * @return bool
+     */
+    public function isOptional()
+    {
+        return $this->is('optional');
+    }
+
+
+    /**
      * Magic method to support the is* method calls.
      *
      * Calling isFoo() is the same as calling is('foo')

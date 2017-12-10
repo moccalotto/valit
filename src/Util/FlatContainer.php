@@ -59,13 +59,13 @@ class FlatContainer
      * to the object as public properties, overwriting any properties set by the previous two
      * method calls.
      *
-     * @param mixed $object
+     * @param mixed $object  An array or an object.
      *
-     * @return object;
+     * @return array
      */
     protected function expandedValue($object)
     {
-        if (!is_object($object)) {
+        if (is_array($object)) {
             return $object;
         }
 

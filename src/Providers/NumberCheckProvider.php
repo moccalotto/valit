@@ -128,8 +128,8 @@ class NumberCheckProvider implements CheckProvider
      *
      * @Check(["greaterThan", "isGreaterThan", "gt"])
      *
-     * @param mixed   $value
-     * @param numeric $against
+     * @param mixed     $value
+     * @param int|float $against
      *
      * @return Result
      */
@@ -147,8 +147,8 @@ class NumberCheckProvider implements CheckProvider
      *
      * @Check(["greaterThanOrEqual", "isGreaterThanOrEqual", "gte"])
      *
-     * @param mixed   $value
-     * @param numeric $against
+     * @param mixed     $value
+     * @param int|float $against
      *
      * @return Result
      */
@@ -166,8 +166,8 @@ class NumberCheckProvider implements CheckProvider
      *
      * @Check(["lessThan", "isLessThan", "lowerThan", "isLowerThan", "lt"])
      *
-     * @param mixed   $value
-     * @param numeric $against
+     * @param mixed     $value
+     * @param int|float $against
      *
      * @return Result
      *
@@ -187,8 +187,8 @@ class NumberCheckProvider implements CheckProvider
      *
      * @Check(["lessThanOrEqual", "isLessThanOrEqual", "lowerThanOrEqual", "isLowerThanOrEqual", "lte"])
      *
-     * @param mixed   $value
-     * @param numeric $against
+     * @param mixed     $value
+     * @param int|float $against
      *
      * @return Result
      *
@@ -208,9 +208,9 @@ class NumberCheckProvider implements CheckProvider
      *
      * @Check(["closeTo", "isCloseTo", "floatEquals", "isFloatEqualTo"])
      *
-     * @param mixed   $value
-     * @param numeric $against
-     * @param numeric $epsilon
+     * @param mixed     $value
+     * @param int|float $against
+     * @param float     $epsilon
      *
      * @return Result
      *

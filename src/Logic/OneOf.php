@@ -3,11 +3,14 @@
 namespace Valit\Logic;
 
 use Valit\Manager;
+use Valit\Template;
 use LogicException;
+use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
 use Valit\Validators\ValueValidator;
 use Valit\Result\ContainerResultBag;
 use Valit\Validators\ContainerValidator;
+use Valit\Assertion\AssertionNormalizer;
 
 class OneOf
 {
@@ -91,14 +94,12 @@ class OneOf
 
     /**
      * Execute the logic.
-     *
-     * @param mixed $value (optional) The value or container to be used in the logic (if any)
      */
     public function execute()
     {
         $this->hasValue = func_num_args() >= 1;
         $this->value = $this->hasValue ? func_get_arg(0) : null;
-        $this->requires = statc::REQUIRES_NONE;
+        $this->requires = static::REQUIRES_NONE;
 
         $scenarioNo = 0;
         $scenarios = [];
@@ -115,7 +116,7 @@ class OneOf
             } elseif (is_string($value)) {
                 $scenarios[$scenarioNo] = $this->executeString($value);
             } else {
-                throw new WhatTheFuck('!');
+                throw new LogicException('This Should Never Happen!');
             }
         }
 

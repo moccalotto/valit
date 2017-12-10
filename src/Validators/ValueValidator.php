@@ -79,11 +79,7 @@ class ValueValidator extends AssertionResultBag
     {
         $result = $this->manager->executeCheck($checkName, $this->value, $args);
 
-        if (is_array($result)) {
-            $this->addAssertionResults($result);
-        } else {
-            $this->addAssertionResult($result);
-        }
+        $this->addAssertionResult($result);
 
         return $this;
     }

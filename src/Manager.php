@@ -19,7 +19,7 @@ use Valit\Contracts\CheckProvider;
 class Manager implements CheckManager
 {
     /**
-     * @var Manager
+     * @var CheckManager
      */
     protected static $instance;
 
@@ -173,7 +173,7 @@ class Manager implements CheckManager
      * @param mixed  $value
      * @param array  $args
      *
-     * @return Result
+     * @return \Valit\Result\AssertionResult
      */
     public function executeCheck($checkName, $value, array $args)
     {

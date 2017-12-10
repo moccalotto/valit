@@ -16,8 +16,9 @@ use LogicException;
 use Valit\Template;
 use BadMethodCallException;
 use Valit\Util\FlatContainer;
-use Valit\Result\AssertionResultBag;
+use Valit\Assertion\AssertionBag;
 use Valit\Result\AssertionResult;
+use Valit\Result\AssertionResultBag;
 use Valit\Result\ContainerResultBag;
 use Valit\Assertion\AssertionNormalizer;
 
@@ -69,10 +70,10 @@ class ContainerValidator
     public function __construct(Manager $manager, $container, $throwOnFailure)
     {
         $this->manager = $manager;
-        $this->throwOnFailure = $throwOnFailure;
         $this->container = $container;
-        $this->flatContainer = new FlatContainer($container);
+        $this->throwOnFailure = (bool) $throwOnFailure;
         $this->results = new ContainerResultBag([]);
+        $this->flatContainer = new FlatContainer($container);
     }
 
     /**
@@ -114,8 +115,6 @@ class ContainerValidator
      *
      * @param string       $fieldNameGlob A field name glob (such as "address" or "order.*.id")
      * @param AssertionBag $assertions    A normalized array of assertions
-     *
-     * @return array
      */
     protected function executeAndAdd($fieldNameGlob, $assertions)
     {
@@ -172,7 +171,9 @@ class ContainerValidator
     public function __call($methodName, $args)
     {
         if ($methodName === 'as') {
-            return call_user_func_array([$this, 'alias'], $args);
+            $this->alias($args[0]);
+
+            return $this;
         }
 
         throw new BadMethodCallException(sprintf(

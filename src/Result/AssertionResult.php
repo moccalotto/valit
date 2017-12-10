@@ -41,7 +41,7 @@ class AssertionResult
     public function __construct($success, $message, array $context = [])
     {
         $this->success = (bool) $success;
-        $this->message = $message;
+        $this->message = (string) $message;
         $this->context = $context;
     }
 
