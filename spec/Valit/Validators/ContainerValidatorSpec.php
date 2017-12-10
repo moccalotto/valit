@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Valit\Validator;
+namespace spec\Valit\Validators;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -163,5 +163,34 @@ class ContainerValidatorSpec extends ObjectBehavior
         $result->errors()->shouldHaveKey('someAssoc/thing3');
         $result->results()['notFound'][0]->shouldHaveType('Valit\Result\AssertionResult');
         $result->results()['notFound'][0]->success()->shouldBe(false);
+    }
+
+    function it_finds_errors_in_arrays()
+    {
+        $testData = [
+            'a' => 1234,
+            'b' => [
+                'c' => 'g',
+                'd' => 'h',
+            ],
+        ];
+
+        $this->beConstructedWith(Manager::instance(), $testData, false);
+
+        $this->as('foo')->shouldBe($this->getWrappedObject());
+
+        $result = $this->passes([
+            'a' => 'required & isString & longerThan(100)',
+            'b' => 'required & isArray',
+            'b/c' => 'required & isInt & greaterThan(10)',
+            'b/d' => 'required & isString',
+            'b/e' => 'required',
+            'c' => 'required & isString & longerThan(100)',
+        ]);
+
+        $result->shouldHaveType('Valit\Result\ContainerResultBag');
+
+        $result->shouldThrow('Valit\Exceptions\InvalidContainerException')
+            ->during('orThrowException');
     }
 }
