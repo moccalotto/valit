@@ -36,9 +36,7 @@ class ValueValidator extends AssertionResultBag
     public function __construct(CheckManager $manager, $value, $throwOnFailure)
     {
         $this->manager = $manager;
-        $this->value = $value;
-        $this->varName = 'value';
-        $this->throwOnFailure = (bool) $throwOnFailure;
+        parent::__construct($value, 'value', (bool) $throwOnFailure);
     }
 
     /**
@@ -52,7 +50,9 @@ class ValueValidator extends AssertionResultBag
     public function __call($methodName, $args)
     {
         if ($methodName === 'as') {
-            return $this->alias($args[0]);
+            $this->alias($args[0]);
+
+            return $this;
         }
 
         if (!$this->manager->hasCheck($methodName)) {
@@ -62,7 +62,9 @@ class ValueValidator extends AssertionResultBag
             ));
         }
 
-        return $this->executeCheck($methodName, $args);
+        $this->executeCheck($methodName, $args);
+
+        return $this;
     }
 
     /**
