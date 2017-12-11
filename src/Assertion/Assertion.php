@@ -30,4 +30,20 @@ class Assertion
         $this->name = $name;
         $this->args = $args;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        if (empty($this->args)) {
+            return $this->name;
+        }
+
+        return sprintf(
+            '%s(%s)',
+            $this->name,
+            json_encode($this->args, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_APOS | JSON_HEX_QUOT)
+        );
+    }
 }
