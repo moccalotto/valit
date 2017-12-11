@@ -2,12 +2,12 @@
 
 namespace Valit\Logic;
 
+use Traversable;
 use Valit\Manager;
 use Valit\Template;
 use LogicException;
 use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
-use Valit\Validators\ValueValidator;
 use Valit\Result\ContainerResultBag;
 use Valit\Validators\ContainerValidator;
 use Valit\Assertion\AssertionNormalizer;
@@ -123,7 +123,12 @@ class OneOf
         return $this->makeResult($scenarios);
     }
 
-    protected function makeResult($scenarios)
+    /**
+     * @var ContainerResultBag[] $scenarios
+     *
+     * @return AssertionResult
+     */
+    protected function makeResult(array $scenarios)
     {
         $successCount = 0;
         foreach ($scenarios as $scenario) {
@@ -137,11 +142,21 @@ class OneOf
         );
     }
 
-    protected function addAssertionResultBag($validator)
+    /**
+     * @param AssertionResultBag $resultBag
+     *
+     * @return ContainerResultBag
+     */
+    protected function addAssertionResultBag(AssertionResultBag $resultBag)
     {
-        return new ContainerResultBag([$validator]);
+        return new ContainerResultBag([$resultBag]);
     }
 
+    /**
+     * @param string $assertions
+     *
+     * @return ContainerResultBag
+     */
     protected function executeString($assertions)
     {
         $normalizedAssertions = AssertionNormalizer::normalize($assertions);
@@ -151,7 +166,12 @@ class OneOf
         return $this->executeTemplate($template);
     }
 
-    protected function executeTemplate($template)
+    /**
+     * @param Template $template
+     *
+     * @return ContainerResultBag
+     */
+    protected function executeTemplate(Template $template)
     {
         $resultBag = $template->whereValueIs(
             $this->value,
@@ -162,6 +182,12 @@ class OneOf
         return $this->addAssertionResultBag($resultBag);
     }
 
+    /**
+     * @param string            $fieldNameGlob
+     * @param array|Traversable $container
+     *
+     * @return ContainerResultBag
+     */
     protected function executeContainerValidation($fieldNameGlob, $assertions)
     {
         $this->require(static::REQUIRES_CONTAINER);
