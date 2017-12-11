@@ -63,9 +63,9 @@ class ContainerValidator
     /**
      * Constructor.
      *
-     * @param Manager      $manager
-     * @param array|object $container
-     * @param bool         $throwOnFailure
+     * @param Manager           $manager
+     * @param array|Traversable $container
+     * @param bool              $throwOnFailure
      */
     public function __construct(Manager $manager, $container, $throwOnFailure)
     {
