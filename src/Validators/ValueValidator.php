@@ -11,8 +11,8 @@
 namespace Valit\Validators;
 
 use BadMethodCallException;
-use Valit\Result\AssertionResultBag;
 use Valit\Contracts\CheckManager;
+use Valit\Result\AssertionResultBag;
 
 class ValueValidator extends AssertionResultBag
 {
