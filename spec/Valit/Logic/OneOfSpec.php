@@ -27,65 +27,51 @@ class OneOfSpec extends ObjectBehavior
         $this->shouldHaveType('Valit\Logic\OneOf');
     }
 
-    function it_can_execute_zero_branches()
+    function it_returns_AssertionResults()
     {
         $this->beConstructedWith(Manager::instance(), []);
-        $result = $this->execute();
-
-        $result->shouldHaveType(AssertionResult::class);
-        $result->success()->shouldBe(false);
+        $this->execute(true, 'foobar')->shouldHaveType(AssertionResult::class);
     }
 
-    function it_can_execute_branches_with_assertion_results()
-    {
-        $branches = [
-            new AssertionResult(true, 'branch 1', []),
-            new AssertionResult(false, 'branch 2', []),
-            new AssertionResult(false, 'branch 3', []),
-        ];
-
-        $this->beConstructedWith(Manager::instance(), $branches);
-        $result = $this->execute();
-        $result->shouldHaveType(AssertionResult::class);
-        $result->success()->shouldBe(true);
-    }
-
-    function it_can_execute_branches_with_templates()
+    function it_will_no_accept_two_successfull_branches()
     {
         $branches = [
             Check::value()->containsString('foo')->containsString('bar'),
-            Check::value()->containsString('wee')->containsString('bar'),
+            'containsString("oo") & containsString("ar")'
         ];
 
         $this->beConstructedWith(Manager::instance(), $branches);
-        $result = $this->execute(true, 'foobar');
-        $result->shouldHaveType(AssertionResult::class);
-        $result->success()->shouldBe(true);
+        $this->execute(true, 'foobar')->success()->shouldBe(false);
     }
 
-    function it_throws_exception_if_required_value_is_missing()
+    function it_will_accept_one_successful_branch()
     {
         $branches = [
-            Check::value()->containsString('foo')->containsString('bar'),
-            Check::value()->containsString('wee')->containsString('bar'),
+            'name' => 'isString & isUppercase',
+            'email' => 'isString & isEmail',
+        ];
+
+        $container = [
+            'name' => 'KIM',
+            'email' => 'this-is-not-an-email',
         ];
 
         $this->beConstructedWith(Manager::instance(), $branches);
-        $this->shouldThrow(ValueRequiredException::class)->during(
-            'execute', [false, null]
-        );
+        $this->execute(true, $container)->success()->shouldBe(true);
     }
 
-    function it_requires_one_and_only_one_branch_to_succeed()
+    function it_will_not_accept_zero_successful_branches()
     {
         $branches = [
-            Check::value()->containsString('foo')->containsString('bar'),
-            Check::value()->containsString('f')->containsString('b'),
+            'name' => 'isString & isUppercase',
+            'email' => 'isString & isEmail',
+        ];
+
+        $container = [
+            'the keys »name« and »email« are missing from this container',
         ];
 
         $this->beConstructedWith(Manager::instance(), $branches);
-        $result = $this->execute(true, 'foobar');
-        $result->shouldHaveType(AssertionResult::class);
-        $result->success()->shouldBe(false);
+        $this->execute(true, $container)->success()->shouldBe(false);
     }
 }

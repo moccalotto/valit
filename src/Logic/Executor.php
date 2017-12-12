@@ -150,7 +150,7 @@ class Executor
             } elseif (is_string($value)) {
                 $this->results[] = $this->executeString($value);
             } else {
-                throw new LogicException('This Should Never Happen!');
+                throw new LogicException('This Should Never Happen: ' . gettype($key) . ' => ' . gettype($value));
             }
         }
 

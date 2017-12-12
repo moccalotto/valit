@@ -12,6 +12,7 @@ namespace Valit;
 
 use Valit\Validators\ContainerValidator;
 use Valit\Validators\ValueValidator;
+use Valit\Logic\OneOf;
 
 class Check
 {
@@ -52,5 +53,21 @@ class Check
     public static function value()
     {
         return new Template();
+    }
+
+    /**
+     * Check that exactly one of the given scenarios
+     * succeed.
+     *
+     * @param Array|Traversable $scenarios
+     *
+     * @return OneOf
+     */
+    public static function oneOf($scenarios)
+    {
+        return new OneOf(
+            Manager::instance(),
+            $scenarios
+        );
     }
 }

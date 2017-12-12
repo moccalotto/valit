@@ -27,6 +27,12 @@ class OneOf
     public $executor;
 
     /**
+     * @var string
+     */
+    public $requires;
+
+
+    /**
      * Constructor.
      *
      * @param Manager           $manager
@@ -50,11 +56,11 @@ class OneOf
     protected function require($newRequirement)
     {
         if ($newRequirement === static::REQUIRES_NONE) {
-            return $this->requires;
+            return;
         }
 
         if ($newRequirement === $this->requires) {
-            return $this->requires;
+            return;
         }
 
         switch ($newRequirement) {
@@ -103,7 +109,29 @@ class OneOf
     }
 
     /**
-     * @return AssertionResultBag
+     * Execute the logic with a given value
+     *
+     * @param mixed $value
+     *
+     * @return AssertionResult
+     */
+    public function withValue($value)
+    {
+        return $this->execute(true, $value);
+    }
+
+    /**
+     * Execute the logic without a value.
+     *
+     * @return AssertionResult
+     */
+    public function withoutValue()
+    {
+        return $this->execute(false);
+    }
+
+    /**
+     * @return AssertionResult
      */
     protected function makeResult()
     {
@@ -111,14 +139,14 @@ class OneOf
         $scenarioCount = 0;
         $successCount = 0;
         foreach ($this->executor->results() as $result) {
-            $scenarioResults[] = $result->success();
+            $scenarioResults[] = $result->renderedResults();
             $successCount += (int) $result->success();
             ++$scenarioCount;
         }
 
         return new AssertionResult(
             $successCount === 1,
-            'Exactly one out of {scenarioCount:int} scenarios must succeed, but {successCount:int} succeeded.',
+            'Exactly one out of {scenarioResults:count} scenarios must succeed, but {successCount:int} succeeded.',
             compact('successCount', 'scenarioResults')
         );
     }
