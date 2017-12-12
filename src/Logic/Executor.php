@@ -4,6 +4,7 @@ namespace Valit\Logic;
 
 use Traversable;
 use Valit\Manager;
+use LogicException;
 use Valit\Template;
 use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
@@ -13,18 +14,51 @@ use Valit\Validators\ContainerValidator;
 use Valit\Exceptions\ValueRequiredException;
 use Valit\Exceptions\ContainerRequiredException;
 
-class OneOf
+class Executor
 {
     const REQUIRES_NONE = 'none';
     const REQUIRES_VALUE = 'simple value';
     const REQUIRES_CONTAINER = 'container';
 
     /**
-     * @var Executer
+     * @var Manager
      *
      * @internal
      */
-    public $executor;
+    public $manager;
+
+    /**
+     * @var bool
+     */
+    public $hasValue;
+
+    /**
+     * @var mixed
+     */
+    public $value;
+
+    /**
+     * The logic paths.
+     *
+     * @param Traversable|array $chceks
+     *
+     * @internal
+     */
+    public $scenarios;
+
+    /**
+     * @var string
+     *
+     * @internal
+     */
+    public $requires;
+
+    /**
+     * @var ContainerResultBag[]
+     *
+     * @internal
+     */
+    public $results;
 
     /**
      * Constructor.
@@ -34,17 +68,21 @@ class OneOf
      */
     public function __construct(Manager $manager, $scenarios)
     {
-        $this->executor = new Executor($manager, $scenarios);
+        $this->scenarios = $scenarios;
+        $this->manager = $manager;
+        $this->hasValue = false;
+        $this->requires = static::REQUIRES_NONE;
+        $this->results = [];
     }
 
     /**
-     * Get the executed scenarios.
+     * Get the executed results.
      *
      * @return ContainerResultBag[]
      */
-    public function scenarios()
+    public function results()
     {
-        return $this->scenarios;
+        return $this->results;
     }
 
     protected function require($newRequirement)
@@ -64,25 +102,23 @@ class OneOf
             case static::REQUIRES_VALUE:
                 if (!$this->hasValue) {
                     throw new ValueRequiredException(
-                        'Cannot add a branch that requires a value. No value provided'
+                        'Cannot add a scenario that requires a value. No value provided'
                     );
                 }
                 $this->requires = $newRequirement;
-
                 return;
             case static::REQUIRES_CONTAINER:
                 if (!$this->hasValue) {
                     throw new ValueRequiredException(
-                        'Cannot add a branch that requires a container. No value provided'
+                        'Cannot add a scenario that requires a container. No value provided'
                     );
                 }
                 if (!(is_array($this->value) || $this->value instanceof Traversable)) {
                     throw new ContainerRequiredException(
-                        'Cannot add a branch that requires a container. The value provided is not a container'
+                        'Cannot add a scenario that requires a container. The value provided is not a container'
                     );
                 }
                 $this->requires = $newRequirement;
-
                 return;
         }
     }
@@ -97,30 +133,28 @@ class OneOf
      */
     public function execute($hasValue = false, $value = null)
     {
-        $this->executor->execute($hasValue, $value);
+        $this->hasValue = (bool) $hasValue;
+        $this->value = $value;
+        $this->requires = static::REQUIRES_NONE;
+        $this->results = [];
 
-        return $this->makeResult();
-    }
-
-    /**
-     * @return AssertionResultBag
-     */
-    protected function makeResult()
-    {
-        $scenarioResults = [];
-        $scenarioCount = 0;
-        $successCount = 0;
-        foreach ($this->executor->results() as $result) {
-            $scenarioResults[] = $result->success();
-            $successCount += (int) $result->success();
-            ++$scenarioCount;
+        foreach ($this->scenarios as $key => $value) {
+            if (is_string($key)) {
+                $this->results[] = $this->executeContainerValidation($key, $value);
+            } elseif (is_a($value, Template::class)) {
+                $this->results[] = $this->executeTemplate($value);
+            } elseif (is_a($value, AssertionResultBag::class)) {
+                $this->results[] = $this->addAssertionResultBag($value);
+            } elseif (is_a($value, AssertionResult::class)) {
+                $this->results[] = $this->addAssertionResult($value);
+            } elseif (is_string($value)) {
+                $this->results[] = $this->executeString($value);
+            } else {
+                throw new LogicException('This Should Never Happen!');
+            }
         }
 
-        return new AssertionResult(
-            $successCount === 1,
-            'Exactly one out of {scenarioCount:int} scenarios must succeed, but {successCount:int} succeeded.',
-            compact('successCount', 'scenarioResults')
-        );
+        return $this->results;
     }
 
     /**
