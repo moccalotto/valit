@@ -162,7 +162,7 @@ trait ContainsResults
             ++$this->successes;
 
             // early return
-            return;
+            return $this;
         }
 
         ++$this->failures;
