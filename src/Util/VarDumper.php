@@ -33,15 +33,28 @@ class VarDumper
             return gettype($value);
         }
 
+        if ($format === 'int') {
+            return is_numeric($value)
+                ? sprintf('%d', $value)
+                : '[not numeric]';
+        }
+
         if ($format === 'float') {
             return is_numeric($value)
                 ? sprintf('%g', $value)
                 : '[not numeric]';
         }
+
         if ($format === 'hex') {
             return is_int($value) || ctype_digit($value)
                 ? sprintf('%x', $value)
                 : '[not integer]';
+        }
+
+        if ($format === 'count') {
+            return is_array($value) || is_a($value, Countable)
+                ? count($value)
+                : '[not countable]';
         }
 
         throw new LogicException("Unknown format »{$format}«");
