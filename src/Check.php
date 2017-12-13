@@ -12,7 +12,7 @@ namespace Valit;
 
 use Valit\Validators\ContainerValidator;
 use Valit\Validators\ValueValidator;
-use Valit\Logic\OneOf;
+use Valit\Logic;
 
 class Check
 {
@@ -65,9 +65,69 @@ class Check
      */
     public static function oneOf($scenarios)
     {
-        return new OneOf(
+        return new Logic\OneOf(
             Manager::instance(),
             $scenarios
+        );
+    }
+
+    /**
+     * Check that exactly all of the given scenarios succeed.
+     *
+     * @param Array|\Traversable $scenarios
+     *
+     * @return AllOf
+     */
+    public static function allOf($scenarios)
+    {
+        return new Logic\AllOf(
+            Manager::instance(),
+            $scenarios
+        );
+    }
+
+    /**
+     * Check that one of more of the given scenarios succeed.
+     *
+     * @param Array|\Traversable $scenarios
+     *
+     * @return AnyOf
+     */
+    public static function anyOf($scenarios)
+    {
+        return new Logic\AnyOf(
+            Manager::instance(),
+            $scenarios
+        );
+    }
+
+    /**
+     * Check that none of of the given scenarios succeed.
+     *
+     * @param Array|\Traversable $scenarios
+     *
+     * @return NoneOf
+     */
+    public static function noneOf($scenarios)
+    {
+        return new Logic\NoneOf(
+            Manager::instance(),
+            $scenarios
+        );
+    }
+
+    /**
+     * Check that the given scenario does not succeed.
+     *
+     * @param mixed $scenario
+     *
+     * @return NoneOf
+     */
+    public static function not($scenario)
+    {
+        return new Logic\Not(
+            Manager::instance(),
+            $scenario
         );
     }
 }
