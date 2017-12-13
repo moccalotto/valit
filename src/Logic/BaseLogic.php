@@ -67,6 +67,18 @@ abstract class BaseLogic implements Logic
     }
 
     /**
+     * Alias of withValue
+     *
+     * @param mixed $value
+     *
+     * @return AssertionResult
+     */
+    public function whereValueIs($value)
+    {
+        return $this->withValue($value);
+    }
+
+    /**
      * Execute the logic without a value.
      *
      * @return AssertionResult
