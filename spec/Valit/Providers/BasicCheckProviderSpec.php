@@ -10,7 +10,6 @@
  * @codingStandardsIgnoreFile
  */
 
-
 namespace spec\Valit\Providers;
 
 use ArrayObject;
