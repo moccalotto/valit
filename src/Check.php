@@ -59,7 +59,7 @@ class Check
      * Check that exactly one of the given scenarios
      * succeed.
      *
-     * @param Array|Traversable $scenarios
+     * @param Array|\Traversable $scenarios
      *
      * @return OneOf
      */
