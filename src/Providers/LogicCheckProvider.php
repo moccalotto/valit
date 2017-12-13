@@ -34,7 +34,7 @@ class LogicCheckProvider implements CheckProvider
      */
     public function checkLogic($value, Logic $logic, $withValue = true)
     {
-        return $logic->execute((bool) $withValue, $value);
+        return $logic->execute((bool) $withValue, $withValue ? $value : null);
     }
 
     /**
@@ -53,7 +53,7 @@ class LogicCheckProvider implements CheckProvider
     public function checkPassesOneOf($value, $branches, Manager $manager = null, $withValue = true)
     {
         return $this->checkLogic(
-            $value,
+            $withValue ? $value : null,
             new OneOf($manager ?: Manager::instance(), $branches),
             $withValue
         );
