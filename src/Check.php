@@ -59,7 +59,7 @@ class Check
      * Check that exactly one of the given scenarios
      * succeed.
      *
-     * @param Array|\Traversable $scenarios
+     * @param array|\Traversable $scenarios
      *
      * @return OneOf
      */
@@ -74,7 +74,7 @@ class Check
     /**
      * Check that exactly all of the given scenarios succeed.
      *
-     * @param Array|\Traversable $scenarios
+     * @param array|\Traversable $scenarios
      *
      * @return AllOf
      */
@@ -89,7 +89,7 @@ class Check
     /**
      * Check that one of more of the given scenarios succeed.
      *
-     * @param Array|\Traversable $scenarios
+     * @param array|\Traversable $scenarios
      *
      * @return AnyOf
      */
@@ -104,7 +104,7 @@ class Check
     /**
      * Check that none of of the given scenarios succeed.
      *
-     * @param Array|\Traversable $scenarios
+     * @param array|\Traversable $scenarios
      *
      * @return NoneOf
      */
