@@ -151,9 +151,11 @@ class Executor
             } elseif (is_a($value, LogicContract::class)) {
                 $this->results[] = $this->executeLogic($value);
             } elseif (is_string($value)) {
-                $this->results[] = $this->executeString($value);
+                $this->results[] = $this->executeAssertions($value);
+            } elseif (is_array($value)) {
+                $this->results[] = $this->executeAssertions($value);
             } else {
-                throw new LogicException('This Should Never Happen: ' . gettype($key) . ' => ' . gettype($value));
+                throw new LogicException('Unknown check type' . gettype($key) . ' => ' . gettype($value));
             }
         }
 
@@ -202,7 +204,7 @@ class Executor
      *
      * @return ContainerResultBag
      */
-    protected function executeString($assertions)
+    protected function executeAssertions($assertions)
     {
         $this->requires(static::REQUIRES_VALUE);
 
