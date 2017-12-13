@@ -80,4 +80,23 @@ class OneOfSpec extends ObjectBehavior
         $this->beConstructedWith(Manager::instance(), $branches);
         $this->execute(true, $container)->success()->shouldBe(false);
     }
+
+    function it_will_only_accept_if_exactly_one_branch_succeeds()
+    {
+        $this->beConstructedWith(Manager::instance(), [
+            'containsString("a")',
+            'containsString("b")',
+            'containsString("c")',
+        ]);
+        $this->execute(true, 'a')->success()->shouldBe(true);
+        $this->execute(true, 'b')->success()->shouldBe(true);
+        $this->execute(true, 'c')->success()->shouldBe(true);
+        $this->execute(true, 'ab')->success()->shouldBe(false);
+        $this->execute(true, 'ac')->success()->shouldBe(false);
+        $this->execute(true, 'bc')->success()->shouldBe(false);
+        $this->execute(true, 'abc')->success()->shouldBe(false);
+        $this->execute(true, 'XYZ')->success()->shouldBe(false);
+        $this->execute(true, null)->success()->shouldBe(false);
+        $this->execute(true, curl_init())->success()->shouldBe(false);
+    }
 }
