@@ -12,12 +12,10 @@ class OneOf extends BaseLogic
     protected function makeResult()
     {
         $scenarioResults = [];
-        $scenarioCount = 0;
         $successCount = 0;
         foreach ($this->executor->results() as $result) {
             $scenarioResults[] = $result->renderedResults();
             $successCount += (int) $result->success();
-            ++$scenarioCount;
         }
 
         return new AssertionResult(
