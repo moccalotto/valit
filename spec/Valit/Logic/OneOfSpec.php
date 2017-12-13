@@ -39,7 +39,7 @@ class OneOfSpec extends ObjectBehavior
         $this->execute(true, 'foobar')->shouldHaveType(AssertionResult::class);
     }
 
-    function it_will_no_accept_two_successfull_branches()
+    function it_will_not_accept_two_successfull_branches()
     {
         $branches = [
             Check::value()->containsString('foo')->containsString('bar'),
