@@ -2,6 +2,7 @@
 
 namespace Valit\Util;
 
+use Countable;
 use LogicException;
 use RuntimeException;
 
@@ -52,7 +53,7 @@ class VarDumper
         }
 
         if ($format === 'count') {
-            return is_array($value) || is_a($value, Countable)
+            return is_array($value) || is_a($value, Countable::class)
                 ? count($value)
                 : '[not countable]';
         }
