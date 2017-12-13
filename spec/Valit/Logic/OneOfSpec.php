@@ -27,6 +27,12 @@ class OneOfSpec extends ObjectBehavior
         $this->shouldHaveType('Valit\Logic\OneOf');
     }
 
+    function it_implements_Logic_interface()
+    {
+        $this->beConstructedWith(Manager::instance(), []);
+        $this->shouldHaveType('Valit\Contracts\Logic');
+    }
+
     function it_returns_AssertionResults()
     {
         $this->beConstructedWith(Manager::instance(), []);

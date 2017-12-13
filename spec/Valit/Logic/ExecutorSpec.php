@@ -14,8 +14,10 @@ namespace spec\Valit\Logic;
 
 use Valit\check;
 use Valit\Manager;
+use Valit\Logic\OneOf;
 use PhpSpec\ObjectBehavior;
 use Valit\Result\AssertionResult;
+use Valit\Result\ContainerResultBag;
 use Valit\Result\AssertionResultBag;
 use Valit\Exceptions\ValueRequiredException;
 
@@ -33,8 +35,20 @@ class ExecutorSpec extends ObjectBehavior
         $result = $this->execute();
 
         $result->shouldBeArray();
-        $this->results()->shouldBe($result->getWrappedObject());
         $result->shouldHaveCount(0);
+
+        $this->results()->shouldBe($result->getWrappedObject());
+    }
+
+    function it_stores_its_results()
+    {
+        $this->beConstructedWith(Manager::instance(), ['greaterThan(1)', 'greaterThan(2)']);
+        $results = $this->execute(true, 2);
+
+        $results->shouldBeArrayOfContainerResultBags();
+        $results->shouldHaveCount(2);
+
+        $this->results()->shouldBe($results->getWrappedObject());
     }
 
     function it_can_execute_branches_with_assertion_results()
@@ -46,11 +60,12 @@ class ExecutorSpec extends ObjectBehavior
         ];
 
         $this->beConstructedWith(Manager::instance(), $branches);
+
         $results = $this->execute();
 
-        foreach ($results as $result) {
-            $result->shouldHaveType(AssertionResultBag::class);
-        }
+        $results->shouldBeArrayOfContainerResultBags();
+        $results->shouldHaveCount(3);
+
         $results[0]->success()->shouldBe(true);
         $results[1]->success()->shouldBe(false);
         $results[2]->success()->shouldBe(false);
@@ -64,10 +79,11 @@ class ExecutorSpec extends ObjectBehavior
         ];
 
         $this->beConstructedWith(Manager::instance(), $branches);
+
         $results = $this->execute(true, 'foobar');
-        foreach ($results as $result) {
-            $result->shouldHaveType(AssertionResultBag::class);
-        }
+
+        $results->shouldBeArrayOfContainerResultBags();
+        $results->shouldHaveCount(2);
 
         $results[0]->success()->shouldBe(true);
         $results[1]->success()->shouldBe(false);
@@ -81,13 +97,46 @@ class ExecutorSpec extends ObjectBehavior
         ];
 
         $this->beConstructedWith(Manager::instance(), $branches);
+
         $results = $this->execute(false);
-        foreach ($results as $result) {
-            $result->shouldHaveType(AssertionResultBag::class);
-        }
+
+        $results->shouldBeArrayOfContainerResultBags();
+        $results->shouldHaveCount(2);
 
         $results[0]->success()->shouldBe(true);
         $results[1]->success()->shouldBe(false);
+    }
+
+    function it_can_execute_branches_with_Logics()
+    {
+        $branches = [
+            new OneOf(Manager::instance(), [
+                'isString & longerThan(5)',
+                'isInt & greaterThan(10)'
+            ]),
+            new OneOf(Manager::instance(), [
+                'isFloat',
+                'isString',
+            ]),
+        ];
+
+        $this->beConstructedWith(Manager::instance(), $branches);
+
+        $resultsInt11 = $this->execute(true, 11);
+
+        $resultsInt11->shouldBeArrayOfContainerResultBags();
+        $resultsInt11->shouldHaveCount(2);
+
+        $resultsInt11[0]->success()->shouldBe(true);
+        $resultsInt11[1]->success()->shouldBe(false);
+
+        $resultsStringFoo = $this->execute(true, 'foo');
+
+        $resultsStringFoo->shouldBeArrayOfContainerResultBags();
+        $resultsStringFoo->shouldHaveCount(2);
+
+        $resultsStringFoo[0]->success()->shouldBe(false);
+        $resultsStringFoo[1]->success()->shouldBe(true);
     }
 
     function it_can_execute_branches_on_containers()
@@ -102,9 +151,9 @@ class ExecutorSpec extends ObjectBehavior
             'name' => 'KIM',
             'email' => 'this-is-not-an-email',
         ]);
-        foreach ($results as $result) {
-            $result->shouldHaveType(AssertionResultBag::class);
-        }
+
+        $results->shouldBeArrayOfContainerResultBags();
+        $results->shouldHaveCount(2);
 
         $results[0]->success()->shouldBe(true);
         $results[1]->success()->shouldBe(false);
@@ -123,4 +172,22 @@ class ExecutorSpec extends ObjectBehavior
         );
     }
 
+    function getMatchers()
+    {
+        return [
+            'beArrayOfContainerResultBags' => function ($subject) {
+                if (!is_array($subject)) {
+                    return false;
+                }
+
+                foreach ($subject as $result) {
+                    if (!is_a($result, ContainerResultBag::class)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        ];
+    }
 }

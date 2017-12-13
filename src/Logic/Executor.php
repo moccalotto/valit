@@ -11,6 +11,7 @@ use Valit\Result\AssertionResultBag;
 use Valit\Result\ContainerResultBag;
 use Valit\Assertion\AssertionNormalizer;
 use Valit\Validators\ContainerValidator;
+use Valit\Contracts\Logic as LogicContract;
 use Valit\Exceptions\ValueRequiredException;
 use Valit\Exceptions\ContainerRequiredException;
 
@@ -129,7 +130,7 @@ class Executor
      * @param bool  $withValue
      * @param mixed $value
      *
-     * @return AssertionResult
+     * @return AssertionResultBag[]
      */
     public function execute($hasValue = false, $value = null)
     {
@@ -147,6 +148,8 @@ class Executor
                 $this->results[] = $this->addAssertionResultBag($value);
             } elseif (is_a($value, AssertionResult::class)) {
                 $this->results[] = $this->addAssertionResult($value);
+            } elseif (is_a($value, LogicContract::class)) {
+                $this->results[] = $this->executeLogic($value);
             } elseif (is_string($value)) {
                 $this->results[] = $this->executeString($value);
             } else {
@@ -155,6 +158,15 @@ class Executor
         }
 
         return $this->results;
+    }
+
+    protected function executeLogic(LogicContract $logic)
+    {
+        $this->require($logic->requirements());
+
+        $asserionResult = $logic->execute($this->hasValue, $this->value);
+
+        return $this->addAssertionResult($asserionResult);
     }
 
     /**
