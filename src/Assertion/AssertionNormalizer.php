@@ -4,6 +4,7 @@ namespace Valit\Assertion;
 
 use Valit\Template;
 use LogicException;
+use Valit\Contracts\Logic;
 
 class AssertionNormalizer
 {
@@ -25,7 +26,7 @@ class AssertionNormalizer
     }
 
     /**
-     * Return a normalized version of $assertions
+     * Return a normalized version of $assertions.
      *
      * @param string|array|Template|AssertionBag $assertions
      *
@@ -60,12 +61,22 @@ class AssertionNormalizer
      */
     protected function normalizeAndSet($assertions)
     {
-        if ($assertions instanceof Template) {
+        if (is_a($assertions, Template::class)) {
             $this->assertions = clone $assertions->assertions;
 
             return;
         }
-        if ($assertions instanceof AssertionBag) {
+        if (is_a($assertions, Logic::class)) {
+            $this->assertions = new AssertionBag([
+                new Assertion('passesLogic', [
+                    $assertions,
+                    true
+                ]),
+            ]);
+
+            return;
+        }
+        if (is_a($assertions, AssertionBag::class)) {
             $this->assertions = clone $assertions;
 
             return;

@@ -40,6 +40,7 @@ class Manager implements CheckManager
         Providers\ArrayCheckProvider::class,
         Providers\ObjectCheckProvider::class,
         Providers\UriCheckProvider::class,
+        Providers\LogicCheckProvider::class,
         Providers\FileSystemCheckProvider::class,
     ];
 

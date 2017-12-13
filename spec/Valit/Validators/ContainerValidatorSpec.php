@@ -12,9 +12,10 @@
 
 namespace spec\Valit\Validators;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Valit\Manager;
+use Prophecy\Argument;
+use Valit\Logic\OneOf;
+use PhpSpec\ObjectBehavior;
 
 class ContainerValidatorSpec extends ObjectBehavior
 {
@@ -80,7 +81,11 @@ class ContainerValidatorSpec extends ObjectBehavior
         $result = $this->passes([
             'someString'    => ['required', 'string'],
             'someInt'       => ['integer', 'greaterThan(40)', 'lowerThan(43)'],
-            'someFloat'     => ['greaterThan(19)', 'lowerThan(20)', ['lowerThan', 20]],
+            'someFloat'     => new OneOf(Manager::instance(), [
+                'isFloat & greaterThan(10) & lowerThan(20)', // true
+                'isFloat & greaterThan(20)',                 // false
+                'isInt',                                     // false
+            ])
         ]);
 
         $result->shouldHaveType('Valit\Result\ContainerResultBag');
