@@ -18,8 +18,8 @@ Ensure::container($something)->passes([
 
     Check::allOrNone([
         'headers/last-modified-at' => 'required',
-        'headers/last-modified-at' => 'dateAfter("15 days ago")',
-        'headers/last-modified-at' => 'dateBefore("now")',
+        'headers/last-modified-at' => Check::value()->isDateAfter('15 days ago'),
+        'headers/last-modified-at' => Check::value()->isDateBefore('now'),
     ]),
 
     Check::notAnyOf([
