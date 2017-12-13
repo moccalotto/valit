@@ -38,7 +38,7 @@ class LogicCheckProvider implements CheckProvider
     }
 
     /**
-     * Check that $value is callable.
+     * Check that one of the given branches succeed of given $value.
      *
      * @Check(["passesOneOf", "logicOneOf"])
      *
