@@ -11,6 +11,7 @@
 namespace Valit\Providers;
 
 use Valit\Manager;
+use Valit\Logic\OneOf;
 use Valit\Contracts\Logic;
 use Valit\Result\AssertionResult;
 use Valit\Contracts\CheckProvider;
@@ -53,7 +54,7 @@ class LogicCheckProvider implements CheckProvider
     {
         return $this->checkLogic(
             $value,
-            new Logic($manager ?: Manager::instance(), $branches),
+            new OneOf($manager ?: Manager::instance(), $branches),
             $withValue
         );
     }
