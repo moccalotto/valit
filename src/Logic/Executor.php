@@ -86,7 +86,7 @@ class Executor
         return $this->results;
     }
 
-    protected function require($newRequirement)
+    protected function requires($newRequirement)
     {
         if ($newRequirement === static::REQUIRES_NONE) {
             return $this->requires;
@@ -162,7 +162,7 @@ class Executor
 
     protected function executeLogic(LogicContract $logic)
     {
-        $this->require($logic->requirements());
+        $this->requires($logic->requirements());
 
         $asserionResult = $logic->execute($this->hasValue, $this->value);
 
@@ -204,7 +204,7 @@ class Executor
      */
     protected function executeString($assertions)
     {
-        $this->require(static::REQUIRES_VALUE);
+        $this->requires(static::REQUIRES_VALUE);
 
         $normalizedAssertions = AssertionNormalizer::normalize($assertions);
 
@@ -220,7 +220,7 @@ class Executor
      */
     protected function executeTemplate(Template $template)
     {
-        $this->require(static::REQUIRES_VALUE);
+        $this->requires(static::REQUIRES_VALUE);
 
         $resultBag = $template->whereValueIs(
             $this->value,
@@ -239,7 +239,7 @@ class Executor
      */
     protected function executeContainerValidation($fieldNameGlob, $assertions)
     {
-        $this->require(static::REQUIRES_CONTAINER);
+        $this->requires(static::REQUIRES_CONTAINER);
 
         $validator = new ContainerValidator($this->manager, $this->value, false);
 
