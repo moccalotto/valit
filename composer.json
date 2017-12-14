@@ -18,11 +18,31 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^1.11",
-        "phpspec/phpspec": "^2.0"
+        "phpspec/phpspec": "^2.0",
+        "kahlan/kahlan": "^4.0"
     },
     "autoload": {
         "psr-4": {
             "Valit\\": "src/"
         }
+    },
+    "scripts": {
+        "test-code-style": [
+            "@php vendor/bin/php-cs-fixer fix --dry-run src"
+        ],
+        "test-kahlan": [
+            "@php vendor/bin/kahlan"
+        ],
+        "test-phpspec": [
+            "@php vendor/bin/phpspec run --format=pretty"
+        ],
+        "test-bdd": [
+            "@test-kahlan",
+            "@test-phpspec"
+        ],
+        "test": [
+            "@test-code-style",
+            "@test-bdd"
+        ]
     }
 }
