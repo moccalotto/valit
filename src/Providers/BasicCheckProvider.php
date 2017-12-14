@@ -66,7 +66,7 @@ class BasicCheckProvider implements CheckProvider
         }
 
         $msg = sprintf('{name} must match one of %s', implode(', ', array_map(function ($int) {
-            return '{' . $int . '}';
+            return '{'.$int.'}';
         }, range(0, count($against) - 1))));
 
         foreach ($against as $match) {
