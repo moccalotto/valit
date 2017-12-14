@@ -72,4 +72,25 @@ describe('Valit\Check', function () {
             expect(Check::not($scenario))->toBeAnInstanceOf(Logic\Not::class);
         });
     });
+
+    describe('::__callStatic()', function () {
+        it('has magic method for creating templates', function () {
+            // proof of concept
+            expect(Check::isInt())->toBeAnInstanceOf(Template::class);
+            expect(Check::isInt()->assertions->count())->toBe(1);
+            expect(Check::isInt()->assertions->assertions[0]->name)->toBe('isInt');
+
+            // result when calling containsString as a method.
+            expect(Check::containsString('foo'))->toBeAnInstanceOf(Template::class);
+            expect(Check::containsString('foo')->assertions->count())->toBe(1);
+            expect(Check::containsString('foo')->assertions->assertions[0]->name)->toBe('containsString');
+            expect(Check::containsString('foo')->assertions->assertions[0]->args)->toBe(['foo']);
+
+            // see same result when calling containsString via __callStatic
+            expect(Check::__callStatic('containsString', ['foo']))->toBeAnInstanceOf(Template::class);
+            expect(Check::__callStatic('containsString', ['foo'])->assertions->count())->toBe(1);
+            expect(Check::__callStatic('containsString', ['foo'])->assertions->assertions[0]->name)->toBe('containsString');
+            expect(Check::__callStatic('containsString', ['foo'])->assertions->assertions[0]->args)->toBe(['foo']);
+        });
+    });
 });
