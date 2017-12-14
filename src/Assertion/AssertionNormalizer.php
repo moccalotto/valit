@@ -70,7 +70,7 @@ class AssertionNormalizer
             $this->assertions = new AssertionBag([
                 new Assertion('passesLogic', [
                     $assertions,
-                    true
+                    true,
                 ]),
             ]);
 
