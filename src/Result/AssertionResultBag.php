@@ -16,12 +16,12 @@ class AssertionResultBag
     public $throwOnFailure;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct($value, $varName, $throwOnFailure)
     {
         $this->value = $value;
-        $this->varName = ( (string) $varName ) ?: 'value';
+        $this->varName = ((string) $varName) ?: 'value';
         $this->throwOnFailure = $throwOnFailure;
     }
 }
