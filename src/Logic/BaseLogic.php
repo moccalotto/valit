@@ -67,7 +67,7 @@ abstract class BaseLogic implements Logic
     }
 
     /**
-     * Alias of withValue
+     * Alias of withValue.
      *
      * @param mixed $value
      *
