@@ -10,8 +10,6 @@
 
 namespace Valit\Exceptions;
 
-use Valit\Traits\ContainsResults;
-
 class ContainerRequiredException extends ValueRequiredException
 {
 }
