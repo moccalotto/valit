@@ -21,7 +21,7 @@ class Ensure
      * @param mixed $value the value to check
      *
      * @return ValueValidator instance that has been configured to throw a
-     *                              InvalidValueException as soon as a single validation fails
+     *                        InvalidValueException as soon as a single validation fails
      */
     public static function that($value)
     {
@@ -41,5 +41,80 @@ class Ensure
     public static function container($container)
     {
         return new ContainerValidator(Manager::instance(), $container, true);
+    }
+
+    /**
+     * Check that exactly one of the given scenarios succeed.
+     *
+     * @param array|\Traversable $scenarios
+     *
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
+     */
+    public static function oneOf($scenarios, $value = null)
+    {
+        $hasValue = func_num_args() > 1;
+
+        return static::that($value)->passesOneOf($scenarios, Manager::instance(), $hasValue);
+    }
+
+    /**
+     * Check that at least one of the given scenarios succeed.
+     *
+     * @param array|\Traversable $scenarios
+     *
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
+     */
+    public static function anyOf($scenarios, $value = null)
+    {
+        $hasValue = func_num_args() > 1;
+
+        return static::that($value)->passesAnyOf($scenarios, Manager::instance(), $hasValue);
+    }
+
+    /**
+     * Check that all of the given scenarios succeed.
+     *
+     * @param array|\Traversable $scenarios
+     *
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
+     */
+    public static function allOf($scenarios, $value = null)
+    {
+        $hasValue = func_num_args() > 1;
+
+        return static::that($value)->passesAllOf($scenarios, Manager::instance(), $hasValue);
+    }
+
+    /**
+     * Check that none of the given scenarios succeed.
+     *
+     * @param array|\Traversable $scenarios
+     *
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
+     */
+    public static function noneOf($scenarios, $value = null)
+    {
+        $hasValue = func_num_args() > 1;
+
+        return static::that($value)->passesNoneOf($scenarios, Manager::instance(), $hasValue);
+    }
+
+    /**
+     * Check that none of the given scenarios succeed.
+     *
+     * @param mixed $scenario The scenario that may not succeed
+     *
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
+     */
+    public static function not($scenario, $value = null)
+    {
+        $hasValue = func_num_args() > 1;
+
+        return static::that($value)->invert($scenario, Manager::instance(), $hasValue);
     }
 }
