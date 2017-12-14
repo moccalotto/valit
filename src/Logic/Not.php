@@ -10,8 +10,8 @@ class Not extends BaseLogic
     /**
      * Constructor.
      *
-     * @param Manager  $manager
-     * @param mixed    $scenario
+     * @param Manager $manager
+     * @param mixed   $scenario
      */
     public function __construct(Manager $manager, $scenario)
     {
