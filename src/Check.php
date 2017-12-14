@@ -153,7 +153,7 @@ abstract class Check
     public static function __callStatic($methodName, $args)
     {
         return call_user_func_array(
-            [static::template(), $methodName],
+            [static::value(), $methodName],
             $args
         );
     }
