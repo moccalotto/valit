@@ -32,7 +32,7 @@ class AssertionBag implements IteratorAggregate, Countable
     }
 
     /**
-     * Add an assertion
+     * Add an assertion.
      *
      * @param Assertion $assertion
      *
@@ -86,7 +86,7 @@ class AssertionBag implements IteratorAggregate, Countable
     }
 
     /**
-     * Alias of calling is()
+     * Alias of calling is().
      *
      * @param string $key
      *
@@ -125,7 +125,6 @@ class AssertionBag implements IteratorAggregate, Countable
     {
         return $this->is('optional');
     }
-
 
     /**
      * Magic method to support the is* method calls.
