@@ -57,12 +57,12 @@ class InvalidContainerException extends UnexpectedValueException
         }
 
         return $prefix
-            . ': '
-            . PHP_EOL
-            . '    '
-            . implode(PHP_EOL . '    ', $errorMessages)
-            . PHP_EOL
-            . PHP_EOL;
+            .': '
+            .PHP_EOL
+            .'    '
+            .implode(PHP_EOL.'    ', $errorMessages)
+            .PHP_EOL
+            .PHP_EOL;
     }
 
     /**
