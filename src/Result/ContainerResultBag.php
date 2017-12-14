@@ -31,7 +31,7 @@ class ContainerResultBag
      * Constructor.
      *
      * @param AssertionResultBag[] $results
-     * @param string $varName
+     * @param string               $varName
      */
     public function __construct(array $results, $varName = 'Container')
     {
@@ -56,7 +56,7 @@ class ContainerResultBag
     /**
      * Add a result.
      *
-     * @param string         $path           The path to the variable that passed/failed the tests
+     * @param string             $path           The path to the variable that passed/failed the tests
      * @param AssertionResultBag $valueValidator The validator that performed the assertions on the variable
      *
      * @return $this
