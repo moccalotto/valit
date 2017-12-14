@@ -11,7 +11,6 @@
 namespace Valit\Exceptions;
 
 use LogicException;
-use Valit\Traits\ContainsResults;
 
 class ValueRequiredException extends LogicException
 {
