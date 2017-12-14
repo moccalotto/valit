@@ -58,7 +58,7 @@ class CheckInfo
 
         $this->name = $reflector->getName();
         $parameters = array_map(function ($parameter) {
-            return '$' . $parameter->getName();
+            return '$'.$parameter->getName();
         }, array_slice($reflector->getParameters(), 1));
 
         $this->paramlist = implode(', ', $parameters);

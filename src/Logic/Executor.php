@@ -107,6 +107,7 @@ class Executor
                     );
                 }
                 $this->requires = $newRequirement;
+
                 return;
             case static::REQUIRES_CONTAINER:
                 if (!$this->hasValue) {
@@ -120,6 +121,7 @@ class Executor
                     );
                 }
                 $this->requires = $newRequirement;
+
                 return;
         }
     }
@@ -155,7 +157,7 @@ class Executor
             } elseif (is_array($value)) {
                 $this->results[] = $this->executeAssertions($value);
             } else {
-                throw new LogicException('Unknown check type' . gettype($key) . ' => ' . gettype($value));
+                throw new LogicException('Unknown check type'.gettype($key).' => '.gettype($value));
             }
         }
 
