@@ -116,6 +116,20 @@ class Check
     }
 
     /**
+     * Alias of noneOf().
+     *
+     * Check that none of of the given scenarios succeed.
+     *
+     * @param array|\Traversable $scenarios
+     *
+     * @return Logic\NoneOf
+     */
+    public static function notAnyOf($scenarios)
+    {
+        return static::noneOf($scenarios);
+    }
+
+    /**
      * Check that the given scenario does not succeed.
      *
      * @param mixed $scenario
