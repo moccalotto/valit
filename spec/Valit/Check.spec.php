@@ -62,6 +62,7 @@ describe('Valit\Check', function () {
         it('creates a NoneOf instance', function () {
             $scenarios = ['isInt', 'isFloat', 'isString'];
             expect(Check::noneOf($scenarios))->toBeAnInstanceOf(Logic\NoneOf::class);
+            expect(Check::notAnyOf($scenarios))->toBeAnInstanceOf(Logic\NoneOf::class);
         });
     });
 
