@@ -10,8 +10,9 @@
 
 namespace Valit;
 
-use Valit\Validators\ContainerValidator;
+use Valit\Assertion\Template;
 use Valit\Validators\ValueValidator;
+use Valit\Validators\ContainerValidator;
 
 abstract class Check
 {

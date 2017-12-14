@@ -8,12 +8,11 @@
  * @license MIT
  */
 
-namespace Valit;
+namespace Valit\Assertion;
 
+use Valit\Manager;
 use BadMethodCallException;
-use Valit\Assertion\Assertion;
 use Valit\Contracts\CheckManager;
-use Valit\Assertion\AssertionBag;
 use Valit\Validators\ValueValidator;
 
 class Template
@@ -24,11 +23,6 @@ class Template
      * @internal
      */
     public $assertions;
-
-    /**
-     * @var bool
-     */
-    public $throwOnFailure;
 
     /**
      * Constructor.

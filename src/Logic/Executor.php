@@ -5,7 +5,7 @@ namespace Valit\Logic;
 use Traversable;
 use Valit\Manager;
 use LogicException;
-use Valit\Template;
+use Valit\Assertion\Template;
 use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
 use Valit\Result\ContainerResultBag;

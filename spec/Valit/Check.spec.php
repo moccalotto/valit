@@ -5,7 +5,7 @@ namespace Kahlan\Spec\Suite;
 use Valit\Check;
 use Valit\Logic;
 use Valit\Manager;
-use Valit\Template;
+use Valit\Assertion\Template;
 use Valit\Validators\ValueValidator;
 use Valit\Validators\ContainerValidator;
 

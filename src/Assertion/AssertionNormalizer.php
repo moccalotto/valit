@@ -2,7 +2,6 @@
 
 namespace Valit\Assertion;
 
-use Valit\Template;
 use LogicException;
 use Valit\Contracts\Logic;
 

@@ -10,7 +10,7 @@
  * @codingStandardsIgnoreFile
  */
 
-namespace spec\Valit;
+namespace spec\Valit\Assertion;
 
 use Valit\Manager;
 use PhpSpec\ObjectBehavior;
@@ -20,7 +20,7 @@ class TemplateSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Valit\Template');
+        $this->shouldHaveType('Valit\Assertion\Template');
 
         $this->assertions->shouldHaveType('Valit\Assertion\AssertionBag');
         $this->assertions->shouldHaveCount(0);
@@ -28,7 +28,7 @@ class TemplateSpec extends ObjectBehavior
 
     function it_can_add_assertions()
     {
-        $this->addAssertion('greaterThanOrEqual', [18])->shouldHaveType('Valit\Template');
+        $this->addAssertion('greaterThanOrEqual', [18])->shouldHaveType('Valit\Assertion\Template');
 
         $this->assertions->shouldHaveCount(1);
 
@@ -39,7 +39,7 @@ class TemplateSpec extends ObjectBehavior
 
     function it_can_add_assertions_dynamically()
     {
-        $this->greaterThanOrEqual(18)->shouldHaveType('Valit\Template');
+        $this->greaterThanOrEqual(18)->shouldHaveType('Valit\Assertion\Template');
 
         $this->assertions->all()[0]->shouldHaveType('Valit\Assertion\Assertion');
         $this->assertions->all()[0]->name->shouldBe('greaterThanOrEqual');
