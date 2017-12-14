@@ -37,9 +37,9 @@ Ensure::oneOf([
 ]);
 
 Ensure::that($number)->passesOneOf([
-    Check::value()->matches('/^0x[1-9a-f][0-9a-f]*$/'),
-    Check::value()->matches('/^0[1-7][0-7]*$/'),
-    Check::value()->isNumeric()->isGreaterThan(0),
+    Check::matches('/^0x[1-9a-f][0-9a-f]*$/'),
+    Check::matches('/^0[1-7][0-7]*$/'),
+    Check::isNumeric()->isGreaterThan(0),
 ]);
 
 Ensure::that($number)->passes(Ensure::oneOf([
