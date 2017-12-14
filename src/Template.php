@@ -118,7 +118,7 @@ class Template
      *                                   If none given, the default
      *                                   manager will be used
      *
-     * @return ValueValidator a validator that will not throw exceptions on failures.
+     * @return ValueValidator a validator that will not throw exceptions on failures
      */
     public function whereValueIs($value, $varName = null, CheckManager $manager = null)
     {
