@@ -3,7 +3,6 @@
 namespace Valit\Contracts;
 
 use Valit\Result\AssertionResult;
-use Valit\Result\ContainerResultBag;
 
 interface Logic
 {
