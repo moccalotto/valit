@@ -59,7 +59,7 @@ class FlatContainer
      * to the object as public properties, overwriting any properties set by the previous two
      * method calls.
      *
-     * @param mixed $object  An array or an object.
+     * @param mixed $object An array or an object
      *
      * @return array
      */
