@@ -41,11 +41,6 @@ trait ContainsResults
     protected $failures = 0;
 
     /**
-     * @var bool
-     */
-    protected $throwOnFailure;
-
-    /**
      * Getter.
      *
      * @var string

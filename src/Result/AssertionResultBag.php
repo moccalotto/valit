@@ -9,6 +9,13 @@ class AssertionResultBag
     use ContainsResults;
 
     /**
+     * @var bool
+     *
+     * @internal
+     */
+    public $throwOnFailure;
+
+    /**
      * Constructor
      */
     public function __construct($value, $varName, $throwOnFailure)
