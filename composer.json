@@ -37,8 +37,8 @@
             "@php vendor/bin/phpspec run --format=pretty"
         ],
         "test-bdd": [
-            "@test-kahlan",
-            "@test-phpspec"
+            "@test-phpspec",
+            "@test-kahlan"
         ],
         "test": [
             "@test-code-style",
