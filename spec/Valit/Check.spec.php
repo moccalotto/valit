@@ -72,22 +72,4 @@ describe('Valit\Check', function () {
             expect(Check::not($scenario))->toBeAnInstanceOf(Logic\Not::class);
         });
     });
-
-    // TODO: check __callStatic
-
-    // TODO:  port these
-    // function it_is_initializable()
-    // {
-    //     $this->shouldHaveType('Valit\Check');
-    // }
-
-    // function it_creates_single_value_validator()
-    // {
-    //     $this->that(42)->shouldHaveType('Valit\Validators\ValueValidator');
-    // }
-
-    // function it_creates_container_validator()
-    // {
-    //     $this->container([1,2,3])->shouldHaveType('Valit\Validators\ContainerValidator');
-    // }
 });

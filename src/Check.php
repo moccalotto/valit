@@ -13,7 +13,7 @@ namespace Valit;
 use Valit\Validators\ContainerValidator;
 use Valit\Validators\ValueValidator;
 
-class Check
+abstract class Check
 {
     /**
      * Check that a single variable passes certain criteria.
