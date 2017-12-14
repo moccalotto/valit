@@ -12,7 +12,6 @@ namespace Valit;
 
 use Valit\Validators\ContainerValidator;
 use Valit\Validators\ValueValidator;
-use Valit\Logic;
 
 class Check
 {
@@ -22,9 +21,9 @@ class Check
      * @param mixed $value the value to check
      *
      * @return ValueValidator A instance that has been configured to not
-     *                              throw any exceptions. You must inspect the ValueValidator
-     *                              object (for instance via the valid() method) to
-     *                              find out if all checks passed
+     *                        throw any exceptions. You must inspect the ValueValidator
+     *                        object (for instance via the valid() method) to
+     *                        find out if all checks passed
      */
     public static function that($value)
     {
@@ -61,7 +60,7 @@ class Check
      *
      * @param array|\Traversable $scenarios
      *
-     * @return OneOf
+     * @return Logic\OneOf
      */
     public static function oneOf($scenarios)
     {
@@ -76,7 +75,7 @@ class Check
      *
      * @param array|\Traversable $scenarios
      *
-     * @return AllOf
+     * @return Logic\AllOf
      */
     public static function allOf($scenarios)
     {
@@ -91,7 +90,7 @@ class Check
      *
      * @param array|\Traversable $scenarios
      *
-     * @return AnyOf
+     * @return Logic\AnyOf
      */
     public static function anyOf($scenarios)
     {
@@ -106,7 +105,7 @@ class Check
      *
      * @param array|\Traversable $scenarios
      *
-     * @return NoneOf
+     * @return Logic\NoneOf
      */
     public static function noneOf($scenarios)
     {
@@ -121,13 +120,26 @@ class Check
      *
      * @param mixed $scenario
      *
-     * @return NoneOf
+     * @return Logic\Not
      */
     public static function not($scenario)
     {
         return new Logic\Not(
             Manager::instance(),
             $scenario
+        );
+    }
+
+    /**
+     * Short hand to creating templates.
+     *
+     * @return Template
+     */
+    public static function __callStatic($methodName, $args)
+    {
+        return call_user_func_array(
+            [static::template(), $methodName],
+            $args
         );
     }
 }
