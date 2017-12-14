@@ -35,23 +35,21 @@ class Template
      *
      * @param bool $throwOnFailure Should we throw an exception as soon as we encounter a failed check
      */
-    public function __construct($throwOnFailure = false)
+    public function __construct()
     {
         $this->assertions = new AssertionBag();
-        $this->throwOnFailure = (bool) $throwOnFailure;
     }
 
     /**
      * Factory.
      *
      * @param AssertionBag $assertions
-     * @param bool         $throwOnFailure
      *
      * @return Template
      */
-    public static function fromAssertionBag(AssertionBag $assertions, $throwOnFailure = false)
+    public static function fromAssertionBag(AssertionBag $assertions)
     {
-        $instance = new static($throwOnFailure);
+        $instance = new static();
 
         $instance->assertions = $assertions;
 
@@ -110,6 +108,8 @@ class Template
     }
 
     /**
+     * Execute this template in "check"-mode.
+     *
      * Create a new ValueValidator, apply all stored assertions on it, and return it.
      *
      * @param mixed             $value   The value to be checked
@@ -118,7 +118,7 @@ class Template
      *                                   If none given, the default
      *                                   manager will be used
      *
-     * @return ValueValidator
+     * @return ValueValidator a validator that will not throw exceptions on failures.
      */
     public function whereValueIs($value, $varName = null, CheckManager $manager = null)
     {
@@ -126,7 +126,7 @@ class Template
             $manager = Manager::instance();
         }
 
-        $validator = new ValueValidator($manager, $value, $this->throwOnFailure);
+        $validator = new ValueValidator($manager, $value, false);
 
         if ($varName) {
             $validator->alias((string) $varName);
