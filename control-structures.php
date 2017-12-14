@@ -5,7 +5,7 @@ use Valit\Ensure;
 
 require 'vendor/autoload.php';
 
-Ensure::container($something)->passes([
+Ensure::container($request)->passes([
     // We must either allow unauthenticated access
     // or we must have some kind of authentication token
     Check::anyOf([
