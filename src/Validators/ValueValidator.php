@@ -13,6 +13,7 @@ namespace Valit\Validators;
 use BadMethodCallException;
 use Valit\Contracts\CheckManager;
 use Valit\Result\AssertionResultBag;
+use Valit\Exceptions\InvalidValueException;
 
 class ValueValidator extends AssertionResultBag
 {
@@ -22,9 +23,11 @@ class ValueValidator extends AssertionResultBag
     protected $manager;
 
     /**
-     * @var AssertionResultBag
+     * @var bool
+     *
+     * @internal
      */
-    protected $results;
+    public $throwOnFailure;
 
     /**
      * Constructor.
@@ -33,10 +36,11 @@ class ValueValidator extends AssertionResultBag
      * @param mixed        $value          The value we are validating
      * @param bool         $throwOnFailure Should we throw an exception as soon as we encounter a failed result
      */
-    public function __construct(CheckManager $manager, $value, $throwOnFailure)
+    public function __construct(CheckManager $manager, $value, $throwOnFailure = false)
     {
         $this->manager = $manager;
-        parent::__construct($value, 'value', (bool) $throwOnFailure);
+        $this->throwOnFailure = (bool) $throwOnFailure;
+        parent::__construct($value, 'value');
     }
 
     /**
@@ -80,6 +84,29 @@ class ValueValidator extends AssertionResultBag
         $result = $this->manager->executeCheck($checkName, $this->value, $args);
 
         $this->addAssertionResult($result);
+
+        return $this->throwOnFailure
+            ? $this->orThrowException()
+            : $this;
+    }
+
+    /**
+     * Throw exceptions if any failures has occurred or occur later in the execution stream.
+     *
+     * @return $this
+     *
+     * @throws InvalidValueException if any failures have occurred
+     */
+    public function orThrowException()
+    {
+        if ($this->failures) {
+            throw new InvalidValueException(
+                sprintf('Failed %d out of %d validation checks', $this->failures, count($this->results)),
+                $this->varName,
+                $this->value,
+                $this->results
+            );
+        }
 
         return $this;
     }

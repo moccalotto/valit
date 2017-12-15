@@ -10,35 +10,42 @@
 
 namespace Valit\Traits;
 
-use Valit\Exceptions\InvalidValueException;
-use Valit\Result\AssertionResult as Result;
+use Valit\Result\AssertionResult;
 
 trait ContainsResults
 {
     /**
-     * @var Result[]
+     * @var AssertionResult[]
+     *
+     * @internal
      */
-    protected $results = [];
+    public $results = [];
 
     /**
      * @var string
+     *
+     * @internal
      */
-    protected $varName = 'value';
+    public $varName = 'value';
 
     /**
      * @var mixed
      */
-    protected $value;
+    public $value;
 
     /**
      * @var int
+     *
+     * @internal
      */
-    protected $successes = 0;
+    public $successes = 0;
 
     /**
      * @var int
+     *
+     * @internal
      */
-    protected $failures = 0;
+    public $failures = 0;
 
     /**
      * Getter.
@@ -131,9 +138,9 @@ trait ContainsResults
     }
 
     /**
-     * Get the results.
+     * Get the assertion results.
      *
-     * @return Result[]
+     * @return AssertionResult[]
      */
     public function results()
     {
@@ -143,39 +150,27 @@ trait ContainsResults
     /**
      * Add new result to the internal results list.
      *
-     * @param Result $results
+     * @param AssertionResult $results
      *
      * @return $this
      *
      * @throws InvalidValueException if we are in throwOnFailure-mode and the result is an error
      */
-    public function addAssertionResult(Result $result)
+    public function addAssertionResult(AssertionResult $result)
     {
         $this->results[] = $result;
 
         if ($result->success()) {
             ++$this->successes;
-
-            // early return
-            return $this;
+        } else {
+            ++$this->failures;
         }
-
-        ++$this->failures;
-
-        if ($this->throwOnFailure) {
-            throw new InvalidValueException(
-                $result->renderMessage($this->varName, $this->value),
-                $this->varName,
-                $this->value,
-                $this->results
-            );
-        }
-
+        // early return
         return $this;
     }
 
     /**
-     * Get the results as an associative array.
+     * Render the results as [message => success-status] map.
      *
      * The result is formarted as [message1 => success1, message2 => success2, ...]
      *
@@ -195,9 +190,9 @@ trait ContainsResults
     }
 
     /**
-     * Get all error-results.
+     * Get all failed assertion results.
      *
-     * @return Result[]
+     * @return AssertionResult[]
      */
     public function errors()
     {
@@ -221,26 +216,5 @@ trait ContainsResults
                 $this->errors()
             )
         );
-    }
-
-    /**
-     * Throw exceptions if any failures has occurred or occur later in the execution stream.
-     *
-     * @return $this
-     *
-     * @throws InvalidValueException if any failures have occurred
-     */
-    public function orThrowException()
-    {
-        if ($this->failures) {
-            throw new InvalidValueException(
-                sprintf('Failed %d out of %d validation checks', $this->failures, count($this->results)),
-                $this->varName,
-                $this->value,
-                $this->results
-            );
-        }
-
-        return $this;
     }
 }

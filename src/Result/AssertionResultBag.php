@@ -9,19 +9,11 @@ class AssertionResultBag
     use ContainsResults;
 
     /**
-     * @var bool
-     *
-     * @internal
-     */
-    public $throwOnFailure;
-
-    /**
      * Constructor.
      */
-    public function __construct($value, $varName, $throwOnFailure)
+    public function __construct($value, $varName)
     {
         $this->value = $value;
         $this->varName = ((string) $varName) ?: 'value';
-        $this->throwOnFailure = $throwOnFailure;
     }
 }
