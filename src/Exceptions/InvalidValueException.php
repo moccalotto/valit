@@ -11,6 +11,7 @@
 namespace Valit\Exceptions;
 
 use UnexpectedValueException;
+use Valit\Result\AssertionResult;
 use Valit\Traits\ContainsResults;
 
 /**
@@ -23,8 +24,8 @@ class InvalidValueException extends UnexpectedValueException
     /**
      * Constructor.
      *
-     * @param string $message
-     * @param array  $results
+     * @param string            $message
+     * @param AssertionResult[] $results
      */
     public function __construct($message, $varName, $value, array $results)
     {
