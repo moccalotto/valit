@@ -15,7 +15,7 @@ use Valit\Result\AssertionResult;
 use Valit\Traits\ContainsResults;
 
 /**
- * Exception thrown when a value is invalid.
+ * Exception to throw when one or more assertions failed.
  */
 class InvalidValueException extends UnexpectedValueException
 {
@@ -24,8 +24,10 @@ class InvalidValueException extends UnexpectedValueException
     /**
      * Constructor.
      *
-     * @param string            $message
-     * @param AssertionResult[] $results
+     * @param string            $message The exception message
+     * @param string            $varName The name of the variable that was validated
+     * @param mixed             $value   The value validated
+     * @param AssertionResult[] $results The results of validating the variable
      */
     public function __construct($message, $varName, $value, array $results)
     {
