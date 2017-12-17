@@ -7,7 +7,6 @@ logic comparisons, roughly based on control-structures.php
 DRYness:
 ========
 
-stringable() should be moved to a trait.
 DateCheckProvider::dt() should be moved to a trait.
 DateCheckProvider::canParse() should be moved to a trait.
 

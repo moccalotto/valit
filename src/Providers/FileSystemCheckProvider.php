@@ -10,19 +10,14 @@
 
 namespace Valit\Providers;
 
+use Valit\Traits;
 use Valit\Contracts\CheckProvider;
-use Valit\Traits\ProvideViaReflection;
 use Valit\Result\AssertionResult as Result;
 
 class FileSystemCheckProvider implements CheckProvider
 {
-    use ProvideViaReflection;
-
-    protected function canString($value)
-    {
-        return is_scalar($value)
-            || is_object($value) && method_exists($value, '__toString');
-    }
+    use Traits\CanString,
+        Traits\ProvideViaReflection;
 
     /**
      * Check if $value is an existing file.

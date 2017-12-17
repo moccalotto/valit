@@ -10,14 +10,16 @@
 
 namespace Valit\Providers;
 
+use Valit\Traits;
 use InvalidArgumentException;
-use Valit\Result\AssertionResult as Result;
 use Valit\Contracts\CheckProvider;
-use Valit\Traits\ProvideViaReflection;
+use Valit\Result\AssertionResult as Result;
 
 class StringCheckProvider implements CheckProvider
 {
-    use ProvideViaReflection;
+    use Traits\CanString,
+        Traits\ProvideViaReflection;
+
 
     /**
      * Check if $value contains only hexidecimal characters.
@@ -163,7 +165,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkMatchesRegex($value, $pattern)
     {
-        if (!$this->checkStringable($pattern)->success()) {
+        if (!$this->canString($pattern)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -187,8 +189,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStringable($value)
     {
-        $success = is_scalar($value)
-            || is_object($value) && method_exists($value, '__toString');
+        $success = $this->canString($value); // from CanString trait
 
         return new Result($success, '{name} must be a string or string-castable');
     }
@@ -205,7 +206,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStartsWith($value, $startsWith)
     {
-        if (!$this->checkStringable($startsWith)->success()) {
+        if (!$this->canString($startsWith)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -227,7 +228,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkEndsWith($value, $endsWith)
     {
-        if (!$this->checkStringable($endsWith)->success()) {
+        if (!$this->canString($endsWith)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -249,7 +250,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkContainsString($value, $contains)
     {
-        if (!$this->checkStringable($contains)->success()) {
+        if (!$this->canString($contains)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 

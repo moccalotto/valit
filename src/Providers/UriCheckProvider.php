@@ -10,14 +10,15 @@
 
 namespace Valit\Providers;
 
+use Valit\Traits;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
-use Valit\Traits\ProvideViaReflection;
 use Valit\Result\AssertionResult as Result;
 
 class UriCheckProvider implements CheckProvider
 {
-    use ProvideViaReflection;
+    use Traits\CanString,
+        Traits\ProvideViaReflection;
 
     /**
      * Check if $value is a valid host name.
