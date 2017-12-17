@@ -4,13 +4,6 @@ Logic:
 Make large kahlan tests that demonstrate the awesomeness of
 logic comparisons, roughly based on control-structures.php
 
-DRYness:
-========
-
-DateCheckProvider::dt() should be moved to a trait.
-DateCheckProvider::canParse() should be moved to a trait.
-
-
 FileSystemChecks:
 =================
 

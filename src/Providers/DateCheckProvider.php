@@ -10,13 +10,12 @@
 
 namespace Valit\Providers;
 
-use DateTime;
 use Exception;
+use Valit\Traits;
 use DateTimeInterface;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
 use Valit\Result\AssertionResult as Result;
-use Valit\Traits\ProvideViaReflection;
 
 /**
  * Check that dates for validity.
@@ -26,127 +25,8 @@ use Valit\Traits\ProvideViaReflection;
  */
 class DateCheckProvider implements CheckProvider
 {
-    use ProvideViaReflection;
-
-    /**
-     * @var DateTimeInterface
-     */
-    protected $now;
-
-    /**
-     * In order to facilitate testing, we must be able to lock/override the "now" datetime.
-     *
-     * @param DateTimeInterface $now
-     */
-    public function overrideNow(DateTimeInterface $now)
-    {
-        $this->now = clone $now;
-    }
-
-    /**
-     * Get the current DateTime.
-     *
-     * If the DateTime that represents the current time. If it was overridden with the overrideNow() method,
-     * we return that DateTime instead.
-     */
-    protected function now()
-    {
-        return $this->now ? clone $this->now : new DateTime();
-    }
-
-    /**
-     * Is the candidate value can be treated as a date.
-     *
-     * @param string|DateTimeInterface $candidate candidate date
-     * @param string|null              $format    The format to use. @see http://php.net/manual/en/class.datetime.php
-     *
-     * @return bool
-     */
-    protected function canParse($candidate, $format = null)
-    {
-        try {
-            $this->dt($candidate, $format);
-        } catch (Exception $e) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Convert the candidate value into a DateTime object.
-     *
-     * @param string|int|DateTimeInterface $candidate
-     * @param string|null                  $format
-     *
-     * @return DateTimeInterface
-     *
-     * @throws InvalidArgumentException if $candidate is not string, int or DateTime, or if it could not be parsed
-     */
-    protected function dt($candidate, $format = null)
-    {
-        if ($candidate instanceof DateTimeInterface) {
-            return $candidate;
-        }
-
-        if (is_int($candidate)) {
-            return DateTime::createFromFormat('U', $candidate);
-        }
-
-        if (!is_string($candidate)) {
-            throw new InvalidArgumentException('Candidate must be an int, a string or a DateTime');
-        }
-
-        if ($candidate === '') {
-            throw new InvalidArgumentException('Candidate cannot be an empty string');
-        }
-
-        try {
-            /**
-             * Use the given format to parse the DateTime (createFromFormat)
-             * otherwise try and infer the format (via the constructor).
-             *
-             * @var DateTime
-             */
-            $dt = DateTime::createFromFormat((string) $format, $candidate) ?: new DateTime($candidate);
-        } catch (Exception $e) {
-            // new DateTime can throw Exception - we only want to throw InvalidArgumentException
-            // so we catch it.
-            throw new InvalidArgumentException(sprintf(
-                'Candidate could be parsed as a datetime via the format "%s"',
-                $format
-            ), 0, $e);
-        }
-
-        if ($format && $dt->format($format) !== $candidate) {
-            throw new InvalidArgumentException(sprintf(
-                'Candidate could be parsed as a datetime via the format "%s"',
-                $format
-            ));
-        }
-
-        return $dt;
-    }
-
-    /**
-     * Compare two datetimes in a PHP-version agnostic way.
-     *
-     * PHP 5.* does not account for microseconds when comparing two datetimes.
-     * We therefore convert the datetimes into floating floating point timestamps
-     * and compare them as normal floats.
-     *
-     * @param DateTimeInterface $a,
-     * @param DateTimeInterface $b
-     *
-     * @return float the number of seconds between $a and $b
-     */
-    protected function compare(DateTimeInterface $a, DateTimeInterface $b)
-    {
-        $aFloat = (float) $a->format('U.u');
-        $bFloat = (float) $b->format('U.u');
-
-        return $aFloat - $bFloat;
-    }
+    use Traits\DateUtils,
+        Traits\ProvideViaReflection;
 
     /**
      * Check if $value is a string containing a parseable date.
@@ -179,7 +59,7 @@ class DateCheckProvider implements CheckProvider
     public function checkDateAfter($value, $against)
     {
         if (!$against instanceof DateTimeInterface) {
-            throw new InvalidArgumentException('$against must be a DateTime object');
+            throw new InvalidArgumentException('$against must be a DateTimeInterface object');
         }
         $success = $this->canParse($value)
             && $this->compare($this->dt($value), $against) > 0;
@@ -200,7 +80,7 @@ class DateCheckProvider implements CheckProvider
     public function checkDateBefore($value, $against)
     {
         if (!$against instanceof DateTimeInterface) {
-            throw new InvalidArgumentException('$against must be a DateTime object');
+            throw new InvalidArgumentException('$against must be a DateTimeInterface object');
         }
 
         $success = $this->canParse($value)
