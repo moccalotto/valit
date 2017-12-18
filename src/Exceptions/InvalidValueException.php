@@ -33,7 +33,9 @@ class InvalidValueException extends UnexpectedValueException
     {
         $this->value = $value;
         $this->varName = $varName;
-        $this->results = $results;
+        foreach ($results as $result) {
+            $this->addAssertionResult($result);
+        }
 
         $value = json_encode($value);
 
