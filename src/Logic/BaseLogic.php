@@ -90,6 +90,8 @@ abstract class BaseLogic implements Logic
 
     /**
      * @return AssertionResult
+     *
+     * @internal
      */
-    abstract protected function makeResult();
+    abstract public function makeResult();
 }

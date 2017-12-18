@@ -20,8 +20,10 @@ class Not extends BaseLogic
 
     /**
      * @return AssertionResult
+     *
+     * @internal
      */
-    protected function makeResult()
+    public function makeResult()
     {
         $scenarioResults = [];
         $successCount = 0;
