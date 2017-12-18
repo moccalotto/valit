@@ -42,7 +42,7 @@ Ensure::that($number)->passesOneOf([
     Check::isNumeric()->isGreaterThan(0),
 ]);
 
-Ensure::that($number)->passes(Ensure::oneOf([
+Ensure::that($number)->passes(Check::oneOf([
     'isNaturalNumber & gte(0) & lte(255)',
     'isHex & hasLength(2)',
 ]));
