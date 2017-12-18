@@ -24,7 +24,7 @@ class LogicCheckProvider implements CheckProvider
     /**
      * Check that $logic is successful.
      *
-     * @Check(["isSuccessfulLogic", "logic", "passesLogic"])
+     * @Check(["passes", "isSuccessfulLogic", "logic", "passesLogic"])
      *
      * @param mixed         $value     The value to be passed to the logic (if necessary)
      * @param LogicContract $logic     The logic to be executed
