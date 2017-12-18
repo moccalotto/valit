@@ -20,7 +20,6 @@ class StringCheckProvider implements CheckProvider
     use Traits\CanString,
         Traits\ProvideViaReflection;
 
-
     /**
      * Check if $value contains only hexidecimal characters.
      *

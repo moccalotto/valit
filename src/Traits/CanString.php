@@ -10,8 +10,6 @@
 
 namespace Valit\Traits;
 
-use Valit\Result\AssertionResult;
-
 trait CanString
 {
     public function canString($value)

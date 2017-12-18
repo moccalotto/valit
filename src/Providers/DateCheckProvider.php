@@ -10,7 +10,6 @@
 
 namespace Valit\Providers;
 
-use Exception;
 use Valit\Traits;
 use DateTimeInterface;
 use InvalidArgumentException;
