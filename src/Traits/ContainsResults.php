@@ -30,6 +30,8 @@ trait ContainsResults
 
     /**
      * @var mixed
+     *
+     * @internal
      */
     public $value;
 
