@@ -132,11 +132,9 @@ trait ContainsResults
      */
     public function valueOr($valueIfValidationFails)
     {
-        if ($this->failures === 0) {
-            return $this->value;
-        }
-
-        return $valueIfValidationFails;
+        return $this->hasErrors()
+            ? $valueIfValidationFails
+            : $this->value;
     }
 
     /**
