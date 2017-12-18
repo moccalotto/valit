@@ -39,6 +39,8 @@ class ValueValidatorSpec extends ObjectBehavior
         $this->shouldHaveType('Valit\Validators\ValueValidator');
         $this->isNumeric()->shouldHaveType('Valit\Validators\ValueValidator');
         $this->isNegative()->shouldHaveType('Valit\Validators\ValueValidator');
+        $this->successes->shouldBe(1);
+        $this->failures->shouldBe(1);
         $this->results()->shouldHaveCount(2);
     }
 
