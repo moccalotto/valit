@@ -188,4 +188,16 @@ class Manager implements CheckManager
 
         return call_user_func_array($callback, array_merge([$value], $args));
     }
+
+    /**
+     * Debug info.
+     *
+     * This method reduces the size of print_r and var_dump()
+     *
+     * @return array
+     */
+    public function __debugInfo()
+    {
+        return ['checkCount' => count($this->checks)];
+    }
 }
