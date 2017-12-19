@@ -24,7 +24,7 @@ class LogicCheckProvider implements CheckProvider
     /**
      * Check that $logic is successful.
      *
-     * @Check(["passes", "isSuccessfulLogic", "logic", "passesLogic"])
+     * @Check(["isSuccessfulLogic", "logic", "passesLogic"])
      *
      * @param mixed         $value     The value to be passed to the logic (if necessary)
      * @param LogicContract $logic     The logic to be executed
@@ -84,7 +84,7 @@ class LogicCheckProvider implements CheckProvider
     /**
      * Check that all of the given branches succeed if given $value.
      *
-     * @Check(["passesAllOf", "logicAllOf"])
+     * @Check(["passesAllOf", "passesAll", "logicAllOf"])
      *
      * @param mixed   $value     The value to be passed to the logic (if necessary)
      * @param array   $branches  The branches of the logic
@@ -106,7 +106,7 @@ class LogicCheckProvider implements CheckProvider
     /**
      * Check that none of the given branches succeed if given $value.
      *
-     * @Check(["passesNoneOf", "logicNoneOf", "failsAllOf"])
+     * @Check(["passesNoneOf", "passesNone", "logicNoneOf", "failsAllOf"])
      *
      * @param mixed   $value     The value to be passed to the logic (if
      *                           necessary)

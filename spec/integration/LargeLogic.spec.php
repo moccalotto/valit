@@ -2,6 +2,7 @@
 
 namespace Kahlan\Spec\Suite;
 
+use DateTime;
 use Exception;
 use Valit\Check;
 use Valit\Ensure;
@@ -11,7 +12,19 @@ use Valit\Exceptions\InvalidValueException;
 
 function test($allowUnauthenticatedAccess, $request)
 {
-    Ensure::container($request)->passes([
+    Ensure::that($request)->passesAll([
+        Check::oneOf([  // the request must either be an array or an object
+            Check::value()->isArray(),
+            Check::value()->isObject()
+        ]),
+
+        Check::allOrNone([
+            'headers/last-modified-at' => 'present',
+            'headers/last-modified-at' => Check::value()->isParsableDate(),
+            'headers/last-modified-at' => Check::value()->isDateInThePast(),
+            'headers/last-modified-at' => Check::value()->isDateAfter(new DateTime('15 days ago')),
+        ]),
+
         // We must either allow unauthenticated access
         // or we must have some kind of authentication token
         Check::anyOf([
@@ -22,38 +35,47 @@ function test($allowUnauthenticatedAccess, $request)
             ]),
         ]),
 
-        Check::allOrNone([
-            'headers/last-modified-at' => 'required',
-            'headers/last-modified-at' => Check::value()->isDateAfter('15 days ago'),
-            'headers/last-modified-at' => Check::value()->isDateBefore('now'),
-        ]),
-
-        Check::notAnyOf([
-            'headers/forwarded'         => 'required',
-            'headers/x-forwarded-for'   => 'required',
-            'headers/x-forwarded-host'  => 'required',
-            'headers/x-forwarded-proto' => 'required',
-        ]),
+        Check::that(true)->isTrue(),    // Add some complexity
     ]);
 };
 
 
 describe('Large Logic', function () {
-    it('executed witout authentication', function () {
-        expect(function () {
-            $allowUnauthenticatedAccess = true;
-            $request = [];
-            test($allowUnauthenticatedAccess, $request);
-        })->not->toThrow();
-    });
-    it('throw when executed witout authentication and allowUnauthenticatedAccess = false', function () {
+    it('throws when executed without authentication and allowUnauthenticatedAccess = false', function () {
         expect(function () {
             $allowUnauthenticatedAccess = false;
-            $request = [];
+            (object) $request = [];
             test($allowUnauthenticatedAccess, $request);
         })->toThrow();
     });
-    it('executed with x-auth-token in headers', function () {
+    it('throws when auth header is not correctly formatted', function () {
+        expect(function () {
+            $allowUnauthenticatedAccess = false;
+            $request = [
+                'headers' => [
+                    'x-auth-token' => 'foo',
+                ],
+            ];
+            test($allowUnauthenticatedAccess, $request);
+        })->toThrow();
+    });
+
+    it('throws when both authToken and x-auth-token are present and allowUnauthenticatedAccess = false', function () {
+        expect(function () {
+            $allowUnauthenticatedAccess = false;
+            $request = [
+                'headers' => [
+                    'x-auth-token' => '795973753bbb41b6adf3523589911b5721ee2ba2c5',
+                ],
+                'body' => [
+                    'authToken' => '795973753bbb41b6adf3523589911b5721ee2ba2c5',
+                ],
+            ];
+            test($allowUnauthenticatedAccess, $request);
+        })->toThrow();
+    });
+
+    it('is valid when executed with x-auth-token in headers', function () {
         expect(function () {
             $allowUnauthenticatedAccess = false;
             $request = [
@@ -63,7 +85,7 @@ describe('Large Logic', function () {
         })->not->toThrow();
     });
 
-    it('executed with authToken in body', function () {
+    it('is valid when executed with authToken in body', function () {
         expect(function () {
             $allowUnauthenticatedAccess = false;
             $request = [
@@ -73,23 +95,57 @@ describe('Large Logic', function () {
         })->not->toThrow();
     });
 
-    it('valid when executed with good last-modified-at header', function () {
+    it('is valid when executed witout authentication and allowUnauthenticatedAccess = true', function () {
+        expect(function () {
+            $allowUnauthenticatedAccess = true;
+            $request = [];
+            test($allowUnauthenticatedAccess, $request);
+        })->not->toThrow();
+    });
+    it('is valid when executed with two authentication methods and allowUnauthenticatedAccess = true', function () {
         expect(function () {
             $allowUnauthenticatedAccess = true;
             $request = [
                 'headers' => [
-                    'last-modified-at' => gmdate('D, d M Y H:i:s', strtotime('10 days ago')) . ' GMT'
+                    'x-auth-token' => '795973753bbb41b6adf3523589911b5721ee2ba2c5',
+                ],
+                'body' => [
+                    'authToken' => '795973753bbb41b6adf3523589911b5721ee2ba2c5',
                 ],
             ];
             test($allowUnauthenticatedAccess, $request);
         })->not->toThrow();
     });
-    it('throw when executed with bad last-modified-at header', function () {
+
+    it('throws when last-modified-at header is present, but incorrectly formatted', function () {
         expect(function () {
             $allowUnauthenticatedAccess = true;
             $request = [
                 'headers' => [
-                    'last-modified-at' => gmdate('D, d M Y H:i:s', strtotime('100 days ago')) . ' GMT'
+                    'last-modified-at' => 'sovs',
+                ],
+            ];
+            test($allowUnauthenticatedAccess, $request);
+        })->toThrow();
+    });
+    it('throws when last-modified-at header is in the future', function () {
+        expect(function () {
+            $allowUnauthenticatedAccess = true;
+            $request = [
+                'headers' => [
+                    'last-modified-at' => gmdate('D, d M Y H:i:s \G\M\T', time() + 666),
+                ],
+            ];
+            test($allowUnauthenticatedAccess, $request);
+        })->toThrow();
+    });
+
+    it('is valid when last-modified-at header is within the last 15 days', function () {
+        expect(function () {
+            $allowUnauthenticatedAccess = true;
+            $request = [
+                'headers' => [
+                    'last-modified-at' => gmdate('D, d M Y H:i:s \G\M\T', time() - 24 * 60 * 60),
                 ],
             ];
             test($allowUnauthenticatedAccess, $request);

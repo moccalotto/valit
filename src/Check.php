@@ -117,6 +117,21 @@ abstract class Check
     }
 
     /**
+     * Check that all or none of of the given scenarios succeed.
+     *
+     * @param array|\Traversable $scenarios
+     *
+     * @return Logic\NoneOf
+     */
+    public static function allOrNone($scenarios)
+    {
+        return new Logic\AllOfOrNone(
+            Manager::instance(),
+            $scenarios
+        );
+    }
+
+    /**
      * Alias of noneOf().
      *
      * Check that none of of the given scenarios succeed.

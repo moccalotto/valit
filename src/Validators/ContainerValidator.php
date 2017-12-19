@@ -21,6 +21,7 @@ use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
 use Valit\Result\ContainerResultBag;
 use Valit\Assertion\AssertionNormalizer;
+use Valit\Exceptions\ValueRequiredException;
 
 /**
  * Validate a container (variable with array access).
@@ -86,7 +87,7 @@ class ContainerValidator
     public function passes($containerAssertionMap)
     {
         if (!$this->isTraversable($containerAssertionMap)) {
-            throw new LogicException('$validation must be an array or a Traversable object');
+            throw new LogicException('$containerAssertionMap must be an array or a Traversable object');
         }
 
         foreach ($containerAssertionMap as $fieldNameGlob => $assertions) {
@@ -122,10 +123,16 @@ class ContainerValidator
 
         if ($fieldsToValidate === []) {
             $message = $assertions->isOptional() ? '{name} is optional' : '{name} must be present';
-            $assertionResultBag = new AssertionResultBag($this->container, $fieldNameGlob, $this->throwOnFailure);
+            $assertionResultBag = new AssertionResultBag($this->container, $fieldNameGlob);
             $assertionResultBag->addAssertionResult(new AssertionResult($assertions->isOptional(), $message));
-
             $this->results->add($fieldNameGlob, $assertionResultBag);
+
+            if ($this->throwOnFailure && $assertionResultBag->hasErrors()) {
+                throw new ValueRequiredException(sprintf(
+                    'Entry with key »%s« is required',
+                    $fieldNameGlob
+                ));
+            }
 
             return;
         }

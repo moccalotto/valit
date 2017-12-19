@@ -110,4 +110,19 @@ class ValueValidator extends AssertionResultBag
 
         return $this;
     }
+
+    /**
+     * Throw exceptions if any failures has occurred or occur later in the execution stream.
+     *
+     * Alias of orThrowException()
+     * @see self::orThrowException()
+     *
+     * @return $this
+     *
+     * @throws InvalidValueException if any failures have occurred
+     */
+    public function throwExceptionIfNotSuccessful()
+    {
+        return $this->orThrowException();
+    }
 }

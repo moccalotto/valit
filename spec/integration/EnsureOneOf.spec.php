@@ -50,7 +50,7 @@ describe('Ensure::oneOf', function () {
     it('Executed on successful logic instance', function () {
         $closure = function () {
             $number = 'ff';
-            Ensure::that($number)->as('number')->passes(Check::oneOf([
+            Ensure::that($number)->as('number')->passesLogic(Check::oneOf([
                 'isInteger & gte(0) & lte(255)',
                 'isHex & hasLength(2)',
             ]));
@@ -62,7 +62,7 @@ describe('Ensure::oneOf', function () {
     it('Executed on failed logic instance', function () {
         $closure = function () {
             $number = 'bleh';
-            Ensure::that($number)->as('number')->passes(Check::oneOf([
+            Ensure::that($number)->as('number')->passesLogic(Check::oneOf([
                 'isInteger & gte(0) & lte(255)',
                 'isHex & hasLength(2)',
             ]));

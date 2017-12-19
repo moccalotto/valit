@@ -99,6 +99,7 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkInThePast($value)
     {
+        print('TEST TEST TEST' . $value);
         $success = $this->canParse($value) &&
             $this->compare($this->dt($value), $this->now()) < 0;
 
