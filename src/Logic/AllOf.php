@@ -24,7 +24,7 @@ class AllOf extends BaseLogic
 
         return new AssertionResult(
             $successCount === $scenarioCount,
-            'At least one of {scenarioResults:count} scenarios must succeed',
+            'All of the given scenarios must succeed. Only {successCount} of {scenarioResults:count} succeeded',
             compact('successCount', 'scenarioResults')
         );
     }
