@@ -4,6 +4,16 @@ Logic:
 Make large kahlan tests that demonstrate the awesomeness of
 logic comparisons, roughly based on control-structures.php
 
+
+
+DateCheckProvider:
+==================
+
+allow all $against values to be strings as well as DateTimeInterface objects.
+Allows prettier string syntax.
+
+
+
 FileSystemChecks:
 =================
 
@@ -24,3 +34,6 @@ fileAccessedAfter
 fileAccessedAt
 
 Consider support for mime types. Maybe a separate mime type checker.
+
+
+
