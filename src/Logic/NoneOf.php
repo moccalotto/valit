@@ -22,7 +22,7 @@ class NoneOf extends BaseLogic
 
         return new AssertionResult(
             $successCount === 0,
-            'At none of {scenarioResults:count} scenarios may succeed',
+            '0 of {scenarioResults:count} scenarios may succeed',
             compact('successCount', 'scenarioResults')
         );
     }
