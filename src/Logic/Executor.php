@@ -253,4 +253,22 @@ class Executor
 
         return $resultBag;
     }
+
+    /**
+     * Debug info.
+     *
+     * This method reduces the size of print_r and var_dump()
+     *
+     * @return array
+     */
+    public function __debugInfo()
+    {
+        return [
+            'requires' => $this->requires,
+            'hasValue' => $this->hasValue,
+            'value' => $this->value,
+            'scenarios' => $this->scenarios,
+            'results' => $this->results,
+        ];
+    }
 }
