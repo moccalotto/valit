@@ -12,7 +12,7 @@
 
 namespace spec\Valit\Logic;
 
-use Valit\check;
+use Valit\Check;
 use Valit\Manager;
 use Valit\Logic\OneOf;
 use PhpSpec\ObjectBehavior;
