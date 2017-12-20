@@ -192,8 +192,7 @@ class Executor
     {
         $resultBag = new AssertionResultBag(
             $this->value,
-            'value',
-            false
+            'value'
         );
 
         $resultBag->addAssertionResult($asserionResult);
