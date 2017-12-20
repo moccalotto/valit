@@ -4,6 +4,7 @@ namespace Kahlan\Spec\Suite;
 
 use Valit\Check;
 use Valit\Ensure;
+use Valit\Assertion\Template;
 
 function containerFeatureTest($request)
 {
@@ -15,7 +16,7 @@ function containerFeatureTest($request)
             'body' => 'isArray',
             'body/authToken' => 'isUuid',
             'body/action' => Check::value()->matches('/[a-z][a-zA-Z0-9_]*$/A'),
-            'body/params' => 'isArray',
+            'body/params' => (new Template)->isArray(),
             'body/extras' => 'optional & isArray',
         ]);
 }
