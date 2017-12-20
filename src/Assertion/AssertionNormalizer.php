@@ -65,18 +65,20 @@ class AssertionNormalizer
 
             return;
         }
+        if (is_a($assertions, AssertionBag::class)) {
+            $this->assertions = clone $assertions;
+
+            return;
+        }
         if (is_a($assertions, Logic::class)) {
             $this->assertions = new AssertionBag([
                 new Assertion('passesLogic', [
                     $assertions,
                     true,
-                ]),
+                ])
             ]);
 
-            return;
-        }
-        if (is_a($assertions, AssertionBag::class)) {
-            $this->assertions = clone $assertions;
+            $this->assertions->setFlag('optional', true);
 
             return;
         }
@@ -168,18 +170,12 @@ class AssertionNormalizer
      */
     public function addSingleAssertion($checkName, $assertionArgs)
     {
-        if ($checkName === 'optional') {
+        if (in_array($checkName, ['optional', 'isOptional'])) {
             $this->assertions->setFlag('optional', true);
 
             return;
         }
-
-        if ($checkName === 'required') {
-            $this->assertions->setFlag('optional', false);
-
-            return;
-        }
-        if ($checkName === 'present') {
+        if (in_array($checkName, ['required', 'isRequired', 'present', 'isPresent'])) {
             $this->assertions->setFlag('optional', false);
 
             return;
