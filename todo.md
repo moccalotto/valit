@@ -20,6 +20,13 @@ Check::that($container, $value)->contains([
 ```
 
 
+Templates:
+==========
+Maybe merge Template and AssertionBag.
+Maybe refactor Template:
+    Maybe rename
+    Maybe inherit from AssertionBag instead of composition
+
 Logic:
 ======
 
