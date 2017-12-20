@@ -95,7 +95,9 @@ class ContainerValidator
             $this->executeAndAdd($fieldNameGlob, $normalizedAssertions);
         }
 
-        return $this->results;
+        return $this->throwOnFailure
+            ? $this->results->orThrowException()
+            : $this->results;
     }
 
     /**
@@ -126,15 +128,6 @@ class ContainerValidator
             $assertionResultBag = new AssertionResultBag($this->container, $fieldNameGlob);
             $assertionResultBag->addAssertionResult(new AssertionResult($assertions->isOptional(), $message));
             $this->results->add($fieldNameGlob, $assertionResultBag);
-
-            if ($this->throwOnFailure && $assertionResultBag->hasErrors()) {
-                throw new ValueRequiredException(sprintf(
-                    'Entry with key »%s« is required',
-                    $fieldNameGlob
-                ));
-            }
-
-            return;
         }
 
         foreach ($fieldsToValidate as $fieldPath => $value) {
