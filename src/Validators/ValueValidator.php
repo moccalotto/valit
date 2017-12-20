@@ -115,6 +115,7 @@ class ValueValidator extends AssertionResultBag
      * Throw exceptions if any failures has occurred or occur later in the execution stream.
      *
      * Alias of orThrowException()
+     *
      * @see self::orThrowException()
      *
      * @return $this

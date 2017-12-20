@@ -21,7 +21,6 @@ use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
 use Valit\Result\ContainerResultBag;
 use Valit\Assertion\AssertionNormalizer;
-use Valit\Exceptions\ValueRequiredException;
 
 /**
  * Validate a container (variable with array access).

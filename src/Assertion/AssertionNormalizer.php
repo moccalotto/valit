@@ -75,7 +75,7 @@ class AssertionNormalizer
                 new Assertion('passesLogic', [
                     $assertions,
                     true,
-                ])
+                ]),
             ]);
 
             $this->assertions->setFlag('optional', true);
