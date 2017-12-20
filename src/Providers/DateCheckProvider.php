@@ -37,7 +37,7 @@ class DateCheckProvider implements CheckProvider
      *
      * @return Result
      */
-    public function checkDateParsable($value, $format)
+    public function checkDateParsable($value, $format = null)
     {
         return new Result(
             $this->canParse($value, $format),
