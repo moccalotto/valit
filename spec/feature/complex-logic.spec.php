@@ -10,7 +10,7 @@ use Valit\Result\AssertionResult;
 use Valit\Validators\ValueValidator;
 use Valit\Exceptions\InvalidValueException;
 
-function test($allowUnauthenticatedAccess, $request)
+function logicFeatureTest($allowUnauthenticatedAccess, $request)
 {
     Ensure::that($request)->passesAll([
         Check::oneOf([  // the request must either be an array or an object
@@ -18,12 +18,11 @@ function test($allowUnauthenticatedAccess, $request)
             Check::value()->isObject()
         ]),
 
-        Check::allOrNone([
-            'headers/last-modified-at' => 'present',
-            'headers/last-modified-at' => Check::value()->isParsableDate(),
-            'headers/last-modified-at' => Check::value()->isDateInThePast(),
-            'headers/last-modified-at' => Check::value()->isDateAfter(new DateTime('15 days ago')),
-        ]),
+        // Check::allOrNone([
+        //     'headers/last-modified-at' => Check::value()->isParsableDate(),
+        //     'headers/last-modified-at' => Check::value()->isDateInThePast(),
+        //     'headers/last-modified-at' => Check::value()->isDateAfter(new DateTime('15 days ago')),
+        // ]),
 
         // We must either allow unauthenticated access
         // or we must have some kind of authentication token
@@ -45,7 +44,7 @@ describe('Large Logic', function () {
         expect(function () {
             $allowUnauthenticatedAccess = false;
             (object) $request = [];
-            test($allowUnauthenticatedAccess, $request);
+            logicFeatureTest($allowUnauthenticatedAccess, $request);
         })->toThrow();
     });
     it('throws when auth header is not correctly formatted', function () {
@@ -56,7 +55,7 @@ describe('Large Logic', function () {
                     'x-auth-token' => 'foo',
                 ],
             ];
-            test($allowUnauthenticatedAccess, $request);
+            logicFeatureTest($allowUnauthenticatedAccess, $request);
         })->toThrow();
     });
 
@@ -71,7 +70,7 @@ describe('Large Logic', function () {
                     'authToken' => '795973753bbb41b6adf3523589911b5721ee2ba2c5',
                 ],
             ];
-            test($allowUnauthenticatedAccess, $request);
+            logicFeatureTest($allowUnauthenticatedAccess, $request);
         })->toThrow();
     });
 
@@ -81,7 +80,7 @@ describe('Large Logic', function () {
             $request = [
                 'headers' => ['x-auth-token' => '795973753bbb41b6adf3523589911b5721ee2ba2c5'],
             ];
-            test($allowUnauthenticatedAccess, $request);
+            logicFeatureTest($allowUnauthenticatedAccess, $request);
         })->not->toThrow();
     });
 
@@ -91,7 +90,7 @@ describe('Large Logic', function () {
             $request = [
                 'body' => ['authToken' => '795973753bbb41b6adf3523589911b5721ee2ba2c5'],
             ];
-            test($allowUnauthenticatedAccess, $request);
+            logicFeatureTest($allowUnauthenticatedAccess, $request);
         })->not->toThrow();
     });
 
@@ -99,7 +98,7 @@ describe('Large Logic', function () {
         expect(function () {
             $allowUnauthenticatedAccess = true;
             $request = [];
-            test($allowUnauthenticatedAccess, $request);
+            logicFeatureTest($allowUnauthenticatedAccess, $request);
         })->not->toThrow();
     });
     it('is valid when executed with two authentication methods and allowUnauthenticatedAccess = true', function () {
@@ -113,42 +112,42 @@ describe('Large Logic', function () {
                     'authToken' => '795973753bbb41b6adf3523589911b5721ee2ba2c5',
                 ],
             ];
-            test($allowUnauthenticatedAccess, $request);
+            logicFeatureTest($allowUnauthenticatedAccess, $request);
         })->not->toThrow();
     });
 
-    it('throws when last-modified-at header is present, but incorrectly formatted', function () {
-        expect(function () {
-            $allowUnauthenticatedAccess = true;
-            $request = [
-                'headers' => [
-                    'last-modified-at' => 'sovs',
-                ],
-            ];
-            test($allowUnauthenticatedAccess, $request);
-        })->toThrow();
-    });
-    it('throws when last-modified-at header is in the future', function () {
-        expect(function () {
-            $allowUnauthenticatedAccess = true;
-            $request = [
-                'headers' => [
-                    'last-modified-at' => gmdate('D, d M Y H:i:s \G\M\T', time() + 666),
-                ],
-            ];
-            test($allowUnauthenticatedAccess, $request);
-        })->toThrow();
-    });
+    // it('throws when last-modified-at header is present, but incorrectly formatted', function () {
+    //     expect(function () {
+    //         $allowUnauthenticatedAccess = true;
+    //         $request = [
+    //             'headers' => [
+    //                 'last-modified-at' => 'sovs',
+    //             ],
+    //         ];
+    //         logicFeatureTest($allowUnauthenticatedAccess, $request);
+    //     })->toThrow();
+    // });
+    // it('throws when last-modified-at header is in the future', function () {
+    //     expect(function () {
+    //         $allowUnauthenticatedAccess = true;
+    //         $request = [
+    //             'headers' => [
+    //                 'last-modified-at' => gmdate('D, d M Y H:i:s \G\M\T', time() + 666),
+    //             ],
+    //         ];
+    //         logicFeatureTest($allowUnauthenticatedAccess, $request);
+    //     })->toThrow();
+    // });
 
-    it('is valid when last-modified-at header is within the last 15 days', function () {
-        expect(function () {
-            $allowUnauthenticatedAccess = true;
-            $request = [
-                'headers' => [
-                    'last-modified-at' => gmdate('D, d M Y H:i:s \G\M\T', time() - 24 * 60 * 60),
-                ],
-            ];
-            test($allowUnauthenticatedAccess, $request);
-        })->not->toThrow();
-    });
+    // it('is valid when last-modified-at header is within the last 15 days', function () {
+    //     expect(function () {
+    //         $allowUnauthenticatedAccess = true;
+    //         $request = [
+    //             'headers' => [
+    //                 'last-modified-at' => gmdate('D, d M Y H:i:s \G\M\T', time() - 24 * 60 * 60),
+    //             ],
+    //         ];
+    //         logicFeatureTest($allowUnauthenticatedAccess, $request);
+    //     })->not->toThrow();
+    // });
 });
