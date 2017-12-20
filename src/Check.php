@@ -121,7 +121,7 @@ abstract class Check
      *
      * @param array|\Traversable $scenarios
      *
-     * @return Logic\NoneOf
+     * @return Logic\AllOfOrNone
      */
     public static function allOrNone($scenarios)
     {
