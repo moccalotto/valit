@@ -1,3 +1,25 @@
+Containers:
+===========
+
+Consider a syntax such as:
+
+```php
+Check::that($container)->contains([
+    'foo' => 'isArray',
+    'foo/bar' => 'isString',
+    'foo/baz' => 'optional & isUuid',
+]);
+```
+
+```php
+Check::that($container, $value)->contains([
+    'foo' => $value->isArray(),
+    'foo/bar' => $value->isString(),
+    'foo/baz' => $value->isOptional()->isUuid()
+]);
+```
+
+
 Logic:
 ======
 
