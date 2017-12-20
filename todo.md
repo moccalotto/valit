@@ -27,19 +27,17 @@ Maybe refactor Template:
     Maybe rename
     Maybe inherit from AssertionBag instead of composition
 
-Logic:
-======
-
-Make large kahlan tests that demonstrate the awesomeness of
-logic comparisons, roughly based on control-structures.php
-
-
-
 DateCheckProvider:
 ==================
 
 allow all $against values to be strings as well as DateTimeInterface objects.
 Allows prettier string syntax.
+
+For that purpose DateUtil::dt() should throw better
+exception messages.
+
+It currently states 'Candidate could be parsed as a datetime via the format "%s"'
+but format can be NULL, so it is a stoopid message.
 
 
 

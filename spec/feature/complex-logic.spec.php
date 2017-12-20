@@ -14,11 +14,6 @@ use Valit\Exceptions\InvalidValueException;
 function logicFeatureTest($allowUnauthenticatedAccess, $request)
 {
     Ensure::that($request)->passesAll([
-        Check::oneOf([  // the request must either be an array or an object
-            Value::isArray(),
-            Value::isObject(),
-        ]),
-
         // if headers are present, they must be an array
         'headers' => Check::allOrNone([
             'present',
@@ -31,6 +26,17 @@ function logicFeatureTest($allowUnauthenticatedAccess, $request)
             'isArray',
         ]),
 
+        // We do allow any proxy-forward headers
+        Check::notAnyOf([
+            'headers/forwarded'         => 'present',
+            'headers/x-forwarded-for'   => 'present',
+            'headers/x-forwarded-host'  => 'present',
+            'headers/x-forwarded-proto' => 'present',
+        ]),
+
+        // if we have a last-modified-at header,
+        // it must be parseable and it must be a
+        // date within the last 15 days.
         'headers/last-modified-at' => Check::allOrNone([
             'present',
             Value::isString(),
