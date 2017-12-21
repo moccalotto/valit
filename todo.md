@@ -26,22 +26,13 @@ Maybe refactor Template:
     Maybe rename
     Maybe inherit from AssertionBag instead of composition
 
-DateCheckProvider:
-==================
-
-Allow all $against values to be strings as well as DateTimeInterface objects.
-Add tests for these
-
-
 Tests:
 ======
 
 Add tests for Str class
 Add tests for Size class
+Add tests for Date class
 Add missing checks for FileSystemChecks
-Add missing checks for DateCheckProvider
-Ensure checks for DateCheckProvider also validate that $against can be strings in certain cases.
-
 
 FileSystemChecks:
 =================

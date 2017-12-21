@@ -51,18 +51,17 @@ class DateCheckProvider implements CheckProvider
      *
      * @Check(["isDateAfter", "occursAfter", "dateAfter", "laterThan", "isLaterThan"])
      *
-     * @param mixed             $value
-     * @param DateTimeInterface $against
+     * @param mixed                    $value
+     * @param DateTimeInterface|string $against
      *
      * @return Result
      */
     public function checkDateAfter($value, $against)
     {
-        if (!$against instanceof DateTimeInterface) {
-            throw new InvalidArgumentException('$against must be a DateTimeInterface object');
-        }
+        $againstDate = Date::parse($against);
+
         $success = Date::canParse($value)
-            && Date::compare(Date::parse($value), $against) > 0;
+            && Date::compare(Date::parse($value), $againstDate) > 0;
 
         return new Result($success, '{name} must be a date after {0:raw}', [$against]);
     }
@@ -79,12 +78,10 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkDateBefore($value, $against)
     {
-        if (!$against instanceof DateTimeInterface) {
-            throw new InvalidArgumentException('$against must be a DateTimeInterface object');
-        }
+        $againstDate = Date::parse($against);
 
         $success = Date::canParse($value)
-            && Date::compare(Date::parse($value), $against) < 0;
+            && Date::compare(Date::parse($value), $againstDate) < 0;
 
         return new Result($success, '{name} must be a date before {0:raw}', [$against]);
     }
@@ -100,8 +97,8 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkInThePast($value)
     {
-        $success = Date::canParse($value) &&
-            Date::compare(Date::parse($value), Date::now()) < 0;
+        $success = Date::canParse($value)
+            && Date::compare(Date::parse($value), Date::now()) < 0;
 
         return new Result($success, '{name} must be a date in the past');
     }
@@ -117,8 +114,8 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkInTheFuture($value)
     {
-        $success = Date::canParse($value) &&
-            Date::compare(Date::parse($value), Date::now()) > 0;
+        $success = Date::canParse($value)
+            && Date::compare(Date::parse($value), Date::now()) > 0;
 
         return new Result($success, '{name} must be a future date');
     }
@@ -134,7 +131,8 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkAtMidnight($value)
     {
-        $success = Date::canParse($value) && Date::parse($value)->format('His.u') == 0;
+        $success = Date::canParse($value)
+            && Date::parse($value)->format('His.u') == 0;
 
         return new Result($success, '{name} must be a datetime at midnight');
     }
@@ -150,7 +148,8 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkAtNoon($value)
     {
-        $success = Date::canParse($value) && Date::parse($value)->format('His.u') == 120000;
+        $success = Date::canParse($value)
+            && Date::parse($value)->format('His.u') == 120000;
 
         return new Result($success, '{name} must be a datetime at noon');
     }
@@ -168,12 +167,12 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkSameDateAs($value, $against)
     {
-        $againstDate = Date::parse($against)->format('Y-m-d');
+        $againstString = Date::parse($against)->format('Y-m-d');
 
         $success = Date::canParse($value)
-            && Date::parse($value)->format('Y-m-d') === $againstDate;
+            && Date::parse($value)->format('Y-m-d') === $againstString;
 
-        return new Result($success, '{name} must be on the {0:raw}', [$againstDate]);
+        return new Result($success, '{name} must be on the {0:raw}', [$againstString]);
     }
 
     /**
@@ -208,8 +207,14 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkDayOfMonth($value, $against)
     {
+        $dayOfMonth = Str::toInt($against, '$against must be an integer');
+
+        if ($dayOfMonth > 31 || $dayOfMonth < 1) {
+            throw new InvalidArgumentException('$against must be an integer between 1 and 31');
+        }
+
         $success = Date::canParse($value)
-            && Date::parse($value)->format('j') == Str::toInt($against, '$against must be an integer');
+            && Date::parse($value)->format('j') == $dayOfMonth;
 
         return new Result($success, '{name} must be a on the {0:int}. day of the month', [$against]);
     }
@@ -232,8 +237,10 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkBirthday($value, $against)
     {
+        $againstString = Date::parse($against)->format('md');
+
         $success = Date::canParse($value)
-            && Date::parse($against)->format('md') === Date::parse($value)->format('md');
+            && Date::parse($value)->format('md') === $againstString;
 
         return new Result($success, '{name} must be on the {0:raw}', [Date::parse($against)->format('F dS')]);
     }
