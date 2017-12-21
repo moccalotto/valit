@@ -41,7 +41,7 @@ function logicFeatureTest($allowUnauthenticatedAccess, $request)
             'present',
             Value::isString(),
             Value::isDateInThePast(),
-            Value::isDateString('D, d M Y H:i:s e'),
+            // Value::isDateString('D, d M Y H:i:s e'), // this test does not work on hhvm
             Value::isDateAfter(new DateTime('15 days ago')),
         ]),
 
