@@ -2,6 +2,7 @@
 
 namespace Valit\Util;
 
+use Closure;
 use Countable;
 use LogicException;
 use RuntimeException;
@@ -75,7 +76,7 @@ class VarDumper
         }
 
         if (is_callable($value)) {
-            return 'Callable';
+            return sprintf('Callable (%s)', static::formatCallback($value));
         }
 
         if (is_resource($value)) {
@@ -98,5 +99,40 @@ class VarDumper
             'Unknown type: %s',
             gettype($value)
         ));
+    }
+
+    /**
+     * Get the callback as a string.
+     *
+     * @internal
+     *
+     * @param string $callback
+     *
+     * @return string
+     */
+    public static function formatCallback($callback)
+    {
+        if (is_string($callback)) {
+            return $callback;
+        }
+
+        if (is_array($callback)) {
+            list ($classOrObject, $methodName) = $callback;
+            return sprintf(
+                '%s::%s',
+                is_string($classOrObject) ? $classOrObject : get_class($classOrObject),
+                $methodName
+            );
+        }
+
+        if (is_a($callback, Closure::class)) {
+            return '{closure}';
+        }
+
+        if (is_object($callback)) {
+            return sprintf('%s::__invoke', get_class($callback));
+        }
+
+        return '{unknown}';
     }
 }

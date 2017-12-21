@@ -2,6 +2,7 @@
 
 namespace Valit\Util;
 
+use Valit\Util\VarDumper;
 use InvalidArgumentException;
 use Valit\Result\AssertionResult;
 use Valit\Contracts\CustomChecker;
@@ -63,5 +64,19 @@ class CallbackChecker implements CustomChecker
         $success = (bool) call_user_func($this->callback, $value);
 
         return new AssertionResult($success, $this->message, $this->context);
+    }
+
+    /**
+     * Info for print_r
+     *
+     * @return array
+     */
+    public function __debugInfo()
+    {
+        return [
+            'callback' => VarDumper::formatCallback($this->callback),
+            'message' => $this->message,
+            'context' => $this->context,
+        ];
     }
 }
