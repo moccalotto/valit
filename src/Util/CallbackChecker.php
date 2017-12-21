@@ -2,7 +2,6 @@
 
 namespace Valit\Util;
 
-use Valit\Util\VarDumper;
 use InvalidArgumentException;
 use Valit\Result\AssertionResult;
 use Valit\Contracts\CustomChecker;
@@ -40,7 +39,7 @@ class CallbackChecker implements CustomChecker
      * @param callable $callback
      * @param array    $context
      *
-     * @throws InvalidArgumentException if $callback is not callable.
+     * @throws InvalidArgumentException if $callback is not callable
      */
     public function __construct($message, $callback, $context = [])
     {
@@ -67,7 +66,7 @@ class CallbackChecker implements CustomChecker
     }
 
     /**
-     * Info for print_r
+     * Info for print_r.
      *
      * @return array
      */
