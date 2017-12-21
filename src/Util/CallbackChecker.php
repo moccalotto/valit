@@ -2,8 +2,9 @@
 
 namespace Valit\Util;
 
+use InvalidArgumentException;
+use Valit\Result\AssertionResult;
 use Valit\Contracts\CustomChecker;
-use Valit\Result\AssertionResult as Result;
 
 /**
  * Class for executing custom callbacks.
@@ -12,27 +13,39 @@ class CallbackChecker implements CustomChecker
 {
     /**
      * @var string
+     *
+     * @internal
      */
-    protected $message;
+    public $message;
 
     /**
      * @var callable
+     *
+     * @internal
      */
-    protected $callback;
+    public $callback;
 
     /**
      * @var array
+     *
+     * @internal
      */
-    protected $context;
+    public $context;
 
     /**
      * Constructor.
      *
      * @param string   $message
      * @param callable $callback
+     * @param array    $context
+     *
+     * @throws InvalidArgumentException if $callback is not callable.
      */
     public function __construct($message, $callback, $context = [])
     {
+        if (!is_callable($callback)) {
+            throw new InvalidArgumentException('Second argument must be callable');
+        }
         $this->message = (string) $message;
         $this->callback = $callback;
         $this->context = $context;
@@ -43,12 +56,12 @@ class CallbackChecker implements CustomChecker
      *
      * @param mixed $value
      *
-     * @return Result
+     * @return AssertionResult
      */
     public function check($value)
     {
         $success = (bool) call_user_func($this->callback, $value);
 
-        return new Result($success, $this->message, $this->context);
+        return new AssertionResult($success, $this->message, $this->context);
     }
 }
