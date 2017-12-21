@@ -15,12 +15,14 @@ abstract class Value
     /**
      * Short hand to creating templates.
      *
-     * @return Template
+     * @return \Valit\Assertion\Template
      */
     public static function __callStatic($methodName, $args)
     {
+        $template = new Assertion\Template();
+
         return call_user_func_array(
-            [Check::value(), $methodName],
+            [$template, $methodName],
             $args
         );
     }
