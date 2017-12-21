@@ -5,7 +5,7 @@ namespace Valit\Result;
 use Valit\Util\VarDumper;
 
 /**
- * Valit Result.
+ * Result of executing a single assertion.
  */
 class AssertionResult
 {
