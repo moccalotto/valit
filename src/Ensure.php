@@ -55,7 +55,7 @@ abstract class Ensure
     {
         $hasValue = func_num_args() > 1;
 
-        return static::that($value)->passesOneOf($scenarios, Manager::instance(), $hasValue);
+        return static::that($value)->executeCheck('passesOneOf', [$scenarios, Manager::instance(), $hasValue]);
     }
 
     /**
@@ -70,7 +70,7 @@ abstract class Ensure
     {
         $hasValue = func_num_args() > 1;
 
-        return static::that($value)->passesAnyOf($scenarios, Manager::instance(), $hasValue);
+        return static::that($value)->executeCheck('passesAnyOf', [$scenarios, Manager::instance(), $hasValue]);
     }
 
     /**
@@ -85,7 +85,7 @@ abstract class Ensure
     {
         $hasValue = func_num_args() > 1;
 
-        return static::that($value)->passesAllOf($scenarios, Manager::instance(), $hasValue);
+        return static::that($value)->executeCheck('passesAllOf', [$scenarios, Manager::instance(), $hasValue]);
     }
 
     /**
@@ -100,7 +100,7 @@ abstract class Ensure
     {
         $hasValue = func_num_args() > 1;
 
-        return static::that($value)->passesNoneOf($scenarios, Manager::instance(), $hasValue);
+        return static::that($value)->executeCheck('passesNoneOf', [$scenarios, Manager::instance(), $hasValue]);
     }
 
     /**
@@ -115,6 +115,6 @@ abstract class Ensure
     {
         $hasValue = func_num_args() > 1;
 
-        return static::that($value)->invert($scenario, Manager::instance(), $hasValue);
+        return static::that($value)->executeCheck('doesNotPass', [$scenario, Manager::instance(), $hasValue]);
     }
 }
