@@ -36,11 +36,11 @@ Add tests for these
 Tests:
 ======
 
-Add tests for Str class
-Add tests for Size class
+Add tests for Str utility class
+Add tests for Size utility class
+Add tests for Date utility class
 Add missing checks for FileSystemChecks
-Add missing checks for DateCheckProvider
-Ensure checks for DateCheckProvider also validate that $against can be strings in certain cases.
+Ensure tests for DateCheckProvider also validate that $against can be strings in certain cases.
 
 
 FileSystemChecks:
