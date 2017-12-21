@@ -32,8 +32,10 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('parsableDate');
         $this->provides()->shouldHaveKey('isParsableDate');
 
-        $this->checkDateParsable('1987-01-01', 'Y-m-d')->shouldHaveType('Valit\Result\AssertionResult');
+        $this->checkDateParsable('1987-01-01')->shouldHaveType('Valit\Result\AssertionResult');
 
+        $this->checkDateParsable('1987-01-01')->success()->shouldBe(true);
+        $this->checkDateParsable('3 days ago')->success()->shouldBe(true);
         $this->checkDateParsable(1, 'U')->success()->shouldBe(true); // tiemstamp
         $this->checkDateParsable('1987-01-01', 'Y-m-d')->success()->shouldBe(true);
         $this->checkDateParsable('-2200-01-01', 'Y-m-d')->success()->shouldBe(true);
