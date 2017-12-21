@@ -125,7 +125,8 @@ class VarDumper
         }
 
         if (is_array($callback)) {
-            list ($classOrObject, $methodName) = $callback;
+            list($classOrObject, $methodName) = $callback;
+
             return sprintf(
                 '%s::%s',
                 is_string($classOrObject) ? $classOrObject : get_class($classOrObject),
