@@ -8,14 +8,19 @@
  * @license MIT
  */
 
-namespace Valit\Traits;
+namespace Valit\Util;
 
 use DateTime;
 use Exception;
 use DateTimeInterface;
 use InvalidArgumentException;
 
-trait DateUtils
+/**
+ * Provide functionality to parse dates that have been string-encoded.
+ *
+ * Also allow faking the current time for test purposes.
+ */
+abstract class Date
 {
     /**
      * The current time (if overridden).
@@ -24,16 +29,16 @@ trait DateUtils
      *
      * @var DateTimeInterface
      */
-    protected $now;
+    protected static $now;
 
     /**
      * In order to facilitate testing, we must be able to lock/override the "now" datetime.
      *
-     * @param DateTimeInterface $now
+     * @param DateTimeInterface|null $now
      */
-    public function overrideNow(DateTimeInterface $now)
+    public static function overrideNow(DateTimeInterface $now = null)
     {
-        $this->now = $now;
+        static::$now = $now;
     }
 
     /**
@@ -44,9 +49,9 @@ trait DateUtils
      *
      * @return DateTimeInterface
      */
-    public function now()
+    public static function now()
     {
-        return $this->now ?: new DateTime();
+        return static::$now ?: new DateTime();
     }
 
     /**
@@ -59,7 +64,7 @@ trait DateUtils
      *
      * @throws InvalidArgumentException if $candidate is not string, int or DateTime, or if it could not be parsed
      */
-    public function dt($candidate, $format = null)
+    public static function parse($candidate, $format = null)
     {
         if (is_a($candidate, DateTimeInterface::class)) {
             return $candidate;
@@ -70,11 +75,13 @@ trait DateUtils
         }
 
         if (!is_string($candidate)) {
-            throw new InvalidArgumentException('Candidate must be an int, a string or a DateTime');
+            throw new InvalidArgumentException(
+                'Cannot parse date. The candidate must be an int, a string or a DateTimeInterface'
+            );
         }
 
         if ($candidate === '') {
-            throw new InvalidArgumentException('Candidate cannot be an empty string');
+            throw new InvalidArgumentException('Cannot parse date. The candidate cannot be an empty string');
         }
 
         // The format must either be null or a string.
@@ -90,15 +97,12 @@ trait DateUtils
             // otherwise try and infer the format (via the constructor).
             $dt = DateTime::createFromFormat((string) $format, $candidate) ?: new DateTime($candidate);
         } catch (Exception $e) {
-            throw new InvalidArgumentException(sprintf(
-                'Candidate could be parsed as a datetime via the format "%s"',
-                $format
-            ), 0, $e);
+            throw new InvalidArgumentException('Cannot parse the given datetime', 0, $e);
         }
 
         if ($format && $dt->format($format) !== $candidate) {
             throw new InvalidArgumentException(sprintf(
-                'Candidate could be parsed as a datetime via the format "%s"',
+                'Cannot parse parse date via the format "%s"',
                 $format
             ));
         }
@@ -114,10 +118,10 @@ trait DateUtils
      *
      * @return bool
      */
-    public function canParse($candidate, $format = null)
+    public static function canParse($candidate, $format = null)
     {
         try {
-            $this->dt($candidate, $format);
+            static::parse($candidate, $format);
         } catch (Exception $e) {
             return false;
         }
@@ -137,7 +141,7 @@ trait DateUtils
      *
      * @return float the number of seconds between $a and $b
      */
-    public function compare(DateTimeInterface $a, DateTimeInterface $b)
+    public static function compare(DateTimeInterface $a, DateTimeInterface $b)
     {
         $a = (float) $a->format('U.u');
         $b = (float) $b->format('U.u');

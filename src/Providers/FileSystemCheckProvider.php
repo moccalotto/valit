@@ -10,16 +10,16 @@
 
 namespace Valit\Providers;
 
-use Valit\Traits;
+use Valit\Util\Str;
+use Valit\Util\Size;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
+use Valit\Traits\ProvideViaReflection;
 use Valit\Result\AssertionResult as Result;
 
 class FileSystemCheckProvider implements CheckProvider
 {
-    use Traits\CanString,
-        Traits\SizeConversion,
-        Traits\ProvideViaReflection;
+    use ProvideViaReflection;
 
     /**
      * Check if $value is an existing file.
@@ -32,7 +32,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkFileExists($value)
     {
-        $success = $this->canString($value)
+        $success = Str::canString($value)
             && is_file((string) $value);
 
         return new Result($success, '{name} must be the name of an existing file');
@@ -49,7 +49,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkDirExists($value)
     {
-        $success = $this->canString($value)
+        $success = Str::canString($value)
             && is_dir((string) $value);
 
         return new Result($success, '{name} must be the name of an existing directory');
@@ -66,7 +66,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkIsWritable($value)
     {
-        $success = $this->canString($value)
+        $success = Str::canString($value)
             && is_writable((string) $value);
 
         return new Result($success, '{name} must be a writable path');
@@ -83,7 +83,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkIsReadable($value)
     {
-        $success = $this->canString($value)
+        $success = Str::canString($value)
             && is_readable((string) $value);
 
         return new Result($success, '{name} must be a readable path');
@@ -100,7 +100,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkExecutable($value)
     {
-        $success = $this->canString($value)
+        $success = Str::canString($value)
             && is_executable((string) $value);
 
         return new Result($success, '{name} must be an executable file path');
@@ -117,7 +117,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkLink($value)
     {
-        $success = $this->canString($value)
+        $success = Str::canString($value)
             && is_link((string) $value);
 
         return new Result($success, '{name} must be a filesystem link');
@@ -135,13 +135,13 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkLargerThan($value, $size)
     {
-        if (!$this->canString($size)) {
+        if (!Str::canString($size)) {
             throw new InvalidArgumentException('Second argument must be an integer, a string, or a stringable object');
         }
 
-        $success = $this->canString($value)
+        $success = Str::canString($value)
             && is_file($value)
-            && filesize($value) > $this->sizeToBytes($size);
+            && filesize($value) > Size::toBytes($size);
 
         return new Result($success, '{name} must be a file that is larger than {0:raw}', [$size]);
     }

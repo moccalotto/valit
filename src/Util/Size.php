@@ -8,11 +8,28 @@
  * @license MIT
  */
 
-namespace Valit\Traits;
+namespace Valit\Util;
 
-trait SizeConversion
+/**
+ * Utility Class for parsing suffixed size strings to bytes.
+ */
+abstract class Size
 {
-    public function sizeToBytes($size)
+    /**
+     * Convert a human-readable size-string to bytes.
+     *
+     * For instance:
+     *      100 is "converted" to 100
+     *      '100kB' is converted to 100.000
+     *      '100KiB' is converted to 102.400
+     *      '100GB' is converted to 100,000,000,000
+     *      '100GiB' is converted to 107.374.182.400
+     *
+     * @param string $size
+     *
+     * @return int
+     */
+    public static function toBytes($size)
     {
         $sizeMap = [
             ['kB', 1000, 1],

@@ -19,7 +19,6 @@ Check::that($container, $value)->contains([
 ]);
 ```
 
-
 Templates:
 ==========
 Maybe merge Template and AssertionBag.
@@ -30,15 +29,18 @@ Maybe refactor Template:
 DateCheckProvider:
 ==================
 
-allow all $against values to be strings as well as DateTimeInterface objects.
-Allows prettier string syntax.
+Allow all $against values to be strings as well as DateTimeInterface objects.
+Add tests for these
 
-For that purpose DateUtil::dt() should throw better
-exception messages.
 
-It currently states 'Candidate could be parsed as a datetime via the format "%s"'
-but format can be NULL, so it is a stoopid message.
+Tests:
+======
 
+Add tests for Str class
+Add tests for Size class
+Add missing checks for FileSystemChecks
+Add missing checks for DateCheckProvider
+Ensure checks for DateCheckProvider also validate that $against can be strings in certain cases.
 
 
 FileSystemChecks:
@@ -61,6 +63,3 @@ fileAccessedAfter
 fileAccessedAt
 
 Consider support for mime types. Maybe a separate mime type checker.
-
-
-

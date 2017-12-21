@@ -17,8 +17,7 @@ use Valit\Result\AssertionResult as Result;
 
 class UriCheckProvider implements CheckProvider
 {
-    use Traits\CanString,
-        Traits\ProvideViaReflection;
+    use Traits\ProvideViaReflection;
 
     /**
      * Check if $value is a valid host name.

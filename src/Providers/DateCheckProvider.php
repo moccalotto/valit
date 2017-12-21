@@ -10,10 +10,12 @@
 
 namespace Valit\Providers;
 
-use Valit\Traits;
+use Valit\Util\Str;
+use Valit\Util\Date;
 use DateTimeInterface;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
+use Valit\Traits\ProvideViaReflection;
 use Valit\Result\AssertionResult as Result;
 
 /**
@@ -24,8 +26,7 @@ use Valit\Result\AssertionResult as Result;
  */
 class DateCheckProvider implements CheckProvider
 {
-    use Traits\DateUtils,
-        Traits\ProvideViaReflection;
+    use ProvideViaReflection;
 
     /**
      * Check if $value is a string containing a parseable date.
@@ -40,7 +41,7 @@ class DateCheckProvider implements CheckProvider
     public function checkDateParsable($value, $format = null)
     {
         return new Result(
-            $this->canParse($value, $format),
+            Date::canParse($value, $format),
             '{name} must be a parsable date'
         );
     }
@@ -60,8 +61,8 @@ class DateCheckProvider implements CheckProvider
         if (!$against instanceof DateTimeInterface) {
             throw new InvalidArgumentException('$against must be a DateTimeInterface object');
         }
-        $success = $this->canParse($value)
-            && $this->compare($this->dt($value), $against) > 0;
+        $success = Date::canParse($value)
+            && Date::compare(Date::parse($value), $against) > 0;
 
         return new Result($success, '{name} must be a date after {0:raw}', [$against]);
     }
@@ -82,8 +83,8 @@ class DateCheckProvider implements CheckProvider
             throw new InvalidArgumentException('$against must be a DateTimeInterface object');
         }
 
-        $success = $this->canParse($value)
-            && $this->compare($this->dt($value), $against) < 0;
+        $success = Date::canParse($value)
+            && Date::compare(Date::parse($value), $against) < 0;
 
         return new Result($success, '{name} must be a date before {0:raw}', [$against]);
     }
@@ -99,8 +100,8 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkInThePast($value)
     {
-        $success = $this->canParse($value) &&
-            $this->compare($this->dt($value), $this->now()) < 0;
+        $success = Date::canParse($value) &&
+            Date::compare(Date::parse($value), Date::now()) < 0;
 
         return new Result($success, '{name} must be a date in the past');
     }
@@ -116,8 +117,8 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkInTheFuture($value)
     {
-        $success = $this->canParse($value) &&
-            $this->compare($this->dt($value), $this->now()) > 0;
+        $success = Date::canParse($value) &&
+            Date::compare(Date::parse($value), Date::now()) > 0;
 
         return new Result($success, '{name} must be a future date');
     }
@@ -133,41 +134,107 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkAtMidnight($value)
     {
-        $success = $this->canParse($value) && $this->dt($value)->format('His.u') == 0;
+        $success = Date::canParse($value) && Date::parse($value)->format('His.u') == 0;
 
         return new Result($success, '{name} must be a datetime at midnight');
     }
 
+    /**
+     * Check if $value is a date where the time-component is 12:00:00.
+     *
+     * @Check(["dateTimeAtNoon", "isDateTimeAtNoon"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
     public function checkAtNoon($value)
     {
-        $success = $this->canParse($value) && $this->dt($value)->format('His.u') == 120000;
+        $success = Date::canParse($value) && Date::parse($value)->format('His.u') == 120000;
 
         return new Result($success, '{name} must be a datetime at noon');
     }
 
+    /**
+     * Check if $value is a datetime where the date-component is
+     * the same as the date-component of $against.
+     *
+     * @Check(["sameDateAs", "isSameDateAs", "sameDayAs", "isSameDayAs"])
+     *
+     * @param mixed                    $value
+     * @param string|DateTimeInterface $against
+     *
+     * @return Result
+     */
     public function checkSameDateAs($value, $against)
     {
-        $againstDate = $this->dt($against)->format('Y-m-d');
+        $againstDate = Date::parse($against)->format('Y-m-d');
 
-        $success = $this->canParse($value)
-            && $this->dt($value)->format('Y-m-d') === $againstDate;
+        $success = Date::canParse($value)
+            && Date::parse($value)->format('Y-m-d') === $againstDate;
 
         return new Result($success, '{name} must be on the {0:raw}', [$againstDate]);
     }
 
-    public function checkWeekdaySameAs($value, $against)
+    /**
+     * Check if $value is a datetime where the weekday-component is
+     * the same as the weekday-component of $against.
+     *
+     * @Check(["sameDayOfWeek", "isSameDayOfWeek", "isDayOfWeek", "dayOfWeek"])
+     *
+     * @param mixed                    $value
+     * @param string|DateTimeInterface $against
+     *
+     * @return Result
+     */
+    public function checkSameDayOfWeek($value, $against)
     {
-        $success = $this->canParse($value)
-            && $this->dt($value)->format('N') === $this->dt($against)->format('N');
+        $success = Date::canParse($value)
+            && Date::parse($value)->format('N') === Date::parse($against)->format('N');
 
-        return new Result($success, '{name} must be a on a {0:raw}', [$this->dt($against)->format('l')]);
+        return new Result($success, '{name} must be a on a {0:raw}', [Date::parse($against)->format('l')]);
     }
 
+    /**
+     * Check if $value is a datetime where the day of month is $against.
+     * The first day of the month is the 1st, i.e. days are 1-indexed.
+     *
+     * @Check(["isDayOfMonth", "dayOfMonth"])
+     *
+     * @param mixed $value
+     * @param int   $against
+     *
+     * @return Result
+     */
+    public function checkDayOfMonth($value, $against)
+    {
+        $success = Date::canParse($value)
+            && Date::parse($value)->format('j') == Str::toInt($against, '$against must be an integer');
+
+        return new Result($success, '{name} must be a on the {0:int}. day of the month', [$against]);
+    }
+
+    /**
+     * Check if $value is a datetime where the day-month-component is
+     * the same as the day-month-component of $against.
+     * In other words, are the two dates "birthday-equivalent" of each other.
+     *
+     * For instance:
+     *  '1987-12-01 23:30:00' is birthday equivalent of '1950-12-01 11:32:34'
+     *  because they both occur in on december 1st.
+     *
+     * @Check(["isBirthdayEquivalentOf", "birthdatEquivalentOf", "sameDayAndMonth", "isSameDayAndMonth"])
+     *
+     * @param mixed                    $value
+     * @param string|DateTimeInterface $against
+     *
+     * @return Result
+     */
     public function checkBirthday($value, $against)
     {
-        $success = $this->canParse($value)
-            && $this->dt($against)->format('md') === $this->dt($value)->format('md');
+        $success = Date::canParse($value)
+            && Date::parse($against)->format('md') === Date::parse($value)->format('md');
 
-        return new Result($success, '{name} must be on the {0:raw}', [$this->dt($against)->format('F dS')]);
+        return new Result($success, '{name} must be on the {0:raw}', [Date::parse($against)->format('F dS')]);
     }
 }

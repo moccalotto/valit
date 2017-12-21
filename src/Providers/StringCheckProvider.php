@@ -10,15 +10,15 @@
 
 namespace Valit\Providers;
 
-use Valit\Traits;
+use Valit\Util\Str;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
+use Valit\Traits\ProvideViaReflection;
 use Valit\Result\AssertionResult as Result;
 
 class StringCheckProvider implements CheckProvider
 {
-    use Traits\CanString,
-        Traits\ProvideViaReflection;
+    use ProvideViaReflection;
 
     /**
      * Check if $value contains only hexidecimal characters.
@@ -164,7 +164,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkMatchesRegex($value, $pattern)
     {
-        if (!$this->canString($pattern)) {
+        if (!Str::canString($pattern)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -188,7 +188,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStringable($value)
     {
-        $success = $this->canString($value); // from CanString trait
+        $success = Str::canString($value); // from CanString trait
 
         return new Result($success, '{name} must be a string or string-castable');
     }
@@ -205,7 +205,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStartsWith($value, $startsWith)
     {
-        if (!$this->canString($startsWith)) {
+        if (!Str::canString($startsWith)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -227,7 +227,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkEndsWith($value, $endsWith)
     {
-        if (!$this->canString($endsWith)) {
+        if (!Str::canString($endsWith)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -249,7 +249,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkContainsString($value, $contains)
     {
-        if (!$this->canString($contains)) {
+        if (!Str::canString($contains)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
