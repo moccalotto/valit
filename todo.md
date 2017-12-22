@@ -26,22 +26,13 @@ Maybe refactor Template:
     Maybe rename
     Maybe inherit from AssertionBag instead of composition
 
-DateCheckProvider:
-==================
-
-Allow all $against values to be strings as well as DateTimeInterface objects.
-Add tests for these
-
-
 Tests:
 ======
 
-Add tests for Str utility class
-Add tests for Size utility class
-Add tests for Date utility class
+Add tests for Str class
+Add tests for Size class
+Add tests for Date class
 Add missing checks for FileSystemChecks
-Ensure tests for DateCheckProvider also validate that $against can be strings in certain cases.
-
 
 FileSystemChecks:
 =================
@@ -50,9 +41,6 @@ Finish tests.
 
 [ file sizes can be given as integers (bytes) or strings such as '1024 MiB', '1 GiB', '15 kB', etc]
 [ file dates can be given as strings or DateTimeInterface objects ]
-
-fileLargerThan(123123 /* bytes */), fileSizeGreaterThan('1G' /* 1 gigabyte */)
-fileSmallerThan, fileLargerThan
 
 fileNewerThan, fileCreatedAfter
 fileOlderThan, fileCreatedBefore

@@ -32,8 +32,10 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('parsableDate');
         $this->provides()->shouldHaveKey('isParsableDate');
 
-        $this->checkDateParsable('1987-01-01', 'Y-m-d')->shouldHaveType('Valit\Result\AssertionResult');
+        $this->checkDateParsable('1987-01-01')->shouldHaveType('Valit\Result\AssertionResult');
 
+        $this->checkDateParsable('1987-01-01')->success()->shouldBe(true);
+        $this->checkDateParsable('3 days ago')->success()->shouldBe(true);
         $this->checkDateParsable(1, 'U')->success()->shouldBe(true); // tiemstamp
         $this->checkDateParsable('1987-01-01', 'Y-m-d')->success()->shouldBe(true);
         $this->checkDateParsable('-2200-01-01', 'Y-m-d')->success()->shouldBe(true);
@@ -67,7 +69,10 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkDateAfter('1987-01-01', new DateTime('1987-01-01'))->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->checkDateAfter('1987-01-02', new DateTime('1987-01-01'))->success()->shouldBe(true);
+        $this->checkDateAfter('1987-01-02', '1987-01-01')->success()->shouldBe(true);
+        $this->checkDateAfter('now', 'yesterday')->success()->shouldBe(true);
         $this->checkDateAfter('1987-01-01 00:00:01', new DateTime('1987-01-01 00:00:00'))->success()->shouldBe(true);
+        $this->checkDateAfter('1987-01-01 00:00:01', '1987-01-01 00:00:00')->success()->shouldBe(true);
         $this->checkDateAfter('1987-01-01 00:00:00.000001', new DateTime('1987-01-01 00:00:00.000000'))->success()->shouldBe(true);
         $this->checkDateAfter(new DateTime('1987-01-01 00:00:00.000001'), new DateTime('1987-01-01 00:00:00.000000'))->success()->shouldBe(true);
 
@@ -88,6 +93,8 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkDateBefore('1987-01-01', new DateTime('1987-01-01'))->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->checkDateBefore('1987-01-01', new DateTime('1987-01-02'))->success()->shouldBe(true);
+        $this->checkDateBefore('1987-01-01', '1987-01-02')->success()->shouldBe(true);
+        $this->checkDateBefore('now', 'tomorrow')->success()->shouldBe(true);
         $this->checkDateBefore('1987-01-01 00:00:00', new DateTime('1987-01-01 00:00:01'))->success()->shouldBe(true);
         $this->checkDateBefore('1987-01-01 00:00:00.000000', new DateTime('1987-01-01 00:00:00.000001'))->success()->shouldBe(true);
         $this->checkDateBefore(new DateTime('1987-01-01 00:00:00.000000'), new DateTime('1987-01-01 00:00:00.000001'))->success()->shouldBe(true);
@@ -231,7 +238,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('dayOfMonth');
         $this->provides()->shouldHaveKey('isDayOfMonth');
 
-        $this->checkDayOfMonth(null, new DateTime())->shouldHaveType('Valit\Result\AssertionResult');
+        $this->checkDayOfMonth(null, 1)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->checkDayOfMonth(new DateTime(), date('j'))->success()->shouldBe(true);
         $this->checkDayOfMonth('1987-01-01', 1)->success()->shouldBe(true);
@@ -247,8 +254,11 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkDayOfMonth([], 1)->success()->shouldBe(false); // not 31 days if feb.
         $this->checkDayOfMonth(curl_init(), 1)->success()->shouldBe(false); // not 31 days if feb.
 
-        $this->shouldThrow('InvalidArgumentException')->during('checkDayOfMonth', ['now', 'non-int']);
         $this->shouldThrow('InvalidArgumentException')->during('checkDayOfMonth', ['now', null]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkDayOfMonth', ['now', 0]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkDayOfMonth', ['now', 32]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkDayOfMonth', ['now', -5]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkDayOfMonth', ['now', 'non-int']);
     }
 
     function it_checks_birthday()
