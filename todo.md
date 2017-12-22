@@ -39,3 +39,20 @@ StatInfo:
 
 File.php should have an stat() function that can be overridden so we
 do not have to monkey patch.
+We should consider using SplFileInfo to store and transmit file objects.
+We could ue a FakeFileInfo object when overriding File Infos.
+
+Possible implementation:
+
+```php
+
+$fake = new FakeFileInfo();
+$fake->accessedAt(new DateTime('now'))
+     ->modifiedAt(new DateTime('2 days ago'))
+     ->createdAt(new DateTime('4 days ago'))
+     ->withSize(12312412);
+
+File::override('fooFile', $fake);
+
+expect(File::size('fooFile'))->toBe(12312412);
+```
