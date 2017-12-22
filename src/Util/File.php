@@ -27,6 +27,13 @@ abstract class File
      */
     public static function time($file, $timeFunc = 'created')
     {
+        if (!file_exists($file)) {
+            throw new RuntimeException(sprintf(
+                'File »%s« does not exist',
+                $file
+            ));
+        }
+
         if ($timeFunc === 'created') {
             return filectime($file);
         }
