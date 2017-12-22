@@ -32,22 +32,10 @@ Tests:
 Add tests for Str class
 Add tests for Size class
 Add tests for Date class
-Add missing checks for FileSystemChecks
 
-FileSystemChecks:
-=================
 
-Finish tests.
+StatInfo:
+=========
 
-[ file sizes can be given as integers (bytes) or strings such as '1024 MiB', '1 GiB', '15 kB', etc]
-[ file dates can be given as strings or DateTimeInterface objects ]
-
-fileNewerThan, fileCreatedAfter
-fileOlderThan, fileCreatedBefore
-fileCreatedAt
-
-fileAccessedBefore
-fileAccessedAfter
-fileAccessedAt
-
-Consider support for mime types. Maybe a separate mime type checker.
+File.php should have an stat() function that can be overridden so we
+do not have to monkey patch.

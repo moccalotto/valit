@@ -74,6 +74,10 @@ abstract class Date
             return DateTime::createFromFormat('U', $candidate);
         }
 
+        if (is_float($candidate)) {
+            return DateTime::createFromFormat('U.u', $candidate);
+        }
+
         if (!is_string($candidate)) {
             throw new InvalidArgumentException(
                 'Cannot parse date. The candidate must be an int, a string or a DateTimeInterface'
@@ -136,16 +140,41 @@ abstract class Date
      * We therefore convert the datetimes into floating point timestamps
      * and then compare them as normal floating point numbers.
      *
-     * @param DateTimeInterface $a,
-     * @param DateTimeInterface $b
+     * @param mixed $a A parseable datetime
+     * @param mixed $b A parseable datetime
      *
      * @return float the number of seconds between $a and $b
      */
-    public static function compare(DateTimeInterface $a, DateTimeInterface $b)
+    public static function compare($a, $b)
     {
-        $a = (float) $a->format('U.u');
-        $b = (float) $b->format('U.u');
+        $a = (float) static::parse($a)->format('U.u');
+        $b = (float) static::parse($b)->format('U.u');
 
         return $a - $b;
+    }
+
+    public static function comparison($comparison, $time1, $time2)
+    {
+        $a = (float) static::parse($time1)->format('U.u');
+        $b = (float) static::parse($time2)->format('U.u');
+
+        if ($comparison === 'before') {
+            return $a < $b;
+        }
+        if ($comparison === 'beforeOrAt') {
+            return $a <= $b;
+        }
+        if ($comparison === 'at') {
+            return $a == $b;
+        }
+        if ($comparison === 'after') {
+            return $a > $b;
+        }
+        if ($comparison === 'afterOrAt') {
+            return $a > $b;
+        }
+        throw new InvalidArgumentException(
+            'File time compare function must be one of "before", "beforeOrAt", "at", "after", "afterOrAt"'
+        );
     }
 }

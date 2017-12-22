@@ -68,4 +68,66 @@ describe('FileSystemCheckProvider', function () {
             it($message, $test);
         }
     });
+
+    describe('checkSmallerThan', function () use ($subject) {
+        it('provides the correct assertions', function () use ($subject) {
+            expect($subject->provides())->toBeAn('array');
+            expect($subject->provides())->toContainKey('fileSmallerThan');
+            expect($subject->provides())->toContainKey('isFileSmallerThan');
+            expect($subject->provides())->toContainKey('fileSizeLessThan');
+        });
+
+        it('return correct type', function () use ($subject) {
+            $result = $subject->checkSmallerThan('fooFile', '1.00 kB');
+
+            expect($result)->toBeAnInstanceOf(AssertionResult::class);
+        });
+
+        $tests = [
+            ['1.00 kB',  1000, false],
+            ['1.00 kB',  999, true],
+            ['1.00 KiB', 1024, false],
+            ['1.00 KiB', 1023, true],
+
+            ['2.00 kB',  2000, false],
+            ['2.00 kB',  1999, true],
+            ['2.00 KiB', 2048, false],
+            ['2.00 KiB', 2047, true],
+
+            ['1.00 MB',  1000000, false],
+            ['1.00 MB',  999999, true],
+            ['1.00 MiB', 1024 * 1024, false],
+            ['1.00 MiB', 1024 * 1024 - 1, true],
+
+            ['2.00 MB',  2000000, false],
+            ['2.00 MB',  1999999, true],
+            ['2.00 MiB', 2 * 1024 * 1024, false],
+            ['2.00 MiB', 2 * 1024 * 1024 - 1, true],
+
+            ['1.00 GB',  1000000000, false],
+            ['1.00 GB',  999999999, true],
+            ['1.00 GiB', 1024 * 1024 * 1024, false],
+            ['1.00 GiB', 1024 * 1024 * 1024 - 1, true],
+
+            ['2.00 GB',  2000000000, false],
+            ['2.00 GB',  1999999999, true],
+            ['2.00 GiB', 2 * 1024 * 1024 * 1024, false],
+            ['2.00 GiB', 2 * 1024 * 1024 * 1024 - 1, true],
+        ];
+
+        foreach ($tests as list ($wantedSize, $actualSize, $expectedResult)) {
+            $status = $expectedResult ? 'succeeds' : 'fails';
+            $message = "$status when file of $actualSize bytes is validated against $wantedSize";
+            $test = function () use ($subject, $wantedSize, $actualSize, $expectedResult) {
+                allow('is_file')->toBeCalled()->with('fooFile')->andReturn(true);
+                allow('filesize')->toBeCalled()->with('fooFile')->andReturn($actualSize);
+
+                $result = $subject->checkSmallerThan('fooFile', $wantedSize);
+
+                expect($result->success())->toBe($expectedResult);
+            };
+
+            it($message, $test);
+        }
+    });
 });

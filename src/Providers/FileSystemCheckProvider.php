@@ -12,6 +12,8 @@ namespace Valit\Providers;
 
 use Valit\Util\Str;
 use Valit\Util\Size;
+use Valit\Util\Date;
+use Valit\Util\File;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
@@ -144,5 +146,157 @@ class FileSystemCheckProvider implements CheckProvider
             && filesize($value) > Size::toBytes($size);
 
         return new Result($success, '{name} must be a file that is larger than {0:raw}', [$size]);
+    }
+
+    /**
+     * Check if $value is a filename and that the file is smaller than $size.
+     *
+     * @Check(["fileSmallerThan", "isFileSmallerThan", "fileSizeLessThan"])
+     *
+     * @param mixed      $value The value that must be a file with a size of at least $size
+     * @param string|int $size  The file size. It can be a string such as '1.44MB' or '2GiB', or an integer of bytes
+     *
+     * @return Result
+     */
+    public function checkSmallerThan($value, $size)
+    {
+        if (!Str::canString($size)) {
+            throw new InvalidArgumentException('Second argument must be an integer, a string, or a stringable object');
+        }
+
+        $success = Str::canString($value)
+            && is_file($value)
+            && filesize($value) < Size::toBytes($size);
+
+        return new Result($success, '{name} must be a file that is smaller than {0:raw}', [$size]);
+    }
+
+    /**
+     * Check if $value is a file, that the timestamp denoted by $timeFunc compares
+     * to $against given the $compareFunc.
+     *
+     * Examples:
+     *      - checkFileTime($file, 'created', 'after', '1987-01-01 00:00:00')
+     *      - checkFileTime($file, 'created', 'beforeOrAt', '1987-01-01 00:00:00')
+     *
+     *
+     * @Check(["fileWhereTime", "isFileWhereTime"])
+     *
+     * @param mixed  $value       The value that must be a file with a size of at least $size
+     * @param string $timeFunc    Which time type should be check. One of
+     *                            'created', 'modified', or 'accessed'
+     * @param string $compareFunc one of 'before', 'after', 'at', 'beforeOrAt', 'afterOrAt'
+     * @param mixed  $date        A DateTimeInterface, a number (i.e. unix timestamp) or a
+     *                            string that can be parsed into a DateTime
+     *
+     * @return Result
+     */
+    public function checkFileTime($value, $timeFunc, $compareFunc, $date)
+    {
+        $againstDate = Date::parse($date, '$date must be a parseable date');
+
+        $success = Str::canString($value)
+            && file_exists($value)
+            && Date::comparison(
+                $compareFunc,
+                File::time($value, $timeFunc),
+                $againstDate
+            );
+
+        return new Result(
+            $success,
+            '{name} must be a file that has been {0:raw} after {1:raw}',
+            [$timeFunc, Date::parse($date)->format('Y-m-d H:i:s')]
+        );
+    }
+
+    /**
+     * Check if $value is a file that was created after $date.
+     *
+     * @Check(["fileNewerThan", "isFileNewerThan", "fileCreatedAfter", "isFileCreatedAfter"])
+     *
+     * @param mixed $value The candidate file
+     * @param mixed $date  A parseable date
+     *
+     * @return Result
+     */
+    public function checkCreatedAfter($value, $date)
+    {
+        return $this->checkFileTime($value, 'created', 'after', $date);
+    }
+
+    /**
+     * Check if $value is a file that was created before $date.
+     *
+     * @Check(["fileOlderThan", "isFileOlderThan", "fileCreatedBefore", "isFileCreatedBefore"])
+     *
+     * @param mixed $value The candidate file
+     * @param mixed $date  A parseable date
+     *
+     * @return Result
+     */
+    public function checkCreatedBefore($value, $date)
+    {
+        return $this->checkFileTime($value, 'created', 'before', $date);
+    }
+
+    /**
+     * Check if $value is a file that was modified after $date.
+     *
+     * @Check(["fileModifiedAfter", "isFileModifiedAfter"])
+     *
+     * @param mixed $value The candidate file
+     * @param mixed $date  A parseable date
+     *
+     * @return Result
+     */
+    public function checkModifiedAfter($value, $date)
+    {
+        return $this->checkFileTime($value, 'modified', 'after', $date);
+    }
+
+    /**
+     * Check if $value is a file that was modified before $date.
+     *
+     * @Check(["fileModifiedBefore", "isFileModifiedBefore"])
+     *
+     * @param mixed $value The candidate file
+     * @param mixed $date  A parseable date
+     *
+     * @return Result
+     */
+    public function checkModifiedBefore($value, $date)
+    {
+        return $this->checkFileTime($value, 'modified', 'before', $date);
+    }
+
+    /**
+     * Check if $value is a file that was accessed after $date.
+     *
+     * @Check(["fileAccessedAfter", "isFileAccessedAfter"])
+     *
+     * @param mixed $value The candidate file
+     * @param mixed $date  A parseable date
+     *
+     * @return Result
+     */
+    public function checkAccessedAfter($value, $date)
+    {
+        return $this->checkFileTime($value, 'accessed', 'after', $date);
+    }
+
+    /**
+     * Check if $value is a file that was accessed before $date.
+     *
+     * @Check(["fileAccessedBefore", "isFileAccessedBefore"])
+     *
+     * @param mixed $value The candidate file
+     * @param mixed $date  A parseable date
+     *
+     * @return Result
+     */
+    public function checkAccessedBefore($value, $date)
+    {
+        return $this->checkFileTime($value, 'accessed', 'before', $date);
     }
 }

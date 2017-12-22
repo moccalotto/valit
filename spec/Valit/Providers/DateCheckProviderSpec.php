@@ -37,6 +37,7 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkDateParsable('1987-01-01')->success()->shouldBe(true);
         $this->checkDateParsable('3 days ago')->success()->shouldBe(true);
         $this->checkDateParsable(1, 'U')->success()->shouldBe(true); // tiemstamp
+        $this->checkDateParsable(1.0, null)->success()->shouldBe(true); // float timestamp
         $this->checkDateParsable('1987-01-01', 'Y-m-d')->success()->shouldBe(true);
         $this->checkDateParsable('-2200-01-01', 'Y-m-d')->success()->shouldBe(true);
         $this->checkDateParsable('536457600.089000', 'U.u')->success()->shouldBe(true);
@@ -49,7 +50,6 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkDateParsable('21244-01-31', 'Y-m-d')->success()->shouldBe(false);
         $this->checkDateParsable('1987-01-01 25:55:55', 'Y-m-d H:i:s')->success()->shouldBe(false);
 
-        $this->checkDateParsable(1.0, null)->success()->shouldBe(false);
         $this->checkDateParsable(null, null)->success()->shouldBe(false);
         $this->checkDateParsable('foo', null)->success()->shouldBe(false);
         $this->checkDateParsable(curl_init(), null)->success()->shouldBe(false);
