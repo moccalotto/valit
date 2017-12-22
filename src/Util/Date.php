@@ -79,9 +79,10 @@ abstract class Date
         }
 
         if (!is_string($candidate)) {
-            throw new InvalidArgumentException(
-                'Cannot parse date. The candidate must be an int, a string or a DateTimeInterface'
-            );
+            throw new InvalidArgumentException(sprintf(
+                'Cannot parse date. The candidate must be an int, float, string or a DateTimeInterface. %s given',
+                VarDumper::escape($candidate)
+            ));
         }
 
         if ($candidate === '') {
@@ -153,10 +154,10 @@ abstract class Date
         return $a - $b;
     }
 
-    public static function comparison($comparison, $time1, $time2)
+    public static function comparison($comparison, $a, $b)
     {
-        $a = (float) static::parse($time1)->format('U.u');
-        $b = (float) static::parse($time2)->format('U.u');
+        $a = (float) static::parse($a)->format('U.u');
+        $b = (float) static::parse($b)->format('U.u');
 
         if ($comparison === 'before') {
             return $a < $b;
