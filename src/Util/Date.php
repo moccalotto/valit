@@ -163,7 +163,7 @@ abstract class Date
      *
      * @return bool
      *
-     * @throws InvalidArgumentException if $comparison is invalid or $a or $b could not be parsed.
+     * @throws InvalidArgumentException if $comparison is invalid or $a or $b could not be parsed
      */
     public static function comparison($comparison, $a, $b)
     {
