@@ -74,9 +74,9 @@ abstract class Date
             return DateTime::createFromFormat('U', $candidate);
         }
 
-        if (is_float($candidate)) {
-            return DateTime::createFromFormat('U.u', $candidate);
-        }
+        // if (is_float($candidate)) { does not work in php 5.5 and hhvm
+        //     return DateTime::createFromFormat('U.u', $candidate);
+        // }
 
         if (!is_string($candidate)) {
             throw new InvalidArgumentException(sprintf(
