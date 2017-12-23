@@ -12,6 +12,7 @@ namespace Valit\Util;
 
 use DateTime;
 use Exception;
+use DateInterval;
 use DateTimeInterface;
 use InvalidArgumentException;
 
@@ -55,6 +56,30 @@ abstract class Date
     }
 
     /**
+     * Create a DateTime from a unix timestamp.
+     *
+     * Robust against negative timestamps and floating point timestamps.
+     *
+     * @param int|float $timestamp
+     *
+     * @return DateTime
+     */
+    public static function fromUnixTimestamp($timestamp)
+    {
+        $interval = new DateInterval('PT0S');
+        $parts = explode('.', $timestamp);
+        $interval->s = (int) $parts[0];
+        if (isset($parts[1])) {
+            $interval->f = (int) $parts[1];
+        }
+        $result = DateTime::createFromFormat('U', 0);
+        $result->add($interval);
+
+        return $result;
+    }
+
+
+    /**
      * Convert the candidate value into a DateTime object.
      *
      * @param string|int|DateTimeInterface $candidate
@@ -70,13 +95,9 @@ abstract class Date
             return $candidate;
         }
 
-        if (is_int($candidate)) {
-            return DateTime::createFromFormat('U', $candidate);
+        if (is_int($candidate) || is_float($candidate)) {
+            return static::fromUnixTimestamp($candidate);
         }
-
-        // if (is_float($candidate)) { does not work in php 5.5 and hhvm
-        //     return DateTime::createFromFormat('U.u', $candidate);
-        // }
 
         if (!is_string($candidate)) {
             throw new InvalidArgumentException(sprintf(
