@@ -32,27 +32,8 @@ Tests:
 Add tests for Str class
 Add tests for Size class
 Add tests for Date class
+Consider tests for File and FileInfo classes.
 
+use phpspec rather than kahlan for FileSystemCheckProvider.
 
-StatInfo:
-=========
-
-File.php should have an stat() function that can be overridden so we
-do not have to monkey patch.
-We should consider using SplFileInfo to store and transmit file objects.
-We could ue a FakeFileInfo object when overriding File Infos.
-
-Possible implementation:
-
-```php
-
-$fake = new FakeFileInfo();
-$fake->accessedAt(new DateTime('now'))
-     ->modifiedAt(new DateTime('2 days ago'))
-     ->createdAt(new DateTime('4 days ago'))
-     ->withSize(12312412);
-
-File::override('fooFile', $fake);
-
-expect(File::size('fooFile'))->toBe(12312412);
-```
+Use File::override instead of actually creating temp dirs and files in spec for FileSystemCheckProvider
