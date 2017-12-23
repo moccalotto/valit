@@ -78,7 +78,6 @@ abstract class Date
         return $result;
     }
 
-
     /**
      * Convert the candidate value into a DateTime object.
      *
