@@ -2,6 +2,8 @@
 
 namespace Kahlan\Spec\Suite;
 
+use Valit\Util\File;
+use Valit\Util\FileInfo;
 use Valit\Result\AssertionResult;
 
 describe('FileSystemCheckProvider', function () {
@@ -16,7 +18,7 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('return correct type', function () use ($subject) {
-            $result = $subject->checkLargerThan('fooFile', '1.00 kB');
+            $result = $subject->checkLargerThan('existingSizeFile', '1.00 kB');
 
             expect($result)->toBeAnInstanceOf(AssertionResult::class);
         });
@@ -53,16 +55,18 @@ describe('FileSystemCheckProvider', function () {
             ['2.00 GiB', 2 * 1024 * 1024 * 1024 + 1, true],
         ];
 
-        foreach ($tests as list ($wantedSize, $actualSize, $expectedResult)) {
+        foreach ($tests as list ($againstSize, $actualSize, $expectedResult)) {
             $status = $expectedResult ? 'succeeds' : 'fails';
-            $message = "$status when file of $actualSize bytes is validated against $wantedSize";
-            $test = function () use ($subject, $wantedSize, $actualSize, $expectedResult) {
-                allow('is_file')->toBeCalled()->with('fooFile')->andReturn(true);
-                allow('filesize')->toBeCalled()->with('fooFile')->andReturn($actualSize);
+            $message = "$status when file of $actualSize bytes is larger than $againstSize";
+            $test = function () use ($subject, $againstSize, $actualSize, $expectedResult) {
+                File::override(FileInfo::custom('existingSizeFile', ['size' => $actualSize ]));
+                File::override(FileInfo::custom('missingFile', ['exists' => false]));
 
-                $result = $subject->checkLargerThan('fooFile', $wantedSize);
-
+                $result = $subject->checkLargerThan('existingSizeFile', $againstSize);
                 expect($result->success())->toBe($expectedResult);
+
+                $result = $subject->checkLargerThan('missingFile', $againstSize);
+                expect($result->success())->toBe(false);
             };
 
             it($message, $test);
@@ -78,7 +82,7 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('return correct type', function () use ($subject) {
-            $result = $subject->checkSmallerThan('fooFile', '1.00 kB');
+            $result = $subject->checkSmallerThan('existingSizeFile', '1.00 kB');
 
             expect($result)->toBeAnInstanceOf(AssertionResult::class);
         });
@@ -115,14 +119,14 @@ describe('FileSystemCheckProvider', function () {
             ['2.00 GiB', 2 * 1024 * 1024 * 1024 - 1, true],
         ];
 
-        foreach ($tests as list ($wantedSize, $actualSize, $expectedResult)) {
+        foreach ($tests as list ($againstSize, $actualSize, $expectedResult)) {
             $status = $expectedResult ? 'succeeds' : 'fails';
-            $message = "$status when file of $actualSize bytes is validated against $wantedSize";
-            $test = function () use ($subject, $wantedSize, $actualSize, $expectedResult) {
-                allow('is_file')->toBeCalled()->with('fooFile')->andReturn(true);
-                allow('filesize')->toBeCalled()->with('fooFile')->andReturn($actualSize);
+            $message = "$status when file of $actualSize bytes is smaller than $againstSize";
+            $test = function () use ($subject, $againstSize, $actualSize, $expectedResult) {
+                File::override(FileInfo::custom('existingSizeFile', ['size' => $actualSize ]));
+                File::override(FileInfo::custom('missingFile', ['exists' => false]));
 
-                $result = $subject->checkSmallerThan('fooFile', $wantedSize);
+                $result = $subject->checkSmallerThan('existingSizeFile', $againstSize);
 
                 expect($result->success())->toBe($expectedResult);
             };

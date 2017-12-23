@@ -154,6 +154,17 @@ abstract class Date
         return $a - $b;
     }
 
+    /**
+     * Compare two dates.
+     *
+     * @param string $comparison The comparison method; one of 'before', 'beforeOrAt', 'at', 'after', 'afterOrAt'
+     * @param mixed  $a          A parseable datetime
+     * @param mixed  $b          A parseable datetime
+     *
+     * @return bool
+     *
+     * @throws InvalidArgumentException if $comparison is invalid or $a or $b could not be parsed.
+     */
     public static function comparison($comparison, $a, $b)
     {
         $a = (float) static::parse($a)->format('U.u');
@@ -175,7 +186,7 @@ abstract class Date
             return $a > $b;
         }
         throw new InvalidArgumentException(
-            'File time compare function must be one of "before", "beforeOrAt", "at", "after", "afterOrAt"'
+            'first argument must be one of "before", "beforeOrAt", "at", "after", "afterOrAt"'
         );
     }
 }

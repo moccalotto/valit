@@ -2,15 +2,29 @@
 
 namespace Kahlan\Spec\Suite;
 
+use DateTime;
+use Valit\Util\File;
+use Valit\Util\FileInfo;
 use Valit\Result\AssertionResult;
 
 describe('FileSystemCheckProvider', function () {
     $subject = new \Valit\Providers\FileSystemCheckProvider();
 
+    // override existence of fileWithDate and missingFile
+    File::override(FileInfo::custom('fileWithDate', [
+        'createdAt' => DateTime::createFromFormat('U', 0),
+        'modifiedAt' => DateTime::createFromFormat('U', 0),
+        'accessedAt' => DateTime::createFromFormat('U', 0),
+    ]));
+    File::override(FileInfo::custom('missingFile', [
+        'exists' => false,
+    ]));
+
     // ================================================================================
     // CREATION TIME
     // ================================================================================
     describe('checkCreatedAfter', function () use ($subject) {
+
         it('provides the correct assertions', function () use ($subject) {
             expect($subject->provides())->toBeAn('array');
             expect($subject->provides())->toContainKey('fileNewerThan');
@@ -20,7 +34,7 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('returns correct type', function () use ($subject) {
-            $result = $subject->checkCreatedAfter('goodFile', 0);
+            $result = $subject->checkCreatedAfter('fileWithDate', 0);
             expect($result)->toBeAnInstanceOf(AssertionResult::class);
         });
 
@@ -34,17 +48,13 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('checks if file is created after a given date', function () use ($subject) {
-            allow('filectime')->toBeCalled()->with('goodFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('badFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('goodFile')->andReturn(true);
+            expect($subject->checkCreatedAfter('fileWithDate', -1)->success())->toBe(true);
+            expect($subject->checkCreatedAfter('fileWithDate', -PHP_INT_MAX)->success())->toBe(true);
 
-            expect($subject->checkCreatedAfter('goodFile', -1)->success())->toBe(true);
-            expect($subject->checkCreatedAfter('goodFile', -PHP_INT_MAX)->success())->toBe(true);
-
-            expect($subject->checkCreatedAfter('badFile', -PHP_INT_MAX)->success())->toBe(false);
-            expect($subject->checkCreatedAfter('goodFile', 0)->success())->toBe(false);
-            expect($subject->checkCreatedAfter('goodFile', 1)->success())->toBe(false);
-            expect($subject->checkCreatedAfter('goodFile', PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkCreatedAfter('missingFile', -PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkCreatedAfter('fileWithDate', 0)->success())->toBe(false);
+            expect($subject->checkCreatedAfter('fileWithDate', 1)->success())->toBe(false);
+            expect($subject->checkCreatedAfter('fileWithDate', PHP_INT_MAX)->success())->toBe(false);
         });
     });
 
@@ -58,7 +68,7 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('returns correct type', function () use ($subject) {
-            $result = $subject->checkCreatedBefore('goodFile', 0);
+            $result = $subject->checkCreatedBefore('fileWithDate', 0);
             expect($result)->toBeAnInstanceOf(AssertionResult::class);
         });
 
@@ -72,17 +82,13 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('checks if file is created before a given date', function () use ($subject) {
-            allow('filectime')->toBeCalled()->with('goodFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('badFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('goodFile')->andReturn(true);
+            expect($subject->checkCreatedBefore('fileWithDate', 1)->success())->toBe(true);
+            expect($subject->checkCreatedBefore('fileWithDate', PHP_INT_MAX)->success())->toBe(true);
 
-            expect($subject->checkCreatedBefore('goodFile', 1)->success())->toBe(true);
-            expect($subject->checkCreatedBefore('goodFile', PHP_INT_MAX)->success())->toBe(true);
-
-            expect($subject->checkCreatedBefore('badFile', PHP_INT_MAX)->success())->toBe(false);
-            expect($subject->checkCreatedBefore('goodFile', 0)->success())->toBe(false);
-            expect($subject->checkCreatedBefore('goodFile', -1)->success())->toBe(false);
-            expect($subject->checkCreatedBefore('goodFile', -PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkCreatedBefore('missingFile', PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkCreatedBefore('fileWithDate', 0)->success())->toBe(false);
+            expect($subject->checkCreatedBefore('fileWithDate', -1)->success())->toBe(false);
+            expect($subject->checkCreatedBefore('fileWithDate', -PHP_INT_MAX)->success())->toBe(false);
         });
     });
 
@@ -99,7 +105,7 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('returns correct type', function () use ($subject) {
-            $result = $subject->checkModifiedAfter('goodFile', 0);
+            $result = $subject->checkModifiedAfter('fileWithDate', 0);
             expect($result)->toBeAnInstanceOf(AssertionResult::class);
         });
 
@@ -113,17 +119,13 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('checks if file is modified after a given date', function () use ($subject) {
-            allow('filemtime')->toBeCalled()->with('goodFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('badFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('goodFile')->andReturn(true);
+            expect($subject->checkModifiedAfter('fileWithDate', -1)->success())->toBe(true);
+            expect($subject->checkModifiedAfter('fileWithDate', -PHP_INT_MAX)->success())->toBe(true);
 
-            expect($subject->checkModifiedAfter('goodFile', -1)->success())->toBe(true);
-            expect($subject->checkModifiedAfter('goodFile', -PHP_INT_MAX)->success())->toBe(true);
-
-            expect($subject->checkModifiedAfter('badFile', -PHP_INT_MAX)->success())->toBe(false);
-            expect($subject->checkModifiedAfter('goodFile', 0)->success())->toBe(false);
-            expect($subject->checkModifiedAfter('goodFile', 1)->success())->toBe(false);
-            expect($subject->checkModifiedAfter('goodFile', PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkModifiedAfter('missingFile', -PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkModifiedAfter('fileWithDate', 0)->success())->toBe(false);
+            expect($subject->checkModifiedAfter('fileWithDate', 1)->success())->toBe(false);
+            expect($subject->checkModifiedAfter('fileWithDate', PHP_INT_MAX)->success())->toBe(false);
         });
     });
 
@@ -137,7 +139,7 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('returns correct type', function () use ($subject) {
-            $result = $subject->checkModifiedBefore('goodFile', 0);
+            $result = $subject->checkModifiedBefore('fileWithDate', 0);
             expect($result)->toBeAnInstanceOf(AssertionResult::class);
         });
 
@@ -151,17 +153,13 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('checks if file is modified before a given date', function () use ($subject) {
-            allow('filemtime')->toBeCalled()->with('goodFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('badFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('goodFile')->andReturn(true);
+            expect($subject->checkModifiedBefore('fileWithDate', 1)->success())->toBe(true);
+            expect($subject->checkModifiedBefore('fileWithDate', PHP_INT_MAX)->success())->toBe(true);
 
-            expect($subject->checkModifiedBefore('goodFile', 1)->success())->toBe(true);
-            expect($subject->checkModifiedBefore('goodFile', PHP_INT_MAX)->success())->toBe(true);
-
-            expect($subject->checkModifiedBefore('badFile', PHP_INT_MAX)->success())->toBe(false);
-            expect($subject->checkModifiedBefore('goodFile', 0)->success())->toBe(false);
-            expect($subject->checkModifiedBefore('goodFile', -1)->success())->toBe(false);
-            expect($subject->checkModifiedBefore('goodFile', -PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkModifiedBefore('missingFile', PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkModifiedBefore('fileWithDate', 0)->success())->toBe(false);
+            expect($subject->checkModifiedBefore('fileWithDate', -1)->success())->toBe(false);
+            expect($subject->checkModifiedBefore('fileWithDate', -PHP_INT_MAX)->success())->toBe(false);
         });
     });
 
@@ -178,7 +176,7 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('returns correct type', function () use ($subject) {
-            $result = $subject->checkAccessedAfter('goodFile', 0);
+            $result = $subject->checkAccessedAfter('fileWithDate', 0);
             expect($result)->toBeAnInstanceOf(AssertionResult::class);
         });
 
@@ -192,17 +190,13 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('checks if file is accessed after a given date', function () use ($subject) {
-            allow('fileatime')->toBeCalled()->with('goodFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('badFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('goodFile')->andReturn(true);
+            expect($subject->checkAccessedAfter('fileWithDate', -1)->success())->toBe(true);
+            expect($subject->checkAccessedAfter('fileWithDate', -PHP_INT_MAX)->success())->toBe(true);
 
-            expect($subject->checkAccessedAfter('goodFile', -1)->success())->toBe(true);
-            expect($subject->checkAccessedAfter('goodFile', -PHP_INT_MAX)->success())->toBe(true);
-
-            expect($subject->checkAccessedAfter('badFile', -PHP_INT_MAX)->success())->toBe(false);
-            expect($subject->checkAccessedAfter('goodFile', 0)->success())->toBe(false);
-            expect($subject->checkAccessedAfter('goodFile', 1)->success())->toBe(false);
-            expect($subject->checkAccessedAfter('goodFile', PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkAccessedAfter('missingFile', -PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkAccessedAfter('fileWithDate', 0)->success())->toBe(false);
+            expect($subject->checkAccessedAfter('fileWithDate', 1)->success())->toBe(false);
+            expect($subject->checkAccessedAfter('fileWithDate', PHP_INT_MAX)->success())->toBe(false);
         });
     });
 
@@ -216,7 +210,7 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('returns correct type', function () use ($subject) {
-            $result = $subject->checkAccessedBefore('goodFile', 0);
+            $result = $subject->checkAccessedBefore('fileWithDate', 0);
             expect($result)->toBeAnInstanceOf(AssertionResult::class);
         });
 
@@ -230,17 +224,13 @@ describe('FileSystemCheckProvider', function () {
         });
 
         it('checks if file is accessed before a given date', function () use ($subject) {
-            allow('fileatime')->toBeCalled()->with('goodFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('badFile')->andReturn(0);
-            allow('file_exists')->toBeCalled()->with('goodFile')->andReturn(true);
+            expect($subject->checkAccessedBefore('fileWithDate', 1)->success())->toBe(true);
+            expect($subject->checkAccessedBefore('fileWithDate', PHP_INT_MAX)->success())->toBe(true);
 
-            expect($subject->checkAccessedBefore('goodFile', 1)->success())->toBe(true);
-            expect($subject->checkAccessedBefore('goodFile', PHP_INT_MAX)->success())->toBe(true);
-
-            expect($subject->checkAccessedBefore('badFile', PHP_INT_MAX)->success())->toBe(false);
-            expect($subject->checkAccessedBefore('goodFile', 0)->success())->toBe(false);
-            expect($subject->checkAccessedBefore('goodFile', -1)->success())->toBe(false);
-            expect($subject->checkAccessedBefore('goodFile', -PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkAccessedBefore('missingFile', PHP_INT_MAX)->success())->toBe(false);
+            expect($subject->checkAccessedBefore('fileWithDate', 0)->success())->toBe(false);
+            expect($subject->checkAccessedBefore('fileWithDate', -1)->success())->toBe(false);
+            expect($subject->checkAccessedBefore('fileWithDate', -PHP_INT_MAX)->success())->toBe(false);
         });
     });
 });

@@ -35,7 +35,7 @@ class FileSystemCheckProvider implements CheckProvider
     public function checkFileExists($value)
     {
         $success = Str::canString($value)
-            && is_file((string) $value);
+            && File::info($value)->isFile;
 
         return new Result($success, '{name} must be the name of an existing file');
     }
@@ -52,7 +52,7 @@ class FileSystemCheckProvider implements CheckProvider
     public function checkDirExists($value)
     {
         $success = Str::canString($value)
-            && is_dir((string) $value);
+            && File::info($value)->isDir;
 
         return new Result($success, '{name} must be the name of an existing directory');
     }
@@ -69,7 +69,7 @@ class FileSystemCheckProvider implements CheckProvider
     public function checkIsWritable($value)
     {
         $success = Str::canString($value)
-            && is_writable((string) $value);
+            && File::info($value)->isWritable;
 
         return new Result($success, '{name} must be a writable path');
     }
@@ -86,7 +86,7 @@ class FileSystemCheckProvider implements CheckProvider
     public function checkIsReadable($value)
     {
         $success = Str::canString($value)
-            && is_readable((string) $value);
+            && File::info($value)->isReadable;
 
         return new Result($success, '{name} must be a readable path');
     }
@@ -103,7 +103,7 @@ class FileSystemCheckProvider implements CheckProvider
     public function checkExecutable($value)
     {
         $success = Str::canString($value)
-            && is_executable((string) $value);
+            && File::info($value)->isExecutable;
 
         return new Result($success, '{name} must be an executable file path');
     }
@@ -120,7 +120,7 @@ class FileSystemCheckProvider implements CheckProvider
     public function checkLink($value)
     {
         $success = Str::canString($value)
-            && is_link((string) $value);
+            && File::info($value)->isLink;
 
         return new Result($success, '{name} must be a filesystem link');
     }
@@ -141,9 +141,11 @@ class FileSystemCheckProvider implements CheckProvider
             throw new InvalidArgumentException('Second argument must be an integer, a string, or a stringable object');
         }
 
+        $bytes = Size::toBytes($size);
+
         $success = Str::canString($value)
-            && is_file($value)
-            && filesize($value) > Size::toBytes($size);
+            && File::exists($value)
+            && File::info($value)->size > $bytes;
 
         return new Result($success, '{name} must be a file that is larger than {0:raw}', [$size]);
     }
@@ -164,9 +166,11 @@ class FileSystemCheckProvider implements CheckProvider
             throw new InvalidArgumentException('Second argument must be an integer, a string, or a stringable object');
         }
 
+        $bytes = Size::toBytes($size);
+
         $success = Str::canString($value)
-            && is_file($value)
-            && filesize($value) < Size::toBytes($size);
+            && File::exists($value)
+            && File::info($value)->size < $bytes;
 
         return new Result($success, '{name} must be a file that is smaller than {0:raw}', [$size]);
     }
@@ -196,12 +200,8 @@ class FileSystemCheckProvider implements CheckProvider
         $againstDate = Date::parse($date, '$date must be a parseable date');
 
         $success = Str::canString($value)
-            && file_exists($value)
-            && Date::comparison(
-                $compareFunc,
-                File::time($value, $timeFunc),
-                $againstDate
-            );
+            && File::exists($value)
+            && Date::comparison($compareFunc, File::time($value, $timeFunc), $againstDate);
 
         return new Result(
             $success,
