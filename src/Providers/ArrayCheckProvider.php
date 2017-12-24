@@ -10,28 +10,15 @@
 
 namespace Valit\Providers;
 
-use Countable;
-use ArrayAccess;
 use LogicException;
-use Valit\Result\AssertionResult as Result;
+use Valit\Util\Val;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
+use Valit\Result\AssertionResult as Result;
 
 class ArrayCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
-
-    protected function hasArrayAccess($value)
-    {
-        return is_array($value)
-            || (is_object($value) && ($value instanceof ArrayAccess));
-    }
-
-    protected function isCountable($value)
-    {
-        return is_array($value)
-            || (is_object($value) && ($value instanceof Countable));
-    }
 
     /**
      * Check that $value can be accessed as an array.
@@ -44,7 +31,7 @@ class ArrayCheckProvider implements CheckProvider
      */
     public function checkArrayAccess($value)
     {
-        $success = $this->hasArrayAccess($value);
+        $success = Val::hasArrayAccess($value);
 
         return new Result($success, '{name} must be array accessible');
     }
@@ -122,7 +109,7 @@ class ArrayCheckProvider implements CheckProvider
      */
     public function checkNotEmpty($value)
     {
-        $success = $this->isCountable($value) && count($value) > 0;
+        $success = Val::isCountable($value) && count($value) > 0;
 
         return new Result($success, '{name} must be a non-empty array');
     }
@@ -138,7 +125,7 @@ class ArrayCheckProvider implements CheckProvider
      */
     public function checkEmpty($value)
     {
-        $success = $this->isCountable($value) && count($value) === 0;
+        $success = Val::isCountable($value) && count($value) === 0;
 
         return new Result($success, '{name} must be an empty array');
     }
@@ -175,7 +162,7 @@ class ArrayCheckProvider implements CheckProvider
             throw new LogicException('$key must be int or string');
         }
 
-        $success = $this->hasArrayAccess($value) && isset($value[$key]);
+        $success = Val::hasArrayAccess($value) && isset($value[$key]);
 
         return new Result($success, '{name} must have the key {0:raw}', [$key]);
     }

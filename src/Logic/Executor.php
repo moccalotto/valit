@@ -116,7 +116,7 @@ class Executor
                         'Cannot add a scenario that requires a container. No value provided'
                     );
                 }
-                if (!(is_array($this->value) || $this->value instanceof Traversable)) {
+                if (!Val::canTraverse($this->value)) {
                     throw new ContainerRequiredException(
                         'Cannot add a scenario that requires a container. The value provided is not a container'
                     );

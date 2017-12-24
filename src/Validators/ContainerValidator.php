@@ -12,6 +12,7 @@ namespace Valit\Validators;
 
 use Traversable;
 use Valit\Manager;
+use Valit\Util\Val;
 use LogicException;
 use BadMethodCallException;
 use Valit\Util\FlatContainer;
@@ -80,13 +81,13 @@ class ContainerValidator
     /**
      * Check container against a number of assertions.
      *
-     * @param Traversable|array $containerAssertionMap
+     * @param array|Traversable $containerAssertionMap
      *
      * @return ContainerResultBag
      */
     public function passes($containerAssertionMap)
     {
-        if (!$this->isTraversable($containerAssertionMap)) {
+        if (!Val::canTraverse($containerAssertionMap)) {
             throw new LogicException('$containerAssertionMap must be an array or a Traversable object');
         }
 
@@ -98,19 +99,6 @@ class ContainerValidator
         return $this->throwOnFailure
             ? $this->results->orThrowException()
             : $this->results;
-    }
-
-    /**
-     * Check if we can traverse a given variable.
-     *
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function isTraversable($value)
-    {
-        return is_array($value)
-            || (is_object($value) && ($value instanceof Traversable));
     }
 
     /**

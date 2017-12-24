@@ -12,6 +12,8 @@ namespace Valit\Util;
 
 use Closure;
 use Countable;
+use ArrayAccess;
+use Traversable;
 use LogicException;
 use RuntimeException;
 use InvalidArgumentException;
@@ -34,6 +36,45 @@ abstract class Val
             || is_int($value)
             || is_float($value)
             || is_object($value) && method_exists($value, '__toString');
+    }
+
+    /**
+     * Can we traverse $value?
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public static function canTraverse($value)
+    {
+        return is_array($value)
+            || is_a($value, Traversable::class);
+    }
+
+    /**
+     * Can we access $value as an array?
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public static function hasArrayAccess($value)
+    {
+        return is_array($value)
+            || is_a($value, ArrayAccess::class);
+    }
+
+    /**
+     * Can we count the elements in $value?
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public static function isCountable($value)
+    {
+        return is_array($value)
+            || is_a($value, Countable::class);
     }
 
     /**
@@ -252,9 +293,7 @@ abstract class Val
     /**
      * Get the callback as a string.
      *
-     * @internal
-     *
-     * @param string $callback
+     * @param mixed $callback
      *
      * @return string
      */

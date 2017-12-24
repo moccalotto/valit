@@ -31,7 +31,7 @@ class XmlCheckProvider implements CheckProvider
         $xml = @simplexml_load_string($xmlString);
         libxml_use_internal_errors($prev);
 
-        return $xml instanceof SimpleXMLElement;
+        return is_a($xml, SimpleXMLElement::class);
     }
 
     /**
@@ -74,7 +74,7 @@ class XmlCheckProvider implements CheckProvider
 
         $valueXmlInspector = null;
 
-        if ($value instanceof SimpleXMLElement) {
+        if (is_a($value, SimpleXMLElement::class)) {
             $valueXmlInspector = new XmlInspector($value);
 
             $success = $valueXmlInspector->sameAs($against, $skipWhite, $ignoreCase);
