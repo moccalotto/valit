@@ -12,7 +12,10 @@ namespace Valit;
 
 use Valit\Assertion\AssertionBag;
 
-abstract class Value
+/**
+ * Factory for AssertionBags
+ */
+class Value
 {
     /**
      * Short hand for creating an AssertionBag.
@@ -21,10 +24,21 @@ abstract class Value
      */
     public static function __callStatic($methodName, $args)
     {
-        $template = new AssertionBag();
-
         return call_user_func_array(
-            [$template, $methodName],
+            [new AssertionBag, $methodName],
+            $args
+        );
+    }
+
+    /**
+     * Short hand for creating an AssertionBag.
+     *
+     * @return AssertionBag
+     */
+    public function __call($methodName, $args)
+    {
+        return call_user_func_array(
+            [new AssertionBag, $methodName],
             $args
         );
     }
