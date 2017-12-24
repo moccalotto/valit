@@ -167,6 +167,8 @@ class AssertionNormalizer
      *
      * @param string $checkName
      * @param array  $assertionArgs
+     *
+     * @internal
      */
     public function addSingleAssertion($checkName, $assertionArgs)
     {

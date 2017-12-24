@@ -13,7 +13,7 @@ namespace Valit\Util;
 use InvalidArgumentException;
 
 /**
- * Utility class for converting variables
+ * Utility class for converting variables.
  */
 abstract class Val
 {

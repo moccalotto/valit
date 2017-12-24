@@ -24,6 +24,8 @@ use Valit\Assertion\AssertionNormalizer;
 
 /**
  * Validate a container (variable with array access).
+ *
+ * @method $this as(string $name) set the alias of the container
  */
 class ContainerValidator
 {
@@ -122,10 +124,12 @@ class ContainerValidator
     {
         $fieldsToValidate = $this->flatContainer->find($fieldNameGlob);
 
+        $optional = $assertions->hasFlag('optional');
+
         if ($fieldsToValidate === []) {
-            $message = $assertions->isOptional() ? '{name} is optional' : '{name} must be present';
+            $message = $optional ? '{name} is optional' : '{name} must be present';
             $assertionResultBag = new AssertionResultBag($this->container, $fieldNameGlob);
-            $assertionResultBag->addAssertionResult(new AssertionResult($assertions->isOptional(), $message));
+            $assertionResultBag->addAssertionResult(new AssertionResult($optional, $message));
             $this->results->add($fieldNameGlob, $assertionResultBag);
         }
 
@@ -133,7 +137,7 @@ class ContainerValidator
             $valueValidator = new ValueValidator($this->manager, $value, $this->throwOnFailure);
             $valueValidator->alias($fieldPath);
 
-            if (!$assertions->isOptional()) {
+            if (!$optional) {
                 $valueValidator->addAssertionResult(new AssertionResult(true, '{name} must be present'));
             }
 

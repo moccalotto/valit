@@ -29,30 +29,19 @@ class AssertionBagSpec extends ObjectBehavior
     {
         $this->flags->shouldHaveCount(0);
 
-        $this->is('foo')->shouldBe(false);
-        $this->flag('foo')->shouldBe(false);
+        $this->hasFlag('foo')->shouldBe(false);
 
         $this->setFlag('foo')->shouldBe($this);
 
         $this->flags->shouldHaveCount(1);
 
-        $this->is('foo')->shouldBe(true);
-        $this->flag('foo')->shouldBe(true);
-    }
-
-    function it_has_flag_magic_methods()
-    {
-        $this->isFoo()->shouldBe(false);
-        $this->setFlag('foo');
-        $this->isFoo()->shouldBe(true);
+        $this->hasFlag('foo')->shouldBe(true);
     }
 
     function it_can_unset_flags()
     {
-        $this->isFoo()->shouldBe(false);
         $this->setFlag('foo');
-        $this->isFoo()->shouldBe(true);
         $this->setFlag('foo', false);
-        $this->isFoo()->shouldBe(false);
+        $this->hasFlag('foo')->shouldBe(false);
     }
 }

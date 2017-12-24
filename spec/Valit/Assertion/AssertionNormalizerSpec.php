@@ -89,7 +89,7 @@ class AssertionNormalizerSpec extends ObjectBehavior
         $this->assertions->all()[0]->name->shouldBe('lowerThan');
         $this->assertions->all()[0]->args->shouldBe([255]);
 
-        $this->assertions->is('optional')->shouldBe(false);
+        $this->assertions->hasFlag('optional')->shouldBe(false);
     }
 
     function it_parses_optional_keyword()
@@ -100,6 +100,6 @@ class AssertionNormalizerSpec extends ObjectBehavior
         $this->assertions->all()[0]->name->shouldBe('lowerThan');
         $this->assertions->all()[0]->args->shouldBe([255]);
 
-        $this->assertions->is('optional')->shouldBe(true);
+        $this->assertions->hasFlag('optional')->shouldBe(true);
     }
 }
