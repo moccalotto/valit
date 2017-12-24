@@ -13,7 +13,7 @@ namespace Valit;
 use Valit\Assertion\AssertionBag;
 
 /**
- * Factory for AssertionBags
+ * Factory for AssertionBags.
  */
 class Value
 {
@@ -25,7 +25,7 @@ class Value
     public static function __callStatic($methodName, $args)
     {
         return call_user_func_array(
-            [new AssertionBag, $methodName],
+            [new AssertionBag(), $methodName],
             $args
         );
     }
@@ -38,7 +38,7 @@ class Value
     public function __call($methodName, $args)
     {
         return call_user_func_array(
-            [new AssertionBag, $methodName],
+            [new AssertionBag(), $methodName],
             $args
         );
     }
