@@ -46,7 +46,7 @@ abstract class Check
     }
 
     /**
-     * Create a check template.
+     * Create an AssertionBag.
      *
      * @return AssertionBag
      */
@@ -161,7 +161,7 @@ abstract class Check
     }
 
     /**
-     * Short hand to creating templates.
+     * Short hand to creating an AssertionBag.
      *
      * @return AssertionBag
      */

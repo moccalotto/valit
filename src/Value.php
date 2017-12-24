@@ -15,7 +15,7 @@ use Valit\Assertion\AssertionBag;
 abstract class Value
 {
     /**
-     * Short hand to creating templates.
+     * Short hand for creating an AssertionBag.
      *
      * @return AssertionBag
      */

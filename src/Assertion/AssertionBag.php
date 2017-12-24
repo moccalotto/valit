@@ -6,7 +6,6 @@ use Countable;
 use ArrayIterator;
 use Valit\Manager;
 use IteratorAggregate;
-use BadMethodCallException;
 use Valit\Contracts\CheckManager;
 use Valit\Validators\ValueValidator;
 
@@ -121,23 +120,6 @@ class AssertionBag implements IteratorAggregate, Countable
     }
 
     /**
-     * Add assertions by "calling" them.
-     *
-     * @param string $methodName
-     * @param array  $args
-     *
-     * @return $this
-     */
-    public function __call($methodName, $args)
-    {
-        if ($methodName === 'as') {
-            throw new BadMethodCallException('You cannot set the variable alias on a template');
-        }
-
-        return $this->addNewAssertion($methodName, $args);
-    }
-
-    /**
      * Apply all the stored assertions to a ValueValidator instance.
      *
      * @return ValueValidator
@@ -155,7 +137,8 @@ class AssertionBag implements IteratorAggregate, Countable
     }
 
     /**
-     * Execute this template in "check"-mode.
+     * Execute contained assertions in "check"-mode.
+     * I.e. do not throw an InvalidValueException if an assertion fails.
      *
      * Create a new ValueValidator, apply all stored assertions on it, and return it.
      *
@@ -180,5 +163,18 @@ class AssertionBag implements IteratorAggregate, Countable
         }
 
         return $this->applyToValidator($validator);
+    }
+
+    /**
+     * Add assertions by "calling" them.
+     *
+     * @param string $methodName
+     * @param array  $args
+     *
+     * @return $this
+     */
+    public function __call($methodName, $args)
+    {
+        return $this->addNewAssertion($methodName, $args);
     }
 }

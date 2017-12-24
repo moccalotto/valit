@@ -74,7 +74,7 @@ describe('Valit\Check', function () {
     });
 
     describe('::__callStatic()', function () {
-        it('has magic method for creating templates', function () {
+        it('has magic method for creating assertion bags', function () {
             // proof of concept
             expect(Check::isInt())->toBeAnInstanceOf(AssertionBag::class);
             expect(Check::isInt()->count())->toBe(1);
