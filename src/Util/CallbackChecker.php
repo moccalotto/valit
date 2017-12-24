@@ -73,7 +73,7 @@ class CallbackChecker implements CustomChecker
     public function __debugInfo()
     {
         return [
-            'callback' => VarDumper::formatCallback($this->callback),
+            'callback' => Val::formatCallback($this->callback),
             'message' => $this->message,
             'context' => $this->context,
         ];

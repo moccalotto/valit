@@ -26,10 +26,6 @@ Documentation:
 - Consider Jigsaw http://jigsaw.tighten.co/
 
 
-MISC:
-=====
-Merge Var and VarDumper
-
 Tests:
 ======
 

@@ -2,7 +2,7 @@
 
 namespace Valit\Result;
 
-use Valit\Util\VarDumper;
+use Valit\Util\Val;
 
 /**
  * Result of executing a single assertion.
@@ -102,7 +102,7 @@ class AssertionResult
                     return $all;
                 }
 
-                return VarDumper::format($context[$key], $fmt);
+                return Val::format($context[$key], $fmt);
             },
             $this->message
         );

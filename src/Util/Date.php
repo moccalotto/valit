@@ -101,7 +101,7 @@ abstract class Date
         if (!is_string($candidate)) {
             throw new InvalidArgumentException(sprintf(
                 'Cannot parse date. The candidate must be an int, float, string or a DateTimeInterface. %s given',
-                VarDumper::escape($candidate)
+                Val::escape($candidate)
             ));
         }
 

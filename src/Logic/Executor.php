@@ -5,7 +5,7 @@ namespace Valit\Logic;
 use Traversable;
 use Valit\Manager;
 use LogicException;
-use Valit\Util\VarDumper;
+use Valit\Util\Val;
 use Valit\Assertion\AssertionBag;
 use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
@@ -160,8 +160,8 @@ class Executor
             } else {
                 throw new LogicException(sprintf(
                     'Unknown check type: %s => %s',
-                    VarDumper::escape($key),
-                    VarDumper::escape($value)
+                    Val::escape($key),
+                    Val::escape($value)
                 ));
             }
         }
