@@ -43,7 +43,6 @@ class InvalidValueException extends UnexpectedValueException
             'Validation failed.',
             "Message: $message",
             "Value {$value} does not pass the following tests",
-            '--------------------',
             json_encode(
                 $this->errorMessages(),
                 JSON_PRETTY_PRINT
