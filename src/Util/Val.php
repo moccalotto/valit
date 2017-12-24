@@ -90,4 +90,19 @@ abstract class Val
 
         return (int) $strval;
     }
+
+    public static function toFloat($value, $errorMessage = null)
+    {
+        if ($errorMessage === null) {
+            $errorMessage = sprintf(
+                'The given %s could not be converted to float',
+                gettype($value)
+            );
+        }
+
+        $strval = static::toString($value, $errorMessage);
+
+        if (!is_numeric($strval)) {
+        }
+    }
 }

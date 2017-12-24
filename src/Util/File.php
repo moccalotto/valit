@@ -10,6 +10,7 @@
 
 namespace Valit\Util;
 
+use RuntimeException;
 use InvalidArgumentException;
 
 /**
@@ -35,13 +36,21 @@ abstract class File
     }
 
     /**
+     * Remove override of a given file.
+     *
+     * @param string $filename
+     */
+    public static function removeOverride($filename)
+    {
+        unset(static::$overrides[$filename]);
+    }
+
+    /**
      * Get the file info.
      *
      * @param string $file The file name
      *
-     * @return array|false Array containing stat info if the file exists or false if it does not
-     *
-     * @see {http://php.net/manual/en/function.stat.php} for more info about the result array
+     * @return FileInfo
      *
      * @throws InvalidArgumentException if $file is not a string or a stringable object
      */
@@ -62,7 +71,7 @@ abstract class File
      * @param string $file     path to file
      * @param string $timeFunc one of 'created', 'modified', 'accessed'
      *
-     * @return int
+     * @return \DateTimeInterface|null
      *
      * @throws RuntimeException         if file could not be found
      * @throws InvalidArgumentException if $timeFunc was an incorrect value

@@ -104,17 +104,17 @@ class FileInfo
     public $isLink = null;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface|null
      */
     public $createdAt = null;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface|null
      */
     public $modifiedAt = null;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface|null
      */
     public $accessedAt = null;
 
@@ -148,16 +148,6 @@ class FileInfo
         }
 
         return $instance;
-    }
-
-    /**
-     * Remove override of a given file.
-     *
-     * @param string $filename
-     */
-    public static function removeOverride($filename)
-    {
-        unset(static::$overrides[$filename]);
     }
 
     /**

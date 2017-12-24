@@ -41,6 +41,13 @@ class InvalidContainerException extends UnexpectedValueException
         );
     }
 
+    /**
+     * Get details about why the exception failed.
+     *
+     * @param string $prefix
+     *
+     * @return string
+     */
     public function getExpandedMessage($prefix)
     {
         $renderedResults = $this->results->renderedResults();
