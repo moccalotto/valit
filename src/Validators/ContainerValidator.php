@@ -15,7 +15,6 @@ use Valit\Manager;
 use LogicException;
 use BadMethodCallException;
 use Valit\Util\FlatContainer;
-use Valit\Assertion\Template;
 use Valit\Assertion\AssertionBag;
 use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
@@ -128,22 +127,22 @@ class ContainerValidator
 
         if ($fieldsToValidate === []) {
             $message = $optional ? '{name} is optional' : '{name} must be present';
-            $assertionResultBag = new AssertionResultBag($this->container, $fieldNameGlob);
-            $assertionResultBag->addAssertionResult(new AssertionResult($optional, $message));
-            $this->results->add($fieldNameGlob, $assertionResultBag);
+            $fieldResults = new AssertionResultBag($this->container, $fieldNameGlob);
+            $fieldResults->addAssertionResult(new AssertionResult($optional, $message));
+            $this->results->addAssertionResultBag($fieldNameGlob, $fieldResults);
         }
 
         foreach ($fieldsToValidate as $fieldPath => $value) {
-            $valueValidator = new ValueValidator($this->manager, $value, $this->throwOnFailure);
-            $valueValidator->alias($fieldPath);
+            $fieldResults = new ValueValidator($this->manager, $value, $this->throwOnFailure);
+            $fieldResults->alias($fieldPath);
 
             if (!$optional) {
-                $valueValidator->addAssertionResult(new AssertionResult(true, '{name} must be present'));
+                $fieldResults->addAssertionResult(new AssertionResult(true, '{name} must be present'));
             }
 
-            Template::fromAssertionBag($assertions)->applyToValidator($valueValidator);
+            $assertions->applyToValidator($fieldResults);
 
-            $this->results->add($fieldPath, $valueValidator);
+            $this->results->addAssertionResultBag($fieldPath, $fieldResults);
         }
     }
 

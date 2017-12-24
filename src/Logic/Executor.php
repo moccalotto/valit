@@ -5,7 +5,8 @@ namespace Valit\Logic;
 use Traversable;
 use Valit\Manager;
 use LogicException;
-use Valit\Assertion\Template;
+use Valit\Util\VarDumper;
+use Valit\Assertion\AssertionBag;
 use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
 use Valit\Result\ContainerResultBag;
@@ -144,20 +145,24 @@ class Executor
         foreach ($this->scenarios as $key => $value) {
             if (is_string($key)) {
                 $this->results[] = $this->executeContainerValidation($key, $value);
-            } elseif (is_a($value, Template::class)) {
-                $this->results[] = $this->executeTemplate($value);
             } elseif (is_a($value, AssertionResultBag::class)) {
                 $this->results[] = $this->addAssertionResultBag($value);
             } elseif (is_a($value, AssertionResult::class)) {
                 $this->results[] = $this->addAssertionResult($value);
             } elseif (is_a($value, LogicContract::class)) {
                 $this->results[] = $this->executeLogic($value);
+            } elseif (is_a($value, AssertionBag::class)) {
+                $this->results[] = $this->executeAssertions($value);
             } elseif (is_string($value)) {
                 $this->results[] = $this->executeAssertions($value);
             } elseif (is_array($value)) {
                 $this->results[] = $this->executeAssertions($value);
             } else {
-                throw new LogicException('Unknown check type'.gettype($key).' => '.gettype($value));
+                throw new LogicException(sprintf(
+                    'Unknown check type: %s => %s',
+                    VarDumper::escape($key),
+                    VarDumper::escape($value)
+                ));
             }
         }
 
@@ -201,7 +206,10 @@ class Executor
     }
 
     /**
-     * @param string $assertions
+     * Execute a number of assertions on a value
+     * and return a ContainerResultBag.
+     *
+     * @param string|array|AssertionBag $assertions
      *
      * @return ContainerResultBag
      */
@@ -211,21 +219,7 @@ class Executor
 
         $normalizedAssertions = AssertionNormalizer::normalize($assertions);
 
-        $template = Template::fromAssertionBag($normalizedAssertions);
-
-        return $this->executeTemplate($template);
-    }
-
-    /**
-     * @param Template $template
-     *
-     * @return ContainerResultBag
-     */
-    protected function executeTemplate(Template $template)
-    {
-        $this->requires(static::REQUIRES_VALUE);
-
-        $resultBag = $template->whereValueIs(
+        $resultBag = $normalizedAssertions->whereValueIs(
             $this->value,
             null,
             $this->manager

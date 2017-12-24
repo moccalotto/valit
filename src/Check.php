@@ -10,7 +10,7 @@
 
 namespace Valit;
 
-use Valit\Assertion\Template;
+use Valit\Assertion\AssertionBag;
 use Valit\Validators\ValueValidator;
 use Valit\Validators\ContainerValidator;
 
@@ -48,11 +48,11 @@ abstract class Check
     /**
      * Create a check template.
      *
-     * @return Template
+     * @return AssertionBag
      */
     public static function value()
     {
-        return new Template();
+        return new AssertionBag([]);
     }
 
     /**
@@ -163,7 +163,7 @@ abstract class Check
     /**
      * Short hand to creating templates.
      *
-     * @return Template
+     * @return AssertionBag
      */
     public static function __callStatic($methodName, $args)
     {

@@ -37,72 +37,119 @@ abstract class Val
      *
      * Throw an exception if not possible.
      *
-     * @throws InvalidArgumentException if $value could not be "nicely" converted to string
+     * Strings, integers, floats and objects with a __toString method can be coerced.
      *
      * @param mixed       $value
-     * @param string|null $errorMessage
+     * @param string|null $error
      *
      * @return string
+     *
+     * @throws InvalidArgumentException if $value could not be "nicely" converted to string
      */
-    public static function toString($value, $errorMessage = null)
+    public static function toString($value, $error = null)
     {
         if (!static::canString($value)) {
-            if ($errorMessage === null) {
-                $errorMessage = sprintf(
-                    'The given %s could not be converted to string',
-                    gettype($value)
-                );
-            }
-            throw new InvalidArgumentException($errorMessage);
+            throw new InvalidArgumentException($error ?: sprintf(
+                'The given %s could not be converted to string',
+                gettype($value)
+            ));
         }
 
         return (string) $value;
     }
 
     /**
-     * Covnert a string (or stringable value) to an integer.
+     * Convert a variable to an integer.
      *
-     * @throws InvalidArgumentException if $value could not be nicely converted to int
+     * @param mixed  $value The value to be converted.
+     *                      Intgegers are returned as-is.
+     *                      Floats without fractions are converted if: PHP_INT_MIN ≤ $value ≤ PHP_INT_MAX
+     *                      Strings are coerced to floats if possible.
+     *                      Objects with a __toString method will be treated as strings
+     * @param string $error Error message to throw if the value could not be converted
      *
-     * @param mixed       $value
-     * @param string|null $errorMessage
-     *
-     * @return int
+     * @return float
      */
-    public static function toInt($value, $errorMessage = null)
+    public static function toInt($value, $error = null)
     {
-        if ($errorMessage === null) {
-            $errorMessage = sprintf(
-                'The given %s could not be converted to integer',
-                gettype($value)
-            );
+        $str = static::toString($value, $error);
+
+        if (is_numeric($str) && intval($str) == floatval($str)) {
+            return (int) $str;
         }
 
-        $strval = static::toString($value, $errorMessage);
-
-        if (!is_numeric($strval)) {
-            throw new InvalidArgumentException($errorMessage);
-        }
-
-        if (intval($strval) != floatval($strval)) {
-            throw new InvalidArgumentException($errorMessage);
-        }
-
-        return (int) $strval;
+        throw new InvalidArgumentException($error ?: sprintf(
+            'The given %s could not be converted to integer',
+            gettype($value)
+        ));
     }
 
-    public static function toFloat($value, $errorMessage = null)
+    /**
+     * Convert a variable to a float.
+     *
+     * @param mixed  $value The value to be converted.
+     *                      Floats are returned as-is.
+     *                      Integers are converted to floats if possible without losss of resolution.
+     *                      Strings are coerced to floats if possible.
+     *                      Objects with a __toString method will be treated as strings
+     * @param string $error Error message to throw if the value could not be converted
+     *
+     * @return float
+     */
+    public static function toFloat($value, $error = null)
     {
-        if ($errorMessage === null) {
-            $errorMessage = sprintf(
-                'The given %s could not be converted to float',
-                gettype($value)
-            );
+        if (is_numeric($value)) {
+            return (float) $value;
         }
 
-        $strval = static::toString($value, $errorMessage);
+        $strval = static::toString($value, $error);
 
         if (!is_numeric($strval)) {
+            throw new InvalidArgumentException($error ?: sprintf(
+                'The given %s could not be converted to float',
+                gettype($value)
+            ));
         }
+
+        return (float) $strval;
+    }
+
+    /**
+     * Convert a variable to a bool.
+     *
+     * @param mixed  $value The value to be converted.
+     *                      booleans will be returned as-is.
+     *                      "true" will be converted to true.
+     *                      "false" will be converted to false.
+     *                      "1", "1.0", 1, 1.0 are converted to true.
+     *                      "0", "0.0", 0, 0.0 are converted to false.
+     *                      Objects with a __toString method be treated as strings
+     * @param string $error Error message to throw if the value could not be converted
+     *
+     * @return bool
+     */
+    public function toBool($value, $error = null)
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        $str = static::toString($value, $error);
+
+        switch ($str) {
+            case '1':
+            case '1.0':
+            case 'true':
+                return true;
+            case '0':
+            case '0.0':
+            case 'false':
+                return false;
+        }
+
+        throw new InvalidArgumentException($error ?: sprintf(
+            'The given %s could not be converted to bool',
+            gettype($value)
+        ));
     }
 }

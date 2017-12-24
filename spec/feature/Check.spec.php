@@ -5,7 +5,7 @@ namespace Kahlan\Spec\Suite;
 use Valit\Check;
 use Valit\Logic;
 use Valit\Manager;
-use Valit\Assertion\Template;
+use Valit\Assertion\AssertionBag;
 use Valit\Validators\ValueValidator;
 use Valit\Validators\ContainerValidator;
 
@@ -32,8 +32,8 @@ describe('Valit\Check', function () {
     });
 
     describe('::value()', function () {
-        it('creates a Template', function () {
-            expect(Check::value())->toBeAnInstanceOf(Template::class);
+        it('creates an assertion bag', function () {
+            expect(Check::value())->toBeAnInstanceOf(AssertionBag::class);
         });
     });
 
@@ -76,21 +76,21 @@ describe('Valit\Check', function () {
     describe('::__callStatic()', function () {
         it('has magic method for creating templates', function () {
             // proof of concept
-            expect(Check::isInt())->toBeAnInstanceOf(Template::class);
-            expect(Check::isInt()->assertions->count())->toBe(1);
-            expect(Check::isInt()->assertions->assertions[0]->name)->toBe('isInt');
+            expect(Check::isInt())->toBeAnInstanceOf(AssertionBag::class);
+            expect(Check::isInt()->count())->toBe(1);
+            expect(Check::isInt()->assertions[0]->name)->toBe('isInt');
 
             // result when calling containsString as a method.
-            expect(Check::containsString('foo'))->toBeAnInstanceOf(Template::class);
-            expect(Check::containsString('foo')->assertions->count())->toBe(1);
-            expect(Check::containsString('foo')->assertions->assertions[0]->name)->toBe('containsString');
-            expect(Check::containsString('foo')->assertions->assertions[0]->args)->toBe(['foo']);
+            expect(Check::containsString('foo'))->toBeAnInstanceOf(AssertionBag::class);
+            expect(Check::containsString('foo')->count())->toBe(1);
+            expect(Check::containsString('foo')->assertions[0]->name)->toBe('containsString');
+            expect(Check::containsString('foo')->assertions[0]->args)->toBe(['foo']);
 
             // see same result when calling containsString via __callStatic
-            expect(Check::__callStatic('containsString', ['foo']))->toBeAnInstanceOf(Template::class);
-            expect(Check::__callStatic('containsString', ['foo'])->assertions->count())->toBe(1);
-            expect(Check::__callStatic('containsString', ['foo'])->assertions->assertions[0]->name)->toBe('containsString');
-            expect(Check::__callStatic('containsString', ['foo'])->assertions->assertions[0]->args)->toBe(['foo']);
+            expect(Check::__callStatic('containsString', ['foo']))->toBeAnInstanceOf(AssertionBag::class);
+            expect(Check::__callStatic('containsString', ['foo'])->count())->toBe(1);
+            expect(Check::__callStatic('containsString', ['foo'])->assertions[0]->name)->toBe('containsString');
+            expect(Check::__callStatic('containsString', ['foo'])->assertions[0]->args)->toBe(['foo']);
         });
     });
 });

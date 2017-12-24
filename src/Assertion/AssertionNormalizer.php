@@ -17,7 +17,7 @@ class AssertionNormalizer
     /**
      * Constructor.
      *
-     * @param string|array|Template|AssertionBag $assertions
+     * @param string|array|AssertionBag $assertions
      */
     public function __construct($assertions)
     {
@@ -27,7 +27,7 @@ class AssertionNormalizer
     /**
      * Return a normalized version of $assertions.
      *
-     * @param string|array|Template|AssertionBag $assertions
+     * @param string|array|AssertionBag $assertions
      *
      * @return AssertionBag
      */
@@ -49,22 +49,17 @@ class AssertionNormalizer
     /**
      * Normalize a set of assertions and add it to $this->assertions.
      *
-     * Assertions can be given as a string, an array, a Template or an AssertionBag.
+     * Assertions can be given as a string, an array, a an AssertionBag.
      * When string-encoded, the string contains a number of assertion-expressions separated by ampersands.
-     * When associative array, each key=>value pair can either be checkName => parameters
+     * When associative array, each key=>value pair can either be name => parameters
      * When numeric array, each entry contains a single assertion-expression.
      *
-     * We normalize them into well-behaved arrays of checkName => parameters.
+     * We normalize them into well-behaved arrays of name => parameters.
      *
-     * @param string|array|Template|AssertionBag $assertions
+     * @param string|array|AssertionBag $assertions
      */
     protected function normalizeAndSet($assertions)
     {
-        if (is_a($assertions, Template::class)) {
-            $this->assertions = clone $assertions->assertions;
-
-            return;
-        }
         if (is_a($assertions, AssertionBag::class)) {
             $this->assertions = clone $assertions;
 
@@ -111,7 +106,7 @@ class AssertionNormalizer
      * @param int|string $key
      * @param mixed      $args
      *
-     * @return array containing [$checkName, $args]
+     * @return array containing [$name, $args]
      */
     protected function parseAndAdd($key, $args)
     {
@@ -165,26 +160,24 @@ class AssertionNormalizer
     /**
      * Add a single assertion to our array of assertions.
      *
-     * @param string $checkName
+     * @param string $name
      * @param array  $assertionArgs
      *
      * @internal
      */
-    public function addSingleAssertion($checkName, $assertionArgs)
+    public function addSingleAssertion($name, $assertionArgs)
     {
-        if (in_array($checkName, ['optional', 'isOptional'])) {
+        if (in_array($name, ['optional', 'isOptional'])) {
             $this->assertions->setFlag('optional', true);
 
             return;
         }
-        if (in_array($checkName, ['required', 'isRequired', 'present', 'isPresent'])) {
+        if (in_array($name, ['required', 'isRequired', 'present', 'isPresent'])) {
             $this->assertions->setFlag('optional', false);
 
             return;
         }
 
-        $this->assertions->add(
-            new Assertion($checkName, $assertionArgs)
-        );
+        $this->assertions->addNewAssertion($name, $assertionArgs);
     }
 }

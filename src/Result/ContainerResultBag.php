@@ -61,7 +61,7 @@ class ContainerResultBag
      *
      * @return $this
      */
-    public function add($path, AssertionResultBag $valueValidator)
+    public function addAssertionResultBag($path, AssertionResultBag $valueValidator)
     {
         if (isset($this->results[$path])) {
             foreach ($valueValidator->results() as $result) {

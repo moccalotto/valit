@@ -23,18 +23,12 @@ Documentation:
 ==============
 - Consider a docs directory with a jekyll site?
 - Consider rtfd
+- Consider Jigsaw http://jigsaw.tighten.co/
 
 
-Templates:
-==========
-- Maybe merge Template and AssertionBag
-    * On AssertionBag, remove `is()`
-    * On AssertionBag, rename `flag()` to `hasFlag()`
-    * On AssertionBag, remove `__call()` method.
-
-- Maybe refactor Template instead:
-    * Maybe inherit from AssertionBag instead of composition
-    * Possibly Rename
+MISC:
+=====
+Merge Var and VarDumper
 
 Tests:
 ======

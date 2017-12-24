@@ -5,7 +5,6 @@ namespace Kahlan\Spec\Suite;
 use Valit\Ensure;
 use Valit\Logic;
 use Valit\Manager;
-use Valit\Assertion\Template;
 use Valit\Validators\ValueValidator;
 use Valit\Validators\ContainerValidator;
 use Valit\Exceptions\InvalidValueException;
@@ -34,7 +33,6 @@ describe('Valit\Ensure', function () {
 
     describe('::oneOf', function () {
         it('creates and executes a oneOf logic', function () {
-
             $data = [
                 'a' => 42,
                 'b' => 'foo',
@@ -67,7 +65,6 @@ describe('Valit\Ensure', function () {
                 ];
                 $logic = Ensure::oneOf($scenarios, $data);
             };
-
 
             expect($tryCatch)->toThrow();
 

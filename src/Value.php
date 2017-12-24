@@ -10,16 +10,18 @@
 
 namespace Valit;
 
+use Valit\Assertion\AssertionBag;
+
 abstract class Value
 {
     /**
      * Short hand to creating templates.
      *
-     * @return \Valit\Assertion\Template
+     * @return AssertionBag
      */
     public static function __callStatic($methodName, $args)
     {
-        $template = new Assertion\Template();
+        $template = new AssertionBag();
 
         return call_user_func_array(
             [$template, $methodName],

@@ -71,7 +71,7 @@ class ExecutorSpec extends ObjectBehavior
         $results[2]->success()->shouldBe(false);
     }
 
-    function it_can_execute_branches_with_Templates()
+    function it_can_execute_branches_with_AssertionBags()
     {
         $branches = [
             Check::value()->containsString('foo')->containsString('bar'),

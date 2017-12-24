@@ -4,7 +4,11 @@ namespace Valit\Assertion;
 
 use Countable;
 use ArrayIterator;
+use Valit\Manager;
 use IteratorAggregate;
+use BadMethodCallException;
+use Valit\Contracts\CheckManager;
+use Valit\Validators\ValueValidator;
 
 class AssertionBag implements IteratorAggregate, Countable
 {
@@ -37,11 +41,24 @@ class AssertionBag implements IteratorAggregate, Countable
      *
      * @return $this
      */
-    public function add(Assertion $assertion)
+    public function addAssertion(Assertion $assertion)
     {
         $this->assertions[] = $assertion;
 
         return $this;
+    }
+
+    /**
+     * Create an assertion and add it.
+     *
+     * @param string $name
+     * @param array  $args
+     *
+     * @return $this
+     */
+    public function addNewAssertion($name, $args)
+    {
+        return $this->addAssertion(new Assertion($name, $args));
     }
 
     /**
@@ -101,5 +118,67 @@ class AssertionBag implements IteratorAggregate, Countable
         }
 
         return $this;
+    }
+
+    /**
+     * Add assertions by "calling" them.
+     *
+     * @param string $methodName
+     * @param array  $args
+     *
+     * @return $this
+     */
+    public function __call($methodName, $args)
+    {
+        if ($methodName === 'as') {
+            throw new BadMethodCallException('You cannot set the variable alias on a template');
+        }
+
+        return $this->addNewAssertion($methodName, $args);
+    }
+
+    /**
+     * Apply all the stored assertions to a ValueValidator instance.
+     *
+     * @return ValueValidator
+     */
+    public function applyToValidator(ValueValidator $validator)
+    {
+        foreach ($this->assertions as $assertion) {
+            $validator->executeCheck(
+                $assertion->name,
+                $assertion->args
+            );
+        }
+
+        return $validator;
+    }
+
+    /**
+     * Execute this template in "check"-mode.
+     *
+     * Create a new ValueValidator, apply all stored assertions on it, and return it.
+     *
+     * @param mixed             $value   The value to be checked
+     * @param string|null       $varName The alias/name of the value
+     * @param CheckManager|null $manager The check manager to use.
+     *                                   If none given, the default
+     *                                   manager will be used
+     *
+     * @return ValueValidator a validator that will not throw exceptions on failures
+     */
+    public function whereValueIs($value, $varName = null, CheckManager $manager = null)
+    {
+        if ($manager === null) {
+            $manager = Manager::instance();
+        }
+
+        $validator = new ValueValidator($manager, $value, false);
+
+        if ($varName) {
+            $validator->alias((string) $varName);
+        }
+
+        return $this->applyToValidator($validator);
     }
 }
