@@ -10,7 +10,7 @@
 
 namespace Valit\Providers;
 
-use Valit\Util\Str;
+use Valit\Util\Val;
 use Valit\Util\Date;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -207,7 +207,7 @@ class DateCheckProvider implements CheckProvider
      */
     public function checkDayOfMonth($value, $against)
     {
-        $dayOfMonth = Str::toInt($against, '$against must be an integer');
+        $dayOfMonth = Val::toInt($against, '$against must be an integer');
 
         if ($dayOfMonth > 31 || $dayOfMonth < 1) {
             throw new InvalidArgumentException('$against must be an integer between 1 and 31');

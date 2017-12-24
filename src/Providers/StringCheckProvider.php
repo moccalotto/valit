@@ -10,7 +10,7 @@
 
 namespace Valit\Providers;
 
-use Valit\Util\Str;
+use Valit\Util\Val;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
@@ -164,7 +164,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkMatchesRegex($value, $pattern)
     {
-        if (!Str::canString($pattern)) {
+        if (!Val::canString($pattern)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -188,7 +188,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStringable($value)
     {
-        $success = Str::canString($value); // from CanString trait
+        $success = Val::canString($value); // from CanString trait
 
         return new Result($success, '{name} must be a string or string-castable');
     }
@@ -205,7 +205,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStartsWith($value, $startsWith)
     {
-        if (!Str::canString($startsWith)) {
+        if (!Val::canString($startsWith)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -227,7 +227,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkEndsWith($value, $endsWith)
     {
-        if (!Str::canString($endsWith)) {
+        if (!Val::canString($endsWith)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -249,7 +249,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkContainsString($value, $contains)
     {
-        if (!Str::canString($contains)) {
+        if (!Val::canString($contains)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 

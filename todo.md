@@ -29,7 +29,7 @@ Maybe refactor Template:
 Tests:
 ======
 
-Add tests for Str class
+Add tests for Val class
 Add tests for Size class
 Add tests for Date class
 Consider tests for File and FileInfo classes.

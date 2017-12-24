@@ -10,7 +10,7 @@
 
 namespace Valit\Providers;
 
-use Valit\Util\Str;
+use Valit\Util\Val;
 use Valit\Util\Size;
 use Valit\Util\Date;
 use Valit\Util\File;
@@ -34,7 +34,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkFileExists($value)
     {
-        $success = Str::canString($value)
+        $success = Val::canString($value)
             && File::info($value)->isFile;
 
         return new Result($success, '{name} must be the name of an existing file');
@@ -51,7 +51,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkDirExists($value)
     {
-        $success = Str::canString($value)
+        $success = Val::canString($value)
             && File::info($value)->isDir;
 
         return new Result($success, '{name} must be the name of an existing directory');
@@ -68,7 +68,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkIsWritable($value)
     {
-        $success = Str::canString($value)
+        $success = Val::canString($value)
             && File::info($value)->isWritable;
 
         return new Result($success, '{name} must be a writable path');
@@ -85,7 +85,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkIsReadable($value)
     {
-        $success = Str::canString($value)
+        $success = Val::canString($value)
             && File::info($value)->isReadable;
 
         return new Result($success, '{name} must be a readable path');
@@ -102,7 +102,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkExecutable($value)
     {
-        $success = Str::canString($value)
+        $success = Val::canString($value)
             && File::info($value)->isExecutable;
 
         return new Result($success, '{name} must be an executable file path');
@@ -119,7 +119,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkLink($value)
     {
-        $success = Str::canString($value)
+        $success = Val::canString($value)
             && File::info($value)->isLink;
 
         return new Result($success, '{name} must be a filesystem link');
@@ -137,13 +137,13 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkLargerThan($value, $size)
     {
-        if (!Str::canString($size)) {
+        if (!Val::canString($size)) {
             throw new InvalidArgumentException('Second argument must be an integer, a string, or a stringable object');
         }
 
         $bytes = Size::toBytes($size);
 
-        $success = Str::canString($value)
+        $success = Val::canString($value)
             && File::exists($value)
             && File::info($value)->size > $bytes;
 
@@ -162,13 +162,13 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkSmallerThan($value, $size)
     {
-        if (!Str::canString($size)) {
+        if (!Val::canString($size)) {
             throw new InvalidArgumentException('Second argument must be an integer, a string, or a stringable object');
         }
 
         $bytes = Size::toBytes($size);
 
-        $success = Str::canString($value)
+        $success = Val::canString($value)
             && File::exists($value)
             && File::info($value)->size < $bytes;
 
@@ -199,7 +199,7 @@ class FileSystemCheckProvider implements CheckProvider
     {
         $againstDate = Date::parse($date, '$date must be a parseable date');
 
-        $success = Str::canString($value)
+        $success = Val::canString($value)
             && File::exists($value)
             && Date::comparison($compareFunc, File::time($value, $timeFunc), $againstDate);
 

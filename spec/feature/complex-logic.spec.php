@@ -51,7 +51,7 @@ function logicFeatureTest($allowUnauthenticatedAccess, $request)
             Check::that($allowUnauthenticatedAccess)->isTrue(),
             Check::oneOf([
                 'headers/x-auth-token'    => 'isHexString & hasLength(42)',
-                'body/authToken'          => Check::isHexString()->hasLength(42),
+                'body/authToken'          => Value::isHexString()->hasLength(42),
             ]),
         ]),
 

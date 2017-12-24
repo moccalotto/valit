@@ -47,7 +47,7 @@ abstract class File
      */
     public static function info($file)
     {
-        $file = Str::coerce($file, '$file must be a string or a stringable object');
+        $file = Val::toString($file, '$file must be a string or a stringable object');
 
         if (isset(static::$overrides[$file])) {
             return static::$overrides[$file];

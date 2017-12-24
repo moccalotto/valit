@@ -13,9 +13,9 @@ namespace Valit\Util;
 use InvalidArgumentException;
 
 /**
- * Utility class for determining if a value can be converted to a string.
+ * Utility class for converting variables
  */
-abstract class Str
+abstract class Val
 {
     /**
      * Can the given value be coerced into a string.
@@ -44,7 +44,7 @@ abstract class Str
      *
      * @return string
      */
-    public static function coerce($value, $errorMessage = null)
+    public static function toString($value, $errorMessage = null)
     {
         if (!static::canString($value)) {
             if ($errorMessage === null) {
@@ -78,13 +78,13 @@ abstract class Str
             );
         }
 
-        $strval = static::coerce($value, $errorMessage);
+        $strval = static::toString($value, $errorMessage);
 
         if (!is_numeric($strval)) {
             throw new InvalidArgumentException($errorMessage);
         }
 
-        if (intval($strval) != $strval) {
+        if (intval($strval) != floatval($strval)) {
             throw new InvalidArgumentException($errorMessage);
         }
 
