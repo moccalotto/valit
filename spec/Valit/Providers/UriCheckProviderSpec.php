@@ -107,9 +107,6 @@ class UriCheckProviderSpec extends ObjectBehavior
             'checkUrl', ['https://foo.bar', null]
         );
         $this->shouldThrow('InvalidArgumentException')->during(
-            'checkUrl', ['https://foo.bar', null]
-        );
-        $this->shouldThrow('InvalidArgumentException')->during(
             'checkUrl', ['https://foo.bar', (object)[]]
         );
         $this->shouldThrow('InvalidArgumentException')->during(
