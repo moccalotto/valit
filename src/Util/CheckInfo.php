@@ -85,7 +85,7 @@ class CheckInfo
      *
      *
      * @param \ReflectionParameter $param
-     * @param string $docblock
+     * @param string               $docblock
      *
      * @return string
      */
