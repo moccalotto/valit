@@ -85,7 +85,7 @@ abstract class Val
      * Strings, integers, floats and objects with a __toString method can be coerced.
      *
      * @param mixed       $value
-     * @param string|null $error
+     * @param string|null $error Error message to throw if the value could not be converted
      *
      * @return string
      *
@@ -106,12 +106,12 @@ abstract class Val
     /**
      * Convert a variable to an integer.
      *
-     * @param mixed  $value The value to be converted.
-     *                      Intgegers are returned as-is.
-     *                      Floats without fractions are converted if: PHP_INT_MIN ≤ $value ≤ PHP_INT_MAX
-     *                      Strings are coerced to floats if possible.
-     *                      Objects with a __toString method will be treated as strings
-     * @param string $error Error message to throw if the value could not be converted
+     * @param mixed       $value The value to be converted.
+     *                           Intgegers are returned as-is.
+     *                           Floats without fractions are converted if: PHP_INT_MIN ≤ $value ≤ PHP_INT_MAX
+     *                           Strings are coerced to floats if possible.
+     *                           Objects with a __toString method will be treated as strings
+     * @param string|null $error Error message to throw if the value could not be converted
      *
      * @return float
      */
@@ -322,5 +322,51 @@ abstract class Val
         }
 
         return '{unknown}';
+    }
+
+    /**
+     * Ensure that a value has a given type or class.
+     *
+     * @param mixed            $value The value to check
+     * @param string|strings[] $types Value must have at least one of the declared types
+     * @param string|null      $error Error message to throw if the value was not correct
+     *
+     * @return $value
+     *
+     * @throws InvalidArgumentException if $value is not of the correct type
+     */
+    public static function mustBeA($value, $types, $error = null)
+    {
+        if (is_string($types)) {
+            return static::mustBeA($value, explode('|', $types));
+        }
+
+        if (!is_array($types)) {
+            throw new InvalidArgumentException(sprintf(
+                '$types must be a string or an array of strings. %s given',
+                ucfirst(gettype($types))
+            ));
+        }
+
+        foreach ($types as $type) {
+            $type = trim(strtolower($type));
+
+            if ($type === 'callable' && is_callable($value)) {
+                return $value;
+            }
+
+            if (strtolower(gettype($value)) === $type) {
+                return $value;
+            }
+
+            if (is_a($value, $type)) {
+                return  $value;
+            }
+        }
+
+        throw new InvalidArgumentException($error ? $error : sprintf(
+            'The given value must be a one of [%s]',
+            implode(', ', $types)
+        ));
     }
 }
