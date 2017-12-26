@@ -367,7 +367,7 @@ abstract class Val
         if (count($types) === 1) {
             throw new InvalidArgumentException($error ? $error : sprintf(
                 'The given value must be a %s',
-                $types
+                $types[0]
             ));
         }
 
