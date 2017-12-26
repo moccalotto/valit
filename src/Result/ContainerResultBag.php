@@ -95,6 +95,16 @@ class ContainerResultBag
     }
 
     /**
+     * Did all tests pass?
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+        return $this->success();
+    }
+
+    /**
      * Return all results.
      *
      * @return array associative array of [ path => [results] ]
