@@ -277,7 +277,7 @@ class StringCheckProvider implements CheckProvider
 
         $success = is_scalar($value) && mb_strlen($value) < $length;
 
-        return new Result($success, '{name} must be a string that is shorter than {0}', [$length]);
+        return new Result($success, '{name} must be a string that is shorter than {0:int} characters', [$length]);
     }
 
     /**
@@ -298,7 +298,7 @@ class StringCheckProvider implements CheckProvider
 
         $success = is_scalar($value) && mb_strlen($value) > $length;
 
-        return new Result($success, '{name} must be a string that is longer than {0}', [$length]);
+        return new Result($success, '{name} must be a string that is longer than {0:int} characters', [$length]);
     }
 
     /**
