@@ -26,6 +26,11 @@ Documentation:
 - Consider Jigsaw http://jigsaw.tighten.co/
 
 
+Refactor:
+=========
+AssertionNormalizer => AssertionBagFactory
+    normalize() => create()
+
 Tests:
 ======
 
