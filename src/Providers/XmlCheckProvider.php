@@ -68,6 +68,11 @@ class XmlCheckProvider implements CheckProvider
         if (defined('HHVM_VERSION')) {
             throw new BadMethodCallException('XML validation is not implemented in HHVM');
         }
+        if (!class_exists(XmlInspector::class)) {
+            throw new BadMethodCallException(
+                'XML validation needs the excemel library. Run `composer require moccalotto/exemel` to install'
+            );
+        }
 
         $message = '{name} must match the given XML document';
         $context = compact('against', 'skipWhite', 'ignoreCase');
