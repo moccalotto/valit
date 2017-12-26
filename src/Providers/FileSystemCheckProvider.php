@@ -180,9 +180,22 @@ class FileSystemCheckProvider implements CheckProvider
      * to $against given the $compareFunc.
      *
      * Examples:
-     *      - checkFileTime($file, 'created', 'after', '1987-01-01 00:00:00')
-     *      - checkFileTime($file, 'created', 'beforeOrAt', '1987-01-01 00:00:00')
+     * ```php
+     * // Example 1
+     * Check::that($file)->isFileWhereTime(
+     *     'created',
+     *     'beforeOrAt',
+     *     '1987-01-01 00:00:00'
+     * );
      *
+     * // Example 2
+     * Check::that($file)->isFileWhereTime(
+     *     'created',
+     *     'beforeOrAt',
+     *     '1987-01-01 00:00:00'
+     * );
+     * ```
+     * ---
      *
      * @Check(["fileWhereTime", "isFileWhereTime"])
      *
