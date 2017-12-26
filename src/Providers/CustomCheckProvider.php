@@ -10,13 +10,14 @@
 
 namespace Valit\Providers;
 
-use Valit\Result\AssertionResult as Result;
+use Valit\Util\Val;
 use InvalidArgumentException;
 use UnexpectedValueException;
 use Valit\Util\CallbackChecker;
-use Valit\Contracts\CustomChecker;
 use Valit\Contracts\CheckProvider;
+use Valit\Contracts\CustomChecker;
 use Valit\Traits\ProvideViaReflection;
+use Valit\Result\AssertionResult as Result;
 
 class CustomCheckProvider implements CheckProvider
 {
@@ -37,16 +38,12 @@ class CustomCheckProvider implements CheckProvider
      */
     public function checkPassesCallback($value, $message, $callback)
     {
-        if (!is_callable($callback)) {
-            throw new InvalidArgumentException('$callback must be callable');
-        }
-        if (!is_string($message)) {
-            throw new InvalidArgumentException('$message must be a string');
-        }
-
         return $this->checkPassesChecker(
             $value,
-            new CallbackChecker($message, $callback)
+            new CallbackChecker(
+                Val::toString($message),
+                Val::mustBeA($callback, 'callable')
+            )
         );
     }
 
@@ -55,8 +52,8 @@ class CustomCheckProvider implements CheckProvider
      *
      * @Check(["passesCustom", "passesChecker"])
      *
-     * @param mixed         $value
-     * @param CustomChecker $checker
+     * @param mixed                          $value
+     * @param \Valit\Contracts\CustomChecker $checker
      *
      * @return Result
      *
@@ -65,12 +62,7 @@ class CustomCheckProvider implements CheckProvider
      */
     public function checkPassesChecker($value, $checker)
     {
-        if (!is_a($checker, CustomChecker::class)) {
-            throw new InvalidArgumentException(sprintf(
-                '$checker must be an instance of %s',
-                CustomChecker::class
-            ));
-        }
+        Val::mustBeA($checker, CustomChecker::class, '$checker must be a Valit\Contracts\CustomChecker');
 
         $result = $checker->check($value);
 
