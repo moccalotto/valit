@@ -20,7 +20,9 @@ class UuidCheckProvider implements CheckProvider
     use ProvideViaReflection;
 
     /**
-     * @param mixed $value
+     * @param mixed       $value
+     * @param string|null $version (out parameter)
+     * @param string|null $variant
      *
      * @return bool
      */
@@ -66,6 +68,7 @@ class UuidCheckProvider implements CheckProvider
      * @Check(["isUuidVersion", "uuidVersion"])
      *
      * @param mixed $value
+     * @param int   $version
      *
      * @return Result
      */
@@ -79,7 +82,7 @@ class UuidCheckProvider implements CheckProvider
             throw new InvalidArgumentException('$version must be an integer in the range [1..5]');
         }
 
-        return new Result($match && $parsedVersion == $version, '{name} must be a version {0} UUID', [$version]);
+        return new Result($match && $parsedVersion == $version, '{name} must be a version {0:int} UUID', [$version]);
     }
 
     /**
