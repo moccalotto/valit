@@ -188,7 +188,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStringable($value)
     {
-        $success = Val::canString($value); // from CanString trait
+        $success = Val::canString($value);
 
         return new Result($success, '{name} must be a string or string-castable');
     }
