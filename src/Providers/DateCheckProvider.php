@@ -71,8 +71,8 @@ class DateCheckProvider implements CheckProvider
      *
      * @Check(["isDateBefore", "occursBefore", "dateBefore", "earlierThan", "isEarlierThan"])
      *
-     * @param mixed             $value
-     * @param DateTimeInterface $against
+     * @param mixed                    $value
+     * @param DateTimeInterface|string $against
      *
      * @return Result
      */
