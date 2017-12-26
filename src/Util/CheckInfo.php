@@ -59,29 +59,94 @@ class CheckInfo
     {
         $reflector = new ReflectionFunction($closure);
 
-        if (preg_match_all('/\s*\*\s?([^@*]+)\s*/mus', $reflector->getDocComment(), $matches)) {
-            $this->parseDocs($matches[1]);
+        $docblock = $reflector->getDocComment();
+
+        if (preg_match_all('/\s*\*\s?([^@*]+)\s*/mus', $docblock, $matches)) {
+            $this->parseDescription($matches[1]);
         }
 
         $this->name = $reflector->getName();
-        $parameters = array_map(function ($parameter) {
-            return '$'.$parameter->getName();
+        $parameters = array_map(function ($param) use ($docblock) {
+            return $this->makeParamString($param, $docblock);
         }, array_slice($reflector->getParameters(), 1));
 
         $this->paramlist = implode(', ', $parameters);
     }
 
     /**
+     * Build a param string used to generate a method signature.
+     *
+     *
+     * Example outputs:
+     *
+     * int $foo
+     * mixed $bar
+     * [SimpleXmlElement $xml = null]
+     *
+     *
+     * @param \ReflectionParameter $param
+     * @param string $docblock
+     *
+     * @return string
+     */
+    protected function makeParamString($param, $docblock)
+    {
+        $name = $param->getName();
+        $type = $this->inferType($param, $docblock);
+
+        if (!$param->isOptional()) {
+            return sprintf('%s $%s', $type, $name);
+        }
+
+        $defaultValue = $param->isDefaultValueConstant()
+            ? $param->getDefaultValueConstantName()
+            : json_encode($param->getDefaultValue());
+
+        return sprintf('[%s $%s = %s]', $type, $name, $defaultValue);
+    }
+
+    protected function inferType($param, $docblock)
+    {
+        // use php7 type if available
+        if (method_exists($param, 'hasType') && $param->hasType()) {
+            return $param->getType();
+        }
+
+        // If the parameter is class-hinted, return the hinted class.
+        if ($param->getClass()) {
+            return $param->getClass();
+        }
+
+        // If the parameter is defined as a callable, use that hint
+        if ($param->isCallable()) {
+            return 'callable';
+        }
+
+        // Use docblock if available
+        $regex = sprintf('/@param\s+(\S+)\s+\$%s\b/', preg_quote($param->getName()));
+        if (preg_match($regex, $docblock, $matches)) {
+            return $matches[1];
+        }
+
+        // If paramter is type-hinted as an array, use that hint.
+        if ($param->isArray()) {
+            return 'array';
+        }
+
+        return 'mixed';
+    }
+
+    /**
      * Parse doc block to extract a headline and a description.
      *
-     * @param string[] $docs
+     * @param string[] $docblock
      */
-    protected function parseDocs($docs)
+    protected function parseDescription($docblock)
     {
         $lastLineEmpty = null;
         $started = false;
         $lines = [];
-        foreach ($docs as $line) {
+        foreach ($docblock as $line) {
             $line = rtrim($line);
             $trimmed = trim($line);
             $currentLineEmpty = $trimmed === '';

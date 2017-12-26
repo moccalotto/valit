@@ -9,6 +9,7 @@
  *
  * Each entry contains
  *  - name: string
+ *  - headline: string
  *  - description: string
  *  - aliases: string[]
  *  - paramlist: string[]
