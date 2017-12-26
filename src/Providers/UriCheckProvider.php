@@ -11,6 +11,7 @@
 namespace Valit\Providers;
 
 use Valit\Traits;
+use Valit\Util\Val;
 use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
 use Valit\Result\AssertionResult as Result;
@@ -47,8 +48,7 @@ class UriCheckProvider implements CheckProvider
      */
     public function checkIpAddress($value)
     {
-        $stringable = is_string($value)
-            || is_object($value) && is_callable($value, '__toString');
+        $stringable = Val::canString($value);
 
         $log_level = error_reporting(0);
         $success = $stringable && @inet_pton((string) $value) !== false;
@@ -70,8 +70,11 @@ class UriCheckProvider implements CheckProvider
     public function checkUrl($value, $schemes = ['https', 'http'])
     {
         $schemes = array_filter(
-            array_filter((array) $schemes, 'is_string'),
-            'strlen'
+            array_filter(
+                (array) Val::mustBeA($schemes, 'array|string'),
+                'is_string'
+            ),
+            'trim'
         );
 
         if (empty($schemes)) {
