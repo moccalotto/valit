@@ -327,9 +327,9 @@ abstract class Val
     /**
      * Ensure that a value has a given type or class.
      *
-     * @param mixed            $value The value to check
-     * @param string|string[]  $types Value must have at least one of the declared types
-     * @param string|null      $error Error message to throw if the value was not correct
+     * @param mixed           $value The value to check
+     * @param string|string[] $types Value must have at least one of the declared types
+     * @param string|null     $error Error message to throw if the value was not correct
      *
      * @return $value
      *
@@ -364,8 +364,15 @@ abstract class Val
             }
         }
 
+        if (count($types) === 1) {
+            throw new InvalidArgumentException($error ? $error : sprintf(
+                'The given value must be a %s',
+                $types
+            ));
+        }
+
         throw new InvalidArgumentException($error ? $error : sprintf(
-            'The given value must be a one of [%s]',
+            'The given value must be one of [%s]',
             implode(', ', $types)
         ));
     }
