@@ -13,11 +13,11 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0",
-        "moccalotto/exemel": "^0.4.0"
+        "php": ">=5.5.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^1.11",
+        "moccalotto/exemel": "^0.4.0",
         "phpspec/phpspec": "^2.0",
         "kahlan/kahlan": "^4.0"
     },
