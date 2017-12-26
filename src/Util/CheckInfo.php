@@ -27,6 +27,13 @@ class CheckInfo
      *
      * @internal
      */
+    public $headline;
+
+    /**
+     * @var string
+     *
+     * @internal
+     */
     public $description;
 
     /**
@@ -52,8 +59,8 @@ class CheckInfo
     {
         $reflector = new ReflectionFunction($closure);
 
-        if (preg_match_all('/\s*\*\s+([^@*]+)\s*/mus', $reflector->getDocComment(), $matches)) {
-            $this->description = trim(implode(PHP_EOL, array_map('trim', $matches[1])));
+        if (preg_match_all('/\s*\*\s?([^@*]+)\s*/mus', $reflector->getDocComment(), $matches)) {
+            $this->parseDocs($matches[1]);
         }
 
         $this->name = $reflector->getName();
@@ -62,6 +69,47 @@ class CheckInfo
         }, array_slice($reflector->getParameters(), 1));
 
         $this->paramlist = implode(', ', $parameters);
+    }
+
+    /**
+     * Parse doc block to extract a headline and a description.
+     *
+     * @param string[] $docs
+     */
+    protected function parseDocs($docs)
+    {
+        $lastLineEmpty = null;
+        $started = false;
+        $lines = [];
+        foreach ($docs as $line) {
+            $line = rtrim($line);
+            $trimmed = trim($line);
+            $currentLineEmpty = $trimmed === '';
+            $started = $started || !$currentLineEmpty;
+
+            // Skip initial empty lines
+            if ($currentLineEmpty && empty($lines)) {
+                continue;
+            }
+
+            // If we hit two consecutive empty lines in a row, we're done
+            if ($currentLineEmpty && $lastLineEmpty) {
+                break;
+            }
+
+            // We stop if we encounter an annotation
+            if (substr($trimmed, 0, 1) === '@') {
+                break;
+            }
+
+            $lines[] = $line;
+
+            $lastLineEmpty = $currentLineEmpty;
+        }
+
+        $text = implode(PHP_EOL, $lines);
+
+        list($this->headline, $this->description) = array_map('trim', explode('.', $text, 2));
     }
 
     /**
@@ -79,7 +127,17 @@ class CheckInfo
     }
 
     /**
-     * Get the descitpion of this check.
+     * Get the headline for this check.
+     *
+     * @return string
+     */
+    public function headline()
+    {
+        return $this->headline;
+    }
+
+    /**
+     * Get the description of this check.
      *
      * @return string
      */
