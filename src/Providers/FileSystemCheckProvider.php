@@ -184,15 +184,22 @@ class FileSystemCheckProvider implements CheckProvider
      * // Example 1
      * Check::that($file)->isFileWhereTime(
      *     'created',
-     *     'beforeOrAt',
+     *     'at',
      *     '1987-01-01 00:00:00'
      * );
      *
      * // Example 2
-     * Check::that($file)->isFileWhereTime(
-     *     'created',
+     * Check::that($file)->fileWhereTime(
+     *     'modified',
      *     'beforeOrAt',
      *     '1987-01-01 00:00:00'
+     * );
+     *
+     * // Example 3
+     * Check::that($file)->fileWhereTime(
+     *     'accessed',
+     *     'after',
+     *     '5 minutes ago'
      * );
      * ```
      * ---
