@@ -2,6 +2,7 @@
 
 namespace Valit\Assertion;
 
+use Valit\Util\Val;
 use LogicException;
 use Valit\Contracts\Logic;
 
@@ -17,17 +18,27 @@ class AssertionNormalizer
     /**
      * Constructor.
      *
-     * @param string|array|AssertionBag $assertions
+     * @param string|array|AssertionBag|Logic $assertions
      */
     public function __construct($assertions)
     {
-        $this->normalizeAndSet($assertions);
+        Val::mustBeA($assertions, [
+            'string',
+            'array',
+            AssertionBag::class,
+            Logic::class,
+        ]);
+
+        $this->makeAssertionBag($assertions);
     }
 
     /**
-     * Return a normalized version of $assertions.
+     * Parse a set of assertions in to a well-formatted AssertionBag
      *
-     * @param string|array|AssertionBag $assertions
+     * Assertions can be strings, arrays of strings, arrays of assertions or even
+     * just AssertionBags
+     *
+     * @param string|array|AssertionBag|Logic $assertions
      *
      * @return AssertionBag
      */
@@ -58,7 +69,7 @@ class AssertionNormalizer
      *
      * @param string|array|AssertionBag $assertions
      */
-    protected function normalizeAndSet($assertions)
+    protected function makeAssertionBag($assertions)
     {
         if (is_a($assertions, AssertionBag::class)) {
             $this->assertions = clone $assertions;
