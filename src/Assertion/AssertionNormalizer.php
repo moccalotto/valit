@@ -162,33 +162,9 @@ class AssertionNormalizer
             $args = json_decode(sprintf('[%s]', $matches[2]));
         }
 
-        $this->addSingleAssertion(
-            $matches[1],     // check name
-            (array) $args    // assertion args
+        $this->assertions->addNewAssertion(
+            $matches[1],        // check name
+            (array) $args       // assertion args
         );
-    }
-
-    /**
-     * Add a single assertion to our array of assertions.
-     *
-     * @param string $name
-     * @param array  $assertionArgs
-     *
-     * @internal
-     */
-    public function addSingleAssertion($name, $assertionArgs)
-    {
-        if (in_array($name, ['optional', 'isOptional'])) {
-            $this->assertions->setFlag('optional', true);
-
-            return;
-        }
-        if (in_array($name, ['required', 'isRequired', 'present', 'isPresent'])) {
-            $this->assertions->setFlag('optional', false);
-
-            return;
-        }
-
-        $this->assertions->addNewAssertion($name, $assertionArgs);
     }
 }

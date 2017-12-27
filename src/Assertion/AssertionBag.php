@@ -57,6 +57,14 @@ class AssertionBag implements IteratorAggregate, Countable
      */
     public function addNewAssertion($name, $args)
     {
+        if (in_array($name, ['required', 'isRequired', 'present', 'isPresent'])) {
+            return $this->setRequired();
+        }
+
+        if (in_array($name, ['optional', 'isOptional'])) {
+            return $this->setOptional();
+        }
+
         return $this->addAssertion(new Assertion($name, $args));
     }
 
@@ -163,6 +171,26 @@ class AssertionBag implements IteratorAggregate, Countable
         }
 
         return $this->applyToValidator($validator);
+    }
+
+    /**
+     * Set the »optional« flag.
+     *
+     * @return $this
+     */
+    public function setOptional()
+    {
+        return $this->setFlag('optional', true);
+    }
+
+    /**
+     * Unset the »optional« flag.
+     *
+     * @return $this
+     */
+    public function setRequired()
+    {
+        return $this->setFlag('optional', false);
     }
 
     /**
