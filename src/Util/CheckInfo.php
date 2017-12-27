@@ -125,7 +125,7 @@ class CheckInfo
         // Use docblock if available
         $regex = sprintf('/@param\s+(\S+)\s+\$%s\b/', preg_quote($param->getName()));
         if (preg_match($regex, $docblock, $matches)) {
-            return $matches[1];
+            return ltrim($matches[1], '\\');
         }
 
         // If paramter is type-hinted as an array, use that hint.
