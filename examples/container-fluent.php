@@ -1,7 +1,7 @@
 <?php
 
-use Valit\Check;
 use Valit\Value;
+use Valit\Ensure;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -17,7 +17,7 @@ $assertions =  [
     'orderLines/*'          => Value::isAssociativeArray(),
     'orderLines/*/id'       => Value::isUuid(),
     'orderLines/*/count'    => Value::isInt()->greaterThan(0)->lessThan(100),
-    'orderLines/*/comments' => Value::isString()->shorterThan($textFieldSize),
+    'orderLines/*/comments' => Value::optional()->isString()->shorterThan($textFieldSize),
 ];
 
 $container = [
@@ -35,12 +35,11 @@ $container = [
         [
             'id' => 'd9e918a8-e32a-4ccb-b929-4bd273c6f06f',
             'count' => 2,
-            'comments' => 'I also love this product',
         ],
     ],
 ];
 
 
-$checks = Check::container($container)->passes($assertions);
+$checks = Ensure::container($container)->passes($assertions);
 
-var_dump($checks->valid()); // bool(true)
+print 'All fields are valid';
