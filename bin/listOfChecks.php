@@ -11,8 +11,8 @@
  *  - name: string
  *  - headline: string
  *  - description: string
+ *  - paramlist: string
  *  - aliases: string[]
- *  - paramlist: string[]
  *
  * @package Valit
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
