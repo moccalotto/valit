@@ -10,10 +10,11 @@
 
 namespace Valit\Providers;
 
-use Valit\Contracts\CheckProvider;
-use Valit\Result\AssertionResult;
-use Valit\Traits\ProvideViaReflection;
+use Valit\Util\Val;
 use UnexpectedValueException;
+use Valit\Result\AssertionResult;
+use Valit\Contracts\CheckProvider;
+use Valit\Traits\ProvideViaReflection;
 
 class BasicCheckProvider implements CheckProvider
 {
@@ -137,18 +138,49 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is identical to false.
      *
+     * $type can be a string with a type name such as:
+     *  `'int'`, `'float'`, `'bool'`, `'array'` or even `'callable'`
+     * or it can be a fully qualified class name such as
+     *  `'Valit\Check'`
+     *
+     * It can also be an array of the above types. If it is an
+     * array, then $value can be any of the given values.
+     * Example:
+     *  `['int', 'DateTimeInterface']`
+     *
+     * It can also be a string with many types separated by a pipe `|` characer.
+     * Example:
+     *  `'int|float'`, `'string | DateTimeInterface'`
+     *
+     *  Code examples:
+     *
+     *  ```php
+     *  // example 1
+     *  Check::that($foo)->hasType('callable');
+     *
+     *  // example 2
+     *  Check::that($foo)->hasType('float | int');
+     *
+     *  // example 3
+     *  Check::that($foo)->hasType(['object', 'array'])
+     *
+     *  // example 4
+     *  Check::that($foo)->hasType('DateTime|DateTimeImmutable')
+     *  ```
+     * ---
+     *
      * @Check(["hasType", "isType", "typeof"])
      *
-     * @param mixed  $value
-     * @param string $type
+     * @param mixed           $value
+     * @param string|string[] $type
      *
      * @return AssertionResult
      */
     public function checkHasType($value, $type)
     {
         return new AssertionResult(
-            strtolower(gettype($value)) === strtolower($type),
-            '{name} must have the type {0}',
+            Val::isA($value, $type),
+            '{name} must have the type(s) {0}',
             [$type]
         );
     }
