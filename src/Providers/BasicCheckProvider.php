@@ -56,15 +56,13 @@ class BasicCheckProvider implements CheckProvider
      * @Check(["isOneOf", "oneOf"])
      *
      * @param mixed $value
-     * @param array $against
+     * @param array|\ArrayAccess $against
      *
      * @return AssertionResult
      */
     public function checkIsOneOf($value, $against)
     {
-        if (!is_array($against)) {
-            throw new UnexpectedValueException('$against must be an array');
-        }
+        Val::mustBeA($against, 'arrayable');
 
         $msg = sprintf('{name} must match one of %s', implode(', ', array_map(function ($int) {
             return '{'.$int.'}';
