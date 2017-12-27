@@ -238,25 +238,25 @@ class StringCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value contains a given string.
+     * Check if $value contains a given substring.
      *
      * @Check(["containsString", "containsTheString"])
      *
      * @param mixed  $value
-     * @param string $contains
+     * @param string $substring
      *
      * @return Result
      */
-    public function checkContainsString($value, $contains)
+    public function checkContainsString($value, $substring)
     {
-        if (!Val::canString($contains)) {
+        if (!Val::canString($substring)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
         $success = is_scalar($value)
-            && ($contains === '' || strpos($value, $contains) !== false);
+            && ($substring === '' || strpos($value, $substring) !== false);
 
-        return new Result($success, '{name} must contain the string "{0}"', [$contains]);
+        return new Result($success, '{name} must contain the string "{0}"', [$substring]);
     }
 
     /**

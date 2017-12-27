@@ -45,7 +45,6 @@ class DateCheckProvider implements CheckProvider
      * @return Result
      *
      * @see http://php.net/manual/en/datetime.createfromformat.php
-     *
      */
     public function checkDateParsable($value, $format = null)
     {
@@ -92,8 +91,8 @@ class DateCheckProvider implements CheckProvider
      *
      * @Check(["isDateBefore", "occursBefore", "dateBefore", "earlierThan", "isEarlierThan"])
      *
-     * @param mixed  $value
-     * @param mixed  $against
+     * @param mixed $value
+     * @param mixed $against
      *
      * @return Result
      */

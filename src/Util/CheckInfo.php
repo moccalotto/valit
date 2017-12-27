@@ -105,6 +105,14 @@ class CheckInfo
         return sprintf('[%s $%s = %s]', $type, $name, $defaultValue);
     }
 
+    /**
+     * Infer the type of a given parameter.
+     *
+     * @param \ReflectionParameter $param
+     * @param string               $docblock
+     *
+     * @return string
+     */
     protected function inferType($param, $docblock)
     {
         // use php7 type if available
