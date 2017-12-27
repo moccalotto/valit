@@ -33,7 +33,7 @@ class AssertionNormalizer
     }
 
     /**
-     * Parse a set of assertions in to a well-formatted AssertionBag
+     * Parse a set of assertions in to a well-formatted AssertionBag.
      *
      * Assertions can be strings, arrays of strings, arrays of assertions or even
      * just AssertionBags
