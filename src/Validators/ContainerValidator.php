@@ -87,8 +87,8 @@ class ContainerValidator
      */
     public function passes($containerAssertionMap)
     {
-        if (!Val::canTraverse($containerAssertionMap)) {
-            throw new LogicException('$containerAssertionMap must be an array or a Traversable object');
+        if (!Val::iterable($containerAssertionMap)) {
+            throw new LogicException('$containerAssertionMap must be iterable');
         }
 
         foreach ($containerAssertionMap as $fieldNameGlob => $assertions) {

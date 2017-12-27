@@ -46,23 +46,23 @@ abstract class Val
      *
      * @return bool
      */
-    public static function canTraverse($value)
+    public static function iterable($value)
     {
         return is_array($value)
             || is_a($value, Traversable::class);
     }
 
     /**
-     * Can we access $value as an array?
+     * Can value be accessed as an array?
      *
      * @param mixed $value
      *
      * @return bool
      */
-    public static function hasArrayAccess($value)
+    public static function arrayable($value)
     {
         return is_array($value)
-            || is_a($value, ArrayAccess::class);
+            || is_a($value, 'ArrayAccess');
     }
 
     /**
@@ -432,11 +432,15 @@ abstract class Val
             }
 
             if ($type === 'iterable') {
-                return static::canTraverse($value);
+                return static::iterable($value);
             }
 
             if ($type === 'stringable') {
                 return static::stringable($value);
+            }
+
+            if ($type === 'arrayable') {
+                return static::arrayable($value);
             }
         }
 

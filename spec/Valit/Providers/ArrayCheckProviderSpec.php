@@ -31,8 +31,11 @@ class ArrayCheckProviderSpec extends ObjectBehavior
     {
         $this->checkArrayAccess([])->shouldHaveType('Valit\Result\AssertionResult');
 
+        $this->provides()->shouldHaveKey('arrayable');
+        $this->provides()->shouldHaveKey('isArrayable');
         $this->provides()->shouldHaveKey('hasArrayAccess');
         $this->provides()->shouldHaveKey('arrayAccessible');
+        $this->provides()->shouldHaveKey('isArrayAccessible');
 
         $this->checkArrayAccess([])->success()->shouldBe(true);
         $this->checkArrayAccess(new ArrayObject())->success()->shouldBe(true);

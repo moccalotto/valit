@@ -23,7 +23,7 @@ class ArrayCheckProvider implements CheckProvider
     /**
      * Check that $value can be accessed as an array.
      *
-     * @Check(["hasArrayAccess", "arrayAccessible"])
+     * @Check(["isArrayable", "arrayable", "hasArrayAccess", "arrayAccessible", "isArrayAccessible"])
      *
      * @param mixed $value
      *
@@ -31,7 +31,7 @@ class ArrayCheckProvider implements CheckProvider
      */
     public function checkArrayAccess($value)
     {
-        $success = Val::hasArrayAccess($value);
+        $success = Val::arrayable($value);
 
         return new Result($success, '{name} must be array accessible');
     }
@@ -162,7 +162,7 @@ class ArrayCheckProvider implements CheckProvider
             throw new LogicException('$key must be int or string');
         }
 
-        $success = Val::hasArrayAccess($value) && isset($value[$key]);
+        $success = Val::arrayable($value) && isset($value[$key]);
 
         return new Result($success, '{name} must have the key {0:raw}', [$key]);
     }

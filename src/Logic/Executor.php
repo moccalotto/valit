@@ -116,9 +116,9 @@ class Executor
                         'Cannot add a scenario that requires a container. No value provided'
                     );
                 }
-                if (!Val::canTraverse($this->value)) {
+                if (!Val::iterable($this->value)) {
                     throw new ContainerRequiredException(
-                        'Cannot add a scenario that requires a container. The value provided is not a container'
+                        'Cannot add a scenario that requires an iterable container. Value is not iterable.'
                     );
                 }
                 $this->requires = $newRequirement;
