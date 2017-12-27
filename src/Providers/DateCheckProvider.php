@@ -180,8 +180,8 @@ class DateCheckProvider implements CheckProvider
      *
      * @Check(["sameDateAs", "isSameDateAs", "sameDayAs", "isSameDayAs"])
      *
-     * @param mixed                    $value
-     * @param string|DateTimeInterface $against
+     * @param mixed $value
+     * @param mixed $against
      *
      * @return Result
      */
@@ -201,8 +201,8 @@ class DateCheckProvider implements CheckProvider
      *
      * @Check(["sameDayOfWeek", "isSameDayOfWeek", "isDayOfWeek", "dayOfWeek"])
      *
-     * @param mixed                    $value
-     * @param string|DateTimeInterface $against
+     * @param mixed $value
+     * @param mixed $against
      *
      * @return Result
      */
@@ -221,27 +221,27 @@ class DateCheckProvider implements CheckProvider
      * @Check(["isDayOfMonth", "dayOfMonth"])
      *
      * @param mixed $value
-     * @param int   $against
+     * @param int   $dayOfMonth
      *
      * @return Result
      */
-    public function checkDayOfMonth($value, $against)
+    public function checkDayOfMonth($value, $dayOfMonth)
     {
-        $dayOfMonth = Val::toInt($against, '$against must be an integer');
+        $dayOfMonth = Val::toInt($dayOfMonth, '$dayOfMonth must be an integer');
 
         if ($dayOfMonth > 31 || $dayOfMonth < 1) {
-            throw new InvalidArgumentException('$against must be an integer between 1 and 31');
+            throw new InvalidArgumentException('$dayOfMonth must be an integer between 1 and 31');
         }
 
         $success = Date::canParse($value)
             && Date::parse($value)->format('j') == $dayOfMonth;
 
-        return new Result($success, '{name} must be a on the {0:int}. day of the month', [$against]);
+        return new Result($success, '{name} must be a on the {0:int}. day of the month', [$dayOfMonth]);
     }
 
     /**
      * Check if $value is a datetime where the day-month-component is
-     * the same as the day-month-component of $against.
+     * the same as the day-month-component of $otherDate.
      * In other words, are the two dates "birthday-equivalent" of each other.
      *
      * For instance:
@@ -250,18 +250,18 @@ class DateCheckProvider implements CheckProvider
      *
      * @Check(["isBirthdayEquivalentOf", "birthdatEquivalentOf", "sameDayAndMonth", "isSameDayAndMonth"])
      *
-     * @param mixed                    $value
-     * @param string|DateTimeInterface $against
+     * @param mixed $value
+     * @param mixed $otherDate
      *
      * @return Result
      */
-    public function checkBirthday($value, $against)
+    public function checkBirthday($value, $otherDate)
     {
-        $againstString = Date::parse($against)->format('md');
+        $againstString = Date::parse($otherDate)->format('md');
 
         $success = Date::canParse($value)
             && Date::parse($value)->format('md') === $againstString;
 
-        return new Result($success, '{name} must be on the {0:raw}', [Date::parse($against)->format('F dS')]);
+        return new Result($success, '{name} must be on the {0:raw}', [Date::parse($otherDate)->format('F dS')]);
     }
 }
