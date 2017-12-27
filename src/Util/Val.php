@@ -337,31 +337,8 @@ abstract class Val
      */
     public static function mustBeA($value, $types, $error = null)
     {
-        if (is_string($types)) {
-            return static::mustBeA($value, explode('|', $types));
-        }
-
-        if (!is_array($types)) {
-            throw new InvalidArgumentException(sprintf(
-                '$types must be a string or an array of strings. %s given',
-                ucfirst(gettype($types))
-            ));
-        }
-
-        foreach ($types as $type) {
-            $type = trim(strtolower($type));
-
-            if ($type === 'callable' && is_callable($value)) {
-                return $value;
-            }
-
-            if (strtolower(gettype($value)) === $type) {
-                return $value;
-            }
-
-            if (is_a($value, $type)) {
-                return  $value;
-            }
+        if (static::isA($value, $types)) {
+            return $value;
         }
 
         if (count($types) === 1) {
@@ -375,5 +352,61 @@ abstract class Val
             'The given value must be one of [%s]',
             implode(', ', $types)
         ));
+    }
+
+    /**
+     * Check if a value has a given type or class.
+     *
+     * $types can be a string with a type name such as:
+     *  'int', 'float', 'bool', 'array' or even 'callable'
+     * or it can be a fully qualified class name such as
+     *  'Valit\Check'
+     *
+     * It can also be an array of the above types. If it is an
+     * array, then $value can be any of the given values.
+     * Example:
+     *  [`int', `DateTimeInterface`]
+     *
+     * It can also be a string with many types separated by a pipe `|` characer.
+     * Example:
+     *  'int|float', 'string | DateTimeInterface'
+     *
+     * @param mixed           $value The value to check
+     * @param string|string[] $types Value must have at least one of the declared types
+     *
+     * @return bool
+     *
+     * @throws InvalidArgumentException if $types is not a string or an array of strings
+     */
+    public static function isA($value, $types)
+    {
+        if (is_string($types)) {
+            return static::isA($value, explode('|', $types));
+        }
+
+        if (!is_array($types)) {
+            throw new InvalidArgumentException(sprintf(
+                '$types must be a string or an array of strings. %s given',
+                ucfirst(gettype($types))
+            ));
+        }
+
+        foreach ($types as $type) {
+            $type = trim(strtolower($type));
+
+            if ($type === 'callable' && is_callable($value)) {
+                return true;
+            }
+
+            if (strtolower(gettype($value)) === $type) {
+                return true;
+            }
+
+            if (is_a($value, $type)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
