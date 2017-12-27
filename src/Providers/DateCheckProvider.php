@@ -31,12 +31,21 @@ class DateCheckProvider implements CheckProvider
     /**
      * Check if $value is a string containing a parseable date.
      *
+     * The `$format` parameter can be null or a string.
+     * If it is null, we will attempt to parse the $value as a DateTime via
+     * PHPs built-in inference. If `$format` is a string, it will be used
+     * to define the format of the $value.
+     * See <http://php.net/manual/datetime.createfromformat.php> for more info.
+     *
      * @Check(["isParsableDate", "parsableDate", "isDateString", "dateString"])
      *
-     * @param mixed  $value
-     * @param string $format
+     * @param mixed       $value
+     * @param string|null $format
      *
      * @return Result
+     *
+     * @see http://php.net/manual/en/datetime.createfromformat.php
+     *
      */
     public function checkDateParsable($value, $format = null)
     {
@@ -48,6 +57,12 @@ class DateCheckProvider implements CheckProvider
 
     /**
      * Check if $value is a date after $against.
+     *
+     * The `$against` parameter can be one of:
+     * - `DateTimeInterface`
+     * - `int` The value will be treated as a UNIX timestamp.
+     * - `float` The value will be treated as a UNIX timestamp with a sub-second component.
+     * - `string` The value will be converted to a `DateTime` if possible via PHPs native date time inference.
      *
      * @Check(["isDateAfter", "occursAfter", "dateAfter", "laterThan", "isLaterThan"])
      *
@@ -69,10 +84,16 @@ class DateCheckProvider implements CheckProvider
     /**
      * Check if $value is a date after $against.
      *
+     * The `$against` parameter can be one of:
+     * - `DateTimeInterface`
+     * - `int` The value will be treated as a UNIX timestamp.
+     * - `float` The value will be treated as a UNIX timestamp with a sub-second component.
+     * - `string` The value will be converted to a `DateTime` if possible via PHPs native date time inference.
+     *
      * @Check(["isDateBefore", "occursBefore", "dateBefore", "earlierThan", "isEarlierThan"])
      *
-     * @param mixed                    $value
-     * @param DateTimeInterface|string $against
+     * @param mixed  $value
+     * @param mixed  $against
      *
      * @return Result
      */
