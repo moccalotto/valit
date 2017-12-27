@@ -48,7 +48,7 @@ class UriCheckProvider implements CheckProvider
      */
     public function checkIpAddress($value)
     {
-        $stringable = Val::canString($value);
+        $stringable = Val::stringable($value);
 
         $log_level = error_reporting(0);
         $success = $stringable && @inet_pton((string) $value) !== false;

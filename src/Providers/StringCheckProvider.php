@@ -164,7 +164,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkMatchesRegex($value, $pattern)
     {
-        if (!Val::canString($pattern)) {
+        if (!Val::stringable($pattern)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -188,7 +188,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStringable($value)
     {
-        $success = Val::canString($value);
+        $success = Val::stringable($value);
 
         return new Result($success, '{name} must be a string or string-castable');
     }
@@ -205,7 +205,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStartsWith($value, $startsWith)
     {
-        if (!Val::canString($startsWith)) {
+        if (!Val::stringable($startsWith)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -227,7 +227,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkEndsWith($value, $endsWith)
     {
-        if (!Val::canString($endsWith)) {
+        if (!Val::stringable($endsWith)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 
@@ -249,7 +249,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkContainsString($value, $substring)
     {
-        if (!Val::canString($substring)) {
+        if (!Val::stringable($substring)) {
             throw new InvalidArgumentException('Second argument cannot be cast to a string');
         }
 

@@ -31,7 +31,7 @@ abstract class Val
      *
      * @return bool
      */
-    public static function canString($value)
+    public static function stringable($value)
     {
         return is_string($value)
             || is_int($value)
@@ -94,7 +94,7 @@ abstract class Val
      */
     public static function toString($value, $error = null)
     {
-        if (!static::canString($value)) {
+        if (!static::stringable($value)) {
             throw new InvalidArgumentException($error ?: sprintf(
                 'The given %s could not be converted to string',
                 gettype($value)
@@ -436,7 +436,7 @@ abstract class Val
             }
 
             if ($type === 'stringable') {
-                return static::canString($value);
+                return static::stringable($value);
             }
         }
 
