@@ -48,11 +48,15 @@ checks did not pass.
 ```php
 $x = 42; // the variable to validate
 
-$valid = Check::that($x)
+$validation = Check::that($x)
     ->isInt()                   // Success
     ->isGreaterThanOrEqual(42)  // Success
-    ->isLessThan(100)           // Success
-    ->valid();                  // true
+    ->isLessThan(100);          // Success
+
+if (!$validation->success()) {
+    throw new RuntimeException('Validation Failed');
+}
+
 ```
 
 ### Error Messages
