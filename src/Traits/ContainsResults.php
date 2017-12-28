@@ -94,26 +94,6 @@ trait ContainsResults
     }
 
     /**
-     * Alias of success.
-     *
-     * @return bool
-     */
-    public function valid()
-    {
-        return $this->success();
-    }
-
-    /**
-     * Alias of hasErrors.
-     *
-     * @return bool
-     */
-    public function invalid()
-    {
-        return $this->hasErrors();
-    }
-
-    /**
      * Return true if there are errors.
      *
      * @return bool
