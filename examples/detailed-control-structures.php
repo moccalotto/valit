@@ -18,6 +18,6 @@ Ensure::anyOf([
     Check::not(
         Check::that($productType)->isOneOf(['alcohol', 'tobacco'])
     )
-])->valid();
+]);
 
 print 'All assertions ok';
