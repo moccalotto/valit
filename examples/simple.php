@@ -7,7 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $age = 42;
 
 Ensure::that($age)
-    ->isNumeric()
+    ->isNaturalNumber()
     ->isGreaterThanOrEqual(18)
     ->isLowerThanOrEqual(75);
 
