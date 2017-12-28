@@ -105,6 +105,34 @@ abstract class Val
     }
 
     /**
+     * Coerce a value to to an array.
+     *
+     * Throw an exception if not possible.
+     *
+     * Arrays and instances of Traversable can be converted to array.
+     *
+     * @param mixed       $value
+     * @param string|null $error Error message to throw if the value could not be converted
+     *
+     * @return string
+     *
+     * @throws InvalidArgumentException if $value could not be "nicely" converted to string
+     */
+    public static function toArray($value, $error = null)
+    {
+        if (!static::iterable($value)) {
+            throw new InvalidArgumentException($error ?: sprintf(
+                'The given %s could not be converted to an array',
+                gettype($value)
+            ));
+        }
+
+        return is_array($value)
+            ? $value
+            : iterator_to_array($value);
+    }
+
+    /**
      * Convert a variable to an integer.
      *
      * @param mixed       $value The value to be converted.
@@ -200,6 +228,30 @@ abstract class Val
     }
 
     /**
+     * Count the elements in an array, a Countable or a Traversable
+     *
+     * @param mixed $value
+     *
+     * @return int
+     */
+    public static function count($value)
+    {
+        static::mustBeA($value, 'iterable | countable');
+
+        if (static::countable($value)) {
+            return count($value);
+        }
+
+        if (static::iterable($value)) {
+            return iterator_count($value);
+        }
+
+        // This code should not be reachable.
+        throw new LogicException(sprintf('count() failed to understand the given %s', gettype($value)));
+    }
+
+
+    /**
      * Format a given value into a string.
      *
      * @param mixed  $value
@@ -244,8 +296,8 @@ abstract class Val
         }
 
         if ($format === 'count') {
-            return is_array($value) || is_a($value, Countable::class)
-                ? count($value)
+            return static::isA($value, 'countable | iterable')
+                ? static::count($value)
                 : '[not countable]';
         }
 
