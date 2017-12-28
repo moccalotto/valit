@@ -10,6 +10,7 @@ function containerFeatureTest($request)
 {
     Ensure::that($request)
         ->as('request')
+        ->isArray()
         ->contains([
             'headers' => 'isArray',
             'headers/accept' => 'startsWith("application/json")',
