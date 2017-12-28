@@ -74,6 +74,23 @@ class BasicCheckProviderSpec extends ObjectBehavior
         $this->checkIsOneOf(curl_init(), [curl_init()])->success()->shouldBe(false);
     }
 
+    function it_checks_isNotOneOf()
+    {
+        $this->checkIsOneOf('a', [])->shouldHaveType('Valit\Result\AssertionResult');
+
+        $this->provides()->shouldHaveKey('isNotOneOf');
+        $this->provides()->shouldHaveKey('notOneOf');
+
+        $this->checkIsNotOneOf(null, [1, 2, 3])->success()->shouldBe(true);
+        $this->checkIsNotOneOf(2, [1.23, 1, 0])->success()->shouldBe(true);
+        $this->checkIsNotOneOf(curl_init(), [curl_init()])->success()->shouldBe(true);
+
+        $this->checkIsNotOneOf(1, [1])->success()->shouldBe(false);
+        $this->checkIsNotOneOf(1.23, [1.23, 1, 0])->success()->shouldBe(false);
+        $this->checkIsNotOneOf(null, [false])->success()->shouldBe(false);
+    }
+
+
     function it_checks_equals()
     {
         $this->checkEquals(null, null)->shouldHaveType('Valit\Result\AssertionResult');

@@ -79,7 +79,7 @@ class BasicCheckProvider implements CheckProvider
     {
         Val::mustBe($possibleValues, 'iterable');
 
-        $msg = sprintf('{name} must match one of %s', implode(', ', array_map(function ($int) {
+        $msg = sprintf('{name} must be one of %s', implode(', ', array_map(function ($int) {
             return '{'.$int.'}';
         }, range(0, Val::count($possibleValues) - 1))));
 
@@ -90,6 +90,33 @@ class BasicCheckProvider implements CheckProvider
         }
 
         return new AssertionResult(false, $msg, $possibleValues);
+    }
+
+    /**
+     * Check that $value is NOT equal to (==) any of the values in $against.
+     *
+     * @Check(["isNotOneOf", "notOneOf"])
+     *
+     * @param mixed              $value
+     * @param array|\Traversable $unacceptableValues
+     *
+     * @return AssertionResult
+     */
+    public function checkIsNotOneOf($value, $unacceptableValues)
+    {
+        Val::mustBe($unacceptableValues, 'iterable');
+
+        $msg = sprintf('{name} must not be one of %s', implode(', ', array_map(function ($int) {
+            return '{'.$int.'}';
+        }, range(0, Val::count($unacceptableValues) - 1))));
+
+        foreach ($unacceptableValues as $match) {
+            if ($value == $match) {
+                return new AssertionResult(false, $msg, $unacceptableValues);
+            }
+        }
+
+        return new AssertionResult(true, $msg, $unacceptableValues);
     }
 
     /**
