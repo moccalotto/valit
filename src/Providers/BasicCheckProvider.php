@@ -37,16 +37,32 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value == $against (loose comparison).
      *
+     * Examples:
+     *
+     * | $value     | $equals       | Valid     |
+     * |:-----------|:--------------|:----------|
+     * | true       | true          | yes       |
+     * | true       | 1             | yes       |
+     * | "true"     | 1             | no        |
+     * | "true"     | true          | yes       |
+     * | "true"     | "foo"         | no        |
+     * | "1"        | true          | yes       |
+     * | "1"        | 1             | yes       |
+     * | "1"        | "foo"         | no        |
+     * | "0"        | true          | no        |
+     * | "0"        | false         | yes       |
+     * | "0"        | 0             | yes       |
+     *
      * @Check(["is", "equals"])
      *
      * @param mixed $value
-     * @param mixed $against
+     * @param mixed $equals
      *
      * @return AssertionResult
      */
-    public function checkEquals($value, $against)
+    public function checkEquals($value, $equals)
     {
-        return new AssertionResult($value == $against, '{name} must equal {0}', [$against]);
+        return new AssertionResult($value == $equals, '{name} must equal {0}', [$equals]);
     }
 
     /**
