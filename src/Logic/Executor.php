@@ -16,6 +16,9 @@ use Valit\Contracts\Logic as LogicContract;
 use Valit\Exceptions\ValueRequiredException;
 use Valit\Exceptions\ContainerRequiredException;
 
+/**
+ * Execute logic.
+ */
 class Executor
 {
     const REQUIRES_NONE = 'none';
@@ -74,33 +77,40 @@ class Executor
         $this->manager = $manager;
         $this->hasValue = false;
         $this->requires = static::REQUIRES_NONE;
-        $this->results = [];
+        $this->results = null;
     }
 
     /**
      * Get the executed results.
      *
      * @return ContainerResultBag[]
+     *
+     * @throws LogicException if you have not called `execute()` beforehand.
      */
     public function results()
     {
+        if (is_null($this->results)) {
+            throw new LogicException('You must call `execute` before you can fetch the results');
+        }
         return $this->results;
     }
 
+    /**
+     * If a scenario requires a value, apply that requirement to the entire executor.
+     *
+     * @param string $newRequirement
+     */
     protected function requires($newRequirement)
     {
         if ($newRequirement === static::REQUIRES_NONE) {
-            return $this->requires;
+            return;
         }
 
         if ($newRequirement === $this->requires) {
-            return $this->requires;
+            return;
         }
 
         switch ($newRequirement) {
-            case $this->requires:
-            case static::REQUIRES_NONE:
-                return;
             case static::REQUIRES_VALUE:
                 if (!$this->hasValue) {
                     throw new ValueRequiredException(
