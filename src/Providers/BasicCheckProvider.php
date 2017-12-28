@@ -11,7 +11,6 @@
 namespace Valit\Providers;
 
 use Valit\Util\Val;
-use UnexpectedValueException;
 use Valit\Result\AssertionResult;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
@@ -55,26 +54,26 @@ class BasicCheckProvider implements CheckProvider
      *
      * @Check(["isOneOf", "oneOf"])
      *
-     * @param mixed $value
-     * @param array|\ArrayAccess $against
+     * @param mixed              $value
+     * @param array|\Traversable $possibleValues
      *
      * @return AssertionResult
      */
-    public function checkIsOneOf($value, $against)
+    public function checkIsOneOf($value, $possibleValues)
     {
-        Val::mustBeA($against, 'arrayable');
+        Val::mustBeA($possibleValues, 'iterable');
 
         $msg = sprintf('{name} must match one of %s', implode(', ', array_map(function ($int) {
             return '{'.$int.'}';
-        }, range(0, count($against) - 1))));
+        }, range(0, Val::count($possibleValues) - 1))));
 
-        foreach ($against as $match) {
+        foreach ($possibleValues as $match) {
             if ($value == $match) {
-                return new AssertionResult(true, $msg, $against);
+                return new AssertionResult(true, $msg, $possibleValues);
             }
         }
 
-        return new AssertionResult(false, $msg, $against);
+        return new AssertionResult(false, $msg, $possibleValues);
     }
 
     /**
