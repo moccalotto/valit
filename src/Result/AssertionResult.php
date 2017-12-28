@@ -3,11 +3,12 @@
 namespace Valit\Result;
 
 use Valit\Util\Val;
+use Valit\Contracts\Result;
 
 /**
  * Result of executing a single assertion.
  */
-class AssertionResult
+class AssertionResult implements Result
 {
     /**
      * @var bool

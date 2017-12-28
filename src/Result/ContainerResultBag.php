@@ -10,12 +10,13 @@
 
 namespace Valit\Result;
 
+use Valit\Contracts\Result;
 use Valit\Exceptions\InvalidContainerException;
 
 /**
  * Result of validating a container.
  */
-class ContainerResultBag
+class ContainerResultBag implements Result
 {
     /**
      * @var AssertionResultBag[]
@@ -92,16 +93,6 @@ class ContainerResultBag
     public function success()
     {
         return !$this->hasErrors();
-    }
-
-    /**
-     * Did all tests pass?
-     *
-     * @return bool
-     */
-    public function valid()
-    {
-        return $this->success();
     }
 
     /**

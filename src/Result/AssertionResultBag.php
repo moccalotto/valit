@@ -2,9 +2,10 @@
 
 namespace Valit\Result;
 
+use Valit\Contracts\Result;
 use Valit\Traits\ContainsResults;
 
-class AssertionResultBag
+class AssertionResultBag implements Result
 {
     use ContainsResults;
 
