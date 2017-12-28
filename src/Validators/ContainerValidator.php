@@ -27,7 +27,7 @@ use Valit\Assertion\AssertionNormalizer;
  *
  * @method $this as(string $name) set the alias of the container
  */
-class ContainerValidator
+class ContainerValidator extends ContainerResultBag
 {
     /**
      * @var Manager
@@ -58,11 +58,6 @@ class ContainerValidator
     public $throwOnFailure;
 
     /**
-     * @var ContainerResultBag
-     */
-    public $results;
-
-    /**
      * Constructor.
      *
      * @param Manager           $manager
@@ -74,8 +69,8 @@ class ContainerValidator
         $this->manager = $manager;
         $this->container = $container;
         $this->throwOnFailure = (bool) $throwOnFailure;
-        $this->results = new ContainerResultBag([]);
         $this->flatContainer = new FlatContainer($container);
+        parent::__construct([], 'Container');
     }
 
     /**
@@ -97,8 +92,8 @@ class ContainerValidator
         }
 
         return $this->throwOnFailure
-            ? $this->results->orThrowException()
-            : $this->results;
+            ? $this->orThrowException()
+            : $this;
     }
 
     /**
@@ -117,7 +112,7 @@ class ContainerValidator
             $message = $optional ? '{name} is optional' : '{name} must be present';
             $fieldResults = new AssertionResultBag($this->container, $fieldNameGlob);
             $fieldResults->addAssertionResult(new AssertionResult($optional, $message));
-            $this->results->addAssertionResultBag($fieldNameGlob, $fieldResults);
+            $this->addAssertionResultBag($fieldNameGlob, $fieldResults);
         }
 
         foreach ($fieldsToValidate as $fieldPath => $value) {
@@ -130,22 +125,8 @@ class ContainerValidator
 
             $assertions->applyToValidator($fieldResults);
 
-            $this->results->addAssertionResultBag($fieldPath, $fieldResults);
+            $this->addAssertionResultBag($fieldPath, $fieldResults);
         }
-    }
-
-    /**
-     * Set the alias of the container.
-     *
-     * @param string $alias
-     *
-     * @return $this
-     */
-    public function alias($alias)
-    {
-        $this->results->alias($alias);
-
-        return $this;
     }
 
     /**
@@ -166,9 +147,9 @@ class ContainerValidator
             return $this;
         }
 
-        throw new BadMethodCallException(sprintf(
-            'Unknown method name "%s"',
-            $methodName
-        ));
+        // Forward call to ValueValidator
+        $valueValidator = new ValueValidator($this->manager, $this->container, $this->throwOnFailure);
+
+        return $valueValidator->__call($methodName, $args);
     }
 }

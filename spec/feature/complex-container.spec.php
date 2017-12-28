@@ -10,7 +10,7 @@ function containerFeatureTest($request)
 {
     Ensure::that($request)
         ->as('request')
-        ->isArray()
+        ->isAssociative()
         ->contains([
             'headers' => 'isArray',
             'headers/accept' => 'startsWith("application/json")',
@@ -19,7 +19,7 @@ function containerFeatureTest($request)
             'body/action' => Check::value()->matches('/[a-z][a-zA-Z0-9_]*$/A'),
             'body/params' => Value::isArray(),
             'body/extras' => 'optional & isArray',
-        ]);
+        ])->isArray();  // this check is a bit silly, but it is proof-of-concept
 }
 
 describe('Container Feature Test', function () {
