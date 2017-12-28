@@ -63,11 +63,11 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkAssociative(['1a' => '1b'])->success()->shouldBe(true);
         $this->checkAssociative(['1.0' => '1.0'])->success()->shouldBe(true);
         $this->checkAssociative(['0.0' => '0.0'])->success()->shouldBe(true);
+        $this->checkAssociative(['a' => 'a', '1' => '1'])->success()->shouldBe(true);
         $this->checkAssociative(['a' => 'a', 'b' => 'b'])->success()->shouldBe(true);
 
         $this->checkAssociative([])->success()->shouldBe(false);
         $this->checkAssociative([1 => '1b'])->success()->shouldBe(false);
-        $this->checkAssociative(['a' => 'a', '1' => '1'])->success()->shouldBe(false);
 
         $this->checkAssociative(1)->success()->shouldBe(false);
         $this->checkAssociative(1.0)->success()->shouldBe(false);

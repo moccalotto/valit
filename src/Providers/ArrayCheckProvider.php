@@ -59,12 +59,12 @@ class ArrayCheckProvider implements CheckProvider
         }
 
         foreach (array_keys($value) as $key) {
-            if (is_integer($key)) {
-                return new Result(false, $message);
+            if (!is_integer($key)) {
+                return new Result(true, $message);
             }
         }
 
-        return new Result(true, '{name} must be an associative array');
+        return new Result(false, $message);
     }
 
     /**
