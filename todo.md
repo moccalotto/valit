@@ -31,9 +31,6 @@ Refactor:
 AssertionNormalizer => AssertionBagFactory
     normalize() => create()
 
-We should either have success() or valid() or both on
-all resulty objects. Which scheme should it be?
-
 Logic:
 ======
 Base Logic must be able to adhere to the same (not yet existing) interface as AssertionResult.
