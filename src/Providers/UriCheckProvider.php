@@ -71,7 +71,7 @@ class UriCheckProvider implements CheckProvider
     {
         $schemes = array_filter(
             array_filter(
-                (array) Val::mustBeA($schemes, 'array|string'),
+                (array) Val::mustBe($schemes, 'array|string'),
                 'is_string'
             ),
             'trim'

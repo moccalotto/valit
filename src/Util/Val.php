@@ -236,7 +236,7 @@ abstract class Val
      */
     public static function count($value)
     {
-        static::mustBeA($value, 'iterable | countable');
+        static::mustBe($value, 'iterable | countable');
 
         if (static::countable($value)) {
             return count($value);
@@ -295,7 +295,7 @@ abstract class Val
         }
 
         if ($format === 'count') {
-            return static::isA($value, 'countable | iterable')
+            return static::is($value, 'countable | iterable')
                 ? static::count($value)
                 : '[not countable]';
         }
@@ -387,13 +387,13 @@ abstract class Val
      *
      * @throws InvalidArgumentException if $value is not of the correct type
      */
-    public static function mustBeA($value, $types, $error = null)
+    public static function mustBe($value, $types, $error = null)
     {
-        if (!static::isA($error, 'null|string|Exception')) {
+        if (!static::is($error, 'null|string|Exception')) {
             throw new LogicException('$error must be null, a string or an instance of Exception');
         }
 
-        if (static::isA($value, $types)) {
+        if (static::is($value, $types)) {
             return $value;
         }
 
@@ -440,10 +440,10 @@ abstract class Val
      *
      * @throws InvalidArgumentException if $types is not a string or an array of strings
      */
-    public static function isA($value, $types)
+    public static function is($value, $types)
     {
         if (is_string($types)) {
-            return static::isA($value, explode('|', $types));
+            return static::is($value, explode('|', $types));
         }
 
         if (!is_array($types)) {

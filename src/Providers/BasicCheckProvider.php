@@ -61,7 +61,7 @@ class BasicCheckProvider implements CheckProvider
      */
     public function checkIsOneOf($value, $possibleValues)
     {
-        Val::mustBeA($possibleValues, 'iterable');
+        Val::mustBe($possibleValues, 'iterable');
 
         $msg = sprintf('{name} must match one of %s', implode(', ', array_map(function ($int) {
             return '{'.$int.'}';
@@ -176,7 +176,7 @@ class BasicCheckProvider implements CheckProvider
     public function checkHasType($value, $type)
     {
         return new AssertionResult(
-            Val::isA($value, $type),
+            Val::is($value, $type),
             '{name} must have the type(s) {0}',
             [$type]
         );

@@ -42,7 +42,7 @@ class CustomCheckProvider implements CheckProvider
             $value,
             new CallbackChecker(
                 Val::toString($message),
-                Val::mustBeA($callback, 'callable')
+                Val::mustBe($callback, 'callable')
             )
         );
     }
@@ -62,7 +62,7 @@ class CustomCheckProvider implements CheckProvider
      */
     public function checkPassesChecker($value, $checker)
     {
-        Val::mustBeA($checker, CustomChecker::class, '$checker must be a Valit\Contracts\CustomChecker');
+        Val::mustBe($checker, CustomChecker::class, '$checker must be a Valit\Contracts\CustomChecker');
 
         $result = $checker->check($value);
 

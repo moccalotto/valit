@@ -22,7 +22,7 @@ class AssertionNormalizer
      */
     public function __construct($assertions)
     {
-        Val::mustBeA($assertions, [
+        Val::mustBe($assertions, [
             'string',
             'array',
             AssertionBag::class,
