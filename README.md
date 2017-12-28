@@ -172,7 +172,7 @@ You can easily test an entire array, for instance posted fields or a json respon
 in a structured and well defined way like the example below:
 
 ```php
-$checks = Check::container($input)->passes([
+$checks = Check::that($input)->contains([
     'name'      => 'required & string & shorterThan(100)',
     'email'     => 'required & email & shorterThan(255)',
     'address'   => ['required', 'string'],
@@ -232,7 +232,7 @@ a set of filters via the `Ensure` facade like so:
 
 ```php
 // Throw an exception if $responseData does not adhere to all the criteria:
-Ensure::container($responseData)->passes([
+Ensure::that($responseData)->contains([
     'statusCode' => 'required & integer & greaterThanOrEqual(0) & lowerThanOrEqual(1000)',
     'message' => 'required & string',
     'payload' => 'required & isArray',
@@ -254,14 +254,14 @@ If you use `Check` instead of `Ensure`, and the use the `orThrowException` metho
 you get an exception message that contains all the errors on all the fields.
 
 ```php
-Check::container([
+Check::that([
     'a' => 1234,
     'b' => [
         'c' => 'g',
         'd' => 'h',
     ],
 
-])->passes([
+])->contains([
     'a' => 'required & isString & longerThan(100)',
     'b' => 'required & isArray',
     'b/c' => 'required & isInt & greaterThan(10)',

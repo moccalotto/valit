@@ -126,4 +126,17 @@ class ValueValidator extends AssertionResultBag
     {
         return $this->orThrowException();
     }
+
+    /**
+     * Check container against a number of assertions.
+     *
+     * @param array|Traversable $containerAssertionMap
+     *
+     * @return ContainerResultBag
+     */
+    public function contains($containerAssertionMap)
+    {
+        return (new ContainerValidator($this->manager, $this->value, $this->throwOnFailure))
+            ->passes($containerAssertionMap);
+    }
 }

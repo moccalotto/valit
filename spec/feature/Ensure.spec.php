@@ -19,18 +19,6 @@ describe('Valit\Ensure', function () {
         });
     });
 
-    describe('::container()', function () {
-        it('creates ContainerValidator', function () {
-            $container = ['foo' => 'bar'];
-            $validator = Ensure::container($container);
-
-            expect($validator)->toBeAnInstanceOf(ContainerValidator::class);
-            expect($validator->container)->toBe($container);
-            expect($validator->throwOnFailure)->toBe(true);
-            expect($validator->manager)->toBe(Manager::instance());
-        });
-    });
-
     describe('::oneOf', function () {
         it('creates and executes a oneOf logic', function () {
             $data = [

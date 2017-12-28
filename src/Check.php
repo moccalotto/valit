@@ -32,20 +32,6 @@ abstract class Check
     }
 
     /**
-     * Ensure that a container passes certain criteria.
-     *
-     * @param mixed $container the container to check
-     *
-     * @return ContainerValidator a ContainerValidator object that has been
-     *                            configured to throw a InvalidValueException as soon as a
-     *                            single validation fails
-     */
-    public static function container($container)
-    {
-        return new ContainerValidator(Manager::instance(), $container, false);
-    }
-
-    /**
      * Create an AssertionBag.
      *
      * @return AssertionBag

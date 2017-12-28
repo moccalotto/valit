@@ -29,21 +29,6 @@ abstract class Ensure
     }
 
     /**
-     * Ensure that a container passes certain criteria.
-     *
-     * @param mixed $container the container to check
-     *
-     * @return ContainerValidator A ContainerValidator object that has been
-     *                            configured to NOT throw ValidationExceptions in case
-     *                            of failed checks. You can inspect the ContainerResultBag
-     *                            to get information about the failed checks
-     */
-    public static function container($container)
-    {
-        return new ContainerValidator(Manager::instance(), $container, true);
-    }
-
-    /**
      * Check that exactly one of the given scenarios succeed.
      *
      * @param array|\Traversable $scenarios

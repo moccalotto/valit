@@ -19,18 +19,6 @@ describe('Valit\Check', function () {
         });
     });
 
-    describe('::container()', function () {
-        it('creates ContainerValidator', function () {
-            $container = ['foo' => 'bar'];
-            $validator = Check::container($container);
-
-            expect($validator)->toBeAnInstanceOf(ContainerValidator::class);
-            expect($validator->container)->toBe($container);
-            expect($validator->throwOnFailure)->toBe(false);
-            expect($validator->manager)->toBe(Manager::instance());
-        });
-    });
-
     describe('::value()', function () {
         it('creates an assertion bag', function () {
             expect(Check::value())->toBeAnInstanceOf(AssertionBag::class);

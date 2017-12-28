@@ -8,9 +8,9 @@ use Valit\Ensure;
 
 function containerFeatureTest($request)
 {
-    Ensure::container($request)
+    Ensure::that($request)
         ->as('request')
-        ->passes([
+        ->contains([
             'headers' => 'isArray',
             'headers/accept' => 'startsWith("application/json")',
             'body' => 'isArray',

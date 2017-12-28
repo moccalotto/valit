@@ -186,7 +186,7 @@ $request = [
     ],
 ];
 
-$checks = Check::container($request)->passes([
+$checks = Check::that($request)->contains([
     'name' => 'string & shorterThan(100)',
     'email' => 'email & shorterThan(255)',
     'address' => ['string'],
@@ -230,7 +230,7 @@ print_r($checks->errorMessagesByPath(['orderLines', 0, 'productId']));
 
 
 try {
-    Check::container([
+    Check::that([
         'a' => 1234,
         'b' => [
             'c' => 'g',
@@ -238,7 +238,7 @@ try {
         ],
     ])
     ->as('foo')
-    ->passes([
+    ->contains([
         'a' => 'required & isString & longerThan(100)',
         'b' => 'required & isArray',
         'b/c' => 'required & isInt & greaterThan(10)',
