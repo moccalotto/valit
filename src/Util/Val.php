@@ -228,7 +228,7 @@ abstract class Val
     }
 
     /**
-     * Count the elements in an array, a Countable or a Traversable
+     * Count the elements in an array, a Countable or a Traversable.
      *
      * @param mixed $value
      *
@@ -249,7 +249,6 @@ abstract class Val
         // This code should not be reachable.
         throw new LogicException(sprintf('count() failed to understand the given %s', gettype($value)));
     }
-
 
     /**
      * Format a given value into a string.

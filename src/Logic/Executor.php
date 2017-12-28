@@ -85,13 +85,14 @@ class Executor
      *
      * @return ContainerResultBag[]
      *
-     * @throws LogicException if you have not called `execute()` beforehand.
+     * @throws LogicException if you have not called `execute()` beforehand
      */
     public function results()
     {
         if (is_null($this->results)) {
             throw new LogicException('You must call `execute` before you can fetch the results');
         }
+
         return $this->results;
     }
 
