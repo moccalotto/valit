@@ -139,7 +139,7 @@ class ValueValidator extends AssertionResultBag
         $containerValidator = new ContainerValidator($this->manager, $this->value, $this->throwOnFailure);
 
         return $containerValidator
-            ->alias($this->varName)
+            ->alias($this->varName ? $this->varName : 'container')
             ->passes($containerAssertionMap);
     }
 }
