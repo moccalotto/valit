@@ -5,9 +5,10 @@ namespace Valit\Logic;
 use Traversable;
 use Valit\Manager;
 use Valit\Contracts\Logic;
+use Valit\Contracts\Result;
 use Valit\Result\AssertionResult;
 
-abstract class BaseLogic implements Logic
+abstract class BaseLogic implements Logic, Result
 {
     /**
      * @var Executor
@@ -15,6 +16,33 @@ abstract class BaseLogic implements Logic
      * @internal
      */
     public $executor;
+
+    /**
+     * The result generated when execute() was called last.
+     *
+     * @var AssertionResult|null
+     *
+     * @internal
+     */
+    public $cachedResult = null;
+
+    /**
+     * The $hasValue when execute() was called last.
+     *
+     * @var bool
+     *
+     * @internal
+     */
+    public $hasValue;
+
+    /**
+     * The $value when execute() was called last.
+     *
+     * @var mixed
+     *
+     * @internal
+     */
+    public $value;
 
     /**
      * Constructor.
@@ -49,9 +77,37 @@ abstract class BaseLogic implements Logic
      */
     public function execute($hasValue = false, $value = null)
     {
-        $this->executor->execute($hasValue, $value);
+        if (!$hasValue) {
+            $value = null;
+        }
 
-        return $this->makeResult();
+        // Clear cached result if this method is called with
+        // other args than last time it was called.
+        if ($hasValue !== $this->hasValue || $value !== $this->value) {
+            $this->cachedResult = null;
+        }
+
+        if (!$this->cachedResult) {
+            $this->executor->execute($hasValue, $value);
+
+            $this->cachedResult = $this->makeResult();
+        }
+
+        return $this->cachedResult;
+    }
+
+    /**
+     * Did the validations succeed?
+     *
+     * @return bool
+     */
+    public function success()
+    {
+        if ($this->cachedResult) {
+            return $this->cachedResult->success();
+        }
+
+        return $this->execute()->success();
     }
 
     /**
@@ -86,6 +142,23 @@ abstract class BaseLogic implements Logic
     public function withoutValue()
     {
         return $this->execute(false);
+    }
+
+    /**
+     * Clear debug info.
+     *
+     * @return array
+     */
+    public function __debugInfo()
+    {
+        $executed = $this->cachedResult !== null;
+
+        return [
+            'scenarios' => Val::count($this->executor->scenarios),
+            'executed' => $executed,
+            'hasValue' => $executed ? ($this->hasValue) : null,
+            'valueType' => $this->value,
+        ];
     }
 
     /**
