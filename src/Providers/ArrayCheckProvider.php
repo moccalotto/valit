@@ -109,7 +109,7 @@ class ArrayCheckProvider implements CheckProvider
      */
     public function checkNotEmpty($value)
     {
-        $success = Val::isCountable($value) && count($value) > 0;
+        $success = Val::countable($value) && count($value) > 0;
 
         return new Result($success, '{name} must be a non-empty array');
     }
@@ -125,7 +125,7 @@ class ArrayCheckProvider implements CheckProvider
      */
     public function checkEmpty($value)
     {
-        $success = Val::isCountable($value) && count($value) === 0;
+        $success = Val::countable($value) && count($value) === 0;
 
         return new Result($success, '{name} must be an empty array');
     }

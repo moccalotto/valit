@@ -72,7 +72,7 @@ abstract class Val
      *
      * @return bool
      */
-    public static function isCountable($value)
+    public static function countable($value)
     {
         return is_array($value)
             || is_a($value, Countable::class);
@@ -433,6 +433,10 @@ abstract class Val
 
             if ($type === 'iterable') {
                 return static::iterable($value);
+            }
+
+            if ($type === 'countable') {
+                return static::countable($value);
             }
 
             if ($type === 'stringable') {
