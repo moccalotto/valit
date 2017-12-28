@@ -12,7 +12,6 @@ namespace Valit;
 
 use Valit\Assertion\AssertionBag;
 use Valit\Validators\ValueValidator;
-use Valit\Validators\ContainerValidator;
 
 abstract class Check
 {

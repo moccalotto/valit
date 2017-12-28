@@ -10,7 +10,6 @@
 
 namespace Valit;
 
-use Valit\Validators\ContainerValidator;
 use Valit\Validators\ValueValidator;
 
 abstract class Ensure
