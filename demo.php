@@ -45,7 +45,7 @@ $valid = Check::that($x)
     ->isInt()                   // Success
     ->isGreaterThanOrEqual(42)  // Success
     ->isLessThan(100)           // Success
-    ->valid();                  // true
+    ->success();                // true
 
 var_dump($valid);  // bool(true)
 
