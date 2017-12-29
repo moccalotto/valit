@@ -420,18 +420,21 @@ abstract class Val
      * Check if a value has a given type or class.
      *
      * $types can be a string with a type name such as:
-     *  'int', 'float', 'bool', 'array' or even 'callable'
-     * or it can be a fully qualified class name such as
+     *  'int', 'float', 'bool', 'array' or even pseudy
+     *  types such as 'callable', 'iterable', 'countable',
+     *  'stringable' and 'arrayable'.
+     *
+     * It can also be a fully qualified class name such as
      *  'Valit\Check'
      *
      * It can also be an array of the above types. If it is an
      * array, then $value can be any of the given values.
      * Example:
-     *  [`int', `DateTimeInterface`]
+     *  ['int', 'DateTimeInterface']
      *
      * It can also be a string with many types separated by a pipe `|` characer.
      * Example:
-     *  'int|float', 'string | DateTimeInterface'
+     *  'string|DateTimeInterface', 'int | float'
      *
      * @param mixed           $value The value to check
      * @param string|string[] $types Value must have at least one of the declared types
@@ -466,39 +469,83 @@ abstract class Val
                 return true;
             }
 
-            if ($type === 'callable') {
-                return is_callable($value);
+            if ($type === 'scalar' && is_scalar($value)) {
+                return true;
             }
 
-            if ($type === 'int') {
-                return is_int($value);
+            if ($type === 'callable' && is_callable($value)) {
+                return true;
             }
 
-            if ($type === 'numeric') {
-                return is_numeric($value);
+            if ($type === 'int' && is_int($value)) {
+                return true;
             }
 
-            if ($type === 'float') {
-                return is_float($value);
+            if ($type === 'numeric' && is_numeric($value)) {
+                return true;
             }
 
-            if ($type === 'iterable') {
-                return static::iterable($value);
+            if ($type === 'float' && is_float($value)) {
+                return true;
             }
 
-            if ($type === 'countable') {
-                return static::countable($value);
+            if ($type === 'iterable' && static::iterable($value)) {
+                return true;
             }
 
-            if ($type === 'stringable') {
-                return static::stringable($value);
+            if ($type === 'countable' && static::countable($value)) {
+                return true;
             }
 
-            if ($type === 'arrayable') {
-                return static::arrayable($value);
+            if ($type === 'stringable' && static::stringable($value)) {
+                return true;
+            }
+
+            if ($type === 'arrayable' && static::arrayable($value)) {
+                return true;
+            }
+
+            if ($type === 'nan' && is_nan($value)) {
+                return true;
+            }
+
+            if ($type === 'inf' && is_infinite($value)) {
+                return true;
+            }
+
+            // check for array types such as string[], float[], DateTime[], etc.
+            if (substr($type, -2) === '[]' && static::arrayOf($value, substr($type, 0, -2))) {
+                return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Check if $value is an array of the given type.
+     *
+     * @param mixed  $value
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function arrayOf($value, $type)
+    {
+        if (!is_array($value)) {
+            return false;
+        }
+
+        if (count($value) === 0) {
+            return true;
+        }
+
+        foreach ($value as $entry) {
+            if (!static::is($entry, $type)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
