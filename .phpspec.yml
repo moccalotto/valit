@@ -1,0 +1,8 @@
+"formatter.name": pretty
+
+suites:
+    valit:
+        namespace: Valit
+        spec_prefix: spec
+        src_path: %paths.config%/src
+        spec_path: %paths.config%/tests

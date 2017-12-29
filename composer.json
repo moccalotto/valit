@@ -34,22 +34,25 @@
         "moccalotto/exemel": "Needed to check if two XML documents are congruent"
     },
     "scripts": {
-        "test-code-style": [
-            "@php vendor/bin/php-cs-fixer fix --dry-run src"
+        "cs": [
+            "@php vendor/bin/php-cs-fixer fix --config-file=.php_cs --dry-run src"
         ],
-        "test-kahlan": [
-            "@php vendor/bin/kahlan"
+        "kahlan": [
+            "@php vendor/bin/kahlan --config=.kahlan.php"
         ],
-        "test-phpspec": [
-            "@php vendor/bin/phpspec run --format=pretty"
-        ],
-        "test-bdd": [
-            "@test-phpspec",
-            "@test-kahlan"
+        "phpspec": [
+            "@php vendor/bin/phpspec run --config=.phpspec.yml"
         ],
         "test": [
-            "@test-code-style",
-            "@test-bdd"
+            "@phpspec",
+            "@kahlan"
+        ],
+        "pipeline": [
+            "@bdd",
+            "@cs"
+        ],
+        "csfix": [
+            "@php vendor/bin/php-cs-fixer fix --config-file=.php_cs"
         ]
     }
 }
