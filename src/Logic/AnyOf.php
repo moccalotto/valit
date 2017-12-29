@@ -16,7 +16,7 @@ class AnyOf extends BaseLogic
         $scenarioResults = [];
         $successCount = 0;
         foreach ($this->executor->results() as $result) {
-            $scenarioResults[] = $result->renderedResults();
+            $scenarioResults[] = $result->results();
             $successCount += (int) $result->success();
         }
 

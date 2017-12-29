@@ -32,6 +32,13 @@ class AssertionResult implements Result
     public $context;
 
     /**
+     * @var string|null
+     *
+     * @internal
+     */
+    public $path;
+
+    /**
      * Constructor.
      *
      * @param bool   $success
@@ -43,6 +50,7 @@ class AssertionResult implements Result
         $this->success = (bool) $success;
         $this->message = (string) $message;
         $this->context = $context;
+        $this->path = null;
     }
 
     /**
@@ -76,27 +84,59 @@ class AssertionResult implements Result
     }
 
     /**
-     * Render the error mesage, using the name and alias provided.
+     * Get the path of this result.
      *
-     * @param string $name
+     * Only assertions made on container fields have paths.
+     *
+     * @return string|null
+     */
+    public function path()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set a path on the object for injection into a ContainerValidator.
+     *
+     * @return self
+     */
+    public function withPath($path)
+    {
+        Val::mustBe($path, 'string|null');
+
+        $clone = clone $this;
+
+        $clone->path = $path;
+
+        return $clone;
+    }
+
+    /**
+     * Normalize an AssertionResult for injection
+     * into a result container.
+     *
+     * @param string $varName
      * @param mixed  $value
      *
-     * @return string
+     * @return self
      */
-    public function renderMessage($name, $value)
+    public function normalize($varName, $value)
     {
+        $varName = Val::toString($varName);
+
+        $template = $this->message;
         $context = $this->context;
         $context['value'] = $value;
 
-        return preg_replace_callback(
+        $message = preg_replace_callback(
             '/\{([a-z0-9_]+)(?::([a-z0-9_]+))?\}/ui',
-            function ($matches) use ($context, $name) {
+            function ($matches) use ($context, $varName) {
                 $all = $matches[0];
                 $key = $matches[1];
                 $fmt = isset($matches[2]) ? $matches[2] : 'normal';
 
                 if ($key === 'name') {
-                    return $name;
+                    return $varName;
                 }
 
                 if (!isset($context[$key])) {
@@ -105,7 +145,12 @@ class AssertionResult implements Result
 
                 return Val::format($context[$key], $fmt);
             },
-            $this->message
+            $template
+        );
+
+        return new self(
+            $this->success,
+            $message
         );
     }
 }

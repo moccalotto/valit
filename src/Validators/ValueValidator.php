@@ -15,6 +15,11 @@ use Valit\Contracts\CheckManager;
 use Valit\Result\AssertionResultBag;
 use Valit\Exceptions\InvalidValueException;
 
+/**
+ * Validate a value.
+ *
+ * @method $this as(string $name) set the alias of the value to render pretty status messages
+ */
 class ValueValidator extends AssertionResultBag
 {
     /**
@@ -85,9 +90,11 @@ class ValueValidator extends AssertionResultBag
 
         $this->addAssertionResult($result);
 
-        return $this->throwOnFailure
-            ? $this->orThrowException()
-            : $this;
+        if ($this->throwOnFailure) {
+            return $this->orThrowException();
+        }
+
+        return $this;
     }
 
     /**
@@ -130,7 +137,7 @@ class ValueValidator extends AssertionResultBag
     /**
      * Check container against a number of assertions.
      *
-     * @param array|Traversable $containerAssertionMap
+     * @param array|\Traversable $containerAssertionMap
      *
      * @return ContainerResultBag
      */

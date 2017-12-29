@@ -120,8 +120,8 @@ class ContainerValidatorSpec extends ObjectBehavior
 
         $result->shouldHaveType('Valit\Result\ContainerResultBag');
         $result->errors()->shouldBe([]);
-        $result->results()->shouldHaveKey('someArray');
-        $result->results()->shouldHaveKey('someAssoc');
+        $result->results('someArray')->shouldHaveCount(3);
+        $result->results('someAssoc')->shouldHaveCount(2);
     }
 
     public function it_handles_object_containers()
@@ -142,8 +142,11 @@ class ContainerValidatorSpec extends ObjectBehavior
 
         $result->shouldHaveType('Valit\Result\ContainerResultBag');
         $result->errors()->shouldBe([]);
-        $result->results()->shouldHaveKey('someArray');
-        $result->results()->shouldHaveKey('someAssoc');
+        $result->results('someArray')->shouldHaveCount(3);
+        $result->results('someArray/0')->shouldHaveCount(2);
+        $result->results('someArray/1')->shouldHaveCount(2);
+        $result->results('someArray/2')->shouldHaveCount(0);
+        $result->results('someAssoc')->shouldHaveCount(2);
     }
 
     function it_finds_errors()
@@ -161,13 +164,12 @@ class ContainerValidatorSpec extends ObjectBehavior
         ]);
 
         $result->errors()->shouldHaveCount(5);
-        $result->errors()->shouldHaveKey('notFound');
-        $result->errors()->shouldHaveKey('some/*/complex/*/filter/glob');
-        $result->errors()->shouldHaveKey('someAssoc/thing1');
-        $result->errors()->shouldHaveKey('someAssoc/thing2');
-        $result->errors()->shouldHaveKey('someAssoc/thing3');
-        $result->results()['notFound'][0]->shouldHaveType('Valit\Result\AssertionResult');
-        $result->results()['notFound'][0]->success()->shouldBe(false);
+        $result->errors('notFound')->shouldHaveCount(1);
+        $result->errors('some/*/complex/*/filter/glob')->shouldHaveCount(1); // required, but value not found
+        $result->errors('someAssoc/thing1')->shouldHaveCount(1);
+        $result->errors('someAssoc/thing2')->shouldHaveCount(1);
+        $result->errors('someAssoc/thing3')->shouldHaveCount(1);
+        $result->results('notFound')->shouldHaveCount(1);
     }
 
     function it_finds_errors_in_arrays()

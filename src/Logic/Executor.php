@@ -59,7 +59,7 @@ class Executor
     public $requires;
 
     /**
-     * @var ContainerResultBag[]
+     * @var null|ContainerResultBag[]
      *
      * @internal
      */

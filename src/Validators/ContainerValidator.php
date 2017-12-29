@@ -135,7 +135,7 @@ class ContainerValidator extends ContainerResultBag
      * @param string $methodName
      * @param array  $args
      *
-     * @return $this
+     * @return mixed
      *
      * @throws BadMethodCallException if the $methodName is invalid
      */

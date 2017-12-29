@@ -19,20 +19,20 @@ use Valit\Exceptions\InvalidContainerException;
 class ContainerResultBag implements Result
 {
     /**
-     * @var AssertionResultBag[]
+     * @var AssertionResult[]
      */
     public $results;
 
     /**
      * @var string
      */
-    public $varName = 'Container';
+    public $varName;
 
     /**
      * Constructor.
      *
-     * @param AssertionResultBag[] $results
-     * @param string               $varName
+     * @param AssertionResult[] $results
+     * @param string            $varName
      */
     public function __construct(array $results, $varName = 'Container')
     {
@@ -64,12 +64,8 @@ class ContainerResultBag implements Result
      */
     public function addAssertionResultBag($path, AssertionResultBag $valueValidator)
     {
-        if (isset($this->results[$path])) {
-            foreach ($valueValidator->results() as $result) {
-                $this->results[$path]->addAssertionResult($result);
-            }
-        } else {
-            $this->results[$path] = $valueValidator;
+        foreach ($valueValidator->results() as $result) {
+            $this->results[] = $result->withPath($path);
         }
 
         return $this;
@@ -98,37 +94,39 @@ class ContainerResultBag implements Result
     /**
      * Return all results.
      *
-     * @return array associative array of [ path => [results] ]
+     * @param string|null $path If you want to filter by path, set this arg
+     *
+     * @return AssertionResult[]
      */
-    public function results()
+    public function results($path = null)
     {
-        return array_map(function ($singleValidator) {
-            return $singleValidator->results();
-        }, $this->results);
+        if ($path === null) {
+            return $this->results;
+        }
+
+        return array_filter(
+            $this->results,
+            function ($result) use ($path) {
+                return $result->path === $path;
+            }
+        );
     }
 
     /**
      * Return list of rendered errors.
      *
-     * @return array associative array of [ path => [errors] ]
-     */
-    public function errors()
-    {
-        return array_filter(array_map(function ($singleValidator) {
-            return $singleValidator->errorMessages();
-        }, $this->results));
-    }
-
-    /**
-     * Get all results as rendered strings.
+     * @param string|null $path Use this parameter if you only want to get the errors for a given path
      *
-     * @return array associative array of [ path => [message => success] ]
+     * @return AssertionResult[]
      */
-    public function renderedResults()
+    public function errors($path = null)
     {
-        return array_map(function ($singleValidator) {
-            return $singleValidator->renderedResults();
-        }, $this->results);
+        return array_filter(
+            $this->results($path),
+            function ($result) {
+                return !$result->success();
+            }
+        );
     }
 
     /**
@@ -140,11 +138,14 @@ class ContainerResultBag implements Result
      */
     public function errorMessagesByPath($path)
     {
-        $key = is_array($path) ? implode('/', $path) : $path;
+        $path = is_array($path) ? implode('/', $path) : $path;
 
-        return isset($this->results[$key])
-            ? $this->results[$key]->errorMessages()
-            : [];
+        return array_map(
+            function ($result) {
+                return $result->message;
+            },
+            $this->errors($path)
+        );
     }
 
     /**

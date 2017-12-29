@@ -4,6 +4,7 @@ namespace Valit\Logic;
 
 use Traversable;
 use Valit\Manager;
+use Valit\Util\Val;
 use Valit\Contracts\Logic;
 use Valit\Contracts\Result;
 use Valit\Result\AssertionResult;

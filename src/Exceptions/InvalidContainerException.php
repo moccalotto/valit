@@ -50,18 +50,16 @@ class InvalidContainerException extends UnexpectedValueException
      */
     public function getExpandedMessage($prefix)
     {
-        $renderedResults = $this->results->renderedResults();
-
-        $errorMessages = [];
-
-        foreach ($renderedResults as $validationMessages) {
-            $errorMessages = array_merge(
-                $errorMessages,
-                array_keys(array_filter($validationMessages, function ($success) {
-                    return !$success;
-                }))
-            );
-        }
+        $errorMessages = array_map(
+            function ($result) {
+                return sprintf(
+                    '%s: %s',
+                    $result->path,
+                    $result->message
+                );
+            },
+            $this->results->errors()
+        );
 
         return $prefix
             .': '

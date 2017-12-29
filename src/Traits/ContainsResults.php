@@ -118,7 +118,7 @@ trait ContainsResults
     }
 
     /**
-     * Get the assertion results.
+     * Get the assertie results.
      *
      * @return AssertionResult[]
      */
@@ -138,35 +138,15 @@ trait ContainsResults
      */
     public function addAssertionResult(AssertionResult $result)
     {
-        $this->results[] = $result;
+        $this->results[] = $result->normalize($this->varName, $this->value);
 
         if ($result->success()) {
             ++$this->successes;
         } else {
             ++$this->failures;
         }
-        // early return
+
         return $this;
-    }
-
-    /**
-     * Render the results as [message => success-status] map.
-     *
-     * The result is formarted as [message1 => success1, message2 => success2, ...]
-     *
-     * @return array
-     */
-    public function renderedResults()
-    {
-        $output = [];
-
-        foreach ($this->results as $result) {
-            $key = $result->renderMessage($this->varName, $this->value);
-
-            $output[$key] = $result->success();
-        }
-
-        return $output;
     }
 
     /**
@@ -188,13 +168,46 @@ trait ContainsResults
      */
     public function errorMessages()
     {
-        return array_values(
-            array_map(
-                function ($error) {
-                    return $error->renderMessage($this->varName, $this->value);
-                },
-                $this->errors()
-            )
+        return array_map(
+            function ($result) {
+                return $result->message();
+            },
+            $this->errors()
         );
+    }
+
+    /**
+     * Status messages
+     *
+     * @return string[]
+     */
+    public function statusMessages()
+    {
+        return array_map(
+            function ($result) {
+                $status = $result->success()
+                    ? 'PASS: '
+                    : 'FAIL: ';
+
+                return $status . $result->message();
+            },
+            $this->results()
+        );
+    }
+
+    /**
+     * Get the first error message.
+     *
+     * @return string|null
+     */
+    public function firstErrorMessage()
+    {
+        foreach ($this->results as $result) {
+            if (!$result->success()) {
+                return $result->message;
+            }
+        }
+
+        return null;
     }
 }
