@@ -30,29 +30,29 @@ abstract class Date
      *
      * @var DateTimeInterface
      */
-    protected static $now;
+    protected static $mockedCurrentTime;
 
     /**
-     * In order to facilitate testing, we must be able to lock/override the "now" datetime.
+     * In order to facilitate testing, we must be able to lock/mock the "now" datetime.
      *
-     * @param DateTimeInterface|null $now
+     * @param DateTimeInterface|null $mockedCurrentTime
      */
-    public static function overrideNow(DateTimeInterface $now = null)
+    public static function mockCurrentTime(DateTimeInterface $mockedCurrentTime = null)
     {
-        static::$now = $now;
+        static::$mockedCurrentTime = $mockedCurrentTime;
     }
 
     /**
      * Get the current DateTime.
      *
-     * If the DateTime that represents the current time. If it was overridden with the overrideNow() method,
+     * If the DateTime that represents the current time. If it was overridden with the mockNow() method,
      * we return that DateTime instead.
      *
      * @return DateTimeInterface
      */
     public static function now()
     {
-        return static::$now ?: new DateTime();
+        return static::$mockedCurrentTime ?: new DateTime();
     }
 
     /**

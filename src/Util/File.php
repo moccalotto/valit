@@ -23,26 +23,26 @@ abstract class File
      *
      * @internal
      */
-    public static $overrides = [];
+    public static $mocks = [];
 
     /**
      * Override the file info for a single file.
      *
      * @param FileInfo $file
      */
-    public static function override(FileInfo $file)
+    public static function mock(FileInfo $file)
     {
-        static::$overrides[$file->name] = $file;
+        static::$mocks[$file->name] = $file;
     }
 
     /**
-     * Remove override of a given file.
+     * Remove mock of a given file.
      *
      * @param string $filename
      */
     public static function removeOverride($filename)
     {
-        unset(static::$overrides[$filename]);
+        unset(static::$mocks[$filename]);
     }
 
     /**
@@ -58,8 +58,8 @@ abstract class File
     {
         $file = Val::toString($file, '$file must be a string or a stringable object');
 
-        if (isset(static::$overrides[$file])) {
-            return static::$overrides[$file];
+        if (isset(static::$mocks[$file])) {
+            return static::$mocks[$file];
         }
 
         return new FileInfo($file);

@@ -111,7 +111,7 @@ class DateCheckProviderSpec extends ObjectBehavior
 
         // Override the current time to make testing easier.
         $now = new DateTimeImmutable('2000-01-01 00:00:00');
-        Date::overrideNow($now);
+        Date::mockCurrentTime($now);
 
         $this->checkInThePast($now)->shouldHaveType('Valit\Result\AssertionResult');
 
@@ -131,7 +131,7 @@ class DateCheckProviderSpec extends ObjectBehavior
 
         // Override the current time to make testing easier.
         $now = new DateTimeImmutable('2000-01-01 00:00:00');
-        Date::overrideNow($now);
+        Date::mockCurrentTime($now);
 
         $this->checkInTheFuture($now)->shouldHaveType('Valit\Result\AssertionResult');
 

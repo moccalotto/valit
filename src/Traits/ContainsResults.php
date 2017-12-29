@@ -177,7 +177,7 @@ trait ContainsResults
     }
 
     /**
-     * Status messages
+     * Status messages.
      *
      * @return string[]
      */
@@ -189,7 +189,7 @@ trait ContainsResults
                     ? 'PASS: '
                     : 'FAIL: ';
 
-                return $status . $result->message();
+                return $status.$result->message();
             },
             $this->results()
         );

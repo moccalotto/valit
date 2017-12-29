@@ -11,12 +11,12 @@ describe('FileSystemCheckProvider', function () {
     $subject = new \Valit\Providers\FileSystemCheckProvider();
 
     // override existence of fileWithDate and missingFile
-    File::override(FileInfo::custom('fileWithDate', [
+    File::mock(FileInfo::custom('fileWithDate', [
         'createdAt' => DateTime::createFromFormat('U', 0),
         'modifiedAt' => DateTime::createFromFormat('U', 0),
         'accessedAt' => DateTime::createFromFormat('U', 0),
     ]));
-    File::override(FileInfo::custom('missingFile', [
+    File::mock(FileInfo::custom('missingFile', [
         'exists' => false,
     ]));
 

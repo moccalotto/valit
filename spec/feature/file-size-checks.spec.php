@@ -59,8 +59,8 @@ describe('FileSystemCheckProvider', function () {
             $status = $expectedResult ? 'succeeds' : 'fails';
             $message = "$status when file of $actualSize bytes is larger than $againstSize";
             $test = function () use ($subject, $againstSize, $actualSize, $expectedResult) {
-                File::override(FileInfo::custom('existingSizeFile', ['size' => $actualSize ]));
-                File::override(FileInfo::custom('missingFile', ['exists' => false]));
+                File::mock(FileInfo::custom('existingSizeFile', ['size' => $actualSize ]));
+                File::mock(FileInfo::custom('missingFile', ['exists' => false]));
 
                 $result = $subject->checkLargerThan('existingSizeFile', $againstSize);
                 expect($result->success())->toBe($expectedResult);
@@ -123,8 +123,8 @@ describe('FileSystemCheckProvider', function () {
             $status = $expectedResult ? 'succeeds' : 'fails';
             $message = "$status when file of $actualSize bytes is smaller than $againstSize";
             $test = function () use ($subject, $againstSize, $actualSize, $expectedResult) {
-                File::override(FileInfo::custom('existingSizeFile', ['size' => $actualSize ]));
-                File::override(FileInfo::custom('missingFile', ['exists' => false]));
+                File::mock(FileInfo::custom('existingSizeFile', ['size' => $actualSize ]));
+                File::mock(FileInfo::custom('missingFile', ['exists' => false]));
 
                 $result = $subject->checkSmallerThan('existingSizeFile', $againstSize);
 
