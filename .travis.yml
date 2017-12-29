@@ -6,10 +6,20 @@ php:
   - 7.0
   - 7.1
   - 7.2
+  - nightly
   - hhvm
+  - hhvm-nightly
+
+cache:
+  directories:
+    - vendor
+
+sudo: false
 
 before_script:
   - composer install --dev --prefer-source --no-interaction
 
 script:
-  - composer pipeline
+  - composer test
+  - phpenv config-rm xdebug.ini || return 0
+  - composer cs
