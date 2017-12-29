@@ -44,7 +44,7 @@
             "vendor/bin/kahlan --config=.kahlan.php"
         ],
         "phpspec": [
-            "vendor/bin/phpspec run --config=.phpspec.yml"
+            "vendor/bin/phpspec run -n --config=.phpspec.yml"
         ],
         "test": [
             "@phpspec",
