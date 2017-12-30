@@ -16,6 +16,9 @@ Tests:
 * Add kahlan tests for Size class
 * Add kahlan tests for Date class
 * Add kahlan tests for Value class
+* Add kahlan tests that match the scenarios in the example
+  files such that interested parties can use it for
+  documentation.
 * Consider tests for File and FileInfo classes.
 
 
