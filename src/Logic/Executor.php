@@ -168,6 +168,8 @@ class Executor
                 $this->results[] = $this->executeAssertions($value);
             } elseif (is_array($value)) {
                 $this->results[] = $this->executeAssertions($value);
+            } elseif (is_bool($value)) {
+                $this->results[] = $this->executeBool($value);
             } else {
                 throw new LogicException(sprintf(
                     'Unknown check type: %s => %s',
@@ -212,6 +214,24 @@ class Executor
         );
 
         $resultBag->addAssertionResult($asserionResult);
+
+        return $this->addAssertionResultBag($resultBag);
+    }
+
+    /**
+     * Execute a boolean expression (evaluate that $bool is true).
+     *
+     * @param bool $bool
+     *
+     * @return ContainerResultBag
+     */
+    protected function executeBool($bool)
+    {
+        $resultBag = AssertionNormalizer::normalize('isTrue')->whereValueIs(
+            (bool) $bool,
+            'boolean expression',
+            $this->manager
+        );
 
         return $this->addAssertionResultBag($resultBag);
     }

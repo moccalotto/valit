@@ -56,6 +56,7 @@ function logicFeatureTest($allowUnauthenticatedAccess, $request)
         ]),
 
         Check::that(true)->isTrue(),    // Add some complexity
+        true,                           // effectively the same as Check::that(true)->isTrue
     ]);
 };
 
