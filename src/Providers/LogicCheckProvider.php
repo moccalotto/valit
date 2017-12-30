@@ -127,6 +127,29 @@ class LogicCheckProvider implements CheckProvider
     }
 
     /**
+     * Check that none of the given branches succeed if given $value.
+     *
+     * @Check(["passesNoneOf", "passesNone", "logicNoneOf", "failsAllOf"])
+     *
+     * @param mixed   $value     The value to be passed to the logic (if
+     *                           necessary)
+     * @param array   $branches  The branches of the logic
+     * @param Manager $manager   The check provider manager to use.
+     *                           If NULL, the default manager instance will be used
+     * @param bool    $withValue Should $value be passed to the logic
+     *
+     * @return AssertionResult
+     */
+    public function checkPassesAllOrNone($value, $branches, Manager $manager = null, $withValue = true)
+    {
+        return $this->checkLogic(
+            $withValue ? $value : null,
+            new Logic\AllOrNone($manager ?: Manager::instance(), $branches),
+            $withValue
+        );
+    }
+
+    /**
      * Check that the given scenario does not succeed if given $value.
      *
      * @Check(["doesNotPass", "not", "fails", "invert"])

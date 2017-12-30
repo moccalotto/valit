@@ -88,6 +88,21 @@ abstract class Ensure
     }
 
     /**
+     * Check all or none of the givens scenarios succeed.
+     *
+     * @param array|\Traversable $scenarios
+     *
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
+     */
+    public static function allOrNone($scenarios, $value = null)
+    {
+        $hasValue = func_num_args() > 1;
+
+        return static::that($value)->executeCheck('passesAllOrNone', [$scenarios, Manager::instance(), $hasValue]);
+    }
+
+    /**
      * Check that none of the given scenarios succeed.
      *
      * @param mixed $scenario The scenario that may not succeed
