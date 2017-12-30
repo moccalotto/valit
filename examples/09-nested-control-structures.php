@@ -8,37 +8,25 @@ require __DIR__ . '/../vendor/autoload.php';
 $age = 31;
 $productType = 'tobacco';
 
-try {
-    Ensure::allOf([
-        // The product type must be a string.
-        Check::that($productType)->isString(),
+Ensure::allOf([
+    // The product type must be a string.
+    Check::that($productType)->isString(),
 
-        // Age must be null or a natural number
-        Check::oneOf([
-            Check::that($age)->isNull(),
-            Check::that($age)->isNaturalNumber()->isLessThanOrEqual(100),
+    // Age must be null or a natural number
+    Check::oneOf([
+        Check::that($age)->isNull(),
+        Check::that($age)->isNaturalNumber()->isLessThanOrEqual(100),
+    ]),
+
+    // If the product type is tobacco or alcohol then the age must be at least 18
+    Check::oneOf([
+        Check::that($productType)->isNotOneOf(['alcohol', 'tobacco']),
+        Check::allOf([
+            Check::that($productType)->isOneOf(['alcohol', 'tobacco']),
+            Check::that($age)->isGreaterThanOrEqual(18)
         ]),
-
-        // If the product type is tobacco or alcohol then the age must be at least 18
-        Check::oneOf([
-            Check::that($productType)->isNotOneOf(['alcohol', 'tobacco']),
-            Check::allOf([
-                Check::that($productType)->isOneOf(['alcohol', 'tobacco']),
-                Check::that($age)->isGreaterThanOrEqual(18)
-            ]),
-        ])
-    ]);
-} catch (Exception $e) {
-    $message = '
-        1. Age mut either be null or a number smaller than or equal to 100.
-        2. productType must be a string.
-        3. If the product type is tobacco or alcohol, then
-           age must be a number between 18 and 100.';
-
-    print_r(compact('age', 'productType'));
-
-    die($message);
-}
+    ])
+]);
 
 print 'No exceptions throw, all assertions passed';
 
