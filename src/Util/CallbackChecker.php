@@ -2,6 +2,7 @@
 
 namespace Valit\Util;
 
+use Closure;
 use InvalidArgumentException;
 use Valit\Result\AssertionResult;
 use Valit\Contracts\CustomChecker;
@@ -19,7 +20,7 @@ class CallbackChecker implements CustomChecker
     public $message;
 
     /**
-     * @var callable
+     * @var Closure
      *
      * @internal
      */
@@ -46,8 +47,8 @@ class CallbackChecker implements CustomChecker
         if (!is_callable($callback)) {
             throw new InvalidArgumentException('Second argument must be callable');
         }
-        $this->message = (string) $message;
-        $this->callback = $callback;
+        $this->message = Val::toString($message);
+        $this->callback = Val::toClosure($callback);
         $this->context = $context;
     }
 
