@@ -20,7 +20,7 @@ use Valit\Assertion\AssertionBag;
 use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
 use Valit\Result\ContainerResultBag;
-use Valit\Assertion\AssertionNormalizer;
+use Valit\Assertion\AssertionBagFactory;
 
 /**
  * Validate a container (variable with array access).
@@ -87,7 +87,7 @@ class ContainerValidator extends ContainerResultBag
         }
 
         foreach ($containerAssertionMap as $fieldNameGlob => $assertions) {
-            $normalizedAssertions = AssertionNormalizer::normalize($assertions);
+            $normalizedAssertions = AssertionBagFactory::create($assertions);
             $this->executeAndAdd($fieldNameGlob, $normalizedAssertions);
         }
 

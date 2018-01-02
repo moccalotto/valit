@@ -3,12 +3,6 @@ Documentation:
 - Finish the docs at moccalotto.github.com
 - Add more examples
 
-
-Refactor:
-=========
-AssertionNormalizer => AssertionBagFactory
-    normalize() => create()
-
 Tests:
 ======
 

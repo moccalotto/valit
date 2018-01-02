@@ -6,7 +6,7 @@ use Valit\Util\Val;
 use LogicException;
 use Valit\Contracts\Logic;
 
-class AssertionNormalizer
+class AssertionBagFactory
 {
     /**
      * @var AssertionBag
@@ -29,7 +29,7 @@ class AssertionNormalizer
             Logic::class,
         ]);
 
-        $this->makeAssertionBag($assertions);
+        $this->createAssertionBag($assertions);
     }
 
     /**
@@ -42,7 +42,7 @@ class AssertionNormalizer
      *
      * @return AssertionBag
      */
-    public static function normalize($assertions)
+    public static function create($assertions)
     {
         return (new static($assertions))->assertions;
     }
@@ -69,7 +69,7 @@ class AssertionNormalizer
      *
      * @param string|array|AssertionBag $assertions
      */
-    protected function makeAssertionBag($assertions)
+    protected function createAssertionBag($assertions)
     {
         if (is_a($assertions, AssertionBag::class)) {
             $this->assertions = clone $assertions;

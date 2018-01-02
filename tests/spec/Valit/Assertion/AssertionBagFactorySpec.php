@@ -5,12 +5,12 @@ namespace spec\Valit\Assertion;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class AssertionNormalizerSpec extends ObjectBehavior
+class AssertionBagFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith('');
-        $this->shouldHaveType('Valit\Assertion\AssertionNormalizer');
+        $this->shouldHaveType('Valit\Assertion\AssertionBagFactory');
     }
 
     function it_has_public_assertions_attribute()

@@ -10,7 +10,7 @@ use Valit\Assertion\AssertionBag;
 use Valit\Result\AssertionResult;
 use Valit\Result\AssertionResultBag;
 use Valit\Result\ContainerResultBag;
-use Valit\Assertion\AssertionNormalizer;
+use Valit\Assertion\AssertionBagFactory;
 use Valit\Validators\ContainerValidator;
 use Valit\Contracts\Logic as LogicContract;
 use Valit\Exceptions\ValueRequiredException;
@@ -228,7 +228,7 @@ class Executor
     {
         $this->requires(static::REQUIRES_VALUE);
 
-        $normalizedAssertions = AssertionNormalizer::normalize($assertions);
+        $normalizedAssertions = AssertionBagFactory::create($assertions);
 
         $resultBag = $normalizedAssertions->whereValueIs(
             $this->value,
