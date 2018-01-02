@@ -5,9 +5,8 @@ use Valit\Check;
 require __DIR__ . '/../vendor/autoload.php';
 
 /*
- * Using \Valit\Check to get a list of all all assertions
+ * Using \Valit\Check to get a list of all all assertions.
  */
-
 $email = 'Some.Email@Foo.COM';
 
 $emailCheck = Check::that($email)
@@ -33,7 +32,7 @@ print_r($statusMessages);
 WORKING WITH VALIDATION RESULTS
 ===============================
 
-The `\Valit\Check` facade does not throw exceptions
+The `Valit\Check` facade does not throw exceptions
 if the value does not live up to the assertions,
 rather you can use the following functions to
 inspect the success and status of the check.

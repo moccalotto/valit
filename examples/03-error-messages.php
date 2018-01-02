@@ -32,7 +32,7 @@ if ($ageCheck->hasErrors()) {
 WORKING WITH VALIDATION RESULTS
 ===============================
 
-The `\Valit\Check` facade does not throw exceptions
+The `Valit\Check` facade does not throw exceptions
 if the value does not live up to the assertions,
 rather you can use the following functions to
 inspect the success and status of the check.
