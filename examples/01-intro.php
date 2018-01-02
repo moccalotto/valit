@@ -11,4 +11,4 @@ Ensure::that($age)
     ->isGreaterThanOrEqual(18)
     ->isLowerThanOrEqual(75);
 
-print 'All assertions ok';
+print 'No exceptions throw, all assertions passed';

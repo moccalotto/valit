@@ -127,6 +127,7 @@ class AssertionBagFactory
             // $key: 0
             // $args: "isGreaterThan(0)"
             $expr = $args;
+            $args = [];
         } elseif (is_int($key) && is_array($args)) {
             // Example 1:
             // ----------

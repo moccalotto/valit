@@ -106,11 +106,11 @@ abstract class Check
      *
      * @param array|\Traversable $scenarios
      *
-     * @return Logic\AllOfOrNone
+     * @return Logic\AllOrNone
      */
     public static function allOrNone($scenarios)
     {
-        return new Logic\AllOfOrNone(
+        return new Logic\AllOrNone(
             Manager::instance(),
             $scenarios
         );

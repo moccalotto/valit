@@ -4,7 +4,7 @@ namespace Valit\Logic;
 
 use Valit\Result\AssertionResult;
 
-class AllOfOrNone extends BaseLogic
+class AllOrNone extends BaseLogic
 {
     /**
      * @return AssertionResult

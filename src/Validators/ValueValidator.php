@@ -139,7 +139,7 @@ class ValueValidator extends AssertionResultBag
      *
      * @param array|\Traversable $containerAssertionMap
      *
-     * @return ContainerResultBag
+     * @return \Valit\Result\ContainerResultBag
      */
     public function contains($containerAssertionMap)
     {

@@ -228,6 +228,24 @@ abstract class Val
     }
 
     /**
+     * Create a closure from a callable.
+     *
+     * @param callable $callable
+     *
+     * @return Closure
+     */
+    public static function toClosure($callable)
+    {
+        if (is_callable('Closure::fromCallable')) {
+            return Closure::fromCallable($callable);
+        }
+
+        return function () use ($callable) {
+            return call_user_func_array($callable, func_get_args());
+        };
+    }
+
+    /**
      * Count the elements in an array, a Countable or a Traversable.
      *
      * @param mixed $value
