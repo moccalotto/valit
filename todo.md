@@ -3,8 +3,15 @@ Documentation:
 - Finish the docs at moccalotto.github.com
 - Add more examples
 
-Tests:
-======
+
+Assertions:
+===========
+- Check valid Base64
+- Check valid utf-7
+
+
+Testing:
+========
 
 * Add kahlan tests for Val class
 * Add kahlan tests for Size class
@@ -18,6 +25,31 @@ Tests:
 
 Logic:
 ======
+
+Consider an InvalidLogicException that somehow has
+prettier error messages that we currently have for
+logi scenarios.
+
+```txt
+Data validation failed:
+
+Precisely 1 of the following scenarios must pass:
+* scenario 1:
+    * auth must be present
+    * auth must be an array
+    * auth/apitoken must be a string
+    * auth/apitoken must be shorter than 255 characters
+* scenario 2:
+    * headers/authorization must be present
+    * headers/authorization must be a string
+    * headers/authorization must pass the following logic:
+            Precisely 1 of the following scenarios must pass:
+            * scenario 1
+                * value must be a string of length 42
+            * scenario 2
+                * value must be a string of length 80
+                * value must contain only hexidecimal characters
+```
 
 Enable booleans in logic scenarios.
 A boolean is simple evaluated as `Check::that($bool)->isTrue()`
