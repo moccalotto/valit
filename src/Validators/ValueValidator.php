@@ -10,6 +10,8 @@
 
 namespace Valit\Validators;
 
+use Exception;
+use Valit\Util\Val;
 use BadMethodCallException;
 use Valit\Contracts\CheckManager;
 use Valit\Result\AssertionResultBag;
@@ -148,5 +150,17 @@ class ValueValidator extends AssertionResultBag
         return $containerValidator
             ->alias($this->varName ? $this->varName : 'container')
             ->passes($containerAssertionMap);
+    }
+
+    public function __debugInfo()
+    {
+        return [
+            'value' => Val::escape($this->value),
+            'varName' => $this->varName,
+            'failures' => $this->failures,
+            'successes' => $this->successes,
+            'throwOnFailure' => $this->throwOnFailure,
+            'statusMessages' => $this->statusMessages(),
+        ];
     }
 }
