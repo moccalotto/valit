@@ -20,15 +20,19 @@ class Manager implements CheckManager
 {
     /**
      * @var CheckManager
+     *
+     * @internal
      */
-    protected static $instance;
+    public static $instance;
 
     /**
      * Default checkers to load when created through create() or instance().
      *
      * @var array
+     *
+     * @internal
      */
-    protected static $defaultProviders = [
+    public static $defaultProviders = [
         Providers\CustomCheckProvider::class,
         Providers\XmlCheckProvider::class,
         Providers\DateCheckProvider::class,
@@ -46,8 +50,10 @@ class Manager implements CheckManager
 
     /**
      * @var array
+     *
+     * @internal
      */
-    protected $checks = [];
+    public $checks = [];
 
     /**
      * Get the default (global) manager instance.
@@ -90,7 +96,7 @@ class Manager implements CheckManager
     public function __construct(array $providers)
     {
         foreach ($providers as $providerClass) {
-            $this->loadProvider($providerClass);
+            $this->addProvider(new $providerClass($this));
         }
     }
 
@@ -106,18 +112,6 @@ class Manager implements CheckManager
         static::$instance = $this;
 
         return $this;
-    }
-
-    /**
-     * Load a provider and register all its checks.
-     *
-     * @param string $providerClass
-     */
-    protected function loadProvider($providerClass)
-    {
-        $provider = new $providerClass($this);
-
-        $this->addProvider($provider);
     }
 
     /**

@@ -21,8 +21,10 @@ class InvalidContainerException extends UnexpectedValueException
 {
     /**
      * @var ContainerResultBag
+     *
+     * @internal
      */
-    protected $results;
+    public $results;
 
     /**
      * Constructor.
