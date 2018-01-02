@@ -58,8 +58,7 @@ if (!$validation->success()) {
 }
 
 ```
-
-See [complete example](examples/01-intro.php)
+[Using Ensure](examples/01-intro.php)
 
 ### Error Messages
 If you want to know precisely which checks failed,
