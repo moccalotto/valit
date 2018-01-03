@@ -40,6 +40,22 @@ abstract class Val
     }
 
     /**
+     * Can the given value be coerced into a number?
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public static function numeric($value)
+    {
+        $regex = '/^[-+]?[0-9]*\.?[0-9]+$/';
+
+        return is_int($value)
+            || is_float($value)
+            || (static::stringable($value) && preg_match($regex, $value));
+    }
+
+    /**
      * Can value be traversed (is it iterable) ?
      *
      * @param mixed $value
@@ -185,18 +201,9 @@ abstract class Val
      */
     public static function toFloat($value, $error = null)
     {
-        if (is_numeric($value)) {
-            return (float) $value;
-        }
-
         $strval = static::toString($value, $error);
 
-        if (!is_numeric($strval)) {
-            throw new InvalidArgumentException($error ?: sprintf(
-                'The given %s could not be converted to float',
-                gettype($value)
-            ));
-        }
+        static::mustBe($strval, 'numeric');
 
         return (float) $strval;
     }
@@ -516,7 +523,7 @@ abstract class Val
                 return true;
             }
 
-            if ($type === 'numeric' && is_numeric($value)) {
+            if ($type === 'numeric' && static::numeric($value)) {
                 return true;
             }
 
