@@ -26,8 +26,10 @@ class ValueValidator extends AssertionResultBag
 {
     /**
      * @var CheckManager
+     *
+     * @internal
      */
-    protected $manager;
+    public $manager;
 
     /**
      * @var bool

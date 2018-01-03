@@ -227,7 +227,7 @@ class Executor
      */
     protected function executeBool($bool)
     {
-        $resultBag = AssertionNormalizer::normalize('isTrue')->whereValueIs(
+        $resultBag = AssertionBagFactory::create('isTrue')->whereValueIs(
             (bool) $bool,
             'boolean expression',
             $this->manager
