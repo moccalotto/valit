@@ -121,11 +121,28 @@ class ContainerResultBag implements Result
      */
     public function errors($path = null)
     {
-        return array_filter(
-            $this->results($path),
+        return array_values(
+            array_filter(
+                $this->results($path),
+                function ($result) {
+                    return !$result->success();
+                }
+            )
+        );
+    }
+
+    /**
+     * Get all the error messages for a given path.
+     *
+     * @return string[] an array of rendered error messages
+     */
+    public function errorMessages()
+    {
+        return array_map(
             function ($result) {
-                return !$result->success();
-            }
+                return $result->message;
+            },
+            $this->errors()
         );
     }
 
@@ -134,7 +151,7 @@ class ContainerResultBag implements Result
      *
      * @param string|array $path
      *
-     * @return array an array of rendered error messages
+     * @return string[] an array of rendered error messages
      */
     public function errorMessagesByPath($path)
     {
@@ -145,6 +162,46 @@ class ContainerResultBag implements Result
                 return $result->message;
             },
             $this->errors($path)
+        );
+    }
+
+    /**
+     * Get all status messages.
+     *
+     * @return string[]
+     */
+    public function statusMessages()
+    {
+        return array_map(
+            function ($result) {
+                return sprintf(
+                    '%s: %s',
+                    $result->success() ? 'PASS' : 'FAIL',
+                    $result->message()
+                );
+            },
+            $this->results()
+        );
+    }
+
+    /**
+     * Get all the status messages for a given path.
+     *
+     * @param string|null $path Use this parameter if you only want to get the errors for a given path
+     *
+     * @return string[]
+     */
+    public function statusMessagesByPath($path)
+    {
+        return array_map(
+            function ($result) {
+                return sprintf(
+                    '%s: %s',
+                    $result->success() ? 'PASS' : 'FAIL',
+                    $result->message()
+                );
+            },
+            $this->results($path)
         );
     }
 
