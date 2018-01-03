@@ -218,6 +218,7 @@ class BasicCheckProvider implements CheckProvider
      *  // multiple types via array notation
      *  Check::that($foo)->hasType(['object', 'array'])
      *  ```
+     *
      * ---
      *
      * @Check(["hasType", "isType", "typeof"])
