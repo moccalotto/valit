@@ -39,7 +39,7 @@ print_r(
     (
         [0] => PASS: username must be present
         [1] => PASS: username must have the type(s) "string"
-        [2] => PASS: username must be a string that is shorter than 256 characters
+        [2] => PASS: username must be a string where length ≤ 255
         [3] => PASS: username must be a string that is longer than 2 characters
         [4] => PASS: password must be present
         [5] => PASS: password must have the type(s) "string"
@@ -63,6 +63,8 @@ can use to get info about the results of validating the container.
 | ------------------------- | ----------------------------------------------------------------- |
 | Method                    | Description                                                       |
 | ------------------------- | ----------------------------------------------------------------- |
+| `success()`               | Did all assertions pass?                                          |
+| `hasErrors()`             | Did one or more assertions fail?                                  |
 | `errors()`                | Array of failed AssertionResult objects.                          |
 | `results()`               | Array of all AssertionResult objects.                             |
 | `errorMessages()`         | Array of error messages for all fields.                           |

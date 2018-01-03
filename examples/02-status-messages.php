@@ -41,12 +41,13 @@ inspect the success and status of the check.
 | Method                | Description                                                       |
 | --------------------- | ----------------------------------------------------------------- |
 | `success()`           | Did all assertions pass?                                          |
-| `hasErrors()`         | Did one or more tests fail?                                       |
+| `hasErrors()`         | Did one or more assertions fail?                                  |
 | `firstErrorMessage()` | The first error message (if any)                                  |
 | `errorMessages()`     | Array of error messages.                                          |
 | `statusMessages()`    | Array of status message.                                          |
 | `results()`           | Array of AssertionResult objects.                                 |
 | `orThrowException()`  | Throw an InvalidValueException if one or more assertions failed.  |
+| `valueOr($alt)`       | If value is valid, return it, otherwise return $alt.              |
 | --------------------- | ----------------------------------------------------------------- |
 
 */
