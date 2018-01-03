@@ -343,8 +343,9 @@ class StringCheckProvider implements CheckProvider
      *
      * @Check(["lengthIs"])
      *
-     * @param mixed $value
-     * @param int   $length
+     * @param mixed  $value     The inspected variable
+     * @param string $operator  Must be one of >, <, =, >=, <=, ≥, ≤
+     * @param int    $against   The length we should compare to.
      *
      * @return Result
      */
