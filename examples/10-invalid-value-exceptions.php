@@ -13,6 +13,7 @@ $age = -600.66;
 try {
 
     Check::that($age)
+        ->as('entered age')
         ->isNaturalNumber()
         ->isGreaterThanOrEqual(18)
         ->isLowerThanOrEqual(75)
@@ -20,13 +21,26 @@ try {
 
 } catch (InvalidValueException $e) {
 
+    print 'SHORT MESSAGE:' . PHP_EOL;
+    print '==============' . PHP_EOL;
     print $e->getMessage();
+    print PHP_EOL;
+    print PHP_EOL;
 
+    print 'DETAILED MESSAGE:' . PHP_EOL;
+    print '=================' . PHP_EOL;
+    print $e->detailedMessage();
 }
 /*
-    Validation of value failed the following tests:
-     * value must be a natural number.
-     * value must be greater than or equal to 18.
+    SHORT MESSAGE:
+    ==============
+    Validation of entered age failed
+
+    DETAILED MESSAGE:
+    =================
+    Validated of entered age failed the following requirements:
+     * entered age must be a natural number.
+     * entered age must be greater than or equal to 18.
  */
 
 /*
@@ -42,6 +56,8 @@ utility functions on the exception object:
 | --------------------- | ----------------------------------------------------------------- |
 | Method                | Description                                                       |
 | --------------------- | ----------------------------------------------------------------- |
+| `getMessage()`        | The exception message.                                            |
+| `detailedMessage()`   | A more detailed exception message.                                |
 | `firstErrorMessage()` | The first error message.                                          |
 | `errorMessages()`     | Array of error messages.                                          |
 | `statusMessages()`    | Array of status message.                                          |
