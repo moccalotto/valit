@@ -499,6 +499,10 @@ abstract class Val
                 return true;
             }
 
+            if ($type === 'bool' && is_bool($value)) {
+                return true;
+            }
+
             if ($type === 'numeric' && is_numeric($value)) {
                 return true;
             }
