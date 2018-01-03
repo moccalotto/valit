@@ -156,9 +156,11 @@ trait ContainsResults
      */
     public function errors()
     {
-        return array_filter($this->results, function ($result) {
-            return !$result->success();
-        });
+        return array_values(
+            array_filter($this->results, function ($result) {
+                return !$result->success();
+            })
+        );
     }
 
     /**
