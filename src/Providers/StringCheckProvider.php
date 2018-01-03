@@ -329,7 +329,6 @@ class StringCheckProvider implements CheckProvider
      * Examples:
      *
      * ```php
-     *
      *  // length > 20
      *  Check::that($foo)->lengthIs('>', 20);
      *
@@ -338,7 +337,6 @@ class StringCheckProvider implements CheckProvider
      *
      *  // alternative:
      *  Check::that($foo)->lengthIs('≤', 255)
-     *
      * ```
      *
      * @Check(["lengthIs"])
