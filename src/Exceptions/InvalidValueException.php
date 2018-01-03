@@ -36,12 +36,22 @@ class InvalidValueException extends UnexpectedValueException
             $this->addAssertionResult($result);
         }
 
-        $bullets = $this->errorBullets();
+        parent::__construct("Validation of {$varName} failed");
+    }
 
-        parent::__construct(implode(PHP_EOL, [
-            "Validation of {$this->varName} failed the following tests:",
-            $bullets,
-        ]));
+    /**
+     * Get a detailed error message.
+     *
+     * Note that this message spans multiple lines.
+     *
+     * @return string
+     */
+    public function detailedMessage()
+    {
+        return implode(PHP_EOL, [
+            "Validated of {$this->varName} failed the following requirements:",
+            $this->errorBullets(),
+        ]);
     }
 
     /**
