@@ -148,6 +148,9 @@ abstract class Check
     /**
      * Short hand to creating an AssertionBag.
      *
+     * @param string  $methodName
+     * @param mixed[] $args
+     *
      * @return AssertionBag
      */
     public static function __callStatic($methodName, $args)
