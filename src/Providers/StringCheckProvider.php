@@ -352,7 +352,7 @@ class StringCheckProvider implements CheckProvider
             throw new InvalidArgumentException('Third argument must be an integer');
         }
 
-        if (!Val::stringable($operator)) {
+        if (!Val::is($operator, 'string')) {
             throw new InvalidArgumentException('Second argument must be a string');
         }
 
@@ -360,23 +360,23 @@ class StringCheckProvider implements CheckProvider
         $message = '{name} must be a string where length {0:raw} {1:int}';
 
         if ($operator === '>') {
-            return new Result($length > $against, $message, [$operator, $against]);
+            return new Result($length > $against, $message, ['>', $against]);
         }
 
         if ($operator === '>=' || $operator === '≥') {
-            return new Result($length >= $against, $message, [$operator, $against]);
+            return new Result($length >= $against, $message, ['≥', $against]);
         }
 
         if ($operator === '=') {
-            return new Result($length === $against, $message, [$operator, $against]);
+            return new Result($length === $against, $message, ['=', $against]);
         }
 
         if ($operator === '<') {
-            return new Result($length < $against, $message, [$operator, $against]);
+            return new Result($length < $against, $message, ['<', $against]);
         }
 
         if ($operator === '<=' || $operator === '≤') {
-            return new Result($length < $against, $message, [$operator, $against]);
+            return new Result($length < $against, $message, ['≤', $against]);
         }
 
         throw new InvalidArgumentException('Second arhument must be one of [>, <, =, >=, ≥, <=, ≤]');
