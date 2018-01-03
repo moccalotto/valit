@@ -322,7 +322,6 @@ class StringCheckProvider implements CheckProvider
         return new Result($success, '{name} must be a string that has the length {0}', [$length]);
     }
 
-
     /**
      * Check if $value is a string where the length compares to $against using the $operator.
      *
@@ -341,9 +340,9 @@ class StringCheckProvider implements CheckProvider
      *
      * @Check(["lengthIs", "stringWhereLength", "isStringWhereLength"])
      *
-     * @param mixed  $value     The inspected variable
-     * @param string $operator  Must be one of >, <, =, >=, <=, ≥, ≤
-     * @param int    $against   The length we should compare to.
+     * @param mixed  $value    The inspected variable
+     * @param string $operator Must be one of >, <, =, >=, <=, ≥, ≤
+     * @param int    $against  The length we should compare to.
      *
      * @return Result
      */
