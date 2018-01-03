@@ -43,9 +43,9 @@ before_install:
 install:
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable --prefer-lowest; fi
-  - if [[ $setup = 'style'  ]];  then composer install --dev --prefer-source --no-interaction; fi
+  - if [[ $setup = 'style'  ]]; then composer install --dev --prefer-source --no-interaction; fi
 
 script:
-  - if [[ $setup == 'stable' ]]; composer test; fi
-  - if [[ $setup == 'lowest' ]]; composer test; fi
-  - if [[ $setup == 'style'  ]]; phpenv config-rm xdebug.ini || true && composer cs; fi
+  - if [[ $setup == 'stable' ]]; then composer test; fi
+  - if [[ $setup == 'lowest' ]]; then composer test; fi
+  - if [[ $setup == 'style'  ]]; then phpenv config-rm xdebug.ini || true && composer cs; fi
