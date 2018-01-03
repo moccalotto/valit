@@ -176,36 +176,47 @@ class BasicCheckProvider implements CheckProvider
     }
 
     /**
-     * Check that $value is identical to false.
+     * Check that $value has a given type.
      *
-     * $type can be a string with a type name such as:
-     *  `'int'`, `'float'`, `'bool'`, `'array'` or even `'callable'`
-     * or it can be a fully qualified class name such as
-     *  `'Valit\Check'`
+     * Possible types:
      *
-     * It can also be an array of the above types. If it is an
-     * array, then $value can be any of the given values.
-     * Example:
-     *  `['int', 'DateTimeInterface']`
-     *
-     * It can also be a string with many types separated by a pipe `|` characer.
-     * Example:
-     *  `'int|float'`, `'string | DateTimeInterface'`
+     * | $type      | check                     |
+     * | ---------- | ------------------------- |
+     * | int        | `is_int()`                |
+     * | integer    | `is_int()`                |
+     * | bool       | `is_bool()`               |
+     * | boolean    | `is_bool()`               |
+     * | string     | `is_string()`             |
+     * | float      | `is_float()`              |
+     * | double     | `is_float()`              |
+     * | numeric    | `is_numeric()`            |
+     * | nan        | `is_nan()`                |
+     * | inf        | `is_inf()`                |
+     * | callable   | `is_callable()`           |
+     * | iterable   | `array`, `Traversable`    |
+     * | countable  | `array`, `Cointable`      |
+     * | arrayable  | `array`, `ArrayAccess`    |
+     * | [fqcn]     | `is_a()`                  |
+     * | ---------- | ------------------------- |
      *
      *  Code examples:
      *
      *  ```php
-     *  // example 1
+     *  // single type
      *  Check::that($foo)->hasType('callable');
      *
-     *  // example 2
+     *  // multiple allowed types via the pipe character
      *  Check::that($foo)->hasType('float | int');
      *
-     *  // example 3
-     *  Check::that($foo)->hasType(['object', 'array'])
+     *  // Check that $foo is an array of floats
+     *  // or an array of integers.
+     *  Check::that($foo)->hasType('float[] | int[]')
      *
-     *  // example 4
-     *  Check::that($foo)->hasType('DateTime|DateTimeImmutable')
+     *  // mixing classes, interfaces and basic types.
+     *  Check::that($foo)->hasType('int|DateTime|DateTimeImmutable')
+     *
+     *  // multiple types via array notation
+     *  Check::that($foo)->hasType(['object', 'array'])
      *  ```
      * ---
      *
