@@ -49,7 +49,7 @@ class InvalidValueException extends UnexpectedValueException
     public function detailedMessage()
     {
         return implode(PHP_EOL, [
-            "Validated of {$this->varName} failed the following requirements:",
+            "Validated of {$this->varName} failed the following expectations:",
             $this->errorBullets(),
         ]);
     }
