@@ -38,7 +38,7 @@ try {
 
     DETAILED MESSAGE:
     =================
-    Validated of entered age failed the following requirements:
+    Validated of entered age failed the following expectations:
      * entered age must be a natural number.
      * entered age must be greater than or equal to 18.
  */
