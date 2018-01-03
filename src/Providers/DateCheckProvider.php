@@ -19,7 +19,7 @@ use Valit\Traits\ProvideViaReflection;
 use Valit\Result\AssertionResult as Result;
 
 /**
- * Check that dates for validity.
+ * Check dates for validity.
  *
  * Check that date strings are parsable into DateTimes with expected results.
  * Check that dates-times are within certain ranges.
