@@ -50,7 +50,7 @@ trait ContainsResults
     public $failures = 0;
 
     /**
-     * Getter.
+     * The the variable name alias.
      *
      * @var string
      */
@@ -74,7 +74,7 @@ trait ContainsResults
     }
 
     /**
-     * Getter.
+     * Get the validated value.
      *
      * @var mixed
      */
