@@ -39,7 +39,7 @@ class InvalidValueException extends UnexpectedValueException
         $bullets = $this->errorBullets();
 
         parent::__construct(implode(PHP_EOL, [
-            "Validation of {$this->varName} failed the following tests",
+            "Validation of {$this->varName} failed the following tests:",
             $bullets,
         ]));
     }
