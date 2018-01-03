@@ -36,6 +36,6 @@ print_r(
     (
         [0] => remember_me must be one of "yes", "no", "1", "0", ""
         [1] => csrf_token must contain only hexidecimal characters
-        [2] => csrf_token must be a string that has the length 40
+        [2] => csrf_token must be a string where length is 40
     )
  */

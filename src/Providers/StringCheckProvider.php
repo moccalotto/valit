@@ -362,7 +362,7 @@ class StringCheckProvider implements CheckProvider
         }
 
         if ($operator === '=') {
-            return new Result($length === $against, $message, ['=', $against]);
+            return new Result($length === $against, $message, ['is', $against]);
         }
 
         if ($operator === '<') {
