@@ -39,5 +39,5 @@ interface Logic
      *
      * @return string
      */
-    public function requirements();
+    public function requires();
 }

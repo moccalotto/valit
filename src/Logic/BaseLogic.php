@@ -63,7 +63,7 @@ abstract class BaseLogic implements Logic, Result
      *
      * @return string
      */
-    public function requirements()
+    public function requires()
     {
         return $this->executor->requires;
     }

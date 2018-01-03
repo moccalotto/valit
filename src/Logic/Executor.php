@@ -101,7 +101,7 @@ class Executor
      *
      * @param string $newRequirement
      */
-    protected function requires($newRequirement)
+    protected function setRequirement($newRequirement)
     {
         if ($newRequirement === static::REQUIRES_NONE) {
             return;
@@ -184,7 +184,7 @@ class Executor
 
     protected function executeLogic(LogicContract $logic)
     {
-        $this->requires($logic->requirements());
+        $this->setRequirement($logic->requires());
 
         $asserionResult = $logic->execute($this->hasValue, $this->value);
 
@@ -246,7 +246,7 @@ class Executor
      */
     protected function executeAssertions($assertions)
     {
-        $this->requires(static::REQUIRES_VALUE);
+        $this->setRequirement(static::REQUIRES_VALUE);
 
         $normalizedAssertions = AssertionBagFactory::create($assertions);
 
@@ -267,7 +267,7 @@ class Executor
      */
     protected function executeContainerValidation($fieldNameGlob, $assertions)
     {
-        $this->requires(static::REQUIRES_CONTAINER);
+        $this->setRequirement(static::REQUIRES_CONTAINER);
 
         $validator = new ContainerValidator($this->manager, $this->value, false);
 
