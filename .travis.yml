@@ -1,25 +1,48 @@
 language: php
 
-php:
-  - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
-  - nightly
-  - hhvm
-  - hhvm-nightly
+env:
+  global:
+    - setup=stable
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.5
+    - php: 5.5
+      env: setup=lowest
+    - php: 5.6
+    - php: 5.6
+      env: setup=lowest
+    - php: 7.0
+    - php: 7.0
+      env: setup=lowest
+    - php: 7.1
+    - php: 7.1
+      env: setup=lowest
+    - php: 7.2
+    - php: 7.2
+      env: setup=lowest
+    - php: nightly
+    - php: nightly
+      env: setup=lowest
+    - php: hhvm
+    - php: hhvm-nightly
+      env: setup=lowest
 
 cache:
   directories:
-    - vendor
+    - $HOME/.composer/cache
 
 sudo: false
 
-before_script:
-  - composer install --dev --prefer-source --no-interaction
+before_install:
+  - travis_retry composer self-update
+
+install:
+  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
+  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable --prefer-lowest; fi
 
 script:
   - composer test
-  - phpenv config-rm xdebug.ini || return 0
+  - phpenv config-rm xdebug.ini || true
   - composer cs
