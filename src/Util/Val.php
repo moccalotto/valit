@@ -527,6 +527,14 @@ abstract class Val
                 return true;
             }
 
+            if ($type === 'container'
+                && static::arrayable($value)
+                && static::countable($value)
+                && static::iterable($value)
+            ) {
+                return true;
+            }
+
             if ($type === 'nan' && is_nan($value)) {
                 return true;
             }
