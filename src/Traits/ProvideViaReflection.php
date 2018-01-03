@@ -24,7 +24,7 @@ trait ProvideViaReflection
      *
      * @return Iterator
      */
-    protected function checksFor($reflectionMethod)
+    private function checksFromReflectionMethod($reflectionMethod)
     {
         if (strpos($reflectionMethod->getName(), 'check') !== 0) {
             return;
@@ -68,7 +68,7 @@ trait ProvideViaReflection
         $provides = [];
 
         foreach ($reflector->getMethods() as $reflectionMethod) {
-            foreach ($this->checksFor($reflectionMethod) as $checkName => $closure) {
+            foreach ($this->checksFromReflectionMethod($reflectionMethod) as $checkName => $closure) {
                 $provides[$checkName] = $closure;
             }
         }
