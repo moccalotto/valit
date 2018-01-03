@@ -333,13 +333,13 @@ class StringCheckProvider implements CheckProvider
      *  Check::that($foo)->lengthIs('>', 20);
      *
      *  // length <= 255
-     *  Check::that($foo)->lengthIs('<=', 255)
+     *  Check::that($foo)->lengthIs('<=', 255);
      *
      *  // alternative:
-     *  Check::that($foo)->lengthIs('≤', 255)
+     *  Check::that($foo)->lengthIs('≤', 255);
      * ```
      *
-     * @Check(["lengthIs"])
+     * @Check(["lengthIs", "stringWhereLength", "isStringWhereLength"])
      *
      * @param mixed  $value     The inspected variable
      * @param string $operator  Must be one of >, <, =, >=, <=, ≥, ≤

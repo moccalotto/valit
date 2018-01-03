@@ -420,6 +420,8 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkRelativeLength('', '>', 0)->shouldHaveType('Valit\Result\AssertionResult');
 
         $this->provides()->shouldHaveKey('lengthIs');
+        $this->provides()->shouldHaveKey('stringWhereLength');
+        $this->provides()->shouldHaveKey('isStringWhereLength');
 
         $this->checkRelativeLength('kkk æøå', '>', 0)->success()->shouldBe(true);
         $this->checkRelativeLength('kkk æøå', '<', 100)->success()->shouldBe(true);
