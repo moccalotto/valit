@@ -197,27 +197,28 @@ class BasicCheckProvider implements CheckProvider
      * | countable  | `array`, `Cointable`      |
      * | arrayable  | `array`, `ArrayAccess`    |
      * | [fqcn]     | `is_a()`                  |
-     * | ---------- | ------------------------- |
+     *
      *
      *  Code examples:
+     *  --------------
      *
-     *  ```php
-     *  // single type
-     *  Check::that($foo)->hasType('callable');
+     * ```php
+     * // single type
+     * Check::that($foo)->hasType('callable');
      *
-     *  // multiple allowed types via the pipe character
-     *  Check::that($foo)->hasType('float | int');
+     * // multiple allowed types via the pipe character
+     * Check::that($foo)->hasType('float | int');
      *
-     *  // Check that $foo is an array of floats
-     *  // or an array of integers.
-     *  Check::that($foo)->hasType('float[] | int[]')
+     * // Check that $foo is an array of floats
+     * // or an array of integers.
+     * Check::that($foo)->hasType('float[] | int[]')
      *
-     *  // mixing classes, interfaces and basic types.
-     *  Check::that($foo)->hasType('int|DateTime|DateTimeImmutable')
+     * // mixing classes, interfaces and basic types.
+     * Check::that($foo)->hasType('int|DateTime|DateTimeImmutable')
      *
-     *  // multiple types via array notation
-     *  Check::that($foo)->hasType(['object', 'array'])
-     *  ```
+     * // multiple types via array notation
+     * Check::that($foo)->hasType(['object', 'array'])
+     * ```
      *
      * ---
      *
