@@ -321,4 +321,66 @@ class StringCheckProvider implements CheckProvider
 
         return new Result($success, '{name} must be a string that has the length {0}', [$length]);
     }
+
+
+    /**
+     * Check if $value is a string where the length compares to $against using the $operator.
+     *
+     * Examples:
+     *
+     * ```php
+     *
+     *  // length > 20
+     *  Check::that($foo)->lengthIs('>', 20);
+     *
+     *  // length <= 255
+     *  Check::that($foo)->lengthIs('<=', 255)
+     *
+     *  // alternative:
+     *  Check::that($foo)->lengthIs('≤', 255)
+     *
+     * ```
+     *
+     * @Check(["lengthIs"])
+     *
+     * @param mixed $value
+     * @param int   $length
+     *
+     * @return Result
+     */
+    public function checkRelativeLength($value, $operator, $against)
+    {
+        if (!is_int($against)) {
+            throw new InvalidArgumentException('Third argument must be an integer');
+        }
+
+        if (!Val::stringable($operator)) {
+            throw new InvalidArgumentException('Second argument must be a string');
+        }
+
+        $length = Val::stringable($value) ? mb_strlen($value) : NAN;
+        $message = '{name} must be a string where length {0:raw} {1:int}';
+
+        if ($operator === '>') {
+            return new Result($length > $against, $message, [$operator, $against]);
+        }
+
+        if ($operator === '>=' || $operator === '≥') {
+            return new Result($length >= $against, $message, [$operator, $against]);
+        }
+
+        if ($operator === '=') {
+            return new Result($length === $against, $message, [$operator, $against]);
+        }
+
+        if ($operator === '<') {
+            return new Result($length < $against, $message, [$operator, $against]);
+        }
+
+        if ($operator === '<=' || $operator === '≤') {
+            return new Result($length < $against, $message, [$operator, $against]);
+        }
+
+        throw new InvalidArgumentException('Second arhument must be one of [>, <, =, >=, ≥, <=, ≤]');
+    }
 }

@@ -414,4 +414,37 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->checkLongerThan((object) [], 100)->success()->shouldBe(false);
         $this->checkLongerThan(curl_init(), 100)->success()->shouldBe(false);
     }
+
+    function it_checks_relativeLength()
+    {
+        $this->checkRelativeLength('', '>', 0)->shouldHaveType('Valit\Result\AssertionResult');
+
+        $this->provides()->shouldHaveKey('lengthIs');
+
+        $this->checkRelativeLength('kkk æøå', '>', 0)->success()->shouldBe(true);
+        $this->checkRelativeLength('kkk æøå', '<', 100)->success()->shouldBe(true);
+        $this->checkRelativeLength('kkk æøå', '=', 7)->success()->shouldBe(true);
+        $this->checkRelativeLength('kkk æøå', '>=', 7)->success()->shouldBe(true);
+        $this->checkRelativeLength('kkk æøå', '<=', 7)->success()->shouldBe(true);
+        $this->checkRelativeLength('kkk æøå', '≥', 7)->success()->shouldBe(true);
+        $this->checkRelativeLength('kkk æøå', '≤', 7)->success()->shouldBe(true);
+        $this->checkRelativeLength('kkk æøå', '>=', 6)->success()->shouldBe(true);
+        $this->checkRelativeLength('kkk æøå', '≥', 6)->success()->shouldBe(true);
+        $this->checkRelativeLength('kkk æøå', '≤', 8)->success()->shouldBe(true);
+
+        $this->checkRelativeLength('kkk æøå', '<=', 0)->success()->shouldBe(false);
+        $this->checkRelativeLength('kkk æøå', '>', 100)->success()->shouldBe(false);
+        $this->checkRelativeLength('kkk æøå', '<', 7)->success()->shouldBe(false);
+
+        $this->checkRelativeLength(curl_init(), '<=', 0)->success()->shouldBe(false);
+        $this->checkRelativeLength(null, '>', 100)->success()->shouldBe(false);
+        $this->checkRelativeLength([], '<', 7)->success()->shouldBe(false);
+        $this->checkRelativeLength((object) [], '<', 7)->success()->shouldBe(false);
+
+        $this->shouldThrow('InvalidArgumentException')->during('checkRelativeLength', ['', null, null]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkRelativeLength', ['', '<', null]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkRelativeLength', ['', null, 1]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkRelativeLength', ['', 'foo', 1]);
+        $this->shouldThrow('InvalidArgumentException')->during('checkRelativeLength', ['', '=', 'not int']);
+    }
 }
