@@ -22,6 +22,8 @@ matrix:
     - php: 7.2
     - php: 7.2
       env: setup=lowest
+    - php: 7.2
+      env: setup=style
     - php: nightly
     - php: nightly
       env: setup=lowest
@@ -41,8 +43,9 @@ before_install:
 install:
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable --prefer-lowest; fi
+  - if [[ $setup = 'style'  ]];  then composer install --dev --prefer-source --no-interaction; fi
 
 script:
-  - composer test
-  - phpenv config-rm xdebug.ini || true
-  - composer cs
+  - if [[ $setup == 'stable' ]]; composer test; fi
+  - if [[ $setup == 'lowest' ]]; composer test; fi
+  - if [[ $setup == 'style'  ]]; phpenv config-rm xdebug.ini || true && composer cs; fi
