@@ -79,6 +79,19 @@ abstract class Val
     }
 
     /**
+     * Can the value be thrown via the throw keyword?
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public static function throwable($value)
+    {
+        return is_a($value, 'Exception')
+            || is_a($value, 'Throwable');
+    }
+
+    /**
      * Coerce a value to string.
      *
      * Throw an exception if not possible.
@@ -524,6 +537,10 @@ abstract class Val
             }
 
             if ($type === 'arrayable' && static::arrayable($value)) {
+                return true;
+            }
+
+            if ($type === 'throwable' && static::throwable($value)) {
                 return true;
             }
 
