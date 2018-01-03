@@ -180,8 +180,8 @@ class BasicCheckProvider implements CheckProvider
      *
      * Possible types:
      *
-     * | $type      | check                     |
-     * | ---------- | ------------------------- |
+     * | $type      | Validation                |
+     * |:---------- |:------------------------- |
      * | int        | `is_int()`                |
      * | integer    | `is_int()`                |
      * | bool       | `is_bool()`               |
@@ -198,9 +198,7 @@ class BasicCheckProvider implements CheckProvider
      * | arrayable  | `array`, `ArrayAccess`    |
      * | [fqcn]     | `is_a()`                  |
      *
-     *
-     *  Code examples:
-     *  --------------
+     * Code examples:
      *
      * ```php
      * // single type

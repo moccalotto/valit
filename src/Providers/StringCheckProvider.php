@@ -322,14 +322,14 @@ class StringCheckProvider implements CheckProvider
      * Examples:
      *
      * ```php
-     *  // length > 20
-     *  Check::that($foo)->lengthIs('>', 20);
+     * // length > 20
+     * Check::that($foo)->lengthIs('>', 20);
      *
-     *  // length <= 255
-     *  Check::that($foo)->lengthIs('<=', 255);
+     * // length <= 255
+     * Check::that($foo)->lengthIs('<=', 255);
      *
-     *  // alternative:
-     *  Check::that($foo)->lengthIs('≤', 255);
+     * // alternative:
+     * Check::that($foo)->lengthIs('≤', 255);
      * ```
      *
      * @Check(["lengthIs", "stringWhereLength", "isStringWhereLength"])

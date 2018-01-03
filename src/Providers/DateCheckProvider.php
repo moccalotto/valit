@@ -44,7 +44,7 @@ class DateCheckProvider implements CheckProvider
      *
      * @return Result
      *
-     * @see http://php.net/manual/en/datetime.createfromformat.php
+     * @see DateTime::createFromFormat()
      */
     public function checkDateParsable($value, $format = null)
     {
