@@ -275,9 +275,7 @@ class StringCheckProvider implements CheckProvider
             throw new InvalidArgumentException('Second argument must be an integer');
         }
 
-        $success = is_scalar($value) && mb_strlen($value) < $length;
-
-        return new Result($success, '{name} must be a string that is shorter than {0:int} characters', [$length]);
+        return $this->checkRelativeLength($value, '<', $length);
     }
 
     /**
@@ -296,9 +294,7 @@ class StringCheckProvider implements CheckProvider
             throw new InvalidArgumentException('Second argument must be an integer');
         }
 
-        $success = is_scalar($value) && mb_strlen($value) > $length;
-
-        return new Result($success, '{name} must be a string that is longer than {0:int} characters', [$length]);
+        return $this->checkRelativeLength($value, '>', $length);
     }
 
     /**
@@ -317,9 +313,7 @@ class StringCheckProvider implements CheckProvider
             throw new InvalidArgumentException('Second argument must be an integer');
         }
 
-        $success = is_scalar($value) && mb_strlen($value) === $length;
-
-        return new Result($success, '{name} must be a string that has the length {0}', [$length]);
+        return $this->checkRelativeLength($value, '=', $length);
     }
 
     /**
