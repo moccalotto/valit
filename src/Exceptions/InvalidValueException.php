@@ -24,12 +24,11 @@ class InvalidValueException extends UnexpectedValueException
     /**
      * Constructor.
      *
-     * @param string            $message The exception message
      * @param string            $varName The name of the variable that was validated
      * @param mixed             $value   The value validated
      * @param AssertionResult[] $results The results of validating the variable
      */
-    public function __construct($message, $varName, $value, array $results)
+    public function __construct($varName, $value, array $results)
     {
         $this->value = $value;
         $this->varName = $varName;
@@ -37,18 +36,24 @@ class InvalidValueException extends UnexpectedValueException
             $this->addAssertionResult($result);
         }
 
-        $value = json_encode($value);
+        $bullets = $this->errorBullets();
 
         parent::__construct(implode(PHP_EOL, [
-            'Validation failed.',
-            "Message: $message",
-            "Value {$value} does not pass the following tests",
-            json_encode(
-                $this->errorMessages(),
-                JSON_PRETTY_PRINT
-                | JSON_UNESCAPED_SLASHES
-                | JSON_UNESCAPED_UNICODE
-            ),
+            "Validation of {$this->varName} failed the following tests",
+            $bullets,
         ]));
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function errorBullets()
+    {
+        return implode(
+            PHP_EOL,
+            array_map(function ($error) {
+                return " * $error.";
+            }, $this->errorMessages())
+        );
     }
 }

@@ -112,7 +112,6 @@ class ValueValidator extends AssertionResultBag
     {
         if ($this->failures) {
             throw new InvalidValueException(
-                sprintf('Failed %d out of %d validation checks', $this->failures, count($this->results)),
                 $this->varName,
                 $this->value,
                 $this->results
