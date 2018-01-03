@@ -37,15 +37,16 @@ if the value does not live up to the assertions,
 rather you can use the following functions to
 inspect the success and status of the check.
 
-| --------------------- | ------------------------------------- |
-| Method                | Description                           |
-| --------------------- | ------------------------------------- |
-| `success()`           | Did all assertions pass?              |
-| `hasErrors()`         | Did one or more tests fail?           |
-| `firstErrorMessage()` | The first error message (if any)      |
-| `errorMessages()`     | Array of error messages.              |
-| `statusMessages()     | Array of status message.              |
-| `results()`           | Array of AssertionResult objects.     |
-| --------------------- | ------------------------------------- |
+| --------------------- | ----------------------------------------------------------------- |
+| Method                | Description                                                       |
+| --------------------- | ----------------------------------------------------------------- |
+| `success()`           | Did all assertions pass?                                          |
+| `hasErrors()`         | Did one or more tests fail?                                       |
+| `firstErrorMessage()` | The first error message (if any)                                  |
+| `errorMessages()`     | Array of error messages.                                          |
+| `statusMessages()`    | Array of status message.                                          |
+| `results()`           | Array of AssertionResult objects.                                 |
+| `orThrowException()`  | Throw an InvalidValueException if one or more assertions failed.  |
+| --------------------- | ----------------------------------------------------------------- |
 
 */

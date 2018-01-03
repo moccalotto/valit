@@ -40,6 +40,6 @@ $container = [
 ];
 
 
-$checks = Ensure::that($container)->contains($assertions);
+Ensure::that($container)->contains($assertions);
 
-print 'All fields are valid';
+print 'No exceptions thrown, all fields are valid';
