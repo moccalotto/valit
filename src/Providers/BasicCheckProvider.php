@@ -68,15 +68,40 @@ class BasicCheckProvider implements CheckProvider
     /**
      * Check that $value is equal to (==) one of the values in $against.
      *
+     * If you give multiple arguments to this function, each argument will
+     * be treated as a possible option.
+     * If you give only one argument to this function, then that argument must
+     * be iterable (array or Traversable). The entries in that variable will
+     * be treated as the options allowed.
+     *
+     * Code examples:
+     *
+     * ```php
+     * // Check that $foo is either 'foo' or 'bar'
+     * Check::that($foo)->isOneOf('foo', 'bar');
+     * Check::that($foo)->isOneOf(['foo', 'bar']);
+     *
+     * // Check that $foo is either ['a', 'b'] or ['c', 'd']
+     * Check::that($foo)->isOneOf(['a', 'b'], ['c', 'd']);
+     * Check::that($foo)->isOneOf([ ['a', 'b'], ['c', 'd'] ]);
+     * ```
+     *
+     * ---
+     *
      * @Check(["isOneOf", "oneOf"])
      *
-     * @param mixed              $value
-     * @param array|\Traversable $possibleValues
+     * @param mixed $value
+     * @param mixed $against,... The allowed values
      *
      * @return AssertionResult
      */
     public function checkIsOneOf($value, $possibleValues)
     {
+        // If $possibleValues is variadic instead of array
+        if (func_num_args() > 2) {
+            $possibleValues = array_slice(func_get_args(), 1);
+        }
+
         Val::mustBe($possibleValues, 'iterable');
 
         $msg = sprintf('{name} must be one of %s', implode(', ', array_map(function ($int) {
