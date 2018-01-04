@@ -461,6 +461,43 @@ abstract class Val
     }
 
     /**
+     * Normalize a string of separated words into an array.
+     *
+     * If $types is already an array, it will merely be trimmed.
+     *
+     * @param string          $separator
+     * @param string|string[] $types
+     *
+     * @return string[]
+     */
+    public static function explodeAndTrim($separator, $types)
+    {
+        // Do NOT use ::mustBe() because that function uses ::explodeAndTrim()
+        // and that would cause a circular reference.
+
+        if (!is_string($separator)) {
+            throw new InvalidArgumentException(sprintf(
+                '$separator must be a string. %s given',
+                ucfirst(gettype($types))
+            ));
+        }
+
+        if (is_string($types)) {
+            $types = explode($separator, $types);
+        }
+
+        if (!is_array($types)) {
+            throw new InvalidArgumentException(sprintf(
+                '$types must be a string or an array of strings. %s given',
+                ucfirst(gettype($types))
+            ));
+        }
+
+        // Do NOT use ::map() because that function uses ::mustBe()
+        return array_map('trim', $types);
+    }
+
+    /**
      * Check if a value has a given type or class.
      *
      * $types can be a string with a type name such as:
@@ -489,16 +526,7 @@ abstract class Val
      */
     public static function is($value, $types)
     {
-        if (is_string($types)) {
-            return static::is($value, explode('|', $types));
-        }
-
-        if (!is_array($types)) {
-            throw new InvalidArgumentException(sprintf(
-                '$types must be a string or an array of strings. %s given',
-                ucfirst(gettype($types))
-            ));
-        }
+        $types = static::explodeAndTrim('|', $types);
 
         foreach ($types as $type) {
             $type = trim(strtolower($type));
