@@ -304,6 +304,12 @@ abstract class Val
             return static::escape($value);
         }
 
+        if ($format === 'imploded') {
+            return static::iterable($value)
+                ? implode(', ', array_map([__CLASS__, 'escape'], static::toArray($value)))
+                : '[not iterable]';
+        }
+
         if ($format === 'raw') {
             return is_scalar($value) || is_callable([$value, '__toString'])
                 ? (string) $value
