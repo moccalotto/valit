@@ -20,7 +20,6 @@ class ManagerSpec extends ObjectBehavior
     {
         $this->beConstructedWith([]);
         $this->shouldHaveType('Valit\Manager');
-        $this->shouldHaveType('Valit\Contracts\CheckManager');
     }
 
     function it_loads_core_providers()
@@ -50,8 +49,6 @@ class ManagerSpec extends ObjectBehavior
     function it_has_default_global_instance()
     {
         $this->beConstructedThrough('instance');
-
-        $this->shouldHaveType('Valit\Contracts\CheckManager');
 
         $this->instance()->shouldBe($this->getWrappedObject());
     }

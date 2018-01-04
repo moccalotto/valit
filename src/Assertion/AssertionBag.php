@@ -6,7 +6,6 @@ use Countable;
 use ArrayIterator;
 use Valit\Manager;
 use IteratorAggregate;
-use Valit\Contracts\CheckManager;
 use Valit\Validators\ValueValidator;
 
 class AssertionBag implements IteratorAggregate, Countable
@@ -150,15 +149,15 @@ class AssertionBag implements IteratorAggregate, Countable
      *
      * Create a new ValueValidator, apply all stored assertions on it, and return it.
      *
-     * @param mixed             $value   The value to be checked
-     * @param string|null       $varName The alias/name of the value
-     * @param CheckManager|null $manager The check manager to use.
-     *                                   If none given, the default
-     *                                   manager will be used
+     * @param mixed        $value   The value to be checked
+     * @param string|null  $varName The alias/name of the value
+     * @param Manager|null $manager The check manager to use.
+     *                              If none given, the default
+     *                              manager will be used
      *
      * @return ValueValidator a validator that will not throw exceptions on failures
      */
-    public function whereValueIs($value, $varName = null, CheckManager $manager = null)
+    public function whereValueIs($value, $varName = null, Manager $manager = null)
     {
         if ($manager === null) {
             $manager = Manager::instance();

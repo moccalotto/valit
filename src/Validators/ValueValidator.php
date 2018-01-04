@@ -11,9 +11,9 @@
 namespace Valit\Validators;
 
 use Exception;
+use Valit\Manager;
 use Valit\Util\Val;
 use BadMethodCallException;
-use Valit\Contracts\CheckManager;
 use Valit\Result\AssertionResultBag;
 use Valit\Exceptions\InvalidValueException;
 
@@ -25,7 +25,7 @@ use Valit\Exceptions\InvalidValueException;
 class ValueValidator extends AssertionResultBag
 {
     /**
-     * @var CheckManager
+     * @var Manager
      *
      * @internal
      */
@@ -41,11 +41,11 @@ class ValueValidator extends AssertionResultBag
     /**
      * Constructor.
      *
-     * @param CheckManager $manager        The manager that contains all our checks
-     * @param mixed        $value          The value we are validating
-     * @param bool         $throwOnFailure Should we throw an exception as soon as we encounter a failed result
+     * @param Manager $manager        The manager that contains all our checks
+     * @param mixed   $value          The value we are validating
+     * @param bool    $throwOnFailure Should we throw an exception as soon as we encounter a failed result
      */
-    public function __construct(CheckManager $manager, $value, $throwOnFailure = false)
+    public function __construct(Manager $manager, $value, $throwOnFailure = false)
     {
         $this->manager = $manager;
         $this->throwOnFailure = (bool) $throwOnFailure;

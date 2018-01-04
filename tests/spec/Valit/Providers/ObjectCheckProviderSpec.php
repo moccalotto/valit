@@ -52,7 +52,6 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->checkObjectOrClass(curl_init())->success()->shouldBe(false);
         $this->checkObjectOrClass('Traversable')->success()->shouldBe(false);
         $this->checkObjectOrClass(NonExisting::class)->success()->shouldBe(false);
-        $this->checkObjectOrClass('Valit\Contracts\CheckManager')->success()->shouldBe(false);
     }
 
     function it_checks_className()
@@ -90,7 +89,6 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->checkInterfaceName('Iterator')->success()->shouldBe(true);
         $this->checkInterfaceName('Countable')->success()->shouldBe(true);
         $this->checkInterfaceName('Traversable')->success()->shouldBe(true);
-        $this->checkInterfaceName('Valit\Contracts\CheckManager')->success()->shouldBe(true);
 
         $this->checkInterfaceName(1)->success()->shouldBe(false);
         $this->checkInterfaceName([])->success()->shouldBe(false);
@@ -134,7 +132,6 @@ class ObjectCheckProviderSpec extends ObjectBehavior
         $this->checkTraitName('SimpleXmlElement')->success()->shouldBe(false);
         $this->checkTraitName(NonExisting::class)->success()->shouldBe(false);
         $this->checkTraitName('Valit\Result\AssertionResult')->success()->shouldBe(false);
-        $this->checkTraitName('Valit\Contracts\CheckManager')->success()->shouldBe(false);
     }
 
     function it_checks_instanceof()

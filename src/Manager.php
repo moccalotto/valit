@@ -13,16 +13,15 @@ namespace Valit;
 use SplObjectStorage;
 use Valit\Util\CheckInfo;
 use UnexpectedValueException;
-use Valit\Contracts\CheckManager;
 use Valit\Contracts\CheckProvider;
 
 /**
  * Container for all available checks.
  */
-class Manager implements CheckManager
+class Manager
 {
     /**
-     * @var CheckManager
+     * @var Manager
      *
      * @internal
      */
@@ -63,7 +62,7 @@ class Manager implements CheckManager
      *
      * If no instance is configured, a new one is created via the create() factory method.
      *
-     * @return CheckManager
+     * @return Manager
      *
      * @see create
      */
@@ -84,7 +83,7 @@ class Manager implements CheckManager
      *
      * @param string[] $additionalCheckProviders
      *
-     * @return CheckManager
+     * @return Manager
      */
     public static function create($additionalCheckProviders = [])
     {
