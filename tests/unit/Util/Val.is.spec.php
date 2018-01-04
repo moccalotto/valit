@@ -400,5 +400,23 @@ describe('Valit\Util\Val', function () {
                 )
             )->toBe(true);
         });
+
+        it('tests multiple types', function () {
+            expect(Val::is(1, ['string', 'int']))->toBe(true);
+            expect(Val::is('foo', ['string', 'int']))->toBe(true);
+            expect(Val::is(null, ['string', 'int']))->toBe(false);
+
+            expect(Val::is(1, 'string|int'))->toBe(true);
+            expect(Val::is('foo', 'string|int'))->toBe(true);
+            expect(Val::is(null, 'string|int'))->toBe(false);
+        });
+
+        it('tests trims type definitions', function () {
+            expect(Val::is(1, ' int '))->toBe(true);
+            expect(Val::is(1, [' int ']))->toBe(true);
+            expect(Val::is(1, ' string | int '))->toBe(true);
+            expect(Val::is('foo', [' string', 'int ']))->toBe(true);
+            expect(Val::is(null, 'string | int'))->toBe(false);
+        });
     });
 });
