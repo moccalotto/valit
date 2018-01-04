@@ -66,7 +66,7 @@ class BasicCheckProvider implements CheckProvider
     }
 
     /**
-     * Check that $value is equal to (==) one of the values in $against.
+     * Check that $value is equal to (==) one of the values in $allowedValues.
      *
      * If you give multiple arguments to this function, each argument will
      * be treated as a possible option.
@@ -95,26 +95,26 @@ class BasicCheckProvider implements CheckProvider
      *
      * @return AssertionResult
      */
-    public function checkIsOneOf($value, $possibleValues)
+    public function checkIsOneOf($value, $allowedValues)
     {
-        // If $possibleValues is variadic instead of array
+        // If $allowedValues is variadic instead of array
         if (func_num_args() > 2) {
-            $possibleValues = array_slice(func_get_args(), 1);
+            $allowedValues = array_slice(func_get_args(), 1);
         }
 
-        Val::mustBe($possibleValues, 'iterable');
+        Val::mustBe($allowedValues, 'iterable');
 
         $msg = sprintf('{name} must be one of %s', implode(', ', array_map(function ($int) {
             return '{'.$int.'}';
-        }, range(0, Val::count($possibleValues) - 1))));
+        }, range(0, Val::count($allowedValues) - 1))));
 
-        foreach ($possibleValues as $match) {
+        foreach ($allowedValues as $match) {
             if ($value == $match) {
-                return new AssertionResult(true, $msg, $possibleValues);
+                return new AssertionResult(true, $msg, $allowedValues);
             }
         }
 
-        return new AssertionResult(false, $msg, $possibleValues);
+        return new AssertionResult(false, $msg, $allowedValues);
     }
 
     /**
