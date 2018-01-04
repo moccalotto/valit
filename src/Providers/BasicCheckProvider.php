@@ -90,8 +90,8 @@ class BasicCheckProvider implements CheckProvider
      *
      * @Check(["isOneOf", "oneOf"])
      *
-     * @param mixed $value
-     * @param mixed $against,... The allowed values
+     * @param mixed                      $value
+     * @param mixed[]|\Traversable|array $allowedValues,... The allowed values
      *
      * @return AssertionResult
      */
