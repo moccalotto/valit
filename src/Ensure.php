@@ -12,6 +12,9 @@ namespace Valit;
 
 use Valit\Validators\ValueValidator;
 
+/**
+ * Facade for checking values and containers, throwing an exception if an assertion fails.
+ */
 abstract class Ensure
 {
     /**

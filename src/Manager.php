@@ -16,6 +16,9 @@ use UnexpectedValueException;
 use Valit\Contracts\CheckManager;
 use Valit\Contracts\CheckProvider;
 
+/**
+ * Container for all available checks.
+ */
 class Manager implements CheckManager
 {
     /**

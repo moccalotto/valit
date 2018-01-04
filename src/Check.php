@@ -13,6 +13,9 @@ namespace Valit;
 use Valit\Assertion\AssertionBag;
 use Valit\Validators\ValueValidator;
 
+/**
+ * Facade for checking values and containers without throwing exceptions.
+ */
 abstract class Check
 {
     /**
