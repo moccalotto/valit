@@ -156,7 +156,7 @@ class ValueValidator extends AssertionResultBag
     public function __debugInfo()
     {
         return [
-            'value' => Val::escape($this->value),
+            'value' => is_scalar($this->value) ? $this->value : Val::escape($this->value),
             'varName' => $this->varName,
             'failures' => $this->failures,
             'successes' => $this->successes,
