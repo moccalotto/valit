@@ -306,7 +306,7 @@ abstract class Val
 
         if ($format === 'imploded') {
             return static::iterable($value)
-                ? implode(', ', array_map([__CLASS__, 'escape'], static::toArray($value)))
+                ? implode(', ', static::map($value, '::escape'))
                 : '[not iterable]';
         }
 
@@ -607,5 +607,46 @@ abstract class Val
         }
 
         return true;
+    }
+
+    /**
+     * Map an iterable variable.
+     *
+     * Example:
+     *
+     * ```php
+     * // the two lines below are equivalent:
+     * $escaped = Val::map($array, '::escape');
+     * $escaped = Val::map($array, 'Valit\Util\Val::escape');
+     *
+     * $integers = Val::map($array, 'intval');  // php version
+     * $integers = Val::map($array, '::toInt'); // robust version
+     * ```
+     *
+     * @param iterable        $iterable The array (or traversable) to be mapped.
+     * @param string|callable $callable A callable or a string starting with two colons.
+     *                                  If it is a string with two colons, it is actually
+     *                                  a short-hand for calling a static function in this class.
+     *                                  For instance, if $callable is '::escape' then
+     *                                  it is the same as if $callable was 'Valit\Util\Val::escape'.
+     *
+     * @return array
+     */
+    public static function map($iterable, $callable)
+    {
+        if (static::stringable($callable) && substr($callable, 0, 2) === '::') {
+            $callable = [static::class, substr($callable, 2)];
+        }
+
+        static::mustBe($iterable, 'iterable');
+        static::mustBe($callable, 'callable');
+
+        $result = [];
+
+        foreach ($iterable as $key => $value) {
+            $result[$key] = $callable($value, $key);
+        }
+
+        return $result;
     }
 }
