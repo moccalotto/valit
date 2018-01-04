@@ -21,18 +21,16 @@ use Valit\Contracts\CheckProvider;
 class Manager
 {
     /**
-     * @var Manager
+     * Internal.
      *
-     * @internal
+     * @var Manager
      */
     public static $instance;
 
     /**
-     * Default checkers to load when created through create() or instance().
+     * Internal: Default checkers to load when created through create() or instance().
      *
      * @var array
-     *
-     * @internal
      */
     public static $defaultProviders = [
         Providers\CustomCheckProvider::class,
@@ -51,9 +49,9 @@ class Manager
     ];
 
     /**
-     * @var array
+     * Internal.
      *
-     * @internal
+     * @var array
      */
     public $checks = [];
 

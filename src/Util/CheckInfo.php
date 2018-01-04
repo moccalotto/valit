@@ -16,37 +16,37 @@ use ReflectionFunction;
 class CheckInfo
 {
     /**
-     * @var string
+     * Internal.
      *
-     * @internal
+     * @var string
      */
     public $name;
 
     /**
-     * @var string
+     * Internal.
      *
-     * @internal
+     * @var string
      */
     public $headline;
 
     /**
-     * @var string
+     * Internal.
      *
-     * @internal
+     * @var string
      */
     public $description;
 
     /**
-     * @var string[]
+     * Internal.
      *
-     * @internal
+     * @var string[]
      */
     public $aliases;
 
     /**
-     * @var string
+     * Internal.
      *
-     * @internal
+     * @var string
      */
     public $paramlist;
 

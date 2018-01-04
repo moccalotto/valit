@@ -26,18 +26,22 @@ class Executor
     const REQUIRES_CONTAINER = 'container';
 
     /**
-     * @var Manager
+     * Internal.
      *
-     * @internal
+     * @var Manager
      */
     public $manager;
 
     /**
+     * Internal.
+     *
      * @var bool
      */
     public $hasValue;
 
     /**
+     * Internal.
+     *
      * @var mixed
      */
     public $value;
@@ -45,23 +49,23 @@ class Executor
     /**
      * The logic paths.
      *
-     * @param Traversable|array $chceks
+     * Internal.
      *
-     * @internal
+     * @param Traversable|array $chceks
      */
     public $scenarios;
 
     /**
-     * @var string
+     * Internal.
      *
-     * @internal
+     * @var string
      */
     public $requires;
 
     /**
-     * @var null|ContainerResultBag[]
+     * Internal.
      *
-     * @internal
+     * @var null|ContainerResultBag[]
      */
     public $results;
 

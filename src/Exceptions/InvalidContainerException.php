@@ -20,9 +20,9 @@ use Valit\Result\ContainerResultBag;
 class InvalidContainerException extends UnexpectedValueException
 {
     /**
-     * @var ContainerResultBag
+     * Internal.
      *
-     * @internal
+     * @var ContainerResultBag
      */
     public $results;
 

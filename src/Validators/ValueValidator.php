@@ -25,16 +25,16 @@ use Valit\Exceptions\InvalidValueException;
 class ValueValidator extends AssertionResultBag
 {
     /**
-     * @var Manager
+     * Internal.
      *
-     * @internal
+     * @var Manager
      */
     public $manager;
 
     /**
-     * @var bool
+     * Internal.
      *
-     * @internal
+     * @var bool
      */
     public $throwOnFailure;
 

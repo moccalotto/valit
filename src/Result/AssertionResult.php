@@ -11,30 +11,30 @@ use Valit\Contracts\Result;
 class AssertionResult implements Result
 {
     /**
-     * @var bool
+     * Internal.
      *
-     * @internal
+     * @var bool
      */
     public $success;
 
     /**
-     * @var string
+     * Internal.
      *
-     * @internal
+     * @var string
      */
     public $message;
 
     /**
-     * @var array
+     * Internal.
      *
-     * @internal
+     * @var array
      */
     public $context;
 
     /**
-     * @var string|null
+     * Internal.
      *
-     * @internal
+     * @var string|null
      */
     public $path;
 

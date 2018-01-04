@@ -9,9 +9,9 @@ use Valit\Contracts\Logic;
 class AssertionBagFactory
 {
     /**
-     * @var AssertionBag
+     * Internal.
      *
-     * @internal
+     * @var AssertionBag
      */
     public $assertions;
 

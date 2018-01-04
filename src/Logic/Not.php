@@ -19,9 +19,9 @@ class Not extends BaseLogic
     }
 
     /**
-     * @return AssertionResult
+     * Internal.
      *
-     * @internal
+     * @return AssertionResult
      */
     public function makeResult()
     {

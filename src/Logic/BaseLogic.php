@@ -12,36 +12,32 @@ use Valit\Result\AssertionResult;
 abstract class BaseLogic implements Logic, Result
 {
     /**
-     * @var Executor
+     * Internal.
      *
-     * @internal
+     * @var Executor
      */
     public $executor;
 
     /**
-     * The result generated when execute() was called last.
+     * Intenral: The result generated when execute() was called last.
      *
      * @var AssertionResult|null
-     *
-     * @internal
      */
     public $cachedResult = null;
 
     /**
-     * The $hasValue when execute() was called last.
+     * Internal: The $hasValue when execute() was called last.
      *
      * @var bool
-     *
-     * @internal
      */
     public $hasValue;
 
     /**
      * The $value when execute() was called last.
      *
-     * @var mixed
+     * Internal.
      *
-     * @internal
+     * @var mixed
      */
     public $value;
 
@@ -163,9 +159,9 @@ abstract class BaseLogic implements Logic, Result
     }
 
     /**
-     * @return AssertionResult
+     * Internal: create the result.
      *
-     * @internal
+     * @return AssertionResult
      */
     abstract public function makeResult();
 }

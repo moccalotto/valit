@@ -19,9 +19,9 @@ use InvalidArgumentException;
 abstract class File
 {
     /**
-     * @var FileInfo[]
+     * Internal.
      *
-     * @internal
+     * @var FileInfo[]
      */
     public static $mocks = [];
 

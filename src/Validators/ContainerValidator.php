@@ -30,30 +30,30 @@ use Valit\Assertion\AssertionBagFactory;
 class ContainerValidator extends ContainerResultBag
 {
     /**
-     * @var Manager
+     * Internal.
      *
-     * @internal
+     * @var Manager
      */
     public $manager;
 
     /**
-     * @var array|object
+     * Internal.
      *
-     * @internal
+     * @var array|object
      */
     public $container;
 
     /**
-     * @var FlatContainer
+     * Internal.
      *
-     * @internal
+     * @var FlatContainer
      */
     public $flatContainer;
 
     /**
-     * @var bool
+     * Internal.
      *
-     * @internal
+     * @var bool
      */
     public $throwOnFailure;
 

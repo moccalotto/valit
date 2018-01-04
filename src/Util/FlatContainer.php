@@ -18,9 +18,9 @@ use Traversable;
 class FlatContainer
 {
     /**
-     * @var array|object
+     * Internal.
      *
-     * @internal
+     * @var array|object
      */
     public $container;
 

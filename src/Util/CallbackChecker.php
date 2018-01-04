@@ -13,23 +13,23 @@ use Valit\Contracts\CustomChecker;
 class CallbackChecker implements CustomChecker
 {
     /**
-     * @var string
+     * Internal.
      *
-     * @internal
+     * @var string
      */
     public $message;
 
     /**
-     * @var Closure
+     * Internal.
      *
-     * @internal
+     * @var Closure
      */
     public $callback;
 
     /**
-     * @var array
+     * Internal.
      *
-     * @internal
+     * @var array
      */
     public $context;
 

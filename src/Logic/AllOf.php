@@ -7,9 +7,9 @@ use Valit\Result\AssertionResult;
 class AllOf extends BaseLogic
 {
     /**
-     * @return AssertionResult
+     * Internal.
      *
-     * @internal
+     * @return AssertionResult
      */
     public function makeResult()
     {

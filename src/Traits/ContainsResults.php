@@ -15,37 +15,37 @@ use Valit\Result\AssertionResult;
 trait ContainsResults
 {
     /**
-     * @var AssertionResult[]
+     * Internal.
      *
-     * @internal
+     * @var AssertionResult[]
      */
     public $results = [];
 
     /**
-     * @var string
+     * Internal.
      *
-     * @internal
+     * @var string
      */
     public $varName = 'value';
 
     /**
-     * @var mixed
+     * Internal.
      *
-     * @internal
+     * @var mixed
      */
     public $value;
 
     /**
-     * @var int
+     * Internal.
      *
-     * @internal
+     * @var int
      */
     public $successes = 0;
 
     /**
-     * @var int
+     * Internal.
      *
-     * @internal
+     * @var int
      */
     public $failures = 0;
 

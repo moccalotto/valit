@@ -11,9 +11,9 @@ use Valit\Validators\ValueValidator;
 class AssertionBag implements IteratorAggregate, Countable
 {
     /**
-     * @var Assertion[]
+     * Internal.
      *
-     * @internal
+     * @var Assertion[]
      */
     public $assertions;
 
