@@ -257,10 +257,17 @@ class BasicCheckProvider implements CheckProvider
      */
     public function checkHasType($value, $type)
     {
+        Val::mustBe($type, 'string|string[]');
+
+        $types = Val::explodeAndTrim('|', $type);
+
         return new AssertionResult(
-            Val::is($value, $type),
-            '{name} must have the type(s) {0}',
-            [$type]
+            Val::is($value, $types),
+            '{name} must have the {0:raw} {1:imploded}',
+            [
+                count($types) < 2 ? 'type' : 'types',
+                $types,
+            ]
         );
     }
 
@@ -328,13 +335,53 @@ class BasicCheckProvider implements CheckProvider
      *
      * @Check(["isInt", "isInteger", "int", "integer"])
      *
-     * @param mixed $value
+     * @param mixed       $value
+     * @param string|null $comparison one of [null, '<', '>', '=', '>=', '≥', '<=', '≤']
+     * @param int         $against
      *
      * @return AssertionResult
      */
-    public function checkInteger($value)
+    public function checkInteger($value, $comparison = null, $against = null)
     {
-        return $this->checkHasType($value, 'integer');
+        Val::mustBe($comparison, 'null|string');
+
+        if ($comparison === '>=') {
+            $comparison = '≥';
+        }
+        if ($comparison === '<=') {
+            $comparison = '≤';
+        }
+
+        if ($comparison === null) {
+            Val::mustBe($against, 'null');
+
+            return $this->checkHasType($value, 'integer');
+        }
+
+        Val::mustBe($against, 'int');
+
+        $message = '{name} must be an integer that is {0:raw} {1:int}';
+
+        if (!is_int($value)) {
+            return new AssertionResult(false, $message, [$comparison, $against]);
+        }
+        if ($comparison === '>') {
+            return new AssertionResult($value > $against, $message, [$comparison, $against]);
+        }
+        if ($comparison === '<') {
+            return new AssertionResult($value < $against, $message, [$comparison, $against]);
+        }
+        if ($comparison === '≥') {
+            return new AssertionResult($value >= $against, $message, [$comparison, $against]);
+        }
+        if ($comparison === '≤') {
+            return new AssertionResult($value >= $against, $message, [$comparison, $against]);
+        }
+        if ($comparison === '=') {
+            return new AssertionResult($value == $against, $message, [$comparison, $against]);
+        }
+
+        throw new InvalidArgumentException('Second arhument must be NULL or one of [>, <, =, >=, ≥, <=, ≤]');
     }
 
     /**
