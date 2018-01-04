@@ -90,8 +90,8 @@ class BasicCheckProvider implements CheckProvider
      *
      * @Check(["isOneOf", "oneOf"])
      *
-     * @param mixed                      $value
-     * @param mixed[]|\Traversable|array $allowedValues,... The allowed values
+     * @param mixed            $value
+     * @param mixed[]|iterable $allowedValues,... The allowed values
      *
      * @return AssertionResult
      */
@@ -104,44 +104,47 @@ class BasicCheckProvider implements CheckProvider
 
         Val::mustBe($allowedValues, 'iterable');
 
-        $msg = sprintf('{name} must be one of %s', implode(', ', array_map(function ($int) {
-            return '{'.$int.'}';
-        }, range(0, Val::count($allowedValues) - 1))));
+        $msg = '{name} must be one of {0:imploded}';
 
         foreach ($allowedValues as $match) {
             if ($value == $match) {
-                return new AssertionResult(true, $msg, $allowedValues);
+                return new AssertionResult(true, $msg, [$allowedValues]);
             }
         }
 
-        return new AssertionResult(false, $msg, $allowedValues);
+        return new AssertionResult(false, $msg, [$allowedValues]);
     }
 
     /**
-     * Check that $value is NOT equal to (==) any of the values in $against.
+     * Check that $value is NOT equal to (==) any of the values in $unacceptableValues.
+     *
+     * See isOneOf() for examples.
      *
      * @Check(["isNotOneOf", "notOneOf"])
      *
-     * @param mixed              $value
-     * @param array|\Traversable $unacceptableValues
+     * @param mixed            $value
+     * @param mixed[]|iterable $unacceptableValues
      *
      * @return AssertionResult
      */
     public function checkIsNotOneOf($value, $unacceptableValues)
     {
+        // If $unacceptableValues is variadic instead of array
+        if (func_num_args() > 2) {
+            $unacceptableValues = array_slice(func_get_args(), 1);
+        }
+
         Val::mustBe($unacceptableValues, 'iterable');
 
-        $msg = sprintf('{name} must not be one of %s', implode(', ', array_map(function ($int) {
-            return '{'.$int.'}';
-        }, range(0, Val::count($unacceptableValues) - 1))));
+        $msg = '{name} must be one of {0:imploded}';
 
         foreach ($unacceptableValues as $match) {
             if ($value == $match) {
-                return new AssertionResult(false, $msg, $unacceptableValues);
+                return new AssertionResult(false, $msg, [$unacceptableValues]);
             }
         }
 
-        return new AssertionResult(true, $msg, $unacceptableValues);
+        return new AssertionResult(true, $msg, [$unacceptableValues]);
     }
 
     /**
