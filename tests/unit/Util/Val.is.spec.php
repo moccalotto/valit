@@ -389,6 +389,12 @@ describe('Valit\Util\Val', function () {
             expect(Val::is(['foo', []], 'iterable[]'))->toBe(false);
             expect(Val::is(['foo', []], 'countable[]'))->toBe(false);
 
+            expect(Val::is([], 'mixed[][]'))->toBe(true);
+            expect(Val::is([ [1, 2], [3, 4], [4, 5] ], 'mixed[][]'))->toBe(true);
+            expect(Val::is([ [1, 2], [3, 4], [4, 5] ], 'int[][]'))->toBe(true);
+            expect(Val::is([ ['1', 2], [3, 4], [4, 5] ], 'int[][]'))->toBe(false);
+            expect(Val::is([ [1, 2], [3, 4], [4, 5] ], 'string[][]'))->toBe(false);
+
             expect(
                 Val::is(
                     [
