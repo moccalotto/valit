@@ -26,11 +26,12 @@ If any of the assertions fail, a `Valit\Exceptions\InvalidValueException`
 is thrown.
 
 ### Validating values
-You can determine if a variable passes all your criteria by using the
-`valid` method.
+If you don't want exceptions to be thrown, use the `Check` facade.
 
-Conversely you can use the `invalid` method to check if one or more
-checks did not pass.
+You can use the `throwExceptionIfNotSuccessful` method to throw an
+exception if one or more assertions fail.
+The advantage of this is that the exception thrown will
+contain *all* the failed assertions, not just the first one.
 
 ```php
 use Valit\Check;
