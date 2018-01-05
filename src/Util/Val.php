@@ -203,7 +203,7 @@ abstract class Val
     {
         $strval = static::toString($value, $error);
 
-        static::mustBe($strval, 'numeric');
+        static::mustBe($strval, ['numeric']);
 
         return (float) $strval;
     }
@@ -274,7 +274,7 @@ abstract class Val
      */
     public static function count($value)
     {
-        static::mustBe($value, 'iterable | countable');
+        static::mustBe($value, ['iterable', 'countable']);
 
         if (static::countable($value)) {
             return count($value);
@@ -433,7 +433,7 @@ abstract class Val
      */
     public static function mustBe($value, $types, $error = null)
     {
-        if (!static::is($error, 'null|string|Exception')) {
+        if (!static::is($error, ['null', 'string', 'Exception'])) {
             throw new LogicException('$error must be null, a string or an instance of Exception');
         }
 
@@ -449,8 +449,8 @@ abstract class Val
             throw new InvalidArgumentException($error);
         }
 
-        if (!is_array($types)) {
-            $types = explode('|', $types);
+        if (is_string($types)) {
+            $types = static::explodeAndTrim('|', $types);
         }
 
         if (count($types) === 1) {
@@ -472,29 +472,15 @@ abstract class Val
      */
     public static function explodeAndTrim($separator, $types)
     {
-        // Do NOT use ::mustBe() because that function uses ::explodeAndTrim()
-        // and that would cause a circular reference.
-
-        if (!is_string($separator)) {
-            throw new InvalidArgumentException(sprintf(
-                '$separator must be a string. %s given',
-                ucfirst(gettype($types))
-            ));
-        }
+        // we must use array syntax when calling mustBe() to avoid cyclic calls.
+        static::mustBe($separator, ['string'], '$separator must be a string');
+        static::mustBe($types, ['string', 'string[]'], '$types must be a string or an array of strings');
 
         if (is_string($types)) {
             $types = explode($separator, $types);
         }
 
-        if (!is_array($types)) {
-            throw new InvalidArgumentException(sprintf(
-                '$types must be a string or an array of strings. %s given',
-                ucfirst(gettype($types))
-            ));
-        }
-
-        // Do NOT use ::map() because that function uses ::mustBe()
-        return array_map('trim', $types);
+        return static::map($types, 'trim');
     }
 
     /**
@@ -526,18 +512,22 @@ abstract class Val
      */
     public static function is($value, $types)
     {
-        $types = static::explodeAndTrim('|', $types);
+        if (is_string($types)) {
+            $types = static::explodeAndTrim('|', $types);
+        }
 
         foreach ($types as $type) {
-            $type = trim(strtolower($type));
-
             // check if type is one of: resource, double, integer, string, object, array, bool, null
-            if (strtolower(gettype($value)) === $type) {
+            if (gettype($value) === $type) {
                 return true;
             }
 
             // check if class equals $type
             if (is_a($value, $type)) {
+                return true;
+            }
+
+            if ($type === 'null' && is_null($value)) {
                 return true;
             }
 
@@ -602,7 +592,7 @@ abstract class Val
             }
 
             // check for array types such as string[], float[], DateTime[], etc.
-            if (substr($type, -2) === '[]' && static::arrayOf($value, substr($type, 0, -2))) {
+            if (substr($type, -2) === '[]' && static::isArrayOf($value, substr($type, 0, -2))) {
                 return true;
             }
         }
@@ -611,25 +601,30 @@ abstract class Val
     }
 
     /**
-     * Check if $value is an array of the given type.
+     * Check if $value is an 0-indexed continuous array of the given type.
+     *
+     * All keys from 0 to count($value) must exist.
+     * All values must be of type $type.
      *
      * @param mixed  $value
      * @param string $type
      *
      * @return bool
      */
-    public static function arrayOf($value, $type)
+    public static function isArrayOf($value, $type)
     {
         if (!is_array($value)) {
             return false;
         }
 
-        if (count($value) === 0) {
-            return true;
-        }
+        $count = count($value);
 
-        foreach ($value as $entry) {
-            if (!static::is($entry, $type)) {
+        for ($i = 0; $i < $count; $i++) {
+            if (!isset($value[$i])) {
+                return false;
+            }
+
+            if (!static::is($value[$i], $type)) {
                 return false;
             }
         }
@@ -666,13 +661,13 @@ abstract class Val
             $callable = [static::class, substr($callable, 2)];
         }
 
-        static::mustBe($iterable, 'iterable');
-        static::mustBe($callable, 'callable');
+        static::mustBe($iterable, ['iterable']);
+        static::mustBe($callable, ['callable']);
 
         $result = [];
 
         foreach ($iterable as $key => $value) {
-            $result[$key] = $callable($value, $key);
+            $result[$key] = $callable($value);
         }
 
         return $result;

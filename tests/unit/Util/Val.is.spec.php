@@ -327,7 +327,7 @@ describe('Valit\Util\Val', function () {
         it('tests class inheritance', function () {
             expect(Val::is(new \ArrayObject([]), 'Traversable'))->toBe(true);
             expect(Val::is(new \ArrayObject([]), 'Countable'))->toBe(true);
-            expect(Val::is(new \ArrayObject([]), 'Iterable'))->toBe(true);
+            expect(Val::is(new \ArrayObject([]), 'iterable'))->toBe(true);
             expect(Val::is(new \ArrayObject([]), 'ArrayAccess'))->toBe(true);
             expect(Val::is(new \EmptyIterator(), 'Traversable'))->toBe(true);
 
@@ -412,10 +412,9 @@ describe('Valit\Util\Val', function () {
         });
 
         it('tests trims type definitions', function () {
+            expect(Val::is(1, 'int'))->toBe(true);
             expect(Val::is(1, ' int '))->toBe(true);
-            expect(Val::is(1, [' int ']))->toBe(true);
             expect(Val::is(1, ' string | int '))->toBe(true);
-            expect(Val::is('foo', [' string', 'int ']))->toBe(true);
             expect(Val::is(null, 'string | int'))->toBe(false);
         });
     });
