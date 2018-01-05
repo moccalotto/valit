@@ -75,7 +75,7 @@ class DateCheckProvider implements CheckProvider
         $againstDate = Date::parse($against);
 
         $success = Date::canParse($value)
-            && Date::compare(Date::parse($value), $againstDate) > 0;
+                && Date::comparison('after', $value, $againstDate);
 
         return new Result($success, '{name} must be a date after {0:raw}', [$against]);
     }
@@ -101,7 +101,7 @@ class DateCheckProvider implements CheckProvider
         $againstDate = Date::parse($against);
 
         $success = Date::canParse($value)
-            && Date::compare(Date::parse($value), $againstDate) < 0;
+                && Date::comparison('before', $value, $againstDate);
 
         return new Result($success, '{name} must be a date before {0:raw}', [$against]);
     }
@@ -118,7 +118,7 @@ class DateCheckProvider implements CheckProvider
     public function checkInThePast($value)
     {
         $success = Date::canParse($value)
-            && Date::compare(Date::parse($value), Date::now()) < 0;
+                && Date::comparison('before', $value, Date::now());
 
         return new Result($success, '{name} must be a date in the past');
     }
@@ -135,7 +135,7 @@ class DateCheckProvider implements CheckProvider
     public function checkInTheFuture($value)
     {
         $success = Date::canParse($value)
-            && Date::compare(Date::parse($value), Date::now()) > 0;
+                && Date::comparison('after', $value, Date::now());
 
         return new Result($success, '{name} must be a future date');
     }

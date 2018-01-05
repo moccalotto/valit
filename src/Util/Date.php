@@ -177,7 +177,18 @@ abstract class Date
     /**
      * Compare two dates.
      *
-     * @param string $comparison The comparison method; one of 'before', 'beforeOrAt', 'at', 'after', 'afterOrAt'
+     * Examples:
+     *
+     * Check if $a is after $b:
+     *
+     * comparison('after', $a, $b);
+     *
+     * @param string $comparison The comparison method; one of:
+     *                           'before', '<',
+     *                           'beforeOrAt', '<=', '≤',
+     *                           'at', '=',
+     *                           'after', '>',
+     *                           'afterOrAt', '>=', '≥'
      * @param mixed  $a          A parseable datetime
      * @param mixed  $b          A parseable datetime
      *
@@ -187,24 +198,26 @@ abstract class Date
      */
     public static function comparison($comparison, $a, $b)
     {
-        $a = (float) static::parse($a)->format('U.u');
-        $b = (float) static::parse($b)->format('U.u');
+        switch ($comparison) {
+            case 'before':
+            case '<':
+                return Date::compare($a, $b) < 0;
+            case 'beforeOrAt':
+            case '<=':
+            case '≤':
+                return Date::compare($a, $b) <= 0;
+            case 'at':
+            case '=':
+                return Date::compare($a, $b) == 0.0;
+            case 'after':
+            case '>':
+                return Date::compare($a, $b) > 0.0;
+            case 'afterOrAt':
+            case '>=':
+            case '≥':
+                return Date::compare($a, $b) >= 0.0;
+        }
 
-        if ($comparison === 'before') {
-            return $a < $b;
-        }
-        if ($comparison === 'beforeOrAt') {
-            return $a <= $b;
-        }
-        if ($comparison === 'at') {
-            return $a == $b;
-        }
-        if ($comparison === 'after') {
-            return $a > $b;
-        }
-        if ($comparison === 'afterOrAt') {
-            return $a > $b;
-        }
         throw new InvalidArgumentException(
             'first argument must be one of "before", "beforeOrAt", "at", "after", "afterOrAt"'
         );
