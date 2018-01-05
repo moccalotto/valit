@@ -128,7 +128,7 @@ Val::mustBe($container, 'iterable', $myException);
 Below are some of the type validations you can make.
 
 | $type          | Validation                                    |
-|:-------------- |:-------------------------                     |
+|:-------------- |:--------------------------------------------- |
 | `null`         | `is_null()`                                   |
 | `object`       | `is_object()`                                 |
 | `int`          | `is_int()`                                    |
@@ -139,6 +139,7 @@ Below are some of the type validations you can make.
 | `float`        | `is_float()`                                  |
 | `double`       | `is_float()`                                  |
 | `numeric`      | `is_numeric()`                                |
+| `intable`      | `stringable` that can be converted to an int  |
 | `nan`          | `is_nan()`                                    |
 | `inf`          | `is_inf()`                                    |
 | `callable`     | `is_callable()`                               |
