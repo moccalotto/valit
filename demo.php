@@ -7,6 +7,7 @@
  * @copyright 2017 Kim Ravn Hansen
  * @license   MIT
  */
+use Valit\Value;
 use Valit\Check;
 use Valit\Ensure;
 use Valit\Exceptions\InvalidValueException;
@@ -190,7 +191,7 @@ $checks = Check::that($request)->contains([
     'name' => 'string & shorterThan(100)',
     'email' => 'email & shorterThan(255)',
     'address' => ['string'],
-    'age' => ['optional', 'greaterThan' => [18], 'lowerThan(70)'],
+    'age' => Value::isOptional()->greaterThan(18)->lowerThan(70),
 
     'orderLines' => 'conventionalArray',
     'orderLines/*' => 'associative',
@@ -198,38 +199,27 @@ $checks = Check::that($request)->contains([
     'orderLines/*/count' => 'optional & integer & greaterThan(0)',
 ]);
 
-print_r($checks->errors());
+print_r($checks->errorMessages());
 /*
 Array
 (
-    [age] => Array
-        (
-            [0] => age must be less than 70
-        )
-
-    [orderLines/1] => Array
-        (
-            [0] => orderLines/1 must be an associative array
-        )
-
-    [orderLines/0/productId] => Array
-        (
-            [0] => orderLines/0/productId must be a valid UUID
-        )
-
+    [0] => age must be less than 70
+    [1] => orderLines/1 must be an associative array
+    [2] => orderLines/0/productId must be a valid UUID
 )
 */
 
 print_r($checks->errorMessagesByPath(['orderLines', 0, 'productId']));
 /*
-    Array
-    (
-        [0] => Field must be a valid UUID
-    )
+Array
+(
+    [0] => orderLines/0/productId must be a valid UUID
+)
 */
 
 
 try {
+
     Check::that([
         'a' => 1234,
         'b' => [
@@ -246,16 +236,23 @@ try {
         'b/e' => 'required',
         'c' => 'required & isString & longerThan(100)',
     ])->orThrowException();
-} catch (\Exception $e) {
-    print $e->getMessage();
 
+} catch (\Exception $e) {
+
+    print $e->getMessage() . PHP_EOL;
     /*
-        Container did not pass validation:
-            a must have the type "string"
-            a must be a string that is longer than 100
-            b/c must have the type "integer"
-            b/c must be greater than 10
-            b/e is required
-            c is required
+        Validation of foo failed
      */
+
+    print $e->detailedMessage();
+    /*
+        Validated of foo failed the following expectations:
+         * a must have the type "string".
+         * a must be a string where length > 100.
+         * b/c must have the type "integer".
+         * b/c must be greater than 10.
+         * b/e must be present.
+         * c must be present.
+     */
+
 }

@@ -17,69 +17,29 @@ use Valit\Result\ContainerResultBag;
 /**
  * Exception thrown when a value is invalid.
  */
-class InvalidContainerException extends UnexpectedValueException
+class InvalidContainerException extends InvalidValueException
 {
     /**
      * Internal.
      *
      * @var ContainerResultBag
      */
-    public $results;
+    public $containerResults;
 
     /**
      * Constructor.
      *
-     * @param ContainerResultBag $results
+     * @param ContainerResultBag $containerResults
      */
-    public function __construct(ContainerResultBag $results)
+    public function __construct(ContainerResultBag $containerResults)
     {
-        $this->results = $results;
+        $this->containerResults = $containerResults;
 
         parent::__construct(
-            $this->getExpandedMessage(sprintf(
-                '%s did not pass validation',
-                ucfirst($results->varName)
-            ))
+            $containerResults->varName,
+            null,
+            $containerResults->results
         );
-    }
-
-    /**
-     * Get details about why the exception failed.
-     *
-     * @param string $prefix
-     *
-     * @return string
-     */
-    public function getExpandedMessage($prefix)
-    {
-        $errorMessages = array_map(
-            function ($result) {
-                return sprintf(
-                    '%s: %s',
-                    $result->path,
-                    $result->message
-                );
-            },
-            $this->results->errors()
-        );
-
-        return $prefix
-            .': '
-            .PHP_EOL
-            .'    '
-            .implode(PHP_EOL.'    ', $errorMessages)
-            .PHP_EOL
-            .PHP_EOL;
-    }
-
-    /**
-     * Get Results.
-     *
-     * @return ContainerResultBag
-     */
-    public function getResults()
-    {
-        return $this->results;
     }
 
     /**
@@ -92,15 +52,15 @@ class InvalidContainerException extends UnexpectedValueException
      */
     public function __call($method, $args)
     {
-        if (!is_callable([$this->results, $method])) {
+        if (!is_callable([$this->containerResults, $method])) {
             throw new BadMethodCallException(sprintf(
                 'The method »%s« does not exist on either %s or %s',
                 $method,
                 get_class($this),
-                get_class($this->results)
+                get_class($this->containerResults)
             ));
         }
 
-        return call_user_func_array([$this->results, $method], $args);
+        return call_user_func_array([$this->containerResults, $method], $args);
     }
 }
