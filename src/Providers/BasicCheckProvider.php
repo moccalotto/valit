@@ -336,7 +336,27 @@ class BasicCheckProvider implements CheckProvider
     }
 
     /**
-     * Check that $value is a float.
+     * Check that $value is a an integer.
+     *
+     * If $comparison and $against are given, we also check that $value
+     * comparest to $against via the $comparison.
+     *
+     * For instance:
+     *
+     * ```php
+     * // Check that foo is an integer.
+     * Check::that($foo)->isInt();
+     *
+     * // Check that foo is an integer that is greater than 20
+     * Check::that($foo)->isInt('>', 20);
+     *
+     * // Check that foo is an integer that is greater than or equal to 0
+     * Check::that($foo)->isInt('>=', 20);
+     * Check::that($foo)->isInt('≥', 20);   // alternate syntax
+     *
+     * // Check that foo is an integer that is equal to 5
+     * Check::that($foo)->isInt('=', 5);
+     * ```
      *
      * @Check(["isInt", "isInteger", "int", "integer"])
      *
