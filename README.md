@@ -170,7 +170,7 @@ Val::mustBe($value, 'int|DateTime|DateTimeImmutable');
 // multiple types via array notation
 Val::mustBe($value, ['object', 'array']);
 
-// a strict array with 0-based numeric index.
+// a strict array with 0-based numeric index
 Val::mustBe($value, 'mixed[]');
 
 // a strict array of strict arrays

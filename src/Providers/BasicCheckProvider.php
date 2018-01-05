@@ -250,6 +250,12 @@ class BasicCheckProvider implements CheckProvider
      *
      * // multiple types via array notation
      * Check::that($foo)->hasType(['object', 'array'])
+     *
+     * // a strict array with 0-based numeric index
+     * Val::mustBe($value, 'mixed[]');
+     *
+     * // a strict array of strict arrays
+     * Val::mustBe($value, 'mixed[][]');
      * ```
      *
      * ---
