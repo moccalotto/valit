@@ -223,6 +223,7 @@ class BasicCheckProvider implements CheckProvider
      * | `nan`          | `is_nan()`                                    |
      * | `inf`          | `is_inf()`                                    |
      * | `callable`     | `is_callable()`                               |
+     * | `intable`      | `stringable` that can be converted to an int  |
      * | `iterable`     | `is_array() || is_a($value, 'Traversable')`   |
      * | `countable`    | `is_array() || is_a($value, 'Cointable')`     |
      * | `arrayable`    | `is_array() || is_a($value, 'ArrayAccess')`   |
