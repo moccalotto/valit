@@ -208,23 +208,23 @@ class BasicCheckProvider implements CheckProvider
      *
      * Possible types:
      *
-     * | $type      | Validation                |
-     * |:---------- |:------------------------- |
-     * | int        | `is_int()`                |
-     * | integer    | `is_int()`                |
-     * | bool       | `is_bool()`               |
-     * | boolean    | `is_bool()`               |
-     * | string     | `is_string()`             |
-     * | float      | `is_float()`              |
-     * | double     | `is_float()`              |
-     * | numeric    | `is_numeric()`            |
-     * | nan        | `is_nan()`                |
-     * | inf        | `is_inf()`                |
-     * | callable   | `is_callable()`           |
-     * | iterable   | `array`, `Traversable`    |
-     * | countable  | `array`, `Cointable`      |
-     * | arrayable  | `array`, `ArrayAccess`    |
-     * | [fqcn]     | `is_a()`                  |
+     * | $type       | Validation                |
+     * |:----------- |:------------------------- |
+     * | `int`       | `is_int()`                |
+     * | `integer`   | `is_int()`                |
+     * | `bool`      | `is_bool()`               |
+     * | `boolean`   | `is_bool()`               |
+     * | `string`    | `is_string()`             |
+     * | `float`     | `is_float()`              |
+     * | `double`    | `is_float()`              |
+     * | `numeric`   | `is_numeric()`            |
+     * | `nan`       | `is_nan()`                |
+     * | `inf`       | `is_inf()`                |
+     * | `callable`  | `is_callable()`           |
+     * | `iterable`  | `array`, `Traversable`    |
+     * | `countable` | `array`, `Cointable`      |
+     * | `arrayable` | `array`, `ArrayAccess`    |
+     * | [fqcn]      | `is_a()`                  |
      *
      * Code examples:
      *
@@ -235,8 +235,8 @@ class BasicCheckProvider implements CheckProvider
      * // multiple allowed types via the pipe character
      * Check::that($foo)->hasType('float | int');
      *
-     * // Check that $foo is an array of floats
-     * // or an array of integers.
+     * // check that $foo is an array of floats
+     * // or an array of integers
      * Check::that($foo)->hasType('float[] | int[]')
      *
      * // mixing classes, interfaces and basic types.
