@@ -138,8 +138,8 @@ abstract class Date
     /**
      * Is the candidate value can be treated as a date.
      *
-     * @param string|DateTimeInterface $candidate candidate date
-     * @param string|null              $format    The format to use. @see http://php.net/manual/en/class.datetime.php
+     * @param mixed       $candidate the value to check
+     * @param string|null $format    The format to use. @see http://php.net/manual/en/class.datetime.php
      *
      * @return bool
      */
