@@ -147,14 +147,7 @@ abstract class Val
      */
     public static function toString($value, $error = null)
     {
-        if (!static::stringable($value)) {
-            throw new InvalidArgumentException($error ?: sprintf(
-                'The given %s could not be converted to string',
-                gettype($value)
-            ));
-        }
-
-        return (string) $value;
+        return (string) static::mustBe($value, 'stringable', $error);
     }
 
     /**
@@ -173,12 +166,7 @@ abstract class Val
      */
     public static function toArray($value, $error = null)
     {
-        if (!static::iterable($value)) {
-            throw new InvalidArgumentException($error ?: sprintf(
-                'The given %s could not be converted to an array',
-                gettype($value)
-            ));
-        }
+        static::mustBe($value, 'iterable', $error);
 
         return is_array($value)
             ? $value
@@ -199,16 +187,13 @@ abstract class Val
      */
     public static function toInt($value, $error = null)
     {
-        $str = static::toString($value, $error);
-
-        if (is_numeric($str) && intval($str) == floatval($str)) {
-            return (int) $str;
+        if (is_null($error)) {
+            $error = sprintf('The given %s could not be converted to an integer', gettype($value));
         }
 
-        throw new InvalidArgumentException($error ?: sprintf(
-            'The given %s could not be converted to integer',
-            gettype($value)
-        ));
+        static::mustBe($value, ['intable'], $error);
+
+        return intval($value);
     }
 
     /**
@@ -588,6 +573,10 @@ abstract class Val
             }
 
             if ($type === 'stringable' && static::stringable($value)) {
+                return true;
+            }
+
+            if ($type === 'intable' && static::intable($value)) {
                 return true;
             }
 
