@@ -95,6 +95,30 @@ abstract class Val
     }
 
     /**
+     * Can the value be converted to an integer without loss of information?
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public static function intable($value)
+    {
+        if (is_int($value)) {
+            return true;
+        }
+
+        if (is_float($value)) {
+            return $value == intval($value);
+        }
+
+        if (static::stringable($value)) {
+            return floatval($value) == intval($value);
+        }
+
+        return false;
+    }
+
+    /**
      * Can the value be thrown via the throw keyword?
      *
      * @param mixed $value
