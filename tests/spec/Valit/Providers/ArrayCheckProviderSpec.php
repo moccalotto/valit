@@ -78,6 +78,31 @@ class ArrayCheckProviderSpec extends ObjectBehavior
         $this->checkAssociative('ArrayObject')->success()->shouldBe(false);
     }
 
+    function it_checks_strictArray()
+    {
+        $this->checkStrictArray([])->shouldHaveType('Valit\Result\AssertionResult');
+
+        $this->provides()->shouldHaveKey('strictArray');
+        $this->provides()->shouldHaveKey('isStrictArray');
+
+        $this->checkStrictArray([])->success()->shouldBe(true);
+        $this->checkStrictArray(['a'])->success()->shouldBe(true);
+        $this->checkStrictArray(['a', 'b'])->success()->shouldBe(true);
+
+        $this->checkStrictArray([999 => 999])->success()->shouldBe(false);
+        $this->checkStrictArray(['999' => '999'])->success()->shouldBe(false);
+        $this->checkStrictArray(['a' => 'a'])->success()->shouldBe(false);
+        $this->checkStrictArray(['999.0' => '999.0'])->success()->shouldBe(false);
+        $this->checkStrictArray(1)->success()->shouldBe(false);
+        $this->checkStrictArray(1.0)->success()->shouldBe(false);
+        $this->checkStrictArray(null)->success()->shouldBe(false);
+        $this->checkStrictArray('array')->success()->shouldBe(false);
+        $this->checkStrictArray(curl_init())->success()->shouldBe(false);
+        $this->checkStrictArray((object) [])->success()->shouldBe(false);
+        $this->checkStrictArray('ArrayObject')->success()->shouldBe(false);
+    }
+
+
     function it_checks_numericArray()
     {
         $this->checkNumericIndex([])->shouldHaveType('Valit\Result\AssertionResult');

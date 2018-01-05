@@ -37,6 +37,24 @@ class ArrayCheckProvider implements CheckProvider
     }
 
     /**
+     * Check that $value is an array with a continuous 0-based index.
+     *
+     * It is essentially the same as the `mixed[]` pseudo type.
+     *
+     * @Check(["isStrictArray", "strictArray"])
+     *
+     * @param mixed $value
+     *
+     * @return Result
+     */
+    public function checkStrictArray($value)
+    {
+        $success = Val::is($value, ['mixed[]']);
+
+        return new Result($success, '{name} must be an array with a continuous 0-based index');
+    }
+
+    /**
      * Check that $value is an associative array - i.e. that it contains no integer-keys.
      *
      * @Check(["isAssociative", "associative", "isAssociativeArray", "associativeArray"])
