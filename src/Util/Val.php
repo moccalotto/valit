@@ -595,6 +595,10 @@ abstract class Val
             if (substr($type, -2) === '[]' && static::isArrayOf($value, substr($type, 0, -2))) {
                 return true;
             }
+
+            if ($type === 'mixed') {
+                return true;
+            }
         }
 
         return false;
