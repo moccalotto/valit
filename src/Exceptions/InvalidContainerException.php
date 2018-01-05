@@ -4,14 +4,13 @@
  * This file is part of the Valit package.
  *
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2017
+ * @copyright 2018
  * @license MIT
  */
 
 namespace Valit\Exceptions;
 
 use BadMethodCallException;
-use UnexpectedValueException;
 use Valit\Result\ContainerResultBag;
 
 /**

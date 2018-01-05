@@ -4,7 +4,7 @@
  * This file is part of the Valit package.
  *
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2017
+ * @copyright 2018
  * @license MIT
  *
  * @codingStandardsIgnoreFile
@@ -276,12 +276,12 @@ class DateCheckProviderSpec extends ObjectBehavior
         $this->checkBirthday('now', 'now')->success()->shouldBe(true);
         $this->checkBirthday('now', '1 year ago')->success()->shouldBe(true);
         $this->checkBirthday('now', '10 years ago')->success()->shouldBe(true);
-        $this->checkBirthday('1987-01-01', '2017-01-01')->success()->shouldBe(true);
+        $this->checkBirthday('1987-01-01', '2018-01-01')->success()->shouldBe(true);
 
         $this->checkBirthday('1987-01-01', '1987-01-02')->success()->shouldBe(false);
         $this->checkBirthday('1987-01-01', '1987-02-01')->success()->shouldBe(false);
-        $this->checkBirthday('foobar', '2017-01-02')->success()->shouldBe(false);
-        $this->checkBirthday(curl_init(), '2017-01-02')->success()->shouldBe(false);
+        $this->checkBirthday('foobar', '2018-01-02')->success()->shouldBe(false);
+        $this->checkBirthday(curl_init(), '2018-01-02')->success()->shouldBe(false);
 
         $this->checkBirthday(new DateTime(), new DateTime('yesterday'))->success()->shouldBe(false);
 

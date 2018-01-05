@@ -4,7 +4,7 @@
  * This file is part of the Valit package.
  *
  * @author    Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2017 Kim Ravn Hansen
+ * @copyright 2018 Kim Ravn Hansen
  * @license   MIT
  */
 use Valit\Value;

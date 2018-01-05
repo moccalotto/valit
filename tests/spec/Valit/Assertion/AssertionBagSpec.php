@@ -9,7 +9,7 @@ use Valit\Validators\ValueValidator;
  * This file is part of the Valit package.
  *
  * @author Kim Ravn Hansen <moccalotto@gmail.com>
- * @copyright 2017
+ * @copyright 2018
  * @license MIT
  *
  * @codingStandardsIgnoreFile
