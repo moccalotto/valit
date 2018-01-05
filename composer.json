@@ -27,7 +27,7 @@
         }
     },
     "archive": {
-        "exclude": ["/demo.php", "/spec", "/examples"]
+        "exclude": ["/demo.php", "/tests", "/examples", "/bin", "todo.md"]
     },
     "suggest": {
         "ext-xml": "Allows checking that string is valid XML",
