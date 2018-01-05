@@ -208,23 +208,23 @@ class BasicCheckProvider implements CheckProvider
      *
      * Possible types:
      *
-     * | $type          | Validation                |
-     * |:-------------- |:------------------------- |
-     * | `int`          | `is_int()`                |
-     * | `integer`      | `is_int()`                |
-     * | `bool`         | `is_bool()`               |
-     * | `boolean`      | `is_bool()`               |
-     * | `string`       | `is_string()`             |
-     * | `float`        | `is_float()`              |
-     * | `double`       | `is_float()`              |
-     * | `numeric`      | `is_numeric()`            |
-     * | `nan`          | `is_nan()`                |
-     * | `inf`          | `is_inf()`                |
-     * | `callable`     | `is_callable()`           |
-     * | `iterable`     | `array`, `Traversable`    |
-     * | `countable`    | `array`, `Cointable`      |
-     * | `arrayable`    | `array`, `ArrayAccess`    |
-     * | _class name_   | `is_a()`                  |
+     * | $type          | Validation                                    |
+     * |:-------------- |:-------------------------                     |
+     * | `int`          | `is_int()`                                    |
+     * | `integer`      | `is_int()`                                    |
+     * | `bool`         | `is_bool()`                                   |
+     * | `boolean`      | `is_bool()`                                   |
+     * | `string`       | `is_string()`                                 |
+     * | `float`        | `is_float()`                                  |
+     * | `double`       | `is_float()`                                  |
+     * | `numeric`      | `is_numeric()`                                |
+     * | `nan`          | `is_nan()`                                    |
+     * | `inf`          | `is_inf()`                                    |
+     * | `callable`     | `is_callable()`                               |
+     * | `iterable`     | `is_array() || is_a($value, Traversable)`     |
+     * | `countable`    | `is_array() || is_a($value, Cointable)`       |
+     * | `arrayable`    | `is_array() || is_a($value, ArrayAccess)`     |
+     * | _class name_   | `is_a()`                                      |
      *
      * Code examples:
      *
