@@ -332,7 +332,7 @@ class StringCheckProvider implements CheckProvider
      * Check::that($foo)->lengthIs('≤', 255);
      * ```
      *
-     * @Check(["lengthIs", "stringWhereLength", "isStringWhereLength"])
+     * @Check(["lengthIs", "stringWhereLength", "isStringWhereLength", "whereLength"])
      *
      * @param mixed  $value    The inspected variable
      * @param string $operator Must be one of >, <, =, >=, <=, ≥, ≤

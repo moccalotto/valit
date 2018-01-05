@@ -422,6 +422,7 @@ class StringCheckProviderSpec extends ObjectBehavior
         $this->provides()->shouldHaveKey('lengthIs');
         $this->provides()->shouldHaveKey('stringWhereLength');
         $this->provides()->shouldHaveKey('isStringWhereLength');
+        $this->provides()->shouldHaveKey('whereLength');
 
         $this->checkRelativeLength('kkk æøå', '>', 0)->success()->shouldBe(true);
         $this->checkRelativeLength('kkk æøå', '<', 100)->success()->shouldBe(true);
