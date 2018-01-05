@@ -1,9 +1,3 @@
-Documentation:
-==============
-- Finish the docs at moccalotto.github.com
-- Add more examples
-
-
 Assertions:
 ===========
 - Check valid Base64
@@ -63,8 +57,8 @@ Check::ifThen(
 
 // if $if is true the $then must be true, else $else must be true
 Check::ifThenElse(
-    $if,            // bool, Validator, Template or Logic
-    $then,          // bool, Validator, Tempalte or Logic
-    $else           // bool, Validator, Tempalte or Logic
+    $if,            // bool, Validator, AssertionBag, Logic or Result interface
+    $then,          // bool, Validator, AssertionBag, Logic or Result interface
+    $else           // bool, Validator, AssertionBag, Logic or Result interface
 )
 ```
