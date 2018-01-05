@@ -298,25 +298,6 @@ class StringCheckProvider implements CheckProvider
     }
 
     /**
-     * Check if $value is a string that has the length $length.
-     *
-     * @Check(["hasLength", "length"])
-     *
-     * @param mixed $value
-     * @param int   $length
-     *
-     * @return Result
-     */
-    public function checkLength($value, $length)
-    {
-        if (!is_int($length)) {
-            throw new InvalidArgumentException('Second argument must be an integer');
-        }
-
-        return $this->checkRelativeLength($value, '=', $length);
-    }
-
-    /**
      * Check if $value is a string where the length compares to $against using the $operator.
      *
      * Examples:
@@ -330,9 +311,13 @@ class StringCheckProvider implements CheckProvider
      *
      * // alternative:
      * Check::that($foo)->lengthIs('≤', 255);
+     *
+     * // check length = 40
+     * Check::that($foo)->lengthIs('=', 40);
+     * Check::that($foo)->lengthIs(40);     // alt. syntax
      * ```
      *
-     * @Check(["lengthIs", "stringWhereLength", "isStringWhereLength", "whereLength"])
+     * @Check(["lengthIs", "stringWhereLength", "isStringWhereLength", "whereLength", "length", "hasLength"])
      *
      * @param mixed  $value    The inspected variable
      * @param string $operator Must be one of >, <, =, >=, <=, ≥, ≤
@@ -340,15 +325,16 @@ class StringCheckProvider implements CheckProvider
      *
      * @return Result
      */
-    public function checkRelativeLength($value, $operator, $against)
+    public function checkRelativeLength($value, $operator, $against = null)
     {
-        if (!is_int($against)) {
-            throw new InvalidArgumentException('Third argument must be an integer');
+        Val::mustBe($against, ['int', 'null'], 'Third argument must be an integer');
+
+        if (is_int($operator) && is_null($against)) {
+            $against = $operator;
+            $operator = '=';
         }
 
-        if (!Val::is($operator, 'string')) {
-            throw new InvalidArgumentException('Second argument must be a string');
-        }
+        Val::mustBe($operator, 'string', 'Second argument must be a string');
 
         $length = Val::stringable($value) ? mb_strlen($value) : NAN;
         $message = '{name} must be a string where length {0:raw} {1:int}';
