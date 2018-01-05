@@ -317,7 +317,7 @@ class StringCheckProvider implements CheckProvider
      * Check::that($foo)->lengthIs(40);     // alt. syntax
      * ```
      *
-     * @Check(["lengthIs", "stringWhereLength", "isStringWhereLength", "whereLength", "length", "hasLength"])
+     * @Check(["stringWhereLength", "isStringWhereLength", "whereLength", "length", "hasLength", "withLength"])
      *
      * @param mixed  $value    The inspected variable
      * @param string $operator Must be one of >, <, =, >=, <=, ≥, ≤
