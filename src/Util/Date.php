@@ -201,21 +201,21 @@ abstract class Date
         switch ($comparison) {
             case 'before':
             case '<':
-                return Date::compare($a, $b) < 0;
+                return static::compare($a, $b) < 0;
             case 'beforeOrAt':
             case '<=':
             case '≤':
-                return Date::compare($a, $b) <= 0;
+                return static::compare($a, $b) <= 0;
             case 'at':
             case '=':
-                return Date::compare($a, $b) == 0.0;
+                return static::compare($a, $b) == 0.0;
             case 'after':
             case '>':
-                return Date::compare($a, $b) > 0.0;
+                return static::compare($a, $b) > 0.0;
             case 'afterOrAt':
             case '>=':
             case '≥':
-                return Date::compare($a, $b) >= 0.0;
+                return static::compare($a, $b) >= 0.0;
         }
 
         throw new InvalidArgumentException(
