@@ -88,3 +88,86 @@ $errors = $checks->errorMessagesByPath('orderLines/0/productId');
 // get the error associated with the second orderLine
 $errors = $checks->errorMessagesByPath('orderLines/1');
 ```
+
+
+### Utilities
+
+Valit provides the `Val` facade that lets to do quick type juggling and assertions.
+
+Below are ways of testing if a variable is [iterable](http://php.net/manual/en/language.types.iterable.php),
+that is agnostic of your php version.
+
+```
+use Valit\Util\Val;
+
+if (!Val::is($container, 'iterable')) {
+    throw new LogicException('$container should be iterable');
+}
+```
+
+Or alternatively:
+
+```
+use Valit\Util\Val;
+
+// an InvalidArgumentException will be thrown if $container is not iterable.
+Val::mustBe($container, 'iterable');
+```
+
+Or with your own custom exception
+```
+use Valit\Util\Val;
+
+$myException = throw LogicException('$container should be iterable');
+
+// $myException will be thrown if $container is not iterable.
+Val::mustBe($container, 'iterable', $myException);
+```
+
+Below are some of the type validations you can make.
+
+| $type          | Validation                                    |
+|:-------------- |:-------------------------                     |
+| `null`         | `is_null()`                                   |
+| `object`       | `is_object()`                                 |
+| `int`          | `is_int()`                                    |
+| `integer`      | `is_int()`                                    |
+| `bool`         | `is_bool()`                                   |
+| `boolean`      | `is_bool()`                                   |
+| `string`       | `is_string()`                                 |
+| `float`        | `is_float()`                                  |
+| `double`       | `is_float()`                                  |
+| `numeric`      | `is_numeric()`                                |
+| `nan`          | `is_nan()`                                    |
+| `inf`          | `is_inf()`                                    |
+| `callable`     | `is_callable()`                               |
+| `iterable`     | `is_array() or is_a($value, 'Traversable')`   |
+| `countable`    | `is_array() or is_a($value, 'Cointable')`     |
+| `arrayable`    | `is_array() or is_a($value, 'ArrayAccess')`   |
+| `container`    | `iterable`, `countable` and `arrayable`       |
+| `stringable`   | scalar or object with a`__toString()` method  |
+| _class name_   | `is_a()`                                      |
+| _foo[]_        | array of _foo_                                |
+
+Code examples:
+
+```php
+// single type
+Val::mustBe($value, 'callable');
+
+// multiple allowed types via the pipe character
+Val::mustBe($value, 'float | int');
+
+// check that $foo is an array of floats
+// or an array of integers
+Val::mustBe($value, 'float[] | int[]');
+
+// mixing classes, interfaces and basic types.
+Val::mustBe($value, 'int|DateTime|DateTimeImmutable');
+
+// multiple types via array notation
+Val::mustBe($value, ['object', 'array']);
+
+// a strict array with 0-based numeric index.
+Val::mustBe($value, 'mixed[]');
+```
