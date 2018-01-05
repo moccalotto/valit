@@ -210,6 +210,8 @@ class BasicCheckProvider implements CheckProvider
      *
      * | $type          | Validation                                    |
      * |:-------------- |:-------------------------                     |
+     * | `null`         | `is_null()`                                   |
+     * | `object`       | `is_object()`                                 |
      * | `int`          | `is_int()`                                    |
      * | `integer`      | `is_int()`                                    |
      * | `bool`         | `is_bool()`                                   |
@@ -221,10 +223,13 @@ class BasicCheckProvider implements CheckProvider
      * | `nan`          | `is_nan()`                                    |
      * | `inf`          | `is_inf()`                                    |
      * | `callable`     | `is_callable()`                               |
-     * | `iterable`     | `is_array() || is_a($value, Traversable)`     |
-     * | `countable`    | `is_array() || is_a($value, Cointable)`       |
-     * | `arrayable`    | `is_array() || is_a($value, ArrayAccess)`     |
+     * | `iterable`     | `is_array() || is_a($value, 'Traversable')`   |
+     * | `countable`    | `is_array() || is_a($value, 'Cointable')`     |
+     * | `arrayable`    | `is_array() || is_a($value, 'ArrayAccess')`   |
+     * | `container`    | `iterable`, `countable` and `arrayable`       |
+     * | `stringable`   | scalar or object with a`__toString()` method  |
      * | _class name_   | `is_a()`                                      |
+     * | _foo[]_        | array of _foo_                                |
      *
      * Code examples:
      *
