@@ -97,7 +97,7 @@ Valit provides the `Val` facade that lets to do quick type juggling and assertio
 Below are ways of testing if a variable is [iterable](http://php.net/manual/en/language.types.iterable.php),
 that is agnostic of your php version.
 
-```
+```php
 use Valit\Util\Val;
 
 if (!Val::is($container, 'iterable')) {
@@ -107,7 +107,7 @@ if (!Val::is($container, 'iterable')) {
 
 Or alternatively:
 
-```
+```php
 use Valit\Util\Val;
 
 // an InvalidArgumentException will be thrown if $container is not iterable.
@@ -115,7 +115,7 @@ Val::mustBe($container, 'iterable');
 ```
 
 Or with your own custom exception
-```
+```php
 use Valit\Util\Val;
 
 $myException = throw LogicException('$container should be iterable');
