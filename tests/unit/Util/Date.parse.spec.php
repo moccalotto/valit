@@ -31,5 +31,11 @@ describe('Valit\Util\Date', function () {
             expect($result)->toBeAnInstanceOf('DateTimeInterface');
             expect($result->format('Y-m-d H:i:s.u'))->toBe('2018-01-01 00:00:00.123000');
         });
+
+        it('it parses strings as dates with a given format', function () {
+            $result = Date::parse('01/01/18', 'd/m/y');
+            expect($result)->toBeAnInstanceOf('DateTimeInterface');
+            expect($result->format('Y-m-d'))->toBe('2018-01-01');
+        });
     });
 });
