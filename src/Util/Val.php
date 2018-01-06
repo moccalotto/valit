@@ -689,4 +689,24 @@ abstract class Val
 
         return $result;
     }
+
+    /**
+     * Return the first argument that is not null.
+     *
+     * Similar to the php 7 null-coalesce operator.
+     *
+     * @param mixed $args,... The arguments
+     *
+     * @return mixed
+     */
+    public static function coalesce()
+    {
+        foreach (func_get_args() as $arg) {
+            if ($arg !== null) {
+                return $arg;
+            }
+        }
+
+        return null;
+    }
 }
