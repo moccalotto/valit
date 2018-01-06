@@ -45,5 +45,17 @@ describe('Valit\Util\Date', function () {
 
             expect($result->format('U.u'))->toBe(bcadd($timestamp, 0, 6));
         });
+
+        it('handles negative floats', function () {
+            $result = Date::fromUnixTimestamp(-4.0);
+
+            expect($result->format('Y-m-d H:i:s.u'))->toBe('1969-12-31 23:59:56.000000');
+        });
+
+        it('handles negative floats with microsecond resolution', function () {
+            $result = Date::fromUnixTimestamp(-1.1);
+
+            expect($result->format('Y-m-d H:i:s.u'))->toBe('1969-12-31 23:59:58.900000');
+        });
     });
 });
