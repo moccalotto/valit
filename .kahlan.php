@@ -17,17 +17,18 @@ $commandLine->option('coverage-coveralls', 'default', 'coveralls.json');
 
 
 // Apply the logic to the `'reporting'` entry point.
-Filters::apply($this, 'reporting', function($chain) {
+Filters::apply($this, 'reporting', function($next) {
 
-    // Get the reporter called `'coverage'` from the list of reporters
     $reporter = $this->reporters()->get('coverage');
 
-    // Abort if no coverage is available.
-    if (!$reporter || !$this->commandLine()->exists('coverage-coveralls')) {
-        return $chain->next();
+    if (!$reporter) {
+        return $next();
     }
 
-    // Use the `Coveralls` class to write the JSON coverage into a file
+    if (!$this->commandLine()->exists('coverage-coveralls')) {
+        return $next();
+    }
+
     Coveralls::write([
         'collector' => $reporter,
         'file' => $this->commandLine()->get('coverage-coveralls'),
@@ -35,6 +36,5 @@ Filters::apply($this, 'reporting', function($chain) {
         'service_job_id' => getenv('TRAVIS_JOB_ID') ?: null
     ]);
 
-    // Continue the chain
-    return $chain->next();
+    return $next();
 });
