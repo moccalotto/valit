@@ -699,7 +699,7 @@ abstract class Val
      *
      * @return mixed
      */
-    public static function coalesce()
+    public static function firstNotNull()
     {
         foreach (func_get_args() as $arg) {
             if ($arg !== null) {
