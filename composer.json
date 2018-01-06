@@ -1,8 +1,8 @@
 {
     "name": "moccalotto/valit",
     "type": "library",
-    "description": "validate method arguments, http requests and input-data at runtime using self-documenting code",
-    "keywords": ["input", "validation", "verification", "data guard", "assertion"],
+    "description": "Validate http requests, input-data and method arguments at runtime using self-documenting code",
+    "keywords": ["input", "validation", "verification", "guard", "assert", "ensure", "expect", "test"],
     "homepage": "https://moccalotto.github.io/docs/valit",
     "license": "MIT",
     "authors": [
