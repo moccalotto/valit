@@ -68,7 +68,8 @@ abstract class Date
         $parts = explode('.', $timestamp);
         $seconds = $parts[0];
         $microseconds = isset($parts[1]) ? $parts[1] : 0;
-        $result = DateTime::createFromFormat('U', $seconds);
+        $result = new DateTime();
+        $result->setTimestamp($seconds);
 
         if (empty($parts[1])) {
             // no microseconds given.
