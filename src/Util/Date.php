@@ -65,12 +65,37 @@ abstract class Date
      */
     public static function fromUnixTimestamp($timestamp)
     {
-        $parts = explode('.', $timestamp);
-        $seconds = $parts[0];
-        $subseconds = isset($parts[1]) ? $parts[1] : 0;
-        $microseconds = str_pad(substr($subseconds, 0, 6), 6, '0');
+        Val::mustBe($timestamp, ['numeric'], 'Timestamp must be numeric');
 
-        return DateTime::createFromFormat('U.u', "$seconds.$microseconds");
+        if ($timestamp < 0) {
+            // DateTime::createFromFormat('U') cannot handle negative timestamps
+            // in HHVM and PHP 5.5
+            return static::fromNegativeTimestamp($timestamp);
+        }
+
+        return DateTime::createFromFormat('U.u', bcadd($timestamp, 0, 6));
+    }
+
+    /**
+     * Be compatible with HHVM and PHP 5.5
+     *
+     * @param int|float $timestamp
+     *
+     * @return DateTime
+     */
+    protected static function fromNegativeTimestamp($timestamp)
+    {
+        list ($seconds, $microseconds) = explode('.', sprintf('%.6f', -$timestamp));
+        $invertedMs = bcsub(1000000, $microseconds, 0);
+
+        if ($invertedMs === '1000000') {
+        }
+            $seconds = bcadd($seconds, 1);
+
+        $result = DateTime::createFromFormat('U.u', bcdiv($invertedMs, 1000000, 6));
+        $result->modify("-$seconds seconds");
+
+        return $result;
     }
 
     /**
