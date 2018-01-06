@@ -68,9 +68,9 @@ abstract class Date
     {
         $interval = new DateInterval('PT0S');
         $parts = explode('.', $timestamp);
-        $interval->s = (int) $parts[0];
+        $interval->s = $parts[0];
         if (isset($parts[1])) {
-            $interval->f = (int) $parts[1];
+            $interval->f = (float) ('0.' . $parts[1]);
         }
         $result = DateTime::createFromFormat('U', 0);
         $result->add($interval);
