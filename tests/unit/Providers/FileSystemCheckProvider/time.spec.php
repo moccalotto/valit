@@ -2,7 +2,7 @@
 
 namespace Kahlan\Spec\Suite;
 
-use DateTime;
+use Valit\Util\Date;
 use Valit\Util\File;
 use Valit\Util\FileInfo;
 use Valit\Result\AssertionResult;
@@ -12,9 +12,9 @@ describe('FileSystemCheckProvider', function () {
 
     // override existence of fileWithDate and missingFile
     File::mock(FileInfo::custom('fileWithDate', [
-        'createdAt' => DateTime::createFromFormat('U', 0),
-        'modifiedAt' => DateTime::createFromFormat('U', 0),
-        'accessedAt' => DateTime::createFromFormat('U', 0),
+        'createdAt' => Date::fromUnixTimestamp(0),
+        'modifiedAt' => Date::fromUnixTimestamp(0),
+        'accessedAt' => Date::fromUnixTimestamp(0),
     ]));
     File::mock(FileInfo::custom('missingFile', [
         'exists' => false,
