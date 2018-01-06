@@ -266,7 +266,7 @@ abstract class Val
      */
     public static function toClosure($callable)
     {
-        if (is_callable('Closure::fromCallable')) {
+        if (is_callable(['Closure', 'fromCallable'])) {
             return Closure::fromCallable($callable);
         }
 
