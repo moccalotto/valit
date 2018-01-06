@@ -217,11 +217,13 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkFileTime($value, $timeFunc, $compareFunc, $date)
     {
-        $againstDate = Date::parse($date, '$date must be a parseable date');
-
         $success = Val::stringable($value)
             && File::exists($value)
-            && Date::comparison($compareFunc, File::time($value, $timeFunc), $againstDate);
+            && Date::comparison(
+                $compareFunc,
+                File::time($value, $timeFunc),
+                Date::parse($date)
+            );
 
         return new Result(
             $success,
