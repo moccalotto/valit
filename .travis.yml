@@ -53,5 +53,5 @@ script:
 
 after_success:
   - if [[ $setup == 'coverage' ]]; then bash <(curl -s https://codecov.io/bash); fi
-  - if [[ $setup == 'coverage' ]]; then curl -F 'json_file=@coveralls.json' https://coveralls.io/api/v1/jobs --verbose; fi"
+  - if [[ $setup == 'coverage' ]]; then curl -F 'json_file=@coveralls.json' https://coveralls.io/api/v1/jobs --verbose; fi
 
