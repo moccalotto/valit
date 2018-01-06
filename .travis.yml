@@ -50,3 +50,6 @@ script:
   - if [[ $setup == 'lowest' ]]; then phpenv config-rm xdebug.ini || true && composer test; fi
   - if [[ $setup == 'style'  ]]; then phpenv config-rm xdebug.ini || true && composer cs; fi
   - if [[ $setup == 'coverage' ]]; then composer kahlan; fi
+
+after_success:
+  - if [[ $setup == 'coverage' ]]; then bash <(curl -s https://codecov.io/bash); fi
