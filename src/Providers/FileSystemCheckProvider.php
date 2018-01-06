@@ -10,6 +10,7 @@
 
 namespace Valit\Providers;
 
+use DateTime;
 use Valit\Util\Val;
 use Valit\Util\Size;
 use Valit\Util\Date;
@@ -228,7 +229,7 @@ class FileSystemCheckProvider implements CheckProvider
         return new Result(
             $success,
             '{name} must be a file that has been {0:raw} after {1:raw}',
-            [$timeFunc, Date::parse($date)->format('Y-m-d H:i:s')]
+            [$timeFunc, Date::parse($date)->format(DateTime::RFC3339)]
         );
     }
 

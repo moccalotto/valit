@@ -11,6 +11,7 @@
 namespace Valit\Util;
 
 use Closure;
+use DateTime;
 use Exception;
 use Countable;
 use ArrayAccess;
