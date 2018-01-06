@@ -373,6 +373,14 @@ abstract class Val
             return sprintf('Callable (%s)', static::formatCallback($value));
         }
 
+        if (is_a($value, 'DateTimeInterface')) {
+            return sprintf(
+                '%s (%s)',
+                get_class($value),
+                $value->format(DateTime::RFC3339)
+            );
+        }
+
         if (is_resource($value)) {
             return sprintf('%s (%s)', $value, get_resource_type($value));
         }
