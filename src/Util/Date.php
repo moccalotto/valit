@@ -12,7 +12,6 @@ namespace Valit\Util;
 
 use DateTime;
 use Exception;
-use DateInterval;
 use DateTimeInterface;
 use InvalidArgumentException;
 
@@ -66,14 +65,24 @@ abstract class Date
      */
     public static function fromUnixTimestamp($timestamp)
     {
-        $interval = new DateInterval('PT0S');
         $parts = explode('.', $timestamp);
-        $interval->s = $parts[0];
-        if (isset($parts[1])) {
-            $interval->f = (float) ('0.' . $parts[1]);
+        $seconds = $parts[0];
+        $microseconds = isset($parts[1]) ? $parts[1] : 0;
+        $result = DateTime::createFromFormat('U', $seconds);
+
+        if (empty($parts[1])) {
+            // no microseconds given.
+            return $result;
         }
-        $result = DateTime::createFromFormat('U', 0);
-        $result->add($interval);
+
+        $microseconds = str_pad(substr($parts[1], 0, 6), 6, '0');
+
+        $result->setTime(
+            (int) $result->format('H'),
+            (int) $result->format('i'),
+            (int) $result->format('s'),
+            (int) $microseconds
+        );
 
         return $result;
     }
