@@ -67,25 +67,10 @@ abstract class Date
     {
         $parts = explode('.', $timestamp);
         $seconds = $parts[0];
-        $microseconds = isset($parts[1]) ? $parts[1] : 0;
-        $result = new DateTime();
-        $result->setTimestamp($seconds);
+        $subseconds = isset($parts[1]) ? $parts[1] : 0;
+        $microseconds = str_pad(substr($subseconds, 0, 6), 6, '0');
 
-        if (empty($parts[1])) {
-            // no microseconds given.
-            return $result;
-        }
-
-        $microseconds = str_pad(substr($parts[1], 0, 6), 6, '0');
-
-        $result->setTime(
-            (int) $result->format('H'),
-            (int) $result->format('i'),
-            (int) $result->format('s'),
-            (int) $microseconds
-        );
-
-        return $result;
+        return DateTime::createFromFormat('U.u', "$seconds.$microseconds");
     }
 
     /**
