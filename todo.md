@@ -4,10 +4,6 @@ Assertions:
 - Check valid utf-7
 
 
-Readme:
-=======
-- use http://shields.io/ for badges
-
 Testing:
 ========
 
