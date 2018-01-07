@@ -90,8 +90,8 @@ class BasicCheckProvider implements CheckProvider
      *
      * @Check(["isOneOf", "oneOf"])
      *
-     * @param mixed            $value
-     * @param mixed[]|iterable $allowedValues,... The allowed values
+     * @param mixed   $value
+     * @param mixed[] $allowedValues,... The allowed values
      *
      * @return AssertionResult
      */
@@ -118,29 +118,25 @@ class BasicCheckProvider implements CheckProvider
      *
      * @Check(["isNotOneOf", "notOneOf"])
      *
-     * @param mixed            $value
-     * @param mixed[]|iterable $unacceptableValues
+     * @param mixed   $value
+     * @param mixed[] $unacceptableValues
      *
      * @return AssertionResult
      */
     public function checkIsNotOneOf($value, $unacceptableValues)
     {
-        // If $unacceptableValues is variadic instead of array
-        if (func_num_args() > 2) {
+        // If $allowedValues is variadic instead of array
+        if (! (func_num_args() === 2 && is_array($unacceptableValues))) {
             $unacceptableValues = array_slice(func_get_args(), 1);
         }
 
-        Val::mustBe($unacceptableValues, 'iterable');
+        Val::mustBe($unacceptableValues, 'array');
 
-        $msg = '{name} must be one of {0:imploded}';
-
-        foreach ($unacceptableValues as $match) {
-            if ($value == $match) {
-                return new AssertionResult(false, $msg, [$unacceptableValues]);
-            }
-        }
-
-        return new AssertionResult(true, $msg, [$unacceptableValues]);
+        return new AssertionResult(
+            in_array($value, $unacceptableValues),
+            '{name} must be one of {0:imploded}',
+            [$unacceptableValues]
+        );
     }
 
     /**
