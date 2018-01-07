@@ -98,21 +98,17 @@ class BasicCheckProvider implements CheckProvider
     public function checkIsOneOf($value, $allowedValues)
     {
         // If $allowedValues is variadic instead of array
-        if (func_num_args() > 2) {
+        if (! (func_num_args() === 2 && is_array($allowedValues))) {
             $allowedValues = array_slice(func_get_args(), 1);
         }
 
-        Val::mustBe($allowedValues, 'iterable');
+        Val::mustBe($allowedValues, 'array');
 
-        $msg = '{name} must be one of {0:imploded}';
-
-        foreach ($allowedValues as $match) {
-            if ($value == $match) {
-                return new AssertionResult(true, $msg, [$allowedValues]);
-            }
-        }
-
-        return new AssertionResult(false, $msg, [$allowedValues]);
+        return new AssertionResult(
+            in_array($value, $allowedValues),
+            '{name} must be one of {0:imploded}',
+            [$allowedValues]
+        );
     }
 
     /**
