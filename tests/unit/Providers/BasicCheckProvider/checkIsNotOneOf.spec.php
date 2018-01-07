@@ -10,8 +10,8 @@ describe('BasicCheckProvider', function () {
 
     describe('checkIsNotOneOf', function () use ($subject) {
         it('provides the correct assertions', function () use ($subject) {
-            expect($subject->provides())->toContainKey('isOneOf');
-            expect($subject->provides())->toContainKey('oneOf');
+            expect($subject->provides())->toContainKey('isNotOneOf');
+            expect($subject->provides())->toContainKey('notOneOf');
         });
 
         it('returns correct type', function () use ($subject) {
