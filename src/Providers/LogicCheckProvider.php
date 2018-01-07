@@ -170,4 +170,65 @@ class LogicCheckProvider implements CheckProvider
             $withValue
         );
     }
+
+    /**
+     * Check conditional if-then-else clause.
+     *
+     * if the given $condition evaluates to true,
+     * the $then must also evaluate to true,
+     * otherwise the $else condition must evaluate to true.
+     *
+     * Examples of checking that if a person must be 18 years or
+     * older in order to buy tobacco or alcohol.
+     *
+     * ```php
+     * Ensure::that($product)
+     *       ->condition($age < 18, 'isNotOneOf("tobacco", "alcohol")');
+     *
+     * Ensure::that($product)->if(
+     *     Value::isOneOf('tobacco', 'alcohol'),
+     *     $age >= 18
+     * );
+     *
+     * Ensure::ifThen(
+     *     $age < 18,
+     *     Check::that($product)->isNotOneOf('tobacco', 'alcohol')
+     * );
+     *
+     * Ensure::condition(
+     *     Check::that($age)->isLowerThan(18),
+     *     Check::that($product)->isNotOneOf('tobacco', 'alcohol')
+     * );
+     *
+     * Ensure::that($product)->if(
+     *     'isOneOf("tobacco", "alcohol")',
+     *     $age >= 18
+     * );
+     * ```
+     *
+     * @Check(["if", "condition", "passesConditional", "ifThen", "ifThenElse"])
+     *
+     * @param mixed   $value     The value to be passed to the logic (if necessary)
+     * @param mixed   $condition The condition to check
+     * @param mixed   $then      The scenario that must pass if $condition passes.
+     * @param mixed   $scenario  The scenario that must pass if $condition fails.
+     * @param Manager $manager   The check provider manager to use.
+     *                           If NULL, the default manager instance will be used
+     * @param bool    $withValue Should $value be passed to the logic
+     *
+     * @return AssertionResult
+     */
+    public function checkConditional($value, $condition, $then, $else = true, $manager = null, $withValue = true)
+    {
+        return $this->checkLogic(
+            $withValue ? $value : null,
+            new Logic\Conditional(
+                $manager ?: Manager::instance(),
+                $condition,
+                $then,
+                $else
+            ),
+            $withValue
+        );
+    }
 }

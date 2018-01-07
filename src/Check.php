@@ -149,6 +149,46 @@ abstract class Check
     }
 
     /**
+     * Check conditional if-then clause.
+     *
+     * if the given $condition evaluates to true,
+     * the $then must also evaluate to true,
+     *
+     * @param mixed $condition
+     * @param mixed $then
+     * @param mixed $else
+     *
+     * @return Logic\Conditional
+     */
+    public static function ifThen($condition, $then, $else = true)
+    {
+        return new Logic\Conditional(
+            Manager::instance(),
+            $condition,
+            $then,
+            $else
+        );
+    }
+
+    /**
+     * Check conditional if-then clause.
+     *
+     * if the given $condition evaluates to true,
+     * the $then must also evaluate to true,
+     * otherwise the $else condition must evaluate to true.
+     *
+     * @param mixed $condition
+     * @param mixed $then
+     * @param mixed $else
+     *
+     * @return Logic\Conditional
+     */
+    public static function ifThenElse($condition, $then, $else)
+    {
+        return static::ifTHen($condition, $then, $else);
+    }
+
+    /**
      * Short hand to creating an AssertionBag.
      *
      * @param string  $methodName
