@@ -350,7 +350,7 @@ abstract class Val
 
         if ($format === 'count') {
             return static::is($value, ['countable', 'iterable'])
-                ? static::count($value)
+                ? (string) static::count($value)
                 : '[not countable]';
         }
 
