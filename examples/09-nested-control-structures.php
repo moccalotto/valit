@@ -19,13 +19,10 @@ Ensure::allOf([
     ]),
 
     // If the product type is tobacco or alcohol then the age must be at least 18
-    Check::oneOf([
-        Check::that($productType)->isNotOneOf(['alcohol', 'tobacco']),
-        Check::allOf([
-            Check::that($productType)->isOneOf(['alcohol', 'tobacco']),
-            Check::that($age)->isGreaterThanOrEqual(18)
-        ]),
-    ])
+    Check::ifThen(
+        Check::that($productType)->isOneOf('alcohol', 'tobacco'),
+        Check::that($age)->isGreaterThanOrEqual(18)
+    ),
 ]);
 
 print 'No exceptions throw, all assertions passed';
