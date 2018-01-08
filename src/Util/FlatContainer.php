@@ -20,7 +20,7 @@ class FlatContainer
     /**
      * Internal.
      *
-     * @var array|object
+     * @var array
      */
     public $container;
 
