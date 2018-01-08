@@ -1,0 +1,8 @@
+parameters:
+	ignoreErrors:
+	    - "#Casting to int something that's already int.#"
+	    - "#Casting to bool something that's already bool.#"
+	    - "#Casting to string something that's already string.#"
+	    - '#Method Valit\\Util\\Date::parse\(\) should return DateTimeInterface but returns DateTimeInterface\|int\|string.#'
+	    - '#Property Valit\\Assertion\\AssertionBagFactory::\$assertions \(Valit\\Assertion\\AssertionBag\) does not accept mixed\[\]\|string\|Valit\\Assertion\\AssertionBag\|Valit\\Contracts\\Logic.#'
+	    - '#expects SimpleXmlElement#'
