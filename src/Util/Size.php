@@ -59,7 +59,7 @@ abstract class Size
                 return trim(substr($size, 0, -$suffixLength));
             }
 
-            throw new InvalidArgumentException('Could not parse the given size');
+            return false;
         };
 
         foreach ($sizeMap as list($suffix, $base, $power)) {
