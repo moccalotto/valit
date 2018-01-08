@@ -91,6 +91,20 @@ abstract class Ensure
     }
 
     /**
+     * Alias of noneOf().
+     *
+     * Check that none of of the given scenarios succeed.
+     *
+     * @param array|\Traversable $scenarios
+     *
+     * @return Logic\NoneOf
+     */
+    public static function notAnyOf($scenarios)
+    {
+        return static::noneOf($scenarios);
+    }
+
+    /**
      * Check all or none of the givens scenarios succeed.
      *
      * @param array|\Traversable $scenarios
