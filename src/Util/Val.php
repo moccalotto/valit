@@ -104,19 +104,8 @@ abstract class Val
      */
     public static function intable($value)
     {
-        if (is_int($value)) {
-            return true;
-        }
-
-        if (is_float($value)) {
-            return $value == intval($value);
-        }
-
-        if (static::stringable($value)) {
-            return floatval($value) == intval($value);
-        }
-
-        return false;
+        return static::numeric($value)
+            && round($value) === (float) $value;
     }
 
     /**
