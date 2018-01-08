@@ -40,7 +40,7 @@ cache:
 sudo: false
 
 install:
-  - if [[ $setop != 'coverage' ]]; then phpenv config-rm xdebug.ini || true; fi
+  - if [[ $setup != 'coverage' ]]; then phpenv config-rm xdebug.ini || true; fi
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable --prefer-lowest; fi
   - if [[ $setup = 'style'  ]]; then composer install --dev --prefer-source --no-interaction; fi
