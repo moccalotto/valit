@@ -205,7 +205,7 @@ class Executor
      */
     protected function addAssertionResultBag(AssertionResultBag $resultBag)
     {
-        return new ContainerResultBag([$resultBag], 'value');
+        return new ContainerResultBag($resultBag->results(), 'value');
     }
 
     /**
