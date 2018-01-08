@@ -361,4 +361,35 @@ class StringCheckProvider implements CheckProvider
 
         throw new InvalidArgumentException('Second arhument must be one of [>, <, =, >=, ≥, <=, ≤]');
     }
+
+    /**
+     * Check if $value is a string where the length is between $min and $max.
+     *
+     * @Check(["lengthBetween", "lengthInRange", "lengthMinMax"])
+     *
+     * @param mixed $value The value
+     * @param int   $min   The minimal allowed length.
+     * @param int   $max   The maximum allowed length.
+     *
+     * @return Result
+     */
+    public function checkLengthInRange($value, $min, $max)
+    {
+        Val::mustBe($min, 'int', '$min must be an integer');
+        Val::mustBe($max, 'int', '$max must be an integer');
+
+        if ($max < $min) {
+            throw new InvalidArgumentException('$max must be ≥ $min');
+        }
+
+        $success = Val::is($value, 'stringable')
+            && mb_strlen($value) >= $min
+            && mb_strlen($value) <= $max;
+
+        return new Result(
+            $success,
+            '{name} must be a string with a length in the range [{0:int}..{1:int}]',
+            [$min, $max]
+        );
+    }
 }
