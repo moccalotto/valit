@@ -185,7 +185,7 @@ abstract class Check
      */
     public static function ifThenElse($condition, $then, $else)
     {
-        return static::ifTHen($condition, $then, $else);
+        return static::ifThen($condition, $then, $else);
     }
 
     /**
