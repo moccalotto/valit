@@ -55,10 +55,8 @@
             "@cs"
         ],
         "phpstan": [
-            "curl -s -L 'https://github.com/phpstan/phpstan/releases/download/0.9/phpstan.phar' -o phpstan.phar",
-            "chmod 700 phpstan.phar",
-            "phpstan analyze -l7  --no-interaction --no-progress -c .phpstan.neon src",
-            "rm phpstan.phar"
+            "curl -s -L 'https://github.com/phpstan/phpstan/releases/download/0.9.1/phpstan.phar' -o phpstan.phar",
+            "@php phpstan.phar analyze -l7  --no-interaction --no-progress -c .phpstan.neon src"
         ]
     }
 }
