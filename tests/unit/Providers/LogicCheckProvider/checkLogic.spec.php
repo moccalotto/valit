@@ -40,13 +40,13 @@ describe('LogicCheckProvider', function () {
 
             $result = $subject->checkLogic(
                 'foo',
-                new AnyOf(Manager::instance(), [false])
+                new AnyOf(Manager::instance(), ['isInt', 'isNumeric'])
             );
             expect($result->success())->toBe(false);
 
             $result = $subject->checkLogic(
                 'foo',
-                new AnyOf(Manager::instance(), [false, true])
+                new AnyOf(Manager::instance(), ['isInt', 'isString'])
             );
             expect($result->success())->toBe(true);
         });
