@@ -10,6 +10,7 @@ use Valit\Validators\ContainerValidator;
 describe('Manager', function () {
     describe('::instance()', function () {
         it('creates a new instance on the first call', function () {
+            Manager::$instance = null;
             expect(Manager::instance())->toBeAnInstanceOf(Manager::class);
         });
         it('contains a singleton', function () {
