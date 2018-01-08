@@ -319,9 +319,9 @@ class StringCheckProvider implements CheckProvider
      *
      * @Check(["stringWhereLength", "isStringWhereLength", "whereLength", "length", "hasLength", "withLength"])
      *
-     * @param mixed  $value    The inspected variable
-     * @param string $operator Must be one of >, <, =, >=, <=, ≥, ≤
-     * @param int    $against  The length we should compare to.
+     * @param mixed      $value    The inspected variable
+     * @param string|int $operator Must be one of >, <, =, >=, <=, ≥, ≤
+     * @param int        $against  The length we should compare to.
      *
      * @return Result
      */

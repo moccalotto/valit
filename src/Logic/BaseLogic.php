@@ -67,7 +67,7 @@ abstract class BaseLogic implements Logic, Result
     /**
      * Execute the logic.
      *
-     * @param bool  $withValue
+     * @param bool  $hasValue
      * @param mixed $value
      *
      * @return AssertionResult

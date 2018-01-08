@@ -146,7 +146,7 @@ class Executor
     /**
      * Execute the logic.
      *
-     * @param bool  $withValue
+     * @param bool  $hasValue
      * @param mixed $value
      *
      * @return AssertionResultBag[]
@@ -269,7 +269,7 @@ class Executor
 
     /**
      * @param string            $fieldNameGlob
-     * @param array|Traversable $container
+     * @param array|Traversable $assertions
      *
      * @return ContainerResultBag
      */

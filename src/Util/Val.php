@@ -441,11 +441,11 @@ abstract class Val
     /**
      * Ensure that a value has a given type or class.
      *
-     * @param mixed                   $value The value to check
-     * @param string|string[]         $types Value must have at least one of the declared types
-     * @param string|\Exception|\null $error Error message to throw if the value was not correct
+     * @param mixed                  $value The value to check
+     * @param string|string[]        $types Value must have at least one of the declared types
+     * @param string|\Exception|null $error Error message to throw if the value was not correct
      *
-     * @return $value
+     * @return mixed $value
      *
      * @throws InvalidArgumentException if $value is not of the correct type
      */

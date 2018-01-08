@@ -211,7 +211,7 @@ class LogicCheckProvider implements CheckProvider
      * @param mixed   $value     The value to be passed to the logic (if necessary)
      * @param mixed   $condition The condition to check
      * @param mixed   $then      The scenario that must pass if $condition passes.
-     * @param mixed   $scenario  The scenario that must pass if $condition fails.
+     * @param mixed   $else      The scenario that must pass if $condition fails.
      * @param Manager $manager   The check provider manager to use.
      *                           If NULL, the default manager instance will be used
      * @param bool    $withValue Should $value be passed to the logic
