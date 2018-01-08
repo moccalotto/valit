@@ -101,8 +101,8 @@ abstract class Date
     /**
      * Convert the candidate value into a DateTime object.
      *
-     * @param string|int|DateTimeInterface $candidate
-     * @param string|null                  $format
+     * @param string|int|float|DateTimeInterface $candidate
+     * @param string|null                        $format
      *
      * @return DateTimeInterface
      *
