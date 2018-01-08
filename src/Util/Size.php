@@ -10,6 +10,8 @@
 
 namespace Valit\Util;
 
+use InvalidArgumentException;
+
 /**
  * Utility Class for parsing suffixed size strings to bytes.
  */
@@ -25,7 +27,7 @@ abstract class Size
      *      '100GB' is converted to 100,000,000,000
      *      '100GiB' is converted to 107.374.182.400
      *
-     * @param string $size
+     * @param string|int $size
      *
      * @return int
      */
@@ -57,7 +59,7 @@ abstract class Size
                 return trim(substr($size, 0, -$suffixLength));
             }
 
-            return false;
+            throw new InvalidArgumentException('Could not parse the given size');
         };
 
         foreach ($sizeMap as list($suffix, $base, $power)) {
