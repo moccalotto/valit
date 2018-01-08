@@ -15,7 +15,6 @@ use Valit\Util\Val;
 use Valit\Util\Size;
 use Valit\Util\Date;
 use Valit\Util\File;
-use InvalidArgumentException;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
 use Valit\Result\AssertionResult as Result;
@@ -138,9 +137,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkLargerThan($value, $size)
     {
-        if (!Val::stringable($size)) {
-            throw new InvalidArgumentException('Second argument must be an integer, a string, or a stringable object');
-        }
+        Val::mustBe($size, 'stringable', '$size must be a string');
 
         $bytes = Size::toBytes($size);
 
@@ -163,9 +160,7 @@ class FileSystemCheckProvider implements CheckProvider
      */
     public function checkSmallerThan($value, $size)
     {
-        if (!Val::stringable($size)) {
-            throw new InvalidArgumentException('Second argument must be an integer, a string, or a stringable object');
-        }
+        Val::mustBe($size, 'stringable', '$size must be a string');
 
         $bytes = Size::toBytes($size);
 
