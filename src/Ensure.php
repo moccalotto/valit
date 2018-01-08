@@ -96,7 +96,7 @@ abstract class Ensure
      * Check that none of of the given scenarios succeed.
      *
      * @param array|\Traversable $scenarios
-     * @param mixed $value
+     * @param mixed              $value
      *
      * @return Logic\NoneOf
      */
