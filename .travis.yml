@@ -26,6 +26,8 @@ matrix:
       env: setup=style
     - php: 7.2
       env: setup=coverage
+    - php: 7.2
+      env: setup=analysis
     - php: nightly
     - php: nightly
       env: setup=lowest
@@ -45,12 +47,14 @@ install:
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable --prefer-lowest; fi
   - if [[ $setup = 'style'  ]]; then composer install --dev --prefer-source --no-interaction; fi
   - if [[ $setup = 'coverage' ]]; then composer install --dev --prefer-source --no-interaction; fi
+  - if [[ $setup = 'analysis' ]]; then composer install --dev --prefer-source --no-interaction; fi
 
 script:
   - if [[ $setup = 'stable' ]]; then composer test; fi
   - if [[ $setup = 'lowest' ]]; then composer test; fi
   - if [[ $setup = 'style'  ]]; then composer cs; fi
   - if [[ $setup = 'coverage' ]]; then composer kahlan; fi
+  - if [[ $setup = 'analysis' ]]; then composer phpstan; fi
 
 after_success:
   - if [[ $setup = 'coverage' ]]; then bash <(curl -s https://codecov.io/bash); fi
