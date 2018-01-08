@@ -40,18 +40,18 @@ cache:
 sudo: false
 
 install:
+  - if [[ $setop != 'coverage' ]]; then phpenv config-rm xdebug.ini || true; fi
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable --prefer-lowest; fi
   - if [[ $setup = 'style'  ]]; then composer install --dev --prefer-source --no-interaction; fi
   - if [[ $setup = 'coverage' ]]; then composer install --dev --prefer-source --no-interaction; fi
 
 script:
-  - if [[ $setup = 'stable' ]]; then phpenv config-rm xdebug.ini || true && composer test; fi
-  - if [[ $setup = 'lowest' ]]; then phpenv config-rm xdebug.ini || true && composer test; fi
-  - if [[ $setup = 'style'  ]]; then phpenv config-rm xdebug.ini || true && composer cs; fi
+  - if [[ $setup = 'stable' ]]; then composer test; fi
+  - if [[ $setup = 'lowest' ]]; then composer test; fi
+  - if [[ $setup = 'style'  ]]; then composer cs; fi
   - if [[ $setup = 'coverage' ]]; then composer kahlan; fi
 
 after_success:
   - if [[ $setup = 'coverage' ]]; then bash <(curl -s https://codecov.io/bash); fi
   - if [[ $setup = 'coverage' ]]; then curl -F 'json_file=@coveralls.json' https://coveralls.io/api/v1/jobs --verbose; fi
-
