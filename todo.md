@@ -20,6 +20,9 @@ Testing:
 Logic:
 ======
 
+BaseLogic parameter order is screwed.
+Use `($scenarios, $manager)` instead of `($manager, $scenarios)`
+
 Consider an InvalidLogicException that somehow has
 prettier error messages that we currently have for
 logi scenarios.
