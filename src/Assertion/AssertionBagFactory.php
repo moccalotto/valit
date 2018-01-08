@@ -67,7 +67,7 @@ class AssertionBagFactory
      *
      * We normalize them into well-behaved arrays of name => parameters.
      *
-     * @param string|array|AssertionBag $assertions
+     * @param string|array|AssertionBag|Logic $assertions
      */
     protected function createAssertionBag($assertions)
     {
