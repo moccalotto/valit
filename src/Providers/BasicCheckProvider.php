@@ -405,7 +405,7 @@ class BasicCheckProvider implements CheckProvider
             return new AssertionResult($value == $against, $message, [$comparison, $against]);
         }
 
-        throw new InvalidArgumentException('Second arhument must be NULL or one of [>, <, =, >=, ≥, <=, ≤]');
+        throw new InvalidArgumentException('Second argument must be NULL or one of [>, <, =, >=, ≥, <=, ≤]');
     }
 
     /**
