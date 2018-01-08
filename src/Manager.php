@@ -96,6 +96,16 @@ class Manager
     public function __construct(array $providers)
     {
         foreach ($providers as $providerClass) {
+            if (!class_exists($providerClass)) {
+                throw new UnexpectedValueException(sprintf('Class »%s« does not exist', $providerClass));
+            }
+            if (!is_a($providerClass, CheckProvider::class, true)) {
+                throw new UnexpectedValueException(sprintf(
+                    'Class »%s« does not implement %s',
+                    $providerClass,
+                    CheckProvider::class
+                ));
+            }
             $this->addProvider(new $providerClass($this));
         }
     }
