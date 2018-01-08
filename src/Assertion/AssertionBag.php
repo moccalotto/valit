@@ -100,7 +100,7 @@ class AssertionBag implements IteratorAggregate, Countable
      *
      * @param string $key
      *
-     * @return bool|null
+     * @return bool
      */
     public function hasFlag($key)
     {
