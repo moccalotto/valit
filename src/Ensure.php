@@ -98,7 +98,8 @@ abstract class Ensure
      * @param array|\Traversable $scenarios
      * @param mixed              $value
      *
-     * @return Logic\NoneOf
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
      */
     public static function notAnyOf($scenarios, $value = null)
     {
@@ -131,15 +132,16 @@ abstract class Ensure
      * @param mixed $else
      * @param mixed $value
      *
-     * @return Logic\Conditional
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
      */
     public static function ifThenElse($condition, $then, $else = true, $value = null)
     {
-        return static::that($value)->passesConditional(
+        return static::that($value)->executeCheck('passesConditional', [
             $condition,
             $then,
-            $else
-        );
+            $else,
+        ]);
     }
 
     /**
@@ -152,7 +154,8 @@ abstract class Ensure
      * @param mixed $then
      * @param mixed $value
      *
-     * @return Logic\Conditional
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
      */
     public static function ifThen($condition, $then, $value = null)
     {
