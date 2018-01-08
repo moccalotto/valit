@@ -32,7 +32,7 @@ describe('ValueValidator', function () {
         });
     });
 
-    describe('__call', function () use ($subject) {
+    describe('__call()', function () use ($subject) {
         it('executes checks', function () use ($subject) {
             $result = $subject->isInt();
             expect($result)->toBe($subject);
@@ -47,7 +47,7 @@ describe('ValueValidator', function () {
         });
     });
 
-    describe('throwExceptionIfNotSuccessful', function () use ($subject) {
+    describe('throwExceptionIfNotSuccessful()', function () use ($subject) {
         it('returns $this if no exception', function () use ($subject) {
             $result = $subject->throwExceptionIfNotSuccessful();
             expect($result)->toBe($subject);
@@ -65,6 +65,56 @@ describe('ValueValidator', function () {
                     $subject->results
                 )
             );
+        });
+    });
+
+    describe('results()', function () use ($subject) {
+        it('returns an array of AssertionResults', function () use ($subject) {
+            $result = $subject->results();
+            expect($result)->toBeAn('array');
+            expect($result[0])->toBeAnInstanceOf('Valit\Result\AssertionResult');
+        });
+    });
+
+    describe('errorMessages()', function () use ($subject) {
+        it('returns an array of strings', function () use ($subject) {
+            $result = $subject->errorMessages();
+            expect($result)->toBeAn('array');
+            expect(count($result))->toBe(1);
+            expect(\Valit\Util\Val::is($result, 'string[]'))->toBe(true);
+        });
+    });
+
+    describe('statusMessages()', function () use ($subject) {
+        it('returns an array of strings', function () use ($subject) {
+            $result = $subject->statusMessages();
+            expect($result)->toBeAn('array');
+            expect(count($result))->toBe(2);
+            expect(\Valit\Util\Val::is($result, 'string[]'))->toBe(true);
+        });
+    });
+
+    describe('valueOr()', function () use ($subject) {
+        it('returns main value if value is valid', function () {
+            $subject = new ValueValidator(
+                Manager::instance(),
+                1234,
+                false
+            );
+
+            expect($subject->valueOr('foo'))->toBe(1234);
+        });
+
+        it('returns alternate value if value is invalid', function () {
+            $subject = new ValueValidator(
+                Manager::instance(),
+                1234,
+                false
+            );
+
+            $subject->isFalse(); // 1234 is not false.
+
+            expect($subject->valueOr('alt. value'))->toBe('alt. value');
         });
     });
 });
