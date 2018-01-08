@@ -43,16 +43,13 @@ sudo: false
 
 install:
   - if [[ $setup != 'coverage' ]]; then phpenv config-rm xdebug.ini || true; fi
-  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
-  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable --prefer-lowest; fi
-  - if [[ $setup = 'style'  ]]; then composer install --dev --prefer-source --no-interaction; fi
-  - if [[ $setup = 'coverage' ]]; then composer install --dev --prefer-source --no-interaction; fi
-  - if [[ $setup = 'analysis' ]]; then composer install --dev --prefer-source --no-interaction; fi
+  - if [[ $setup != 'lowest'   ]]; then travis_retry composer update -n --no-suggest; fi
+  - if [[ $setup  = 'lowest'   ]]; then travis_retry composer update -n --no-suggest --prefer-lowest; fi
 
 script:
-  - if [[ $setup = 'stable' ]]; then composer test; fi
-  - if [[ $setup = 'lowest' ]]; then composer test; fi
-  - if [[ $setup = 'style'  ]]; then composer cs; fi
+  - if [[ $setup = 'stable'   ]]; then composer test; fi
+  - if [[ $setup = 'lowest'   ]]; then composer test; fi
+  - if [[ $setup = 'style'    ]]; then composer cs; fi
   - if [[ $setup = 'coverage' ]]; then composer kahlan; fi
   - if [[ $setup = 'analysis' ]]; then composer phpstan; fi
 
