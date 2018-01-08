@@ -24,6 +24,8 @@ describe('StringCheckProvider', function () {
             $closure = function () use ($subject) {
                 $subject->checkLengthInRange('foo', 'not an int', 1337);
             };
+
+            expect($closure)->toThrow(new \InvalidArgumentException());
         });
 
         it('throws exception if $max is not int', function () use ($subject) {
