@@ -10,8 +10,6 @@
 
 namespace Valit\Util;
 
-use InvalidArgumentException;
-
 /**
  * Utility Class for parsing suffixed size strings to bytes.
  */
