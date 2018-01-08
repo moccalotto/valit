@@ -27,7 +27,7 @@ abstract class Date
      *
      * If $now is NULL, we have not overridden the current time.
      *
-     * @var DateTimeInterface
+     * @var DateTimeInterface|null
      */
     protected static $mockedCurrentTime;
 
