@@ -10,7 +10,7 @@ use Valit\Validators\ValueValidator;
 describe('ValueValidator', function () {
     $subject = new ValueValidator(
         Manager::instance(),
-        null,
+        1234,
         false
     );
 
@@ -44,6 +44,27 @@ describe('ValueValidator', function () {
                 $subject->nameOfCheckThatDoesNotExist();
             };
             expect($closure)->toThrow(new \BadMethodCallException);
+        });
+    });
+
+    describe('throwExceptionIfNotSuccessful', function () use ($subject) {
+        it('returns $this if no exception', function () use ($subject) {
+            $result = $subject->throwExceptionIfNotSuccessful();
+            expect($result)->toBe($subject);
+        });
+
+        it('throws InvalidvalueException if value is invald', function () use ($subject) {
+            $closure = function () use ($subject) {
+                $subject->throwExceptionIfNotSuccessful();
+            };
+            $subject->isString(); // the value 1234 is not a string, therefore the value is invalid.
+            expect($closure)->toThrow(
+                new \Valit\Exceptions\InvalidvalueException(
+                    $subject->varName,
+                    $subject->value,
+                    $subject->results
+                )
+            );
         });
     });
 });
