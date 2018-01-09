@@ -36,6 +36,14 @@ abstract class Check
     /**
      * Create an AssertionBag.
      *
+     * A short-hand to creating templates in an
+     * expressive way.
+     *
+     * ```php
+     * Check::that($container)->contains([
+     *      'key' => Check::value()->isInt()
+     * ]);
+     *
      * @return AssertionBag
      */
     public static function value()
@@ -162,12 +170,7 @@ abstract class Check
      */
     public static function ifThen($condition, $then, $else = true)
     {
-        return new Logic\Conditional(
-            Manager::instance(),
-            $condition,
-            $then,
-            $else
-        );
+        return static::ifThenElse($condition, $then, $else);
     }
 
     /**
@@ -185,7 +188,12 @@ abstract class Check
      */
     public static function ifThenElse($condition, $then, $else)
     {
-        return static::ifThen($condition, $then, $else);
+        return new Logic\Conditional(
+            Manager::instance(),
+            $condition,
+            $then,
+            $else
+        );
     }
 
     /**
