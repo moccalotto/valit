@@ -31,7 +31,7 @@ class UriCheckProvider implements CheckProvider
      */
     public function checkHostname($value)
     {
-        $success = is_string($value)
+        $success = Val::stringable($value)
             && preg_match('#(?:[\pL\pN\pS-\.])+(?:\.?([\pL\pN]|xn\-\-[\pL\pN-]+)+\.?)#ui', $value);
 
         return new Result($success, '{name} must be a valid host name');
@@ -48,10 +48,8 @@ class UriCheckProvider implements CheckProvider
      */
     public function checkIpAddress($value)
     {
-        $stringable = Val::stringable($value);
-
         $log_level = error_reporting(0);
-        $success = $stringable && @inet_pton((string) $value) !== false;
+        $success = Val::stringable($value) && @inet_pton((string) $value) !== false;
         error_reporting($log_level);
 
         return new Result($success, '{name} must be a valid ip address');
@@ -69,13 +67,11 @@ class UriCheckProvider implements CheckProvider
      */
     public function checkUrl($value, $schemes = ['https', 'http'])
     {
-        $schemes = array_filter(
-            array_filter(
-                (array) Val::mustBe($schemes, 'array|string'),
-                'is_string'
-            ),
-            'trim'
-        );
+        Val::mustBe($schemes, 'string[]|string');
+
+        if (is_string($schemes)) {
+            $schemes = [$schemes];
+        }
 
         if (empty($schemes)) {
             throw new InvalidArgumentException('Second argument must be a non-empty array of strings');
