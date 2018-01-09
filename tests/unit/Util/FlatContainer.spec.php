@@ -40,11 +40,9 @@ describe('Manager', function () {
         });
     });
 
-
-
     describe('::find()', function () {
         it('can glob for simple data', function () {
-            $subject = new FlatContainer([
+            $data = [
                 'a' => [
                     'b' => [
                         'c' => 'd'
@@ -52,6 +50,23 @@ describe('Manager', function () {
                 ],
                 'x' => '2',
                 'y' => 4,
+            ];
+
+            $subject = new FlatContainer($data);
+
+            expect($subject->find('*'))->toContainKey([
+                'a',
+                'a/b',
+                'a/b/c',
+                'x',
+                'y'
+            ]);
+
+            expect($subject->find('a/*'))->toContainKey([
+                'a/b',
+            ]);
+            expect($subject->find('a/*/*'))->toContainKey([
+                'a/b/c',
             ]);
 
             expect($subject->find('a'))->toBe([
