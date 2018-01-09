@@ -219,6 +219,18 @@ describe('Ensure', function () {
         });
     });
 
+    describe('::notAyOf()', function () {
+        it('forwards calls to noneOf', function () {
+            expect(Ensure::class)->toReceive('::noneOf')->with([], null);
+            Ensure::noneOf([]);
+        });
+        it('creates a ValueValidator', function () {
+            expect(
+                Ensure::noneOf([])
+            )->toBeAnInstanceOf(ValueValidator::class);
+        });
+    });
+
     describe('::not()', function () {
         it('creates a ValueValidator', function () {
             expect(
