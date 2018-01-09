@@ -411,6 +411,18 @@ describe('Valit\Util\Val', function () {
                     'Traversable[]'
                 )
             )->toBe(true);
+
+
+            $missing1 = [
+                1 => 'a',
+                2 => 'b',
+            ];
+            $missing2 = [
+                0 => 'a',
+                2 => 'b',
+            ];
+            expect(Val::is($missing1, 'mixed[]'))->toBe(false);
+            expect(Val::is($missing2, 'mixed[]'))->toBe(false);
         });
 
         it('tests multiple types', function () {
