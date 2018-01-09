@@ -699,9 +699,23 @@ abstract class Val
      */
     public static function firstNotNull()
     {
-        foreach (func_get_args() as $arg) {
-            if ($arg !== null) {
-                return $arg;
+        return static::firstElementNotNull(func_get_args());
+    }
+
+    /**
+     * Return the first array element that is not null.
+     *
+     * @param iterable $array
+     *
+     * @return mixed
+     */
+    public static function firstElementNotNull($array)
+    {
+        Val::mustBe($array, 'iterable');
+
+        foreach ($array as $value) {
+            if ($value !== null) {
+                return $value;
             }
         }
 
