@@ -168,6 +168,57 @@ describe('Ensure', function () {
         });
     });
 
+    describe('::allOrNone()', function () {
+        it('creates a ValueValidator', function () {
+            expect(
+                function () {
+                    expect(
+                        Ensure::allOrNone([
+                            Check::that('foo')->isInt(),
+                            Check::that('bar')->isInt(),
+                        ])
+                    )->toBeAnInstanceOf(ValueValidator::class);
+                }
+            )->not->toThrow();
+        });
+
+        it('throws an execption if a value is required', function () {
+            expect(function () {
+                $scenarios = ['isInt', 'isFloat', 'isString'];
+                Ensure::allOrNone($scenarios);
+            })->toThrow();
+        });
+
+        it('accepts a value as a second parameter', function () {
+            $scenarios = ['isString'];
+            expect(Ensure::allOrNone($scenarios, 42))->toBeAnInstanceOf(ValueValidator::class);
+        });
+        it('does not throw if 0/2 scenarios pass', function () {
+            expect(function () {
+                $scenarios = ['isInt', 'isFloat'];
+                Ensure::allOrNone($scenarios, 'not numeric');
+            })->not->toThrow();
+        });
+        it('throws an exception if 1/2 scenarios pass', function () {
+            expect(function () {
+                $scenarios = ['isInt', 'isEven'];
+                Ensure::allOrNone($scenarios, 1987);
+            })->toThrow();
+        });
+        it('does not throw if 2/2 scenarios pass', function () {
+            expect(function () {
+                $scenarios = ['isInt', 'isEven'];
+                Ensure::allOrNone($scenarios, 42);
+            })->not->toThrow();
+        });
+        it('does not throw if 0/0 scenarios pass', function () {
+            expect(function () {
+                $scenarios = [];
+                Ensure::allOrNone($scenarios);
+            })->not->toThrow();
+        });
+    });
+
     describe('::noneOf()', function () {
         it('creates a ValueValidator', function () {
             expect(
