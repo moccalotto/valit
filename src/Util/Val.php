@@ -711,7 +711,7 @@ abstract class Val
      */
     public static function firstElementNotNull($array)
     {
-        Val::mustBe($array, 'iterable');
+        static::mustBe($array, 'iterable');
 
         foreach ($array as $value) {
             if ($value !== null) {
