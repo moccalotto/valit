@@ -129,7 +129,7 @@ class LogicCheckProvider implements CheckProvider
     /**
      * Check that none of the given branches succeed if given $value.
      *
-     * @Check(["passesAllOrNone", "passesNone", "logicNoneOf", "failsAllOf"])
+     * @Check(["passesAllOrNone", "logicAllOrNone"])
      *
      * @param mixed   $value     The value to be passed to the logic (if
      *                           necessary)
