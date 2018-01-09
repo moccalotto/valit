@@ -87,6 +87,34 @@ describe('Valit\Check', function () {
         });
     });
 
+    describe('::ifThenElse()', function () {
+        it('creates a Conditional instance', function () {
+            expect(Check::ifThenElse(true, true, false))->toBeAnInstanceOf(Logic\Conditional::class);
+        });
+
+        it('works with simple scenarios', function () {
+            expect(Check::ifThenElse(true, true, false)->success())->toBe(true);
+            expect(Check::ifThenElse(true, false, true)->success())->toBe(false);
+            expect(Check::ifThenElse(false, false, true)->success())->toBe(true);
+            expect(Check::ifThenElse(false, true, true)->success())->toBe(true);
+        });
+
+        it('works with more complicated scenarios', function () {
+            $check = Check::ifThenElse('isNumeric', 'hasLength(2)', 'lengthInRange(3, 10)');
+
+            expect($check->withValue('foo')->success())->toBe(true);
+            expect($check->withValue('12')->success())->toBe(true);
+            expect($check->withValue('12')->success())->toBe(true);
+            expect($check->withValue(12)->success())->toBe(true);
+            expect($check->withValue('.5')->success())->toBe(true);
+
+            expect($check->withValue('123')->success())->toBe(false);
+            expect($check->withValue(123)->success())->toBe(false);
+            expect($check->withValue('a')->success())->toBe(false);
+            expect($check->withValue('ab')->success())->toBe(false);
+        });
+    });
+
     describe('::__callStatic()', function () {
         it('has magic method for creating assertion bags', function () {
             // proof of concept
