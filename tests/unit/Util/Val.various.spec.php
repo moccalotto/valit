@@ -94,4 +94,36 @@ describe('Valit\Util\Val', function () {
             expect(Val::throwable(null))->toBe(false);
         });
     });
+
+    describe('::mustBe()', function () {
+        it('returns $value if it has the correct type', function () {
+            expect(Val::mustBe(9, 'int'))->toBe(9);
+            expect(Val::mustBe('foo', 'string'))->toBe('foo');
+        });
+
+        it('throws an InvalidArgumentException if $value is not of the correct type', function () {
+            expect(function () {
+                Val::mustBe('not an integer', 'int');
+            })->toThrow(new \InvalidArgumentException());
+        });
+
+        it('throws an InvalidArgumentException with a given message if $value is not of the correct type', function () {
+            expect(function () {
+                Val::mustBe('not an integer', 'int', 'custom error message');
+            })->toThrow(new \InvalidArgumentException('custom error message'));
+        });
+
+        it('throws a custom exception with a given message if $value is not of the correct type', function () {
+            $myException = new \Exception('Foo Message');
+            expect(function () use ($myException) {
+                Val::mustBe('not an integer', 'int', $myException);
+            })->toThrow($myException);
+        });
+
+        it('throws a LogicException if the third argument is not null, string or Exception', function () {
+            expect(function () {
+                Val::mustBe(null, 'null', 666);
+            })->toThrow(new \LogicException('$error must be null, a string or an instance of Exception'));
+        });
+    });
 });

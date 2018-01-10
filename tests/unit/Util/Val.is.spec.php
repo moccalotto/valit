@@ -401,6 +401,10 @@ describe('Valit\Util\Val', function () {
             expect(Val::is([ ['tolkien', 'j. r. r.'], ['adams', 'douglas'] ], 'stringable[][]'))->toBe(true);
             expect(Val::is([ ['tolkien', 'j. r. r.'], ['adams', 'douglas'] ], 'int[][]'))->toBe(false);
 
+            expect(Val::is('foo', 'string[]'))->toBe(false);
+            expect(Val::is(true, 'bool[]'))->toBe(false);
+            expect(Val::is(9, 'int[]'))->toBe(false);
+
             expect(
                 Val::is(
                     [
