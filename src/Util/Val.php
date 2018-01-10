@@ -137,6 +137,10 @@ abstract class Val
      */
     public static function toString($value, $error = null)
     {
+        if (is_null($error)) {
+            $error = sprintf('The given %s could not be converted to a string', gettype($value));
+        }
+
         return (string) static::mustBe($value, 'stringable', $error);
     }
 
@@ -225,10 +229,13 @@ abstract class Val
      *
      * @return bool
      */
-    public function toBool($value, $error = null)
+    public static function toBool($value, $error = null)
     {
         if (is_bool($value)) {
             return $value;
+        }
+        if (is_null($error)) {
+            $error = sprintf('The given %s could not be converted to bool', gettype($value));
         }
 
         $str = static::toString($value, $error);
@@ -244,10 +251,11 @@ abstract class Val
                 return false;
         }
 
-        throw new InvalidArgumentException($error ?: sprintf(
-            'The given %s could not be converted to bool',
-            gettype($value)
-        ));
+        if (static::is($error, 'throwable')) {
+            throw $error;
+        }
+
+        throw new InvalidArgumentException($error);
     }
 
     /**
