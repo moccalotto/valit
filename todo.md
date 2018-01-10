@@ -4,15 +4,15 @@ Assertions:
 - Check valid utf-7
 
 
-Facades:
-========
+Facades (V2):
+=============
+Move `Val` to the `Valit` namespace.
+
 Val `__callStatic` should execute a single
 check and then return the success() of that check.
 
 - `Val::startsWith($someString, 'FooBar')`
 - `Val::isInt($someValue')`
-
-Version 2.0: move Val to root namespace.
 
 Testing:
 ========
