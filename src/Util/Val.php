@@ -200,9 +200,13 @@ abstract class Val
      */
     public static function toFloat($value, $error = null)
     {
+        if (is_null($error)) {
+            $error = sprintf('The given %s could not be converted to a float', gettype($value));
+        }
+
         $strval = static::toString($value, $error);
 
-        static::mustBe($strval, ['numeric']);
+        static::mustBe($strval, ['numeric'], $error);
 
         return (float) $strval;
     }
