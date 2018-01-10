@@ -251,7 +251,7 @@ abstract class Val
                 return false;
         }
 
-        if (static::is($error, 'throwable')) {
+        if (static::throwable($error)) {
             throw $error;
         }
 
