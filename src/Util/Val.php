@@ -274,7 +274,9 @@ abstract class Val
 
         static::mustBe($callable, 'callable', $error);
 
-        return Closure::fromCallable($callable);
+        if (is_callable(['Closure', 'fromCallable'])) {
+            return Closure::fromCallable($callable);
+        }
 
         return function () use ($callable) {
             return call_user_func_array($callable, func_get_args());
