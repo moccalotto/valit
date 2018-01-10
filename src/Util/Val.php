@@ -261,15 +261,20 @@ abstract class Val
     /**
      * Create a closure from a callable.
      *
-     * @param callable $callable
+     * @param callable               $callable
+     * @param string|\Exception|null $error    Error message to throw if the value was not correct
      *
      * @return Closure
      */
-    public static function toClosure($callable)
+    public static function toClosure($callable, $error = null)
     {
-        if (is_callable('Closure::fromCallable')) {
-            return Closure::fromCallable($callable);
+        if (is_null($error)) {
+            $error = sprintf('The given %s could not be converted to a Closure', gettype($callable));
         }
+
+        static::mustBe($callable, 'callable', $error);
+
+        return Closure::fromCallable($callable);
 
         return function () use ($callable) {
             return call_user_func_array($callable, func_get_args());
