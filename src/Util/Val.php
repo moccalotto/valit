@@ -286,24 +286,22 @@ abstract class Val
     /**
      * Count the elements in an array, a Countable or a Traversable.
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $error Error message to throw if the value could not be converted
      *
      * @return int
      */
-    public static function count($value)
+    public static function count($value, $error = null)
     {
-        static::mustBe($value, ['iterable', 'countable']);
-
-        if (static::countable($value)) {
-            return count($value);
+        if (is_null($error)) {
+            $error = sprintf('The given %s is not countable', gettype($value));
         }
 
-        if (static::iterable($value)) {
-            return iterator_count($value);
-        }
+        static::mustBe($value, ['iterable', 'countable'], $error);
 
-        // This code should not be reachable.
-        throw new LogicException(sprintf('count() failed to understand the given %s', gettype($value)));
+        return static::countable($value)
+            ? count($value)
+            : iterator_count($value);
     }
 
     /**
