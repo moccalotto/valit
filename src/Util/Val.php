@@ -235,7 +235,7 @@ abstract class Val
             return $value;
         }
         if (is_null($error)) {
-            $error = sprintf('The given %s could not be converted to bool', gettype($value));
+            $error = sprintf('The given %s could not be converted to a boolean', gettype($value));
         }
 
         $str = static::toString($value, $error);
