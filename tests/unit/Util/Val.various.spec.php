@@ -96,6 +96,7 @@ describe('Valit\Util\Val', function () {
     });
 
     describe('::mustBe()', function () {
+
         it('returns $value if it has the correct type', function () {
             expect(Val::mustBe(9, 'int'))->toBe(9);
             expect(Val::mustBe('foo', 'string'))->toBe('foo');
