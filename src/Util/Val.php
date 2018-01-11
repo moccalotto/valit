@@ -231,9 +231,12 @@ abstract class Val
      */
     public static function toBool($value, $error = null)
     {
+        static::mustBe($error, ['throwable', 'string', 'null']);
+
         if (is_bool($value)) {
             return $value;
         }
+
         if (is_null($error)) {
             $error = sprintf('The given %s could not be converted to a boolean', gettype($value));
         }
@@ -251,11 +254,9 @@ abstract class Val
                 return false;
         }
 
-        if (static::throwable($error)) {
-            throw $error;
-        }
-
-        throw new InvalidArgumentException($error);
+        throw static::throwable($error)
+            ? $error
+            : new InvalidArgumentException($error);
     }
 
     /**
