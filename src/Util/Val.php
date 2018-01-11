@@ -349,10 +349,6 @@ abstract class Val
         }
 
         if ($format === 'hex') {
-            if (ctype_xdigit($value)) {
-                return (string) $value;
-            }
-
             return static::intable($value)
                 ? sprintf('%x', $value)
                 : '[not integer]';
