@@ -10,7 +10,7 @@ describe('UriCheckProvider', function () {
             expect(class_exists(UriCheckProvider::class))->toBe(true);
         });
 
-        it('provides an array of checks', function () use ($subject) {
+        it('provides an array of checks', function () {
             $subject = new UriCheckProvider();
 
             expect($subject->provides())->toBeAn('array');
