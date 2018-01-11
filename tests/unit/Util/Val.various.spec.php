@@ -110,7 +110,13 @@ describe('Valit\Util\Val', function () {
         it('throws an InvalidArgumentException if $value is not of the correct type', function () {
             expect(function () {
                 Val::mustBe('not an integer', 'int');
-            })->toThrow(new \InvalidArgumentException());
+            })->toThrow(new \InvalidArgumentException('The given value must be a int'));
+        });
+
+        it('throws an InvalidArgumentException if $value is not one of the the defined types', function () {
+            expect(function () {
+                Val::mustBe('not numeric', 'int|float');
+            })->toThrow(new \InvalidArgumentException('The given value must be one of [int, float]'));
         });
 
         it('throws an InvalidArgumentException with a given message if $value is not of the correct type', function () {

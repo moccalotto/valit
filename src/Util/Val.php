@@ -451,29 +451,32 @@ abstract class Val
      *
      * @return mixed $value
      *
-     * @throws InvalidArgumentException if $value is not of the correct type
+     * @throws InvalidArgumentException if $value is not of the correct type.
+     * @throws LogicException           if $exception is not of the correct type.
      */
     public static function mustBe($value, $types, $error = null)
     {
-        if (!static::is($error, ['null', 'string', 'Exception'])) {
+        if (!static::is($error, ['null', 'string', 'throwable'])) {
             throw new LogicException('$error must be null, a string or an instance of Exception');
         }
 
+        // Value was OK, return it.
         if (static::is($value, $types)) {
             return $value;
         }
 
-        if (is_a($error, 'Exception')) {
+        // Value was not OK and $error is throwable.
+        if (static::throwable($error)) {
             throw $error;
         }
 
+        // Value was not OK and $error is a string.
         if (is_string($error)) {
             throw new InvalidArgumentException($error);
         }
 
-        if (is_string($types)) {
-            $types = static::explodeAndTrim('|', $types);
-        }
+        // Value was not OK and $error is is null; Generate a fancy error message.
+        $types = static::explodeAndTrim('|', $types);
 
         if (count($types) === 1) {
             throw new InvalidArgumentException(sprintf('The given value must be a %s', $types[0]));
