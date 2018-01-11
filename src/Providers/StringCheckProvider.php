@@ -205,9 +205,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStartsWith($value, $startsWith)
     {
-        if (!Val::stringable($startsWith)) {
-            throw new InvalidArgumentException('Second argument cannot be cast to a string');
-        }
+        $startsWith = Val::toString($startsWith, 'Second argument cannot be cast to a string');
 
         $success = is_scalar($value)
             && ($startsWith === '' || strpos($value, $startsWith) === 0);
@@ -227,9 +225,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkEndsWith($value, $endsWith)
     {
-        if (!Val::stringable($endsWith)) {
-            throw new InvalidArgumentException('Second argument cannot be cast to a string');
-        }
+        $endsWith = Val::toString($endsWith, 'Second argument cannot be cast to a string');
 
         $success = is_scalar($value)
             && ($endsWith === '' || substr($value, -strlen($endsWith)) === $endsWith);
@@ -249,9 +245,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkContainsString($value, $substring)
     {
-        if (!Val::stringable($substring)) {
-            throw new InvalidArgumentException('Second argument cannot be cast to a string');
-        }
+        $substring = Val::toString($substring, 'Second argument cannot be cast to a string');
 
         $success = is_scalar($value)
             && ($substring === '' || strpos($value, $substring) !== false);
@@ -271,9 +265,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkShorterThan($value, $length)
     {
-        if (!is_int($length)) {
-            throw new InvalidArgumentException('Second argument must be an integer');
-        }
+        $length = Val::toInt($length, 'Second argument must be an integer');
 
         return $this->checkRelativeLength($value, '<', $length);
     }
@@ -290,9 +282,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkLongerThan($value, $length)
     {
-        if (!is_int($length)) {
-            throw new InvalidArgumentException('Second argument must be an integer');
-        }
+        $length = Val::toInt($length, 'Second argument must be an integer');
 
         return $this->checkRelativeLength($value, '>', $length);
     }
@@ -327,7 +317,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkRelativeLength($value, $operator, $against = null)
     {
-        Val::mustBe($against, ['int', 'null'], 'Third argument must be an integer');
+        Val::mustBe($against, ['intable', 'null'], 'Third argument must be an integer');
 
         if (is_int($operator) && is_null($against)) {
             $against = $operator;
