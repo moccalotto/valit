@@ -541,13 +541,13 @@ abstract class Val
         }
 
         foreach ($types as $type) {
-            // check if type is one of: resource, double, integer, string, object, array, bool, null
-            if (gettype($value) === $type) {
+            // mixed is always true
+            if ($type === 'mixed') {
                 return true;
             }
 
-            // check if class equals $type
-            if (is_a($value, $type)) {
+            // check if type is one of: resource, double, integer, string, object, array, bool, null
+            if (gettype($value) === $type) {
                 return true;
             }
 
@@ -619,12 +619,13 @@ abstract class Val
                 return true;
             }
 
-            // check for array types such as string[], float[], DateTime[], etc.
-            if (substr($type, -2) === '[]' && static::isArrayOf($value, substr($type, 0, -2))) {
+            // check if class equals $type
+            if (is_a($value, $type)) {
                 return true;
             }
 
-            if ($type === 'mixed') {
+            // check for array types such as string[], float[], DateTime[], etc.
+            if (substr($type, -2) === '[]' && static::isArrayOf($value, substr($type, 0, -2))) {
                 return true;
             }
         }
