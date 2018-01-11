@@ -11,7 +11,7 @@ if (!extension_loaded('xdebug')) {
 }
 
 // Override certain defaults if xdebug is enabled.
-$commandLine->option('coverage', 'default', 3);
+$commandLine->option('coverage', 'default', 4);
 $commandLine->option('clover', 'default', 'coverage.xml');
 $commandLine->option('coverage-coveralls', 'default', 'coveralls.json');
 
