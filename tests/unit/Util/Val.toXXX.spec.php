@@ -200,7 +200,7 @@ describe('Valit\Util\Val', function () {
     describe('toClosure', function () {
         it('converts callables to closures', function () {
             // create an inv
-            eval('class Invokable { function __invoke() { return "foo"; } }');
+            eval('class Val__toClosure__Invokable { function __invoke() { return "foo"; } }');
 
             expect(Val::toClosure('intval'))->toBeAnInstanceOf('Closure');
             expect(Val::toClosure([Val::class, 'toClosure']))->toBeAnInstanceOf('Closure');
@@ -208,7 +208,7 @@ describe('Valit\Util\Val', function () {
             expect(Val::toClosure(function () {
                 return 'foo';
             }))->toBeAnInstanceOf('Closure');
-            expect(Val::toClosure(new \Invokable))->toBeAnInstanceOf('Closure');
+            expect(Val::toClosure(new \Val__toClosure__Invokable))->toBeAnInstanceOf('Closure');
         });
 
         it('throws up when trying to non-callables', function () {
