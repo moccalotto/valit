@@ -404,10 +404,8 @@ abstract class Val
             return 'null';
         }
 
-        throw new RuntimeException(sprintf(
-            'Unknown type: %s',
-            gettype($value)
-        ));
+        // This code is never reached (as of php 7.2)
+        throw new RuntimeException(sprintf('Unknown type: %s', gettype($value)));
     }
 
     /**
