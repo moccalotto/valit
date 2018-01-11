@@ -7,12 +7,14 @@ use Valit\Util\Val;
 describe('Valit\Util\Val', function () {
 
     describe('::stringable()', function () {
+
         it('works on scalars', function () {
             expect(Val::stringable('foo'))->toBe(true);
             expect(Val::stringable(1234))->toBe(true);
             expect(Val::stringable(123.456))->toBe(true);
             expect(Val::stringable(true))->toBe(false);
         });
+
         it('works on objects', function () {
             expect(Val::stringable(new \Exception('Exceptions are stringable')))->toBe(true);
             expect(Val::stringable(new \stdClass()))->toBe(false);
@@ -22,6 +24,7 @@ describe('Valit\Util\Val', function () {
     });
 
     describe('::numeric()', function () {
+
         it('returns true if and only if the argument can be converted to a floating point number', function () {
             expect(Val::numeric(1234))->toBe(true);
             expect(Val::numeric(1234.0))->toBe(true);
@@ -40,6 +43,7 @@ describe('Valit\Util\Val', function () {
     });
 
     describe('::intable()', function () {
+
         it('returns true if and only if arg can be converted to integer without data loss', function () {
             expect(Val::intable(1234))->toBe(true);
             expect(Val::intable(1234.0))->toBe(true);
@@ -47,7 +51,6 @@ describe('Valit\Util\Val', function () {
             expect(Val::intable('1234.0'))->toBe(true);
             expect(Val::intable(new \SimpleXmlElement('<r>1234</r>')))->toBe(true);
             expect(Val::intable(new \SimpleXmlElement('<r>1234.0</r>')))->toBe(true);
-
 
             expect(Val::intable(123.456))->toBe(false);
             expect(Val::intable(true))->toBe(false);
@@ -58,6 +61,7 @@ describe('Valit\Util\Val', function () {
     });
 
     describe('::countable()', function () {
+
         it('returns true if and only if the argument is an array or an object that implements Countable', function () {
             expect(Val::countable([]))->toBe(true);
             expect(Val::countable(
@@ -79,6 +83,7 @@ describe('Valit\Util\Val', function () {
     });
 
     describe('::throwable()', function () {
+
         it('returns true if and only if the argument is an exception or other throwable object', function () {
             expect(Val::throwable(new \Exception))->toBe(true);
             expect(Val::throwable(new \RuntimeException))->toBe(true);
@@ -112,6 +117,10 @@ describe('Valit\Util\Val', function () {
             expect(function () {
                 Val::mustBe('not an integer', 'int', 'custom error message');
             })->toThrow(new \InvalidArgumentException('custom error message'));
+
+            expect(function () {
+                Val::mustBe('not an integer', 'int|float', 'custom error message 2');
+            })->toThrow(new \InvalidArgumentException('custom error message 2'));
         });
 
         it('throws a custom exception with a given message if $value is not of the correct type', function () {
