@@ -177,7 +177,7 @@ abstract class Val
      *                           Objects with a __toString method will be treated as strings
      * @param string|null $error Error message to throw if the value could not be converted
      *
-     * @return float
+     * @return int
      */
     public static function toInt($value, $error = null)
     {
