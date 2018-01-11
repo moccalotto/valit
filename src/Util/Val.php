@@ -337,19 +337,23 @@ abstract class Val
         }
 
         if ($format === 'int') {
-            return is_numeric($value)
+            return static::intable($value)
                 ? sprintf('%d', $value)
                 : '[not numeric]';
         }
 
         if ($format === 'float') {
-            return is_numeric($value)
+            return static::numeric($value)
                 ? sprintf('%g', $value)
                 : '[not numeric]';
         }
 
         if ($format === 'hex') {
-            return is_int($value) || ctype_digit($value)
+            if (ctype_xdigit($value)) {
+                return (string) $value;
+            }
+
+            return static::intable($value)
                 ? sprintf('%x', $value)
                 : '[not integer]';
         }
