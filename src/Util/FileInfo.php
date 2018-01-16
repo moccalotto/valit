@@ -153,11 +153,18 @@ class FileInfo
     /**
      * Initialize instance variables for a given file.
      *
-     * @param string $file
+     * @param SplFileInfo|string $file
      */
     protected function init($file)
     {
-        $this->name = $file;
+        if (is_a($file, SplFileInfo::class)) {
+            $this->exists = true;
+            $this->name = $file->getRealPath();
+
+            $this->initFromFileInfo($file);
+
+            return;
+        }
 
         if (!file_exists($file)) {
             $this->exists = false;
@@ -165,9 +172,11 @@ class FileInfo
             return;
         }
 
-        $info = new SplFileInfo($file);
+        $this->initFromFileInfo(new SplFileInfo($file));
+    }
 
-        $this->exists = true;
+    protected function initFromFileInfo(SplFileInfo $info)
+    {
         $this->permissions = $info->getPerms() & 0777;
 
         $this->userId = $info->getOwner();
@@ -187,7 +196,5 @@ class FileInfo
         $this->createdAt = DateTime::createFromFormat('U', $info->getCTime());
         $this->modifiedAt = DateTime::createFromFormat('U', $info->getMTime());
         $this->accessedAt = DateTime::createFromFormat('U', $info->getATime());
-
-        return true;
     }
 }
