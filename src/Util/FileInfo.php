@@ -158,7 +158,6 @@ class FileInfo
     protected function init($file)
     {
         if (is_a($file, SplFileInfo::class)) {
-            $this->exists = true;
             $this->name = $file->getRealPath();
 
             $this->initFromFileInfo($file);
@@ -167,16 +166,21 @@ class FileInfo
         }
 
         if (!file_exists($file)) {
-            $this->exists = false;
-
             return;
         }
 
+        $this->name = $file;
         $this->initFromFileInfo(new SplFileInfo($file));
     }
 
     protected function initFromFileInfo(SplFileInfo $info)
     {
+        $this->exists = $info->getRealPath() !== false;
+
+        if (!$this->exists) {
+            return;
+        }
+
         $this->permissions = $info->getPerms() & 0777;
 
         $this->userId = $info->getOwner();
