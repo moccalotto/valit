@@ -2,6 +2,8 @@ Assertions:
 ===========
 - Check valid Base64
 - Check valid utf-7
+- Check Email Address is DNS-valid
+- Check hostname exists (DNS check)
 
 
 Facades (V2):
