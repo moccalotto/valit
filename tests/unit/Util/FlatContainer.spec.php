@@ -2,10 +2,9 @@
 
 namespace Kahlan\Spec\Suite;
 
-use Valit\Manager;
 use Valit\Util\FlatContainer;
 
-describe('Manager', function () {
+describe('FlatContainer', function () {
     describe('::__construct()', function () {
         it('is initializable with an empty container', function () {
             expect(function () {
