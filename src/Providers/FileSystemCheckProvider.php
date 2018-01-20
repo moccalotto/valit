@@ -223,7 +223,7 @@ class FileSystemCheckProvider implements CheckProvider
 
         return new Result(
             $success,
-            '{name} must be a file that has been {0:raw} after {1:raw}',
+            '{name} must be a file that has been {0:raw} {1:raw}',
             [$timeFunc, Date::parse($date)->format(DateTime::RFC3339)]
         );
     }
