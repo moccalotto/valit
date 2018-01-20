@@ -31,9 +31,7 @@ Design by contract (later version)
 Testing:
 ========
 
-* Add kahlan tests for Val class
 * Add kahlan tests for Size class
-* Add kahlan tests for Date class
 * Add kahlan tests for Value class
 * Add kahlan tests that match the scenarios in the example
   files such that interested parties can use it for

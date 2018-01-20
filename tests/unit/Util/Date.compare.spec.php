@@ -6,10 +6,6 @@ use Valit\Util\Date;
 
 describe('Valit\Util\Date', function () {
 
-    it('existst', function () {
-        expect(class_exists(Date::class))->toBe(true);
-    });
-
     describe('::compare()', function () {
 
         it('compares two string dates', function () {
