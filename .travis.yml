@@ -6,6 +6,9 @@ env:
 
 matrix:
   fast_finish: true
+  allow_failures:
+    php: nightly
+    hhvm: nightly
   include:
     - php: 5.5
     - php: 5.5
