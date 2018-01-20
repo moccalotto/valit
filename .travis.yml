@@ -1,5 +1,8 @@
 language: php
 
+git:
+  depth: 1
+
 env:
   global:
     - setup=stable
