@@ -88,8 +88,6 @@ abstract class Date
         list($seconds, $microseconds) = explode('.', sprintf('%.6f', -$timestamp));
         $invertedMs = bcsub(1000000, $microseconds, 0);
 
-        if ($invertedMs === '1000000') {
-        }
         $seconds = bcadd($seconds, 1);
 
         $result = DateTime::createFromFormat('U.u', bcdiv($invertedMs, 1000000, 6));
