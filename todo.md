@@ -2,6 +2,8 @@ Assertions:
 ===========
 - Check valid Base64
 - Check valid utf-7
+- Check Email Address is DNS-valid
+- Check hostname exists (DNS check)
 
 
 Facades (V2):
@@ -13,6 +15,18 @@ check and then return the success() of that check.
 
 - `Val::startsWith($someString, 'FooBar')`
 - `Val::isInt($someValue')`
+
+Design by contract (later version)
+==================================
+* Parse docblocks and check types.
+* Parse any (@requires() in the docblocks)
+* Consider integration with aspect oriented framework: https://github.com/goaop/framework
+* Be compatible by simply having a Contract::checkParams() method that checks if the current
+  method call is correct.
+* Inspiration:
+    - https://wiki.php.net/rfc/dbc
+    - https://github.com/php-deal/framework
+
 
 Testing:
 ========
