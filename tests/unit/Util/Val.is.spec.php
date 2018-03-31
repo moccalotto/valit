@@ -395,6 +395,12 @@ describe('Valit\Util\Val', function () {
             expect(Val::is([ ['1', 2], [3, 4], [4, 5] ], 'int[][]'))->toBe(false);
             expect(Val::is([ [1, 2], [3, 4], [4, 5] ], 'string[][]'))->toBe(false);
 
+            expect(Val::is([], 'mixed[][]'))->toBe(true);
+            expect(Val::is([ ['tolkien', 'j. r. r.'], ['adams', 'douglas'] ], 'mixed[][]'))->toBe(true);
+            expect(Val::is([ ['tolkien', 'j. r. r.'], ['adams', 'douglas'] ], 'string[][]'))->toBe(true);
+            expect(Val::is([ ['tolkien', 'j. r. r.'], ['adams', 'douglas'] ], 'stringable[][]'))->toBe(true);
+            expect(Val::is([ ['tolkien', 'j. r. r.'], ['adams', 'douglas'] ], 'int[][]'))->toBe(false);
+
             expect(
                 Val::is(
                     [

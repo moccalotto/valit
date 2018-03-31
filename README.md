@@ -1,6 +1,9 @@
 # Valit
 
-[![Build Status](https://travis-ci.org/moccalotto/valit.svg)](https://travis-ci.org/moccalotto/valit)
+[![Travis Build Status](https://img.shields.io/travis/moccalotto/valit.svg?style=flat-square)](https://travis-ci.org/moccalotto/valit)
+![PHP Versions](https://img.shields.io/packagist/php-v/moccalotto/valit.svg?style=flat-square)
+[![Latest Stable Version](https://img.shields.io/packagist/v/moccalotto/valit.svg?style=flat-square)](https://packagist.org/packages/moccalotto/valit)
+[![License](https://img.shields.io/packagist/l/moccalotto/valit.svg?style=flat-square)](LICENSE)
 
 Validate variables using a fluent syntax.
 

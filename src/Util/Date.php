@@ -77,7 +77,7 @@ abstract class Date
     }
 
     /**
-     * Be compatible with HHVM and PHP 5.5
+     * Be compatible with HHVM and PHP 5.5.
      *
      * @param int|float $timestamp
      *
@@ -85,12 +85,12 @@ abstract class Date
      */
     protected static function fromNegativeTimestamp($timestamp)
     {
-        list ($seconds, $microseconds) = explode('.', sprintf('%.6f', -$timestamp));
+        list($seconds, $microseconds) = explode('.', sprintf('%.6f', -$timestamp));
         $invertedMs = bcsub(1000000, $microseconds, 0);
 
         if ($invertedMs === '1000000') {
         }
-            $seconds = bcadd($seconds, 1);
+        $seconds = bcadd($seconds, 1);
 
         $result = DateTime::createFromFormat('U.u', bcdiv($invertedMs, 1000000, 6));
         $result->modify("-$seconds seconds");
