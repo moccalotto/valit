@@ -41,7 +41,6 @@ matrix:
       env: setup=lowest
     - php: hhvm
     - php: hhvm-nightly
-      env: setup=lowest
 
 cache:
   directories:
