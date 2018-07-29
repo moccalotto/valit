@@ -154,7 +154,7 @@ abstract class Val
      * @param mixed       $value
      * @param string|null $error Error message to throw if the value could not be converted
      *
-     * @return string
+     * @return array
      *
      * @throws InvalidArgumentException if $value could not be "nicely" converted to string
      */
