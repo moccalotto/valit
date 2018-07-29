@@ -45,7 +45,7 @@ class UuidCheckProvider implements CheckProvider
         $version = $isMatch ? $matches[1] : null;
         $variant = $isMatch ? $matches[2] : null;
 
-        return $isMatch;
+        return $isMatch > 0;
     }
 
     /**

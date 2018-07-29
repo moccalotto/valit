@@ -130,11 +130,9 @@ trait ContainsResults
     /**
      * Add new result to the internal results list.
      *
-     * @param AssertionResult $results
+     * @param AssertionResult $result
      *
      * @return $this
-     *
-     * @throws InvalidValueException if we are in throwOnFailure-mode and the result is an error
      */
     public function addAssertionResult(AssertionResult $result)
     {

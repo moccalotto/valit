@@ -91,6 +91,22 @@ abstract class Ensure
     }
 
     /**
+     * Alias of noneOf().
+     *
+     * Check that none of of the given scenarios succeed.
+     *
+     * @param array|\Traversable $scenarios
+     * @param mixed              $value
+     *
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
+     */
+    public static function notAnyOf($scenarios, $value = null)
+    {
+        return static::noneOf($scenarios, $value);
+    }
+
+    /**
      * Check all or none of the givens scenarios succeed.
      *
      * @param array|\Traversable $scenarios
@@ -103,6 +119,52 @@ abstract class Ensure
         $hasValue = func_num_args() > 1;
 
         return static::that($value)->executeCheck('passesAllOrNone', [$scenarios, Manager::instance(), $hasValue]);
+    }
+
+    /**
+     * Check conditional if-then-else clause.
+     *
+     * if the given $condition evaluates to true,
+     * the $then must also evaluate to true,
+     *
+     * @param mixed $condition
+     * @param mixed $then
+     * @param mixed $else
+     * @param mixed $value
+     *
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
+     */
+    public static function ifThenElse($condition, $then, $else = true, $value = null)
+    {
+        return static::that($value)->executeCheck('passesConditional', [
+            $condition,
+            $then,
+            $else,
+        ]);
+    }
+
+    /**
+     * Check conditional if-then clause.
+     *
+     * if the given $condition evaluates to true,
+     * the $then must also evaluate to true,
+     *
+     * @param mixed $condition
+     * @param mixed $then
+     * @param mixed $value
+     *
+     * @return ValueValidator instance that has been configured to throw a
+     *                        InvalidValueException as soon as a single validation fails
+     */
+    public static function ifThen($condition, $then, $value = null)
+    {
+        return static::ifThenElse(
+            $condition,
+            $then,
+            true,
+            $value
+        );
     }
 
     /**

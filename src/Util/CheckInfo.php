@@ -11,6 +11,7 @@
 namespace Valit\Util;
 
 use Closure;
+use RuntimeException;
 use ReflectionFunction;
 
 class CheckInfo
@@ -61,6 +62,9 @@ class CheckInfo
 
         $docblock = $reflector->getDocComment();
 
+        if ($docblock === false) {
+            throw new RuntimeException('Could not get the associated doc comment');
+        }
         if (preg_match_all('/\s*\*\s?([^@*]+)\s*/mus', $docblock, $matches)) {
             $this->parseDescription($matches[1]);
         }
@@ -121,8 +125,8 @@ class CheckInfo
         }
 
         // If the parameter is class-hinted, return the hinted class.
-        if ($param->getClass()) {
-            return $param->getClass();
+        if ($param->getClass() !== null) {
+            return $param->getClass()->getName();
         }
 
         // If the parameter is defined as a callable, use that hint

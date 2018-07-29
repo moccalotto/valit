@@ -12,28 +12,15 @@
 
 namespace Valit\Providers;
 
+use Valit\Util\Val;
 use InvalidArgumentException;
-use Valit\Result\AssertionResult as Result;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
+use Valit\Result\AssertionResult as Result;
 
 class NumberCheckProvider implements CheckProvider
 {
     use ProvideViaReflection;
-
-    /**
-     * Ensure that a value can be parased into a float or int.
-     *
-     * @param mixed $value
-     *
-     * @throws InvalidArgumentException if $value is not numeric
-     */
-    protected function assertNumeric($value)
-    {
-        if (!is_numeric($value)) {
-            throw new InvalidArgumentException('Check argument must be numeric');
-        }
-    }
 
     /**
      * Find the greatest common divisor between two numbers.
@@ -135,7 +122,7 @@ class NumberCheckProvider implements CheckProvider
      */
     public function checkGreaterThan($value, $against)
     {
-        $this->assertNumeric($against);
+        Val::mustBe($against, 'numeric');
 
         $success = is_numeric($value) && $value > $against;
 
@@ -154,7 +141,7 @@ class NumberCheckProvider implements CheckProvider
      */
     public function checkGreaterThanOrEqual($value, $against)
     {
-        $this->assertNumeric($against);
+        Val::mustBe($against, 'numeric');
 
         $success = is_numeric($value) && $value >= $against;
 
@@ -175,7 +162,7 @@ class NumberCheckProvider implements CheckProvider
      */
     public function checkLessThan($value, $against)
     {
-        $this->assertNumeric($against);
+        Val::mustBe($against, 'numeric');
 
         $success = is_numeric($value) && $value < $against;
 
@@ -196,7 +183,7 @@ class NumberCheckProvider implements CheckProvider
      */
     public function checkLessThanOrEqual($value, $against)
     {
-        $this->assertNumeric($against);
+        Val::mustBe($against, 'numeric');
 
         $success = is_numeric($value) && $value <= $against;
 
@@ -219,14 +206,14 @@ class NumberCheckProvider implements CheckProvider
      */
     public function checkFloatEqual($value, $against, $epsilon = 0.00001)
     {
-        $this->assertNumeric($against);
-        $this->assertNumeric($epsilon);
+        Val::mustBe($against, 'numeric', '$against must be numeric');
+        Val::mustBe($epsilon, 'numeric', '$epsilon must be numeric');
 
         if (!is_finite($epsilon)) {
             throw new InvalidArgumentException('Epsilon must be a real number');
         }
 
-        $testable = is_numeric($value) && !is_nan($value);
+        $testable = is_numeric($value) && !is_nan((float) $value);
         $success = $testable ? abs(abs($value) - abs($against)) <= $epsilon : false;
 
         return new Result($success, '{name} must equal {0:float} with a margin of error of {1:float}', [
@@ -246,7 +233,7 @@ class NumberCheckProvider implements CheckProvider
     {
         $success = is_numeric($value)
             && (float) $value == (int) $value
-            && ($value & 1) === 1;
+            && ((int) $value & 1) === 1;
 
         return new Result($success, '{name} must be an odd integer');
     }
@@ -262,7 +249,7 @@ class NumberCheckProvider implements CheckProvider
     {
         $success = is_numeric($value)
             && (float) $value == (int) $value
-            && ($value & 1) === 0;
+            && ((int) $value & 1) === 0;
 
         return new Result($success, '{name} must be an even integer');
     }
@@ -307,7 +294,7 @@ class NumberCheckProvider implements CheckProvider
      */
     public function checkPrimeRelativeTo($value, $against)
     {
-        $this->assertNumeric($against);
+        Val::mustBe($against, 'numeric');
 
         if (intval($against) != floatval($against)) {
             throw new InvalidArgumentException('$against must be a finite natural number');
@@ -331,15 +318,15 @@ class NumberCheckProvider implements CheckProvider
      */
     public function checkDivisibleBy($value, $against)
     {
-        $this->assertNumeric($against);
+        Val::mustBe($against, 'numeric');
 
         if ($against == 0.0 || !is_finite($against)) {
             throw new InvalidArgumentException('$against must be a finite, non-zero number');
         }
 
         $success = is_numeric($value)
-            && is_finite($value)
-            && fmod($value, $against) === 0.0;
+            && is_finite((float) $value)
+            && fmod((float) $value, $against) === 0.0;
 
         return new Result($success, '{name} must be divisible by {0}', [$against]);
     }

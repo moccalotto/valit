@@ -55,7 +55,9 @@ class InvalidValueException extends UnexpectedValueException
     }
 
     /**
-     * @return string[]
+     * Get a bulleted list of error messages.
+     *
+     * @return string
      */
     protected function errorBullets()
     {

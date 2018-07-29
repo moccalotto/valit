@@ -18,7 +18,6 @@ class ValueRequiredException extends LogicException
      * Constructor.
      *
      * @param string $message
-     * @param array  $results
      */
     public function __construct($message)
     {

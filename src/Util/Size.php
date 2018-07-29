@@ -25,7 +25,7 @@ abstract class Size
      *      '100GB' is converted to 100,000,000,000
      *      '100GiB' is converted to 107.374.182.400
      *
-     * @param string $size
+     * @param string|int $size
      *
      * @return int
      */
@@ -50,6 +50,8 @@ abstract class Size
             ['ZiB', 1024, 7],
             ['YiB', 1024, 8],
         ];
+
+        $size = (string) $size;
 
         $getSize = function ($suffix) use ($size) {
             $suffixLength = strlen($suffix);

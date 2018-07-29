@@ -36,6 +36,14 @@ abstract class Check
     /**
      * Create an AssertionBag.
      *
+     * A short-hand to creating templates in an
+     * expressive way.
+     *
+     * ```php
+     * Check::that($container)->contains([
+     *      'key' => Check::value()->isInt()
+     * ]);
+     *
      * @return AssertionBag
      */
     public static function value()
@@ -149,6 +157,46 @@ abstract class Check
     }
 
     /**
+     * Check conditional if-then clause.
+     *
+     * if the given $condition evaluates to true,
+     * the $then must also evaluate to true,
+     *
+     * @param mixed $condition
+     * @param mixed $then
+     * @param mixed $else
+     *
+     * @return Logic\Conditional
+     */
+    public static function ifThen($condition, $then, $else = true)
+    {
+        return static::ifThenElse($condition, $then, $else);
+    }
+
+    /**
+     * Check conditional if-then clause.
+     *
+     * if the given $condition evaluates to true,
+     * the $then must also evaluate to true,
+     * otherwise the $else condition must evaluate to true.
+     *
+     * @param mixed $condition
+     * @param mixed $then
+     * @param mixed $else
+     *
+     * @return Logic\Conditional
+     */
+    public static function ifThenElse($condition, $then, $else)
+    {
+        return new Logic\Conditional(
+            Manager::instance(),
+            $condition,
+            $then,
+            $else
+        );
+    }
+
+    /**
      * Short hand to creating an AssertionBag.
      *
      * @param string  $methodName
@@ -158,8 +206,10 @@ abstract class Check
      */
     public static function __callStatic($methodName, $args)
     {
+        /** @var callable $callable */
+        $callable = [static::value(), $methodName];
         return call_user_func_array(
-            [static::value(), $methodName],
+            $callable,
             $args
         );
     }

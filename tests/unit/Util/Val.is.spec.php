@@ -401,6 +401,10 @@ describe('Valit\Util\Val', function () {
             expect(Val::is([ ['tolkien', 'j. r. r.'], ['adams', 'douglas'] ], 'stringable[][]'))->toBe(true);
             expect(Val::is([ ['tolkien', 'j. r. r.'], ['adams', 'douglas'] ], 'int[][]'))->toBe(false);
 
+            expect(Val::is('foo', 'string[]'))->toBe(false);
+            expect(Val::is(true, 'bool[]'))->toBe(false);
+            expect(Val::is(9, 'int[]'))->toBe(false);
+
             expect(
                 Val::is(
                     [
@@ -411,6 +415,18 @@ describe('Valit\Util\Val', function () {
                     'Traversable[]'
                 )
             )->toBe(true);
+
+
+            $missing1 = [
+                1 => 'a',
+                2 => 'b',
+            ];
+            $missing2 = [
+                0 => 'a',
+                2 => 'b',
+            ];
+            expect(Val::is($missing1, 'mixed[]'))->toBe(false);
+            expect(Val::is($missing2, 'mixed[]'))->toBe(false);
         });
 
         it('tests multiple types', function () {

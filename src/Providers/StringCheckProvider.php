@@ -205,12 +205,10 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkStartsWith($value, $startsWith)
     {
-        if (!Val::stringable($startsWith)) {
-            throw new InvalidArgumentException('Second argument cannot be cast to a string');
-        }
+        $startsWith = Val::toString($startsWith, 'Second argument cannot be cast to a string');
 
         $success = is_scalar($value)
-            && ($startsWith === '' || strpos($value, $startsWith) === 0);
+            && ($startsWith === '' || strpos((string) $value, $startsWith) === 0);
 
         return new Result($success, '{name} must start with the string "{0}"', [$startsWith]);
     }
@@ -227,12 +225,10 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkEndsWith($value, $endsWith)
     {
-        if (!Val::stringable($endsWith)) {
-            throw new InvalidArgumentException('Second argument cannot be cast to a string');
-        }
+        $endsWith = Val::toString($endsWith, 'Second argument cannot be cast to a string');
 
         $success = is_scalar($value)
-            && ($endsWith === '' || substr($value, -strlen($endsWith)) === $endsWith);
+            && ($endsWith === '' || substr((string) $value, -strlen($endsWith)) === $endsWith);
 
         return new Result($success, '{name} must end with the string {0}', [$endsWith]);
     }
@@ -249,12 +245,10 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkContainsString($value, $substring)
     {
-        if (!Val::stringable($substring)) {
-            throw new InvalidArgumentException('Second argument cannot be cast to a string');
-        }
+        $substring = Val::toString($substring, 'Second argument cannot be cast to a string');
 
         $success = is_scalar($value)
-            && ($substring === '' || strpos($value, $substring) !== false);
+            && ($substring === '' || strpos((string) $value, $substring) !== false);
 
         return new Result($success, '{name} must contain the string "{0}"', [$substring]);
     }
@@ -271,9 +265,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkShorterThan($value, $length)
     {
-        if (!is_int($length)) {
-            throw new InvalidArgumentException('Second argument must be an integer');
-        }
+        $length = Val::toInt($length, 'Second argument must be an integer');
 
         return $this->checkRelativeLength($value, '<', $length);
     }
@@ -290,9 +282,7 @@ class StringCheckProvider implements CheckProvider
      */
     public function checkLongerThan($value, $length)
     {
-        if (!is_int($length)) {
-            throw new InvalidArgumentException('Second argument must be an integer');
-        }
+        $length = Val::toInt($length, 'Second argument must be an integer');
 
         return $this->checkRelativeLength($value, '>', $length);
     }
@@ -319,15 +309,15 @@ class StringCheckProvider implements CheckProvider
      *
      * @Check(["stringWhereLength", "isStringWhereLength", "whereLength", "length", "hasLength", "withLength"])
      *
-     * @param mixed  $value    The inspected variable
-     * @param string $operator Must be one of >, <, =, >=, <=, ≥, ≤
-     * @param int    $against  The length we should compare to.
+     * @param mixed      $value    The inspected variable
+     * @param string|int $operator Must be one of >, <, =, >=, <=, ≥, ≤
+     * @param int        $against  The length we should compare to.
      *
      * @return Result
      */
     public function checkRelativeLength($value, $operator, $against = null)
     {
-        Val::mustBe($against, ['int', 'null'], 'Third argument must be an integer');
+        Val::mustBe($against, ['intable', 'null'], 'Third argument must be an integer');
 
         if (is_int($operator) && is_null($against)) {
             $against = $operator;
@@ -360,5 +350,36 @@ class StringCheckProvider implements CheckProvider
         }
 
         throw new InvalidArgumentException('Second arhument must be one of [>, <, =, >=, ≥, <=, ≤]');
+    }
+
+    /**
+     * Check if $value is a string where the length is between $min and $max.
+     *
+     * @Check(["lengthBetween", "lengthInRange", "lengthMinMax"])
+     *
+     * @param mixed $value The value
+     * @param int   $min   The minimal allowed length.
+     * @param int   $max   The maximum allowed length.
+     *
+     * @return Result
+     */
+    public function checkLengthInRange($value, $min, $max)
+    {
+        Val::mustBe($min, 'int', '$min must be an integer');
+        Val::mustBe($max, 'int', '$max must be an integer');
+
+        if ($max < $min) {
+            throw new InvalidArgumentException('$max must be ≥ $min');
+        }
+
+        $success = Val::is($value, 'stringable')
+            && mb_strlen($value) >= $min
+            && mb_strlen($value) <= $max;
+
+        return new Result(
+            $success,
+            '{name} must be a string with a length in the range [{0:int}..{1:int}]',
+            [$min, $max]
+        );
     }
 }

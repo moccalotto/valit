@@ -60,6 +60,9 @@ class InvalidContainerException extends InvalidValueException
             ));
         }
 
-        return call_user_func_array([$this->containerResults, $method], $args);
+        /** @var callable $callable */
+        $callable = [$this->containerResults, $method];
+
+        return call_user_func_array($callable, $args);
     }
 }

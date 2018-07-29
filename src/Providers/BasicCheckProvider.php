@@ -11,6 +11,7 @@
 namespace Valit\Providers;
 
 use Valit\Util\Val;
+use InvalidArgumentException;
 use Valit\Result\AssertionResult;
 use Valit\Contracts\CheckProvider;
 use Valit\Traits\ProvideViaReflection;
@@ -405,7 +406,7 @@ class BasicCheckProvider implements CheckProvider
             return new AssertionResult($value == $against, $message, [$comparison, $against]);
         }
 
-        throw new InvalidArgumentException('Second arhument must be NULL or one of [>, <, =, >=, ≥, <=, ≤]');
+        throw new InvalidArgumentException('Second argument must be NULL or one of [>, <, =, >=, ≥, <=, ≤]');
     }
 
     /**

@@ -19,7 +19,7 @@ use SplFileInfo;
 class FileInfo
 {
     /**
-     * @var string
+     * @var string|null
      */
     public $name = null;
 
@@ -54,7 +54,7 @@ class FileInfo
     public $size = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $realpath = null;
 
@@ -153,28 +153,41 @@ class FileInfo
     /**
      * Initialize instance variables for a given file.
      *
-     * @param string $file
+     * @param SplFileInfo|string $file
      */
     protected function init($file)
     {
-        $this->name = $file;
+        if (is_a($file, SplFileInfo::class)) {
+            $this->name = $file->getRealPath() ?: null;
 
-        if (!file_exists($file)) {
-            $this->exists = false;
+            $this->initFromFileInfo($file);
 
             return;
         }
 
-        $info = new SplFileInfo($file);
+        if (!file_exists($file)) {
+            return;
+        }
 
-        $this->exists = true;
+        $this->name = $file;
+        $this->initFromFileInfo(new SplFileInfo($file));
+    }
+
+    protected function initFromFileInfo(SplFileInfo $info)
+    {
+        $this->exists = $info->getRealPath() !== false;
+
+        if (!$this->exists) {
+            return;
+        }
+
         $this->permissions = $info->getPerms() & 0777;
 
         $this->userId = $info->getOwner();
         $this->groupId = $info->getGroup();
         $this->size = $info->getSize();
 
-        $this->realpath = $info->getRealPath();
+        $this->realpath = $info->getRealPath() ?: null;
         $this->dirname = $info->getPath();
         $this->basename = $info->getBasename();
         $this->extension = $info->getExtension();
@@ -184,10 +197,8 @@ class FileInfo
         $this->isExecutable = $info->isExecutable();
         $this->isReadable = $info->isReadable();
         $this->isWritable = $info->isWritable();
-        $this->createdAt = DateTime::createFromFormat('U', $info->getCTime());
-        $this->modifiedAt = DateTime::createFromFormat('U', $info->getMTime());
-        $this->accessedAt = DateTime::createFromFormat('U', $info->getATime());
-
-        return true;
+        $this->createdAt = DateTime::createFromFormat('U', (string) $info->getCTime()) ?: null;
+        $this->modifiedAt = DateTime::createFromFormat('U', (string) $info->getMTime()) ?: null;
+        $this->accessedAt = DateTime::createFromFormat('U', (string) $info->getATime()) ?: null;
     }
 }

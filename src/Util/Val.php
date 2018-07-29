@@ -104,19 +104,8 @@ abstract class Val
      */
     public static function intable($value)
     {
-        if (is_int($value)) {
-            return true;
-        }
-
-        if (is_float($value)) {
-            return $value == intval($value);
-        }
-
-        if (static::stringable($value)) {
-            return floatval($value) == intval($value);
-        }
-
-        return false;
+        return static::numeric($value)
+            && round($value) === (float) $value;
     }
 
     /**
@@ -148,6 +137,10 @@ abstract class Val
      */
     public static function toString($value, $error = null)
     {
+        if (is_null($error)) {
+            $error = sprintf('The given %s could not be converted to a string', gettype($value));
+        }
+
         return (string) static::mustBe($value, 'stringable', $error);
     }
 
@@ -161,7 +154,7 @@ abstract class Val
      * @param mixed       $value
      * @param string|null $error Error message to throw if the value could not be converted
      *
-     * @return string
+     * @return array
      *
      * @throws InvalidArgumentException if $value could not be "nicely" converted to string
      */
@@ -184,7 +177,7 @@ abstract class Val
      *                           Objects with a __toString method will be treated as strings
      * @param string|null $error Error message to throw if the value could not be converted
      *
-     * @return float
+     * @return int
      */
     public static function toInt($value, $error = null)
     {
@@ -211,9 +204,13 @@ abstract class Val
      */
     public static function toFloat($value, $error = null)
     {
+        if (is_null($error)) {
+            $error = sprintf('The given %s could not be converted to a float', gettype($value));
+        }
+
         $strval = static::toString($value, $error);
 
-        static::mustBe($strval, ['numeric']);
+        static::mustBe($strval, ['numeric'], $error);
 
         return (float) $strval;
     }
@@ -221,21 +218,27 @@ abstract class Val
     /**
      * Convert a variable to a bool.
      *
-     * @param mixed  $value The value to be converted.
-     *                      booleans will be returned as-is.
-     *                      "true" will be converted to true.
-     *                      "false" will be converted to false.
-     *                      "1", "1.0", 1, 1.0 are converted to true.
-     *                      "0", "0.0", 0, 0.0 are converted to false.
-     *                      Objects with a __toString method be treated as strings
-     * @param string $error Error message to throw if the value could not be converted
+     * @param mixed $value The value to be converted.
+     *                     booleans will be returned as-is.
+     *                     "true" will be converted to true.
+     *                     "false" will be converted to false.
+     *                     "1", "1.0", 1, 1.0 are converted to true.
+     *                     "0", "0.0", 0, 0.0 are converted to false.
+     *                     Objects with a __toString method be treated as strings
+     * @param mixed $error Error message (or throwable object) to throw if the value could not be converted.
      *
      * @return bool
      */
-    public function toBool($value, $error = null)
+    public static function toBool($value, $error = null)
     {
+        static::mustBe($error, ['throwable', 'string', 'null']);
+
         if (is_bool($value)) {
             return $value;
+        }
+
+        if (is_null($error)) {
+            $error = sprintf('The given %s could not be converted to a boolean', gettype($value));
         }
 
         $str = static::toString($value, $error);
@@ -251,21 +254,27 @@ abstract class Val
                 return false;
         }
 
-        throw new InvalidArgumentException($error ?: sprintf(
-            'The given %s could not be converted to bool',
-            gettype($value)
-        ));
+        throw static::throwable($error)
+            ? $error
+            : new InvalidArgumentException($error);
     }
 
     /**
      * Create a closure from a callable.
      *
-     * @param callable $callable
+     * @param callable               $callable
+     * @param string|\Exception|null $error    Error message to throw if the value was not correct
      *
      * @return Closure
      */
-    public static function toClosure($callable)
+    public static function toClosure($callable, $error = null)
     {
+        if (is_null($error)) {
+            $error = sprintf('The given %s could not be converted to a Closure', gettype($callable));
+        }
+
+        static::mustBe($callable, 'callable', $error);
+
         if (is_callable(['Closure', 'fromCallable'])) {
             return Closure::fromCallable($callable);
         }
@@ -278,24 +287,22 @@ abstract class Val
     /**
      * Count the elements in an array, a Countable or a Traversable.
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $error Error message to throw if the value could not be converted
      *
      * @return int
      */
-    public static function count($value)
+    public static function count($value, $error = null)
     {
-        static::mustBe($value, ['iterable', 'countable']);
-
-        if (static::countable($value)) {
-            return count($value);
+        if (is_null($error)) {
+            $error = sprintf('The given %s is not countable', gettype($value));
         }
 
-        if (static::iterable($value)) {
-            return iterator_count($value);
-        }
+        static::mustBe($value, ['iterable', 'countable'], $error);
 
-        // This code should not be reachable.
-        throw new LogicException(sprintf('count() failed to understand the given %s', gettype($value)));
+        return static::countable($value)
+            ? count($value)
+            : iterator_count($value);
     }
 
     /**
@@ -331,26 +338,26 @@ abstract class Val
         }
 
         if ($format === 'int') {
-            return is_numeric($value)
+            return static::intable($value)
                 ? sprintf('%d', $value)
                 : '[not numeric]';
         }
 
         if ($format === 'float') {
-            return is_numeric($value)
+            return static::numeric($value)
                 ? sprintf('%g', $value)
                 : '[not numeric]';
         }
 
         if ($format === 'hex') {
-            return is_int($value) || ctype_digit($value)
+            return static::intable($value)
                 ? sprintf('%x', $value)
                 : '[not integer]';
         }
 
         if ($format === 'count') {
             return static::is($value, ['countable', 'iterable'])
-                ? static::count($value)
+                ? (string) static::count($value)
                 : '[not countable]';
         }
 
@@ -367,7 +374,7 @@ abstract class Val
     public static function escape($value)
     {
         if (is_scalar($value)) {
-            return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            return (string) json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
 
         if (is_callable($value)) {
@@ -383,7 +390,7 @@ abstract class Val
         }
 
         if (is_resource($value)) {
-            return sprintf('%s (%s)', $value, get_resource_type($value));
+            return sprintf('%s (%s)', (string) $value, get_resource_type($value));
         }
 
         if (is_object($value)) {
@@ -398,10 +405,8 @@ abstract class Val
             return 'null';
         }
 
-        throw new RuntimeException(sprintf(
-            'Unknown type: %s',
-            gettype($value)
-        ));
+        // This code is never reached (as of php 7.2)
+        throw new RuntimeException(sprintf('Unknown type: %s', gettype($value)));
     }
 
     /**
@@ -441,35 +446,38 @@ abstract class Val
     /**
      * Ensure that a value has a given type or class.
      *
-     * @param mixed                   $value The value to check
-     * @param string|string[]         $types Value must have at least one of the declared types
-     * @param string|\Exception|\null $error Error message to throw if the value was not correct
+     * @param mixed           $value The value to check
+     * @param string|string[] $types Value must have at least one of the declared types
+     * @param mixed           $error Error message (or throwable object) to throw if the value was not correct
      *
-     * @return $value
+     * @return mixed $value
      *
-     * @throws InvalidArgumentException if $value is not of the correct type
+     * @throws InvalidArgumentException if $value is not of the correct type.
+     * @throws LogicException           if $exception is not of the correct type.
      */
     public static function mustBe($value, $types, $error = null)
     {
-        if (!static::is($error, ['null', 'string', 'Exception'])) {
+        if (!static::is($error, ['null', 'string', 'throwable'])) {
             throw new LogicException('$error must be null, a string or an instance of Exception');
         }
 
+        // Value was OK, return it.
         if (static::is($value, $types)) {
             return $value;
         }
 
-        if (is_a($error, 'Exception')) {
+        // Value was not OK and $error is throwable.
+        if (static::throwable($error)) {
             throw $error;
         }
 
+        // Value was not OK and $error is a string.
         if (is_string($error)) {
             throw new InvalidArgumentException($error);
         }
 
-        if (is_string($types)) {
-            $types = static::explodeAndTrim('|', $types);
-        }
+        // Value was not OK and $error is is null; Generate a fancy error message.
+        $types = static::explodeAndTrim('|', $types);
 
         if (count($types) === 1) {
             throw new InvalidArgumentException(sprintf('The given value must be a %s', $types[0]));
@@ -535,13 +543,13 @@ abstract class Val
         }
 
         foreach ($types as $type) {
-            // check if type is one of: resource, double, integer, string, object, array, bool, null
-            if (gettype($value) === $type) {
+            // mixed is always true
+            if ($type === 'mixed') {
                 return true;
             }
 
-            // check if class equals $type
-            if (is_a($value, $type)) {
+            // check if type is one of: resource, double, integer, string, object, array, bool, null
+            if (gettype($value) === $type) {
                 return true;
             }
 
@@ -613,12 +621,13 @@ abstract class Val
                 return true;
             }
 
-            // check for array types such as string[], float[], DateTime[], etc.
-            if (substr($type, -2) === '[]' && static::isArrayOf($value, substr($type, 0, -2))) {
+            // check if class equals $type
+            if (is_a($value, $type)) {
                 return true;
             }
 
-            if ($type === 'mixed') {
+            // check for array types such as string[], float[], DateTime[], etc.
+            if (substr($type, -2) === '[]' && static::isArrayOf($value, substr($type, 0, -2))) {
                 return true;
             }
         }
@@ -672,12 +681,12 @@ abstract class Val
      * $integers = Val::map($array, '::toInt'); // robust version
      * ```
      *
-     * @param iterable        $iterable The array (or traversable) to be mapped.
-     * @param string|callable $callable A callable or a string starting with two colons.
-     *                                  If it is a string with two colons, it is actually
-     *                                  a short-hand for calling a static function in this class.
-     *                                  For instance, if $callable is '::escape' then
-     *                                  it is the same as if $callable was 'Valit\Util\Val::escape'.
+     * @param mixed $iterable The array (or traversable) to be mapped.
+     * @param mixed $callable A callable or a string starting with two colons.
+     *                        If it is a string with two colons, it is actually
+     *                        a short-hand for calling a static function in this class.
+     *                        For instance, if $callable is '::escape' then
+     *                        it is the same as if $callable was 'Valit\Util\Val::escape'.
      *
      * @return array
      */
@@ -710,9 +719,23 @@ abstract class Val
      */
     public static function firstNotNull()
     {
-        foreach (func_get_args() as $arg) {
-            if ($arg !== null) {
-                return $arg;
+        return static::firstElementNotNull(func_get_args());
+    }
+
+    /**
+     * Return the first array element that is not null.
+     *
+     * @param iterable $array
+     *
+     * @return mixed
+     */
+    public static function firstElementNotNull($array)
+    {
+        static::mustBe($array, 'iterable');
+
+        foreach ($array as $value) {
+            if ($value !== null) {
+                return $value;
             }
         }
 

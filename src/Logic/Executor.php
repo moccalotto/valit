@@ -14,6 +14,7 @@ use Valit\Assertion\AssertionBagFactory;
 use Valit\Validators\ContainerValidator;
 use Valit\Contracts\Logic as LogicContract;
 use Valit\Exceptions\ValueRequiredException;
+use Valit\Contracts\Result as ResultContract;
 use Valit\Exceptions\ContainerRequiredException;
 
 /**
@@ -145,7 +146,7 @@ class Executor
     /**
      * Execute the logic.
      *
-     * @param bool  $withValue
+     * @param bool  $hasValue
      * @param mixed $value
      *
      * @return AssertionResultBag[]
@@ -172,6 +173,8 @@ class Executor
                 $this->results[] = $this->executeAssertions($value);
             } elseif (is_array($value)) {
                 $this->results[] = $this->executeAssertions($value);
+            } elseif (is_a($value, ResultContract::class)) {
+                $this->results[] = $this->executeBool($value->success(), get_class($value));
             } elseif (is_bool($value)) {
                 $this->results[] = $this->executeBool($value);
             } else {
@@ -202,7 +205,7 @@ class Executor
      */
     protected function addAssertionResultBag(AssertionResultBag $resultBag)
     {
-        return new ContainerResultBag([$resultBag], 'value');
+        return new ContainerResultBag($resultBag->results(), 'value');
     }
 
     /**
@@ -225,15 +228,16 @@ class Executor
     /**
      * Execute a boolean expression (evaluate that $bool is true).
      *
-     * @param bool $bool
+     * @param bool   $bool
+     * @param string $name
      *
      * @return ContainerResultBag
      */
-    protected function executeBool($bool)
+    protected function executeBool($bool, $name = 'boolean expression')
     {
         $resultBag = AssertionBagFactory::create('isTrue')->whereValueIs(
             (bool) $bool,
-            'boolean expression',
+            (string) $name,
             $this->manager
         );
 
@@ -265,7 +269,7 @@ class Executor
 
     /**
      * @param string            $fieldNameGlob
-     * @param array|Traversable $container
+     * @param array|Traversable $assertions
      *
      * @return ContainerResultBag
      */

@@ -27,7 +27,7 @@ abstract class Date
      *
      * If $now is NULL, we have not overridden the current time.
      *
-     * @var DateTimeInterface
+     * @var DateTimeInterface|null
      */
     protected static $mockedCurrentTime;
 
@@ -73,7 +73,13 @@ abstract class Date
             return static::fromNegativeTimestamp($timestamp);
         }
 
-        return DateTime::createFromFormat('U.u', bcadd($timestamp, 0, 6));
+        $candidate = DateTime::createFromFormat('U.u', bcadd((string) $timestamp, '0', 6));
+
+        if ($candidate === false) {
+            throw new InvalidArgumentException('The timestamp string could not be converted to a DateTime object');
+        }
+
+        return $candidate;
     }
 
     /**
@@ -86,13 +92,14 @@ abstract class Date
     protected static function fromNegativeTimestamp($timestamp)
     {
         list($seconds, $microseconds) = explode('.', sprintf('%.6f', -$timestamp));
-        $invertedMs = bcsub(1000000, $microseconds, 0);
+        $invertedMs = bcsub('1000000', $microseconds, 0);
 
-        if ($invertedMs === '1000000') {
+        $seconds = bcadd($seconds, '1');
+
+        $result = DateTime::createFromFormat('U.u', bcdiv($invertedMs, '1000000', 6));
+        if ($result === false) {
+            throw new InvalidArgumentException('The timestamp string could not be converted to a DateTime object');
         }
-        $seconds = bcadd($seconds, 1);
-
-        $result = DateTime::createFromFormat('U.u', bcdiv($invertedMs, 1000000, 6));
         $result->modify("-$seconds seconds");
 
         return $result;
@@ -101,8 +108,8 @@ abstract class Date
     /**
      * Convert the candidate value into a DateTime object.
      *
-     * @param string|int|DateTimeInterface $candidate
-     * @param string|null                  $format
+     * @param string|int|float|DateTimeInterface $candidate
+     * @param string|null                        $format
      *
      * @return DateTimeInterface
      *

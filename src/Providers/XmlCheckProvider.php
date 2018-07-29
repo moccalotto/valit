@@ -31,7 +31,7 @@ class XmlCheckProvider implements CheckProvider
         $xml = @simplexml_load_string($xmlString);
         libxml_use_internal_errors($prev);
 
-        return is_a($xml, SimpleXMLElement::class);
+        return $xml !== false;
     }
 
     /**
