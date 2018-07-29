@@ -133,8 +133,6 @@ trait ContainsResults
      * @param AssertionResult $result
      *
      * @return $this
-     *
-     * @throws \InvalidValueException if we are in throwOnFailure-mode and the result is an error
      */
     public function addAssertionResult(AssertionResult $result)
     {
