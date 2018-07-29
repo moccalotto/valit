@@ -52,7 +52,6 @@ install:
   - if [[ $setup != 'coverage' ]]; then phpenv config-rm xdebug.ini || true; fi
   - if [[ $setup != 'lowest'   ]]; then travis_retry composer update -n --no-suggest; fi
   - if [[ $setup  = 'lowest'   ]]; then travis_retry composer update -n --no-suggest --prefer-lowest; fi
-  - if [[ $setup  = 'analysis' ]]; then curl -s -L 'https://github.com/phpstan/phpstan/releases/download/0.9/phpstan.phar' -o phpstan.phar; fi
 
 script:
   - if [[ $setup = 'stable'   ]]; then composer test; fi
