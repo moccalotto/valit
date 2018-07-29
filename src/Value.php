@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 /**
  * This file is part of the Valit package.
  *
@@ -24,10 +23,9 @@ class Value
      */
     public static function __callStatic($methodName, $args)
     {
-        return call_user_func_array(
-            [new AssertionBag(), $methodName],
-            $args
-        );
+        /** @var callable $callable */
+        $callable = [new AssertionBag(), $methodName];
+        return call_user_func_array($callable, $args);
     }
 
     /**
@@ -37,8 +35,10 @@ class Value
      */
     public function __call($methodName, $args)
     {
+        /** @var callable $callable */
+        $callable = [new AssertionBag(), $methodName];
         return call_user_func_array(
-            [new AssertionBag(), $methodName],
+            $callable,
             $args
         );
     }

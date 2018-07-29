@@ -208,7 +208,7 @@ class StringCheckProvider implements CheckProvider
         $startsWith = Val::toString($startsWith, 'Second argument cannot be cast to a string');
 
         $success = is_scalar($value)
-            && ($startsWith === '' || strpos($value, $startsWith) === 0);
+            && ($startsWith === '' || strpos((string) $value, $startsWith) === 0);
 
         return new Result($success, '{name} must start with the string "{0}"', [$startsWith]);
     }
@@ -228,7 +228,7 @@ class StringCheckProvider implements CheckProvider
         $endsWith = Val::toString($endsWith, 'Second argument cannot be cast to a string');
 
         $success = is_scalar($value)
-            && ($endsWith === '' || substr($value, -strlen($endsWith)) === $endsWith);
+            && ($endsWith === '' || substr((string) $value, -strlen($endsWith)) === $endsWith);
 
         return new Result($success, '{name} must end with the string {0}', [$endsWith]);
     }
@@ -248,7 +248,7 @@ class StringCheckProvider implements CheckProvider
         $substring = Val::toString($substring, 'Second argument cannot be cast to a string');
 
         $success = is_scalar($value)
-            && ($substring === '' || strpos($value, $substring) !== false);
+            && ($substring === '' || strpos((string) $value, $substring) !== false);
 
         return new Result($success, '{name} must contain the string "{0}"', [$substring]);
     }

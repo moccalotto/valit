@@ -213,7 +213,7 @@ class NumberCheckProvider implements CheckProvider
             throw new InvalidArgumentException('Epsilon must be a real number');
         }
 
-        $testable = is_numeric($value) && !is_nan($value);
+        $testable = is_numeric($value) && !is_nan((float) $value);
         $success = $testable ? abs(abs($value) - abs($against)) <= $epsilon : false;
 
         return new Result($success, '{name} must equal {0:float} with a margin of error of {1:float}', [
@@ -233,7 +233,7 @@ class NumberCheckProvider implements CheckProvider
     {
         $success = is_numeric($value)
             && (float) $value == (int) $value
-            && ($value & 1) === 1;
+            && ((int) $value & 1) === 1;
 
         return new Result($success, '{name} must be an odd integer');
     }
@@ -249,7 +249,7 @@ class NumberCheckProvider implements CheckProvider
     {
         $success = is_numeric($value)
             && (float) $value == (int) $value
-            && ($value & 1) === 0;
+            && ((int) $value & 1) === 0;
 
         return new Result($success, '{name} must be an even integer');
     }
@@ -325,8 +325,8 @@ class NumberCheckProvider implements CheckProvider
         }
 
         $success = is_numeric($value)
-            && is_finite($value)
-            && fmod($value, $against) === 0.0;
+            && is_finite((float) $value)
+            && fmod((float) $value, $against) === 0.0;
 
         return new Result($success, '{name} must be divisible by {0}', [$against]);
     }

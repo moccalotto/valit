@@ -19,7 +19,7 @@ use SplFileInfo;
 class FileInfo
 {
     /**
-     * @var string
+     * @var string|null
      */
     public $name = null;
 
@@ -54,7 +54,7 @@ class FileInfo
     public $size = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $realpath = null;
 
@@ -158,7 +158,7 @@ class FileInfo
     protected function init($file)
     {
         if (is_a($file, SplFileInfo::class)) {
-            $this->name = $file->getRealPath();
+            $this->name = $file->getRealPath() ?: null;
 
             $this->initFromFileInfo($file);
 
@@ -187,7 +187,7 @@ class FileInfo
         $this->groupId = $info->getGroup();
         $this->size = $info->getSize();
 
-        $this->realpath = $info->getRealPath();
+        $this->realpath = $info->getRealPath() ?: null;
         $this->dirname = $info->getPath();
         $this->basename = $info->getBasename();
         $this->extension = $info->getExtension();
@@ -197,8 +197,8 @@ class FileInfo
         $this->isExecutable = $info->isExecutable();
         $this->isReadable = $info->isReadable();
         $this->isWritable = $info->isWritable();
-        $this->createdAt = DateTime::createFromFormat('U', $info->getCTime());
-        $this->modifiedAt = DateTime::createFromFormat('U', $info->getMTime());
-        $this->accessedAt = DateTime::createFromFormat('U', $info->getATime());
+        $this->createdAt = DateTime::createFromFormat('U', (string) $info->getCTime()) ?: null;
+        $this->modifiedAt = DateTime::createFromFormat('U', (string) $info->getMTime()) ?: null;
+        $this->accessedAt = DateTime::createFromFormat('U', (string) $info->getATime()) ?: null;
     }
 }

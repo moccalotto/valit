@@ -127,7 +127,7 @@ class ObjectCheckProvider implements CheckProvider
             throw new InvalidArgumentException('$fqcn must be a string and a valid interface fqcn');
         }
 
-        $finalSuccess = $partialSuccess = is_object($value) || (is_scalar($value) && class_exists($value));
+        $finalSuccess = $partialSuccess = is_object($value) || (is_scalar($value) && class_exists((string) $value));
 
         if ($partialSuccess) {
             $refClass = new ReflectionClass($value);

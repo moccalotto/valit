@@ -51,6 +51,8 @@ abstract class Size
             ['YiB', 1024, 8],
         ];
 
+        $size = (string) $size;
+
         $getSize = function ($suffix) use ($size) {
             $suffixLength = strlen($suffix);
             if (substr($size, -$suffixLength) === $suffix) {

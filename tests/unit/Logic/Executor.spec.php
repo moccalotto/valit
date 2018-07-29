@@ -18,11 +18,15 @@ describe('Executor', function () {
     describe('::__construct()', function () {
 
         it('is initializable with zero scenarios', function () {
-            new Executor(Manager::instance(), []);
+            expect(
+                new Executor(Manager::instance(), [])
+            )->toBeAnInstanceOf(Executor::class);
         });
 
         it('is initializable with many scenarios', function () {
-            new Executor(Manager::instance(), [true, false, 'greaterThan(0)', 'lessThan(100)']);
+            expect(
+                new Executor(Manager::instance(), [true, false, 'greaterThan(0)', 'lessThan(100)'])
+            )->toBeAnInstanceOf(Executor::class);
         });
     });
 

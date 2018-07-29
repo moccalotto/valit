@@ -206,8 +206,10 @@ abstract class Check
      */
     public static function __callStatic($methodName, $args)
     {
+        /** @var callable $callable */
+        $callable = [static::value(), $methodName];
         return call_user_func_array(
-            [static::value(), $methodName],
+            $callable,
             $args
         );
     }

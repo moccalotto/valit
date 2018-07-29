@@ -66,7 +66,7 @@ class Manager
      */
     public static function instance()
     {
-        if (!static::$instance) {
+        if (static::$instance === null) {
             static::$instance = static::create();
         }
 

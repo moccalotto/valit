@@ -1,6 +1,8 @@
 parameters:
-	ignoreErrors:
-	    - "#Casting to int something that's already int.#"
-	    - "#Casting to bool something that's already bool.#"
-	    - "#Casting to string something that's already string.#"
-	    - '#PHPDoc tag @param references unknown parameter \$args#'
+    ignoreErrors:
+        - "#Casting to int something that's already int.#"
+        - "#Casting to bool something that's already bool.#"
+        - "#Casting to string something that's already string.#"
+        - '#PHPDoc tag @param references unknown parameter \$args#'
+        - '/Parameter #2 \$input1 of function array_map expects array, array<int, string>\|false given/'
+        - '#\$object_or_string of function is_a expects object\|string#'

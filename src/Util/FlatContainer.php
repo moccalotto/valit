@@ -25,10 +25,19 @@ class FlatContainer
     public $container;
 
     /**
-     * Constructor.
+     * @var string
      */
-    public function __construct($innerContainer)
+    public $separator;
+
+    /**
+     * Constructor.
+     *
+     * @param array|\Traversable $innerContainer
+     * @param string             $separator
+     */
+    public function __construct($innerContainer, $separator = '/')
     {
+        $this->separator = $separator;
         $this->container = $this->flatten($innerContainer);
     }
 
@@ -122,7 +131,7 @@ class FlatContainer
         $res = $keyPrefix ? [$keyPrefix => $value] : [];
 
         foreach ($this->expandedValue($value) as $subKey => $subValue) {
-            $newKey = $keyPrefix === '' ? $subKey : "$keyPrefix/$subKey";
+            $newKey = $keyPrefix === '' ? (string) $subKey : ($keyPrefix . $this->separator . $subKey);
 
             $res = array_merge($res, $this->flatten($subValue, $newKey));
         }
@@ -143,18 +152,18 @@ class FlatContainer
             return '//';
         }
 
-        $pathElements = explode('/', $fieldNameGlob);
+        $pathElements = explode($this->separator, $fieldNameGlob);
 
         $pathRegexes = array_map(function ($element) {
             if ($element === '*') {
-                return '[^/]+';
+                return "[^/{$this->separator}]+";
             }
 
             return preg_quote($element, '#');
         }, $pathElements);
 
         $innerRegex = implode(
-            preg_quote('/', '#'),
+            preg_quote($this->separator, '#'),
             $pathRegexes
         );
 

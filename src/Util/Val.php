@@ -218,14 +218,14 @@ abstract class Val
     /**
      * Convert a variable to a bool.
      *
-     * @param mixed  $value The value to be converted.
-     *                      booleans will be returned as-is.
-     *                      "true" will be converted to true.
-     *                      "false" will be converted to false.
-     *                      "1", "1.0", 1, 1.0 are converted to true.
-     *                      "0", "0.0", 0, 0.0 are converted to false.
-     *                      Objects with a __toString method be treated as strings
-     * @param string $error Error message to throw if the value could not be converted
+     * @param mixed $value The value to be converted.
+     *                     booleans will be returned as-is.
+     *                     "true" will be converted to true.
+     *                     "false" will be converted to false.
+     *                     "1", "1.0", 1, 1.0 are converted to true.
+     *                     "0", "0.0", 0, 0.0 are converted to false.
+     *                     Objects with a __toString method be treated as strings
+     * @param mixed $error Error message (or throwable object) to throw if the value could not be converted.
      *
      * @return bool
      */
@@ -374,7 +374,7 @@ abstract class Val
     public static function escape($value)
     {
         if (is_scalar($value)) {
-            return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            return (string) json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
 
         if (is_callable($value)) {
@@ -390,7 +390,7 @@ abstract class Val
         }
 
         if (is_resource($value)) {
-            return sprintf('%s (%s)', $value, get_resource_type($value));
+            return sprintf('%s (%s)', (string) $value, get_resource_type($value));
         }
 
         if (is_object($value)) {
@@ -446,9 +446,9 @@ abstract class Val
     /**
      * Ensure that a value has a given type or class.
      *
-     * @param mixed                  $value The value to check
-     * @param string|string[]        $types Value must have at least one of the declared types
-     * @param string|\Exception|null $error Error message to throw if the value was not correct
+     * @param mixed           $value The value to check
+     * @param string|string[] $types Value must have at least one of the declared types
+     * @param mixed           $error Error message (or throwable object) to throw if the value was not correct
      *
      * @return mixed $value
      *
@@ -681,12 +681,12 @@ abstract class Val
      * $integers = Val::map($array, '::toInt'); // robust version
      * ```
      *
-     * @param iterable        $iterable The array (or traversable) to be mapped.
-     * @param string|callable $callable A callable or a string starting with two colons.
-     *                                  If it is a string with two colons, it is actually
-     *                                  a short-hand for calling a static function in this class.
-     *                                  For instance, if $callable is '::escape' then
-     *                                  it is the same as if $callable was 'Valit\Util\Val::escape'.
+     * @param mixed $iterable The array (or traversable) to be mapped.
+     * @param mixed $callable A callable or a string starting with two colons.
+     *                        If it is a string with two colons, it is actually
+     *                        a short-hand for calling a static function in this class.
+     *                        For instance, if $callable is '::escape' then
+     *                        it is the same as if $callable was 'Valit\Util\Val::escape'.
      *
      * @return array
      */
