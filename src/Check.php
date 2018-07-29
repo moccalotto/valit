@@ -208,6 +208,7 @@ abstract class Check
     {
         /** @var callable $callable */
         $callable = [static::value(), $methodName];
+
         return call_user_func_array(
             $callable,
             $args

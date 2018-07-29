@@ -26,6 +26,7 @@ class Value
     {
         /** @var callable $callable */
         $callable = [new AssertionBag(), $methodName];
+
         return call_user_func_array($callable, $args);
     }
 
@@ -38,6 +39,7 @@ class Value
     {
         /** @var callable $callable */
         $callable = [new AssertionBag(), $methodName];
+
         return call_user_func_array(
             $callable,
             $args
