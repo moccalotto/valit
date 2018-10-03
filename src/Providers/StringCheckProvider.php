@@ -382,4 +382,25 @@ class StringCheckProvider implements CheckProvider
             [$min, $max]
         );
     }
+
+    /**
+     * Check if $value is a string that only contain chars from the $chars string.
+     *
+     * @Check(["validChars", "validCharacters", "onlyChars", "onlyCharacters"])
+     *
+     * @param mixed  $value        The value.
+     * @param string $allowedChars The allowed characters.
+     *
+     * @return Result
+     */
+    public function checkOnlyChars($value, $allowedChars)
+    {
+        $allowedChars = Val::toString($allowedChars, 'Second argument cannot be cast to a string');
+
+        return new Result(
+            trim($value, $allowedChars) === '',
+            '{name} must be a string that only contains these characters: [{0}]',
+            [$allowedChars]
+        );
+    }
 }
