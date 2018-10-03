@@ -85,7 +85,7 @@ class StringCheckProvider implements CheckProvider
     {
         $success = ctype_digit($value) && strlen($value) === 3;
 
-        return new Result($success, '{name} must be an upper case, three letter currency code');
+        return new Result($success, '{name} must be an upper case, three digit currency code');
     }
 
     /**
