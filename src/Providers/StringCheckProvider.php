@@ -346,7 +346,7 @@ class StringCheckProvider implements CheckProvider
         }
 
         if ($operator === '<=' || $operator === '≤') {
-            return new Result($length < $against, $message, ['≤', $against]);
+            return new Result($length <= $against, $message, ['≤', $against]);
         }
 
         throw new InvalidArgumentException('Second argument must be one of [>, <, =, >=, ≥, <=, ≤]');
