@@ -184,4 +184,69 @@ class ArrayCheckProvider implements CheckProvider
 
         return new Result($success, '{name} must have the key {0:raw}', [$key]);
     }
+
+    /**
+     * Check if $value is an array (or countable) where the count compares to $against using the $operator.
+     *
+     * Examples:
+     *
+     * ```php
+     * // count > 20
+     * Check::that($foo)->arrayWhereCount('>', 20);
+     *
+     * // count <= 255
+     * Check::that($foo)->arrayWhereCount('<=', 255);
+     *
+     * // alternative:
+     * Check::that($foo)->arrayWhereCount('≤', 255);
+     *
+     * // check count = 40
+     * Check::that($foo)->arrayWhereCount('=', 40);
+     * Check::that($foo)->arrayWhereCount(40);     // alt. syntax
+     * ```
+     *
+     * @Check(["arrayWhereCount", "isArrayWhereCount", "whereCount", "withCount", "hasCount"])
+     *
+     * @param mixed      $value    The inspected variable
+     * @param string|int $operator Must be one of >, <, =, >=, <=, ≥, ≤
+     * @param int        $against  The count we should compare to.
+     *
+     * @return Result
+     */
+    public function checkRelativeCount($value, $operator, $against = null)
+    {
+        Val::mustBe($against, ['intable', 'null'], 'Third argument must be an integer');
+
+        if (is_int($operator) && is_null($against)) {
+            $against = $operator;
+            $operator = '=';
+        }
+
+        Val::mustBe($operator, 'string', 'Second argument must be a string');
+
+        $count = Val::countable($value) ? count($value) : NAN;
+        $message = '{name} must be an array or countable object where count {0:raw} {1:int}';
+
+        if ($operator === '>') {
+            return new Result($count > $against, $message, ['>', $against]);
+        }
+
+        if ($operator === '>=' || $operator === '≥') {
+            return new Result($count >= $against, $message, ['≥', $against]);
+        }
+
+        if ($operator === '=') {
+            return new Result($count === $against, $message, ['is', $against]);
+        }
+
+        if ($operator === '<') {
+            return new Result($count < $against, $message, ['<', $against]);
+        }
+
+        if ($operator === '<=' || $operator === '≤') {
+            return new Result($count <= $against, $message, ['≤', $against]);
+        }
+
+        throw new InvalidArgumentException('Second argument must be one of [>, <, =, >=, ≥, <=, ≤]');
+    }
 }
