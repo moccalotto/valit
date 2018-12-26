@@ -32,7 +32,7 @@ class UriCheckProvider implements CheckProvider
     public function checkHostname($value)
     {
         $success = Val::stringable($value)
-            && preg_match('#(?:[\pL\pN\pS-\.])+(?:\.?([\pL\pN]|xn\-\-[\pL\pN-]+)+\.?)#ui', $value);
+            && preg_match('#(?:[\pL\pN\pS\.-])+(?:\.?([\pL\pN]|xn\-\-[\pL\pN-]+)+\.?)#ui', $value);
 
         return new Result($success, '{name} must be a valid host name');
     }
