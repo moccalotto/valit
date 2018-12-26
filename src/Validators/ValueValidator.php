@@ -104,19 +104,28 @@ class ValueValidator extends AssertionResultBag
     /**
      * Throw exceptions if any failures has occurred or occur later in the execution stream.
      *
+     * @param \Exception|\Throwable $error
+     *
      * @return $this
      *
      * @throws InvalidValueException if any failures have occurred
      */
-    public function orThrowException()
+    public function orThrowException($error = null)
     {
-        if ($this->failures) {
+        // No errors. Do nothing.
+        if ($this->failures === 0) {
+            return $this;
+        }
+
+        if ($error === null) {
             throw new InvalidValueException(
                 $this->varName,
                 $this->value,
                 $this->results
             );
         }
+
+        throw Val::mustBe($error, 'throwable');
 
         return $this;
     }
